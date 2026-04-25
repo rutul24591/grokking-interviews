@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="system-ui, sans-serif">
+  <rect width="900" height="500" fill="#f3f1f8"/>
+  <text x="450" y="32" text-anchor="middle" font-size="19" font-weight="700" fill="#1a1822">Depth-First Search — Recurse Until You Can't, Then Backtrack</text>
+
+  <rect x="40" y="60" width="420" height="200" fill="#fff" stroke="#6d5bd0" stroke-width="2" rx="6"/>
+  <text x="60" y="85" font-size="13" font-weight="700" fill="#6d5bd0">Recursive DFS</text>
+  <text x="60" y="115" font-size="11" font-family="monospace">visited = set()</text>
+  <text x="60" y="133" font-size="11" font-family="monospace">def dfs(u):</text>
+  <text x="60" y="151" font-size="11" font-family="monospace">  visited.add(u)</text>
+  <text x="60" y="169" font-size="11" font-family="monospace">  pre[u] = clock; clock += 1</text>
+  <text x="60" y="187" font-size="11" font-family="monospace">  for v in adj[u]:</text>
+  <text x="60" y="205" font-size="11" font-family="monospace">    if v not in visited:</text>
+  <text x="60" y="223" font-size="11" font-family="monospace">      parent[v] = u</text>
+  <text x="60" y="241" font-size="11" font-family="monospace">      dfs(v)</text>
+
+  <rect x="480" y="60" width="380" height="200" fill="#fff" stroke="#4caf50" stroke-width="2" rx="6"/>
+  <text x="500" y="85" font-size="13" font-weight="700" fill="#4caf50">Iterative DFS (explicit stack)</text>
+  <text x="500" y="115" font-size="11" font-family="monospace">stack = [s]; visited = {s}</text>
+  <text x="500" y="133" font-size="11" font-family="monospace">while stack:</text>
+  <text x="500" y="151" font-size="11" font-family="monospace">  u = stack.pop()</text>
+  <text x="500" y="169" font-size="11" font-family="monospace">  for v in adj[u]:</text>
+  <text x="500" y="187" font-size="11" font-family="monospace">    if v not in visited:</text>
+  <text x="500" y="205" font-size="11" font-family="monospace">      visited.add(v); stack.push(v)</text>
+  <text x="500" y="240" font-size="11" fill="#4caf50">Avoids recursion-depth limits.</text>
+
+  <rect x="40" y="280" width="820" height="195" fill="#fff" stroke="#6d5bd0" stroke-width="2" rx="6"/>
+  <text x="60" y="305" font-size="13" font-weight="700" fill="#6d5bd0">Edge classification (directed graph)</text>
+  <text x="60" y="330" font-size="11">• <tspan font-weight="700">Tree edge:</tspan> (u, v) where v unvisited when explored from u.</text>
+  <text x="60" y="350" font-size="11">• <tspan font-weight="700">Back edge:</tspan> (u, v) where v is ancestor of u in DFS tree → indicates a cycle.</text>
+  <text x="60" y="370" font-size="11">• <tspan font-weight="700">Forward edge:</tspan> (u, v) where v is a descendant but not via tree edge.</text>
+  <text x="60" y="390" font-size="11">• <tspan font-weight="700">Cross edge:</tspan> (u, v) where v is in another DFS subtree, already finished.</text>
+  <text x="60" y="420" font-size="11">Pre/post timestamps disambiguate: tree+forward (pre[u] &lt; pre[v] &lt; post[v] &lt; post[u]),</text>
+  <text x="60" y="438" font-size="11">back (pre[v] &lt; pre[u] &lt; post[u] &lt; post[v]), cross (post[v] &lt; pre[u]).</text>
+  <text x="60" y="465" font-size="11" fill="#4caf50" font-weight="700">Edge classes are the foundation for cycle detection, SCC, topological sort.</text>
+</svg>

@@ -244,11 +244,11 @@ export default function XSSPreventionArticle() {
 
       <section>
         <h2>Defense-in-Depth Strategy</h2>
-        <p>
+        <HighlightBlock as="p" tier="important">
           No single defense prevents all XSS attacks. A robust security posture requires multiple overlapping
           layers, each addressing different attack vectors and providing fallback protection if another layer
           fails.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/frontend/security/xss-defense-layers.svg"
@@ -257,10 +257,10 @@ export default function XSSPreventionArticle() {
         />
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Layer 1: Input Validation</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Validate and sanitize all untrusted data at the entry point. While input validation alone doesn&apos;t
           prevent XSS, it reduces attack surface and catches obvious malicious payloads early.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Validation strategies:</strong>
         </p>
@@ -282,16 +282,16 @@ export default function XSSPreventionArticle() {
             <code className="text-sm">javascript:</code>, <code className="text-sm">onerror=</code>), but don&apos;t rely solely on this.
           </li>
         </ul>
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Important:</strong> Input validation should happen on both client and server. Client-side
           validation improves UX; server-side validation is mandatory for security.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Layer 2: Output Encoding (Context-Aware)</h3>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           Output encoding is the most critical XSS defense. It transforms untrusted data so the browser
           interprets it as data, not code. The encoding method depends on where the data appears in the HTML.
-        </p>
+        </HighlightBlock>
 
         <h4 className="mt-4 mb-2 font-semibold">HTML Entity Encoding (for HTML Body Content)</h4>
         <p>
@@ -369,6 +369,7 @@ export default function XSSPreventionArticle() {
           src="/diagrams/system-design-concepts/frontend/security/xss-context-aware-encoding.svg"
           alt="Context-Aware Encoding matrix showing different encoding methods for HTML, Attribute, JavaScript, URL, and CSS contexts"
           caption="Context-Aware Encoding: Different contexts require different encoding strategies. Using the wrong encoding leaves vulnerabilities."
+          captionTier="important"
         />
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Layer 3: Content Security Policy (CSP)</h3>
@@ -632,14 +633,14 @@ export default function XSSPreventionArticle() {
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Architectural</h3>
         <ul className="space-y-2">
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Defense in depth:</strong> Never rely on a single defense layer. Combine input validation,
             output encoding, CSP, and secure headers.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Secure by default:</strong> Frameworks and libraries should escape by default. Opt-in to
             dangerous behavior (e.g., <code className="text-sm">dangerouslySetInnerHTML</code>) with explicit, documented decisions.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Separation of concerns:</strong> Keep data and code separate. Use JSON for data transfer,
             not inline JavaScript in HTML.
@@ -652,26 +653,26 @@ export default function XSSPreventionArticle() {
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Development Practices</h3>
         <ul className="space-y-2">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Use framework defaults:</strong> React JSX, Vue interpolation, and Angular templates
             escape by default. Don&apos;t use escape hatches unless necessary.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Validate URLs in href/src:</strong> Attackers can inject <code className="text-sm">javascript:</code> URLs.
             Validate that URLs start with <code className="text-sm">http:</code>, <code className="text-sm">https:</code>, or <code className="text-sm">/</code> for relative paths.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Avoid dangerous APIs:</strong> Minimize use of <code className="text-sm">innerHTML</code>, <code className="text-sm">outerHTML</code>,
             <code className="text-sm">document.write()</code>, <code className="text-sm">eval()</code>, <code className="text-sm">setTimeout()</code> with strings.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Use template literals safely:</strong> When building HTML strings, escape interpolated
             values or use DOM APIs instead.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Sanitize rich text:</strong> For WYSIWYG editors, sanitize on both client and server.
             Configure allowed tags/attributes explicitly.
-          </li>
+          </HighlightBlock>
         </ul>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Content Security Policy</h3>
@@ -680,18 +681,18 @@ export default function XSSPreventionArticle() {
             <strong>Start with Report-Only:</strong> Deploy <code className="text-sm">Content-Security-Policy-Report-Only</code> first
             to identify breaking changes without affecting users.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Avoid unsafe directives:</strong> Never use <code className="text-sm">&apos;unsafe-inline&apos;</code> or
             <code className="text-sm">&apos;unsafe-eval&apos;</code> in production. Use nonces or hashes for necessary inline scripts.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Use strict CSP:</strong> Aim for <code className="text-sm">script-src 'self'</code> with no wildcards.
             Consider strict-dynamic for modern browsers.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Monitor violations:</strong> Set up <code className="text-sm">report-uri</code> or <code className="text-sm">report-to</code> to
             collect CSP violation reports and detect attack attempts.
-          </li>
+          </HighlightBlock>
         </ul>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Cookie Security</h3>
@@ -746,38 +747,38 @@ export default function XSSPreventionArticle() {
           sanitization contract.
         </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Relying solely on input validation:</strong> Input validation catches obvious attacks but
             misses encoded payloads and context-specific injections. Always combine with output encoding.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Using blocklists instead of allowlists:</strong> Blocklists (trying to catch all bad
             patterns) always fail—attackers find bypasses. Use allowlists (only allowing known-good patterns).
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Double-encoding bugs:</strong> Encoding already-encoded data results in double encoding,
             which can sometimes be exploited. Encode once, at the right layer.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Trusting client-side validation:</strong> Client-side validation is for UX, not security.
             Always validate and sanitize on the server.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Misusing dangerouslySetInnerHTML:</strong> React&apos;s <code className="text-sm">dangerouslySetInnerHTML</code> bypasses
             all protections. Only use with sanitized content from trusted sources.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Forgetting attribute context:</strong> HTML entity encoding isn&apos;t enough for
             JavaScript or URL contexts. Use context-appropriate encoding.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Weak CSP:</strong> A CSP with <code className="text-sm">&apos;unsafe-inline&apos;</code> or wildcards provides
             minimal protection. Implement strict CSP incrementally.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Ignoring DOM-based XSS:</strong> Server-side defenses don&apos;t protect against DOM-based
             XSS. Audit client-side JavaScript for unsafe DOM manipulation.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Not sanitizing rich text:</strong> Allowing HTML without sanitization is an open
             invitation for XSS. Use DOMPurify or similar libraries.
@@ -791,31 +792,31 @@ export default function XSSPreventionArticle() {
 
       <section>
         <h2>Architecture at Scale: XSS Defense in Enterprise Systems</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           Implementing XSS prevention at enterprise scale requires architectural decisions that make security the default, not an afterthought. In microservices architectures, each service must independently validate and encode output, as there is no central security layer. API gateways can enforce Content Security Policy headers across all services, while service meshes can inject security headers at the proxy level.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Design System Integration:</strong> Component libraries should enforce XSS-safe patterns by default. React components should never expose <code className="text-sm">dangerouslySetInnerHTML</code> without explicit sanitization. Template systems should auto-escape by default (Twig, Jinja2, EJS). Build pipelines should include automated CSP generation based on actual resource usage.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>CDN Security:</strong> When serving static assets through CDNs, implement Subresource Integrity (SRI) hashes to prevent CDN compromise from becoming XSS vectors. Use CDN-managed CSP reporting to detect violations across all edge locations. Consider using CDN WAF rules that block common XSS patterns at the edge before requests reach origin servers.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Third-Party Script Management:</strong> Modern applications load dozens of third-party scripts (analytics, ads, widgets). Each represents a potential XSS vector if compromised. Implement strict CSP with nonces for first-party scripts only. Use <code className="text-sm">trusted-types</code> CSP policy to require explicit sanitization before DOM insertion. Consider using sandboxed iframes for third-party widgets to contain potential compromises.
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
         <h2>Testing Strategies: Automated XSS Detection</h2>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Comprehensive XSS testing requires multiple layers of automated and manual testing integrated into CI/CD pipelines.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="crucial">
           <strong>Static Analysis (SAST):</strong> Tools like Semgrep, CodeQL, and ESLint security plugins can detect unsafe patterns: <code className="text-sm">innerHTML</code> assignments, <code className="text-sm">eval()</code> calls, <code className="text-sm">document.write()</code>, and unsanitized template literals. Configure these tools to fail builds on high-severity findings. Run SAST on every pull request with results posted as comments.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Dynamic Analysis (DAST):</strong> OWASP ZAP, Burp Suite, and commercial scanners can automatically probe for XSS vulnerabilities by injecting payloads and analyzing responses. Configure DAST scans to run against staging environments after each deployment. Use authenticated scans to test logged-in functionality. Integrate DAST results with issue tracking for automatic ticket creation.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Interactive Analysis (IAST):</strong> Tools like Contrast Security and HCL AppScan instrument running applications to detect XSS during functional testing. IAST provides better accuracy than DAST with fewer false positives. Run IAST agents in staging and production (read-only mode) for continuous monitoring.
         </p>
@@ -829,9 +830,9 @@ export default function XSSPreventionArticle() {
 
       <section>
         <h2>Compliance & Legal Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="important">
           XSS vulnerabilities have significant compliance and legal implications beyond technical risk.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>OWASP Top 10:</strong> XSS consistently ranks in OWASP Top 10 (currently #3 in 2021). Many compliance frameworks reference OWASP Top 10 as a baseline requirement. Regular XSS testing demonstrates due diligence in security practices.
         </p>
@@ -851,15 +852,15 @@ export default function XSSPreventionArticle() {
 
       <section>
         <h2>Performance Trade-offs: Security vs. Latency</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           XSS prevention measures introduce latency that must be balanced against security requirements.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Output Encoding Overhead:</strong> HTML entity encoding adds minimal latency (&lt;1ms per response) but is essential for security. Use streaming encoders for large responses to avoid buffering entire responses in memory. Pre-compute encoded versions of static content during build time.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>CSP Evaluation:</strong> Browser CSP evaluation adds 5-50ms depending on policy complexity. Keep CSP policies simple: avoid excessive <code className="text-sm">script-src</code> entries, use nonces instead of hashes for dynamic scripts, and leverage browser CSP caching. Test CSP impact using Chrome DevTools Performance panel.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Sanitization Costs:</strong> DOMPurify sanitization of user HTML takes 10-100ms depending on input size. Cache sanitized versions of frequently-accessed content. Use Web Workers for sanitization to avoid blocking main thread. Consider server-side sanitization with CDN caching to amortize costs across users.
         </p>
@@ -873,12 +874,12 @@ export default function XSSPreventionArticle() {
 
       <section>
         <h2>Browser & Platform Compatibility</h2>
-        <p>
+        <HighlightBlock as="p" tier="important">
           XSS prevention effectiveness varies across browsers and platforms.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>CSP Support:</strong> CSP Level 3 (nonce, strict-dynamic) supported in Chrome 63+, Firefox 67+, Safari 12.1+, Edge 79+. For older browsers, implement CSP Level 2 with <code className="text-sm">unsafe-inline</code> fallback (less secure). Use <code className="text-sm">Content-Security-Policy-Report-Only</code> header to test policies before enforcement.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Trusted Types:</strong> Chrome 83+, Edge 83+ support Trusted Types API for DOM XSS prevention. Firefox and Safari have not implemented. Use as progressive enhancement: <code className="text-sm">if (window.trustedTypes)</code> to enable stricter policies for supporting browsers.
         </p>
@@ -894,17 +895,21 @@ export default function XSSPreventionArticle() {
         <h2>Real-World Use Cases</h2>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Social Media Platform</h3>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           <strong>Challenge:</strong> Users post status updates, comments, and messages with formatting.
           Attackers try to inject scripts to steal sessions or spread malware.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Solution:</strong>
         </p>
         <ul className="space-y-2">
+          <HighlightBlock as="li" tier="crucial">
+            DOMPurify (or equivalent) with strict allowlists on all rich text boundaries
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
+            CSP with nonce-based scripts, plus SRI for third-party where possible
+          </HighlightBlock>
           <li>Allow limited HTML tags (b, i, em, strong, a) with sanitized attributes</li>
-          <li>DOMPurify on both client and server with strict allowlists</li>
-          <li>CSP with <code className="text-sm">script-src 'self'</code> and nonce-based inline scripts</li>
           <li>All user content rendered in sandboxed iframes for additional isolation</li>
           <li>HttpOnly + Secure + SameSite cookies to limit session hijacking impact</li>
         </ul>

@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="system-ui, sans-serif">
+  <rect width="900" height="500" fill="#f3f1f8"/>
+  <text x="450" y="32" text-anchor="middle" font-size="19" font-weight="700" fill="#1a1822">Variants &amp; Optimizations</text>
+
+  <rect x="40" y="60" width="820" height="200" fill="#fff" stroke="#6d5bd0" stroke-width="2" rx="6"/>
+  <text x="60" y="85" font-size="13" font-weight="700" fill="#6d5bd0">Practical variants</text>
+  <text x="60" y="112" font-size="11">• <tspan font-weight="700">A* search:</tspan> Dijkstra + admissible heuristic h(v). Priority = dist[v] + h(v).</text>
+  <text x="60" y="132" font-size="11">• <tspan font-weight="700">Bidirectional Dijkstra:</tspan> search forward from s and backward from t; meet in middle.</text>
+  <text x="60" y="152" font-size="11">• <tspan font-weight="700">Contraction Hierarchies:</tspan> preprocess to add shortcuts; query in milliseconds on continent-scale road graphs.</text>
+  <text x="60" y="172" font-size="11">• <tspan font-weight="700">ALT (A*, Landmarks, Triangle inequality):</tspan> precompute distances to landmarks for tight heuristics.</text>
+  <text x="60" y="192" font-size="11">• <tspan font-weight="700">Multi-source Dijkstra:</tspan> push all sources with dist 0; computes nearest-source per node.</text>
+  <text x="60" y="212" font-size="11">• <tspan font-weight="700">Dial / radix heap:</tspan> O(E + V·C) and O(E + V·log C) for integer weights bounded by C.</text>
+  <text x="60" y="232" font-size="11">• <tspan font-weight="700">Johnson's algorithm:</tspan> reweight via Bellman-Ford then run Dijkstra from each vertex (APSP on sparse graphs).</text>
+
+  <rect x="40" y="280" width="820" height="195" fill="#fff" stroke="#4caf50" stroke-width="2" rx="6"/>
+  <text x="60" y="305" font-size="13" font-weight="700" fill="#4caf50">Lazy vs. eager decrease-key</text>
+  <text x="60" y="330" font-size="11">Lazy (push duplicates, skip-on-pop): simpler; heap may grow to O(E). Discard stale entries:</text>
+  <text x="60" y="350" font-size="11" font-family="monospace">  if d &gt; dist[u]: continue</text>
+  <text x="60" y="375" font-size="11">Eager (indexed heap with decrease-key): heap size bounded by V; decrease-key O(log V).</text>
+  <text x="60" y="395" font-size="11">Requires position map from node → heap index. More code, less memory churn.</text>
+  <text x="60" y="420" font-size="11">In practice: lazy + binary heap is the dominant production choice (Boost, JGraphT, NetworkX).</text>
+  <text x="60" y="445" font-size="11">Eager wins when edges are very dense or when memory pressure on the heap matters.</text>
+  <text x="60" y="470" font-size="11" fill="#4caf50" font-weight="700">Lazy default; switch to eager only with profiler evidence.</text>
+</svg>

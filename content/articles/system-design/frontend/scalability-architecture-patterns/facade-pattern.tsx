@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -24,26 +25,26 @@ export default function FacadePatternArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           The <strong>Facade Pattern</strong> provides a simplified, unified interface to a complex subsystem
           of classes, functions, or APIs. Rather than exposing the full complexity of underlying systems to
           consumers, a facade presents a streamlined API that handles the common use cases, hiding
           orchestration logic, error handling, and configuration details behind a clean abstraction boundary.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           In frontend development, facades are everywhere — and recognizing them is key to designing
           maintainable architectures. React custom hooks are facades over complex state and effect logic.
           Axios is a facade over XMLHttpRequest and fetch. The Web Audio API is a facade over low-level
           audio processing. jQuery was arguably the most successful facade in web history, abstracting
           away cross-browser DOM inconsistencies behind a single $ function.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The pattern becomes critical at scale when frontend applications interact with multiple backend
           services, browser APIs, third-party SDKs, and platform-specific features. Without facades, every
           component that needs to, say, upload a file must understand presigned URLs, multipart encoding,
           progress tracking, retry logic, and CDN invalidation. A facade encapsulates this complexity,
           exposing a simple uploadFile(file, options) interface.
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
@@ -54,71 +55,74 @@ export default function FacadePatternArticle() {
             subsystems, translating simple high-level calls into coordinated low-level operations. The
             subsystems continue to work independently — the facade does not replace them, it wraps them.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Simplified API Surface:</strong> The facade exposes only the operations that consumers
             commonly need, with sensible defaults for configuration options. Advanced users can still access
             the underlying subsystems directly when the facade&apos;s simplified API is insufficient.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Decoupling:</strong> By routing all subsystem access through the facade, consumer code
             is insulated from changes in the underlying implementation. Swapping a REST API for GraphQL,
             or replacing localStorage with IndexedDB, requires changing only the facade — not every component
             that uses storage.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Orchestration:</strong> Facades often coordinate multiple subsystem calls in a specific
             order, handling error conditions and rollback at each step. This transaction-like orchestration
             is the facade&apos;s primary value — it encapsulates multi-step workflows that would otherwise
             be duplicated across consumers.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Adapter vs Facade Distinction:</strong> An adapter converts one interface to another
             (making incompatible interfaces work together). A facade simplifies an interface (making a
             complex system easier to use). An adapter preserves complexity but changes the shape; a facade
             reduces complexity by hiding details.
-          </li>
+          </HighlightBlock>
         </ul>
       </section>
 
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           The Facade Pattern creates a layer of indirection between consumers and subsystems, dramatically
           reducing the coupling surface area.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/frontend/scalability-architecture-patterns/facade-pattern-diagram-1.svg"
           alt="Client to Facade to Subsystems Flow"
           caption="Client→Facade→Subsystems flow — the facade orchestrates calls to DOM, Network, Storage, and Auth subsystems behind a unified API"
+          captionTier="crucial"
         />
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           In a typical frontend application, a single user action (like &quot;save document&quot;) might
           require validating input, serializing data, making an API call with authentication headers,
           updating local storage, invalidating caches, and showing a notification. Without a facade, the
           component orchestrating this is tightly coupled to five or six subsystems. The facade reduces
           this to a single function call.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/frontend/scalability-architecture-patterns/facade-pattern-diagram-2.svg"
           alt="API Facade for REST, GraphQL, and WebSocket"
           caption="API facade — a unified data layer abstracts REST, GraphQL, and WebSocket protocols behind a consistent query/mutation interface"
+          captionTier="important"
         />
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           An API facade is particularly valuable in applications that consume multiple backend protocols.
           The facade normalizes response formats, handles authentication token injection, provides automatic
           retries with exponential backoff, and converts between the consumer&apos;s preferred data model
           and the backend&apos;s wire format. Tools like Apollo Client and tRPC are sophisticated facades
           over network communication.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/frontend/scalability-architecture-patterns/facade-pattern-diagram-3.svg"
           alt="Before and After Complexity Reduction"
           caption="Before/after complexity reduction — without a facade, each consumer manages its own subsystem interactions; with a facade, complexity is centralized"
+          captionTier="important"
         />
       </section>
 
@@ -154,17 +158,21 @@ export default function FacadePatternArticle() {
                 • Easier to mock for testing
               </td>
               <td className="p-3">
-                • Facade becomes a coupling bottleneck<br />
-                • Tight coupling between facade and all subsystems<br />
-                • Breaking facade API affects all consumers
+                <HighlightBlock tier="crucial">
+                  • Facade becomes a coupling bottleneck<br />
+                  • Tight coupling between facade and all subsystems<br />
+                  • Breaking facade API affects all consumers
+                </HighlightBlock>
               </td>
             </tr>
             <tr>
               <td className="p-3"><strong>Performance</strong></td>
               <td className="p-3">
-                • Facade can batch and optimize subsystem calls<br />
-                • Caching can be added at the facade layer<br />
-                • Request deduplication and coalescing
+                <HighlightBlock tier="important">
+                  • Facade can batch and optimize subsystem calls<br />
+                  • Caching can be added at the facade layer<br />
+                  • Request deduplication and coalescing
+                </HighlightBlock>
               </td>
               <td className="p-3">
                 • Additional function call overhead<br />
@@ -180,9 +188,11 @@ export default function FacadePatternArticle() {
                 • Gradual migration from legacy to modern APIs
               </td>
               <td className="p-3">
-                • Facade API must be general enough for all use cases<br />
-                • Lowest-common-denominator API may limit advanced usage<br />
-                • Version management of facade API is critical
+                <HighlightBlock tier="important">
+                  • Facade API must be general enough for all use cases<br />
+                  • Lowest-common-denominator API may limit advanced usage<br />
+                  • Version management of facade API is critical
+                </HighlightBlock>
               </td>
             </tr>
           </tbody>
@@ -192,34 +202,34 @@ export default function FacadePatternArticle() {
       <section>
         <h2>Best Practices</h2>
         <ol className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Design for the 80% Use Case:</strong> A facade should make common operations simple
             while still allowing direct subsystem access for the 20% of use cases that need it. Do not try
             to wrap every subsystem capability — that creates a 1:1 mapping that adds indirection without
             reducing complexity.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Use Custom Hooks as React Facades:</strong> In React applications, custom hooks are the
             idiomatic way to implement facades. A useFileUpload() hook that encapsulates presigned URL
             fetching, chunked upload, progress tracking, and error handling is a facade that any component
             can consume with a single hook call.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Keep Facades Stateless When Possible:</strong> Facades that maintain internal state
             become singletons with all their attendant problems (testing, lifecycle, memory). Prefer
             stateless facades that delegate state management to the subsystems or to the consumer.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Provide Escape Hatches:</strong> Allow consumers to access the underlying subsystems
             when the facade is insufficient. Expose the raw client, the underlying connection, or the
             original API alongside the simplified facade methods. This prevents the facade from becoming
             a bottleneck for advanced use cases.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Version Facade APIs Carefully:</strong> Since many consumers depend on the facade,
             breaking changes have outsized impact. Use semantic versioning, deprecation warnings, and
             gradual migration paths when evolving the facade API.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Layer Facades Judiciously:</strong> Multiple layers of facades (a facade wrapping a
             facade wrapping a facade) create deep abstraction stacks that are difficult to debug and
@@ -232,34 +242,34 @@ export default function FacadePatternArticle() {
       <section>
         <h2>Common Pitfalls</h2>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Facade Bloat:</strong> Over time, facades accumulate methods for every use case,
             becoming as complex as the subsystems they were meant to simplify. Guard against this by
             keeping facades focused and splitting them by domain (authFacade, storageFacade, analyticsFacade)
             rather than having one monolithic facade.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Leaky Abstractions:</strong> A facade that exposes subsystem-specific error types,
             configuration formats, or data structures forces consumers to understand the underlying system
             anyway. Translate subsystem errors into facade-level errors and normalize data formats at the
             facade boundary.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Over-Abstraction:</strong> Creating a facade for a subsystem that only has one consumer
             and is already simple to use adds unnecessary indirection. The facade pattern earns its
             complexity when multiple consumers would otherwise duplicate the same coordination logic.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Ignoring Error Propagation:</strong> Facades that catch errors internally without
             exposing them to consumers create silent failures. Always propagate errors (translated to
             facade-appropriate types) so consumers can handle failures in their UI.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Performance-Blind Facades:</strong> A facade that always fetches all data even when
             a consumer only needs a subset wastes bandwidth and processing time. Provide parameterized
             facades that accept options for selecting only the needed data (similar to GraphQL field
             selection).
-          </li>
+          </HighlightBlock>
         </ul>
       </section>
 
@@ -271,46 +281,46 @@ export default function FacadePatternArticle() {
             DOM inconsistencies, AJAX request handling, animation APIs, and event delegation behind a
             single $ function. Its success demonstrated the power of well-designed facades.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Axios:</strong> A facade over XMLHttpRequest (and Node.js http module) that provides
             a consistent API for HTTP requests with interceptors, automatic JSON parsing, request/response
             transformation, and cancellation support.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Apollo Client:</strong> A sophisticated facade over GraphQL network requests, caching,
             optimistic updates, and real-time subscriptions. Components interact with a simple useQuery/
             useMutation API while Apollo handles cache normalization, request deduplication, and garbage
             collection internally.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Firebase SDK:</strong> Firebase provides facades for authentication, database operations,
             storage, and messaging. Each service has a simplified API that hides the complexity of WebSocket
             connections, token management, offline persistence, and retry logic.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Next.js Data Fetching:</strong> Next.js&apos;s getServerSideProps, getStaticProps, and
             the App Router&apos;s server components act as facades over server-side data fetching, caching,
             revalidation, and serialization. Developers describe what data they need, and the framework
             handles the how.
-          </li>
+          </HighlightBlock>
         </ul>
       </section>
 
       <section>
         <h2>Security Considerations</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           Facade Pattern introduces security considerations around access control, input validation, and the potential for facades to hide security-critical operations.
-        </p>
+        </HighlightBlock>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-4 text-lg font-semibold">Facade Security Patterns</h3>
           <ul className="space-y-2">
-            <li>
+            <HighlightBlock as="li" tier="important">
               <strong>Access Control:</strong> Facades should enforce access control for all underlying operations. Mitigation: validate caller permissions, implement role-based access control, audit all facade method calls.
-            </li>
-            <li>
+            </HighlightBlock>
+            <HighlightBlock as="li" tier="important">
               <strong>Input Validation:</strong> Facades must validate all input before passing to subsystems. Mitigation: implement strict input validation, use TypeScript for type safety, validate at facade boundary.
-            </li>
+            </HighlightBlock>
             <li>
               <strong>Audit Logging:</strong> All facade operations should be logged for security auditing. Mitigation: implement comprehensive logging, include caller identity in logs, log all errors and exceptions.
             </li>
@@ -320,9 +330,9 @@ export default function FacadePatternArticle() {
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-4 text-lg font-semibold">Facade Testing Security</h3>
           <ul className="space-y-2">
-            <li>
+            <HighlightBlock as="li" tier="important">
               <strong>Access Control Testing:</strong> Test that facade enforces access control correctly. Verify unauthorized calls are rejected. Test with different user roles.
-            </li>
+            </HighlightBlock>
             <li>
               <strong>Input Validation Testing:</strong> Test facade resistance to injection attacks. Verify invalid inputs are rejected. Test boundary conditions.
             </li>
@@ -332,9 +342,9 @@ export default function FacadePatternArticle() {
 
       <section>
         <h2>Performance Benchmarks</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           Facade Pattern performance depends on facade overhead, subsystem call efficiency, and caching effectiveness.
-        </p>
+        </HighlightBlock>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-4 text-lg font-semibold">Performance Metrics to Track</h3>
@@ -375,21 +385,21 @@ export default function FacadePatternArticle() {
             <li>
               <strong>Thin Facade:</strong> Overhead: ~0.01ms. Best for: simple APIs, minimal abstraction. Limitation: limited functionality.
             </li>
-            <li>
+            <HighlightBlock as="li" tier="important">
               <strong>Caching Facade:</strong> Overhead: ~0.05ms (with cache hits). Best for: read-heavy workloads. Limitation: cache invalidation complexity.
-            </li>
-            <li>
+            </HighlightBlock>
+            <HighlightBlock as="li" tier="important">
               <strong>Batching Facade:</strong> Overhead: ~0.1ms. Best for: reducing round trips, batching operations. Limitation: increased latency for individual operations.
-            </li>
+            </HighlightBlock>
           </ul>
         </div>
       </section>
 
       <section>
         <h2>Cost Analysis</h2>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Facade Pattern has minimal direct costs but significant benefits for code maintainability and API stability.
-        </p>
+        </HighlightBlock>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-4 text-lg font-semibold">Development Costs</h3>
@@ -403,18 +413,24 @@ export default function FacadePatternArticle() {
           </ul>
         </div>
 
-        <div className="my-6 rounded-lg border border-accent/30 bg-accent/10 p-6">
+        <HighlightBlock
+          className="my-6 rounded-lg border border-accent/30 bg-accent/10 p-6"
+          tier="crucial"
+        >
           <h3 className="mb-3 font-semibold">When to Use Facade Pattern</h3>
           <p>
             Use facades when: (1) you need to simplify complex subsystem APIs, (2) you want to decouple clients from subsystem implementations, (3) you need to add cross-cutting concerns (logging, caching, access control). Avoid when: (1) subsystem is already simple, (2) direct access is required for performance, (3) you need full subsystem functionality without abstraction.
           </p>
-        </div>
+        </HighlightBlock>
       </section>
 
       <section>
         <h2>Common Interview Questions</h2>
         <div className="space-y-4">
-          <div className="rounded-lg border border-theme bg-panel-soft p-4">
+          <HighlightBlock
+            className="rounded-lg border border-theme bg-panel-soft p-4"
+            tier="important"
+          >
             <p className="font-semibold">Q: How are React custom hooks related to the Facade Pattern?</p>
             <p className="mt-2 text-sm">
               A: Custom hooks are the React-idiomatic implementation of the Facade Pattern. A hook like
@@ -424,9 +440,12 @@ export default function FacadePatternArticle() {
               mechanism, or refresh strategy. This is exactly what a facade does — simplify a complex
               subsystem behind a clean API.
             </p>
-          </div>
+          </HighlightBlock>
 
-          <div className="rounded-lg border border-theme bg-panel-soft p-4">
+          <HighlightBlock
+            className="rounded-lg border border-theme bg-panel-soft p-4"
+            tier="crucial"
+          >
             <p className="font-semibold">Q: What is the difference between a Facade, an Adapter, and a Proxy?</p>
             <p className="mt-2 text-sm">
               A: A Facade simplifies — it provides a simpler interface to a complex subsystem. An Adapter
@@ -436,9 +455,12 @@ export default function FacadePatternArticle() {
               simplified API client is a Facade; a wrapper that makes a REST API look like GraphQL is an
               Adapter; a caching layer that intercepts requests and returns cached results is a Proxy.
             </p>
-          </div>
+          </HighlightBlock>
 
-          <div className="rounded-lg border border-theme bg-panel-soft p-4">
+          <HighlightBlock
+            className="rounded-lg border border-theme bg-panel-soft p-4"
+            tier="important"
+          >
             <p className="font-semibold">Q: How would you design an API facade for an app consuming REST, GraphQL, and WebSocket?</p>
             <p className="mt-2 text-sm">
               A: Define a protocol-agnostic interface with query(), mutate(), and subscribe() methods. Each
@@ -448,7 +470,7 @@ export default function FacadePatternArticle() {
               interceptors for auth token injection, error normalization, and request logging. Provide
               type-safe return types using TypeScript generics keyed to the resource identifier.
             </p>
-          </div>
+          </HighlightBlock>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
             <p className="font-semibold">Q: What is the Law of Leaky Abstractions, and how does it apply to facades?</p>

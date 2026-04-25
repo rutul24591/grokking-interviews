@@ -35,14 +35,14 @@ export default function ClickjackingPreventionArticle() {
           <strong>How clickjacking works:</strong>
         </p>
         <ol className="space-y-2">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Attacker creates malicious page:</strong> Page with decoy interface (e.g., &quot;Click
             to win a prize!&quot;)
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Target site loaded in iframe:</strong> Attacker loads victim&apos;s site (e.g., bank,
             social media) in a transparent iframe positioned over the decoy
-          </li>
+          </HighlightBlock>
           <li>
             <strong>User clicks decoy:</strong> User thinks they&apos;re clicking the decoy button
           </li>
@@ -52,11 +52,11 @@ export default function ClickjackingPreventionArticle() {
             settings)
           </li>
         </ol>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Clickjacking was first publicly demonstrated in 2008 by Robert Hansen and Jeremiah Grossman.
           It exploits the fundamental web capability of embedding content in frames—a feature essential
           for many legitimate use cases (embedded videos, maps, widgets) but dangerous when misused.
-        </p>
+        </HighlightBlock>
         <HighlightBlock as="p" tier="important">
           <strong>Why clickjacking matters for staff/principal engineers:</strong> As a technical leader,
           you&apos;re responsible for protecting users from UI-level attacks. Clickjacking can lead to
@@ -89,21 +89,21 @@ export default function ClickjackingPreventionArticle() {
           captionTier="important"
         />
 
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           An attacker creates a malicious page with a decoy button styled to appear clickable (fixed position, green background, white text, large padding) and a hidden iframe positioned exactly over the decoy (same top/left coordinates, nearly invisible with 0.01 opacity, higher z-index). The page displays "Click to Win!" but when the user clicks, the click goes to the hidden iframe which loads the target site (like a bank transfer page).
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Clickjacking Attack Variants</h3>
 
         <h4 className="mt-4 mb-2 font-semibold">Likejacking</h4>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Tricking users into liking/following content on social media without their knowledge. The user thinks they're closing a popup but is actually clicking "Like" on a hidden Facebook page. Real-world impact includes artificial engagement inflation, spam distribution, and reputation manipulation.
-        </p>
+        </HighlightBlock>
 
         <h4 className="mt-4 mb-2 font-semibold">Cursorjacking</h4>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Manipulating the perceived cursor position to trick users into clicking different locations. A fake cursor is shown while the real cursor is offset, so when the user clicks where the fake cursor appears to be, the real cursor clicks elsewhere on a hidden iframe. Real-world impact includes downloading malware, granting permissions, and enabling webcam/microphone.
-        </p>
+        </HighlightBlock>
 
         <h4 className="mt-4 mb-2 font-semibold">Filejacking</h4>
         <p>
@@ -128,10 +128,10 @@ export default function ClickjackingPreventionArticle() {
           <li>
             <strong>Persistent authentication:</strong> User stays logged in, iframe inherits session
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>No re-authentication for sensitive actions:</strong> Critical actions don&apos;t
             require password confirmation
-          </li>
+          </HighlightBlock>
         </ul>
       </section>
 
@@ -244,9 +244,9 @@ export default function ClickjackingPreventionArticle() {
         </table>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Setting CSP frame-ancestors</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Set CSP frame-ancestors header on your server: Nginx uses <code className="text-sm">add_header Content-Security-Policy "frame-ancestors 'self' https://trusted-partner.com" always</code>, Apache uses <code className="text-sm">Header set Content-Security-Policy "frame-ancestors 'self' https://trusted-partner.com"</code>, Express.js uses middleware to set the header with <code className="text-sm">frame-ancestors 'self'</code>, and it can be combined with other CSP directives like default-src and script-src.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/frontend/security/frame-ancestors-protection.svg"
@@ -271,9 +271,9 @@ export default function ClickjackingPreventionArticle() {
         />
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">JavaScript Frame Busting</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Basic frame busting checks if <code className="text-sm">window.top !== window.self</code> and redirects to <code className="text-sm">window.self.location</code>. A more robust approach handles multiple frame levels with a try-catch block that clears the body and shows an alert if it can't access the top window (cross-origin). Modern approach combines frame busting with CSP frame-ancestors for best protection.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Limitations of Frame Busting</h3>
         <ul className="space-y-2">
@@ -285,10 +285,10 @@ export default function ClickjackingPreventionArticle() {
             <strong>Breaks legitimate framing:</strong> If you need to allow framing from trusted origins,
             frame busting prevents it
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Not a replacement for headers:</strong> Always use X-Frame-Options or CSP
             frame-ancestors as primary defense
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Defense in depth only:</strong> Use frame busting as additional layer, not sole
             protection
@@ -309,9 +309,9 @@ export default function ClickjackingPreventionArticle() {
         </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">PostMessage Communication</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           For legitimate cross-origin iframe communication, use postMessage instead of allowing unrestricted framing. The parent page creates an iframe with sandbox attributes (<code className="text-sm">allow-scripts allow-same-origin</code>), sends messages using <code className="text-sm">postMessage()</code> with the target origin, and the iframe receives messages via <code className="text-sm">message</code> event listener, verifying the event origin matches the trusted partner before processing.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Sandbox Attribute</h3>
         <HighlightBlock as="p" tier="important">
@@ -328,13 +328,13 @@ export default function ClickjackingPreventionArticle() {
             <strong>Start with DENY:</strong> Default to <code className="text-sm">X-Frame-Options: DENY</code>
             and <code className="text-sm">frame-ancestors 'none'</code>
           </HighlightBlock>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Allow selectively:</strong> Only allow framing where there&apos;s a specific business
             requirement
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Document exceptions:</strong> Keep a list of pages that allow framing and why
-          </li>
+          </HighlightBlock>
         </ul>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Layer Defenses</h3>
@@ -343,15 +343,15 @@ export default function ClickjackingPreventionArticle() {
             <strong>Use both headers:</strong> CSP frame-ancestors + X-Frame-Options for maximum browser
             coverage
           </HighlightBlock>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Add frame busting:</strong> JavaScript defense as additional layer
-          </li>
+          </HighlightBlock>
           <HighlightBlock as="li" tier="important">
             <strong>Verify server-side:</strong> Check Origin/Referer headers for sensitive operations
           </HighlightBlock>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Re-authenticate:</strong> Require password confirmation for sensitive actions
-          </li>
+          </HighlightBlock>
         </ul>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Secure Application Design</h3>
@@ -401,15 +401,15 @@ export default function ClickjackingPreventionArticle() {
 
       <section>
         <h2>Architecture at Scale: Clickjacking Defense in Enterprise Systems</h2>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Enterprise-scale clickjacking defense requires coordinated header management, consistent framing policies, and centralized monitoring across multiple applications, business units, and geographic regions. In microservices architectures, each service must enforce framing protection consistently.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="crucial">
           <strong>Centralized Header Management:</strong> Implement header injection at the API gateway or load balancer level. Use infrastructure-as-code (Terraform, CloudFormation) to enforce X-Frame-Options and CSP frame-ancestors consistently across all services. Document framing policies in security standards.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Multi-Tenant Framing Policies:</strong> For SaaS applications with embedded widgets, implement tenant-specific framing allowlists. Use CSP frame-ancestors with tenant-specific origins. Implement framing policy management UI for tenant administrators. Document multi-tenant framing architecture.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>CDN Integration:</strong> Configure CDN (Cloudflare, AWS CloudFront, Fastly) to inject clickjacking headers at the edge. Use CDN Workers or Lambda@Edge to dynamically set frame-ancestors based on request context. Implement header stripping for legacy browser compatibility. Document CDN header configuration.
         </p>
@@ -420,15 +420,15 @@ export default function ClickjackingPreventionArticle() {
 
       <section>
         <h2>Testing Strategies: Clickjacking Validation</h2>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Comprehensive clickjacking testing requires automated scanning, manual verification, and penetration testing integrated into security operations.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="crucial">
           <strong>Automated Header Scanning:</strong> Use OWASP ZAP, Burp Suite, or custom scripts to verify X-Frame-Options and CSP frame-ancestors headers. Configure CI/CD pipelines to scan headers after each deployment. Set up automated alerts for: missing X-Frame-Options, missing frame-ancestors, overly permissive framing policies.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Framing Tests:</strong> Test framing protection: (1) Attempt to load pages in cross-origin iframes, (2) Verify pages are blocked or rendered unusable, (3) Test with different SameSite cookie values, (4) Test frame busting JavaScript effectiveness. Use tools like Burp Intruder for automated framing tests.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Cursorjacking Tests:</strong> Test for cursorjacking vulnerabilities: (1) Check for custom cursor implementations, (2) Verify click handlers match visual elements, (3) Test for hidden clickable elements. Document cursorjacking test results.
         </p>
@@ -439,15 +439,15 @@ export default function ClickjackingPreventionArticle() {
 
       <section>
         <h2>Compliance and Legal Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Clickjacking prevention has significant compliance implications, particularly for applications handling financial transactions, healthcare data, or operating in regulated industries.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="crucial">
           <strong>PCI-DSS Requirements:</strong> PCI-DSS Requirement 6.5.9 requires protection against clickjacking for payment pages. Implement X-Frame-Options or CSP frame-ancestors for all payment-related pages. Document clickjacking controls in ROC (Report on Compliance). Annual penetration testing must include clickjacking testing.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>HIPAA Requirements:</strong> HIPAA Security Rule 45 CFR 164.312(a)(1) requires access controls to prevent unauthorized access. Clickjacking can lead to unauthorized actions on ePHI. Document clickjacking prevention in security policies. Implement audit logging for actions that could be clickjacking targets.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>GDPR Implications:</strong> GDPR Article 32 requires appropriate security for personal data protection. Clickjacking that leads to unauthorized data access or modification violates GDPR. Document clickjacking prevention measures as part of security of processing.
         </p>
@@ -461,18 +461,18 @@ export default function ClickjackingPreventionArticle() {
 
       <section>
         <h2>Performance Trade-offs: Security vs. User Experience</h2>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Clickjacking prevention measures introduce minimal performance overhead but may impact legitimate use cases.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Header Overhead:</strong> X-Frame-Options and CSP headers add negligible overhead (less than 100 bytes per response). No measurable latency impact. Include headers in all responses, not just HTML (protects against MIME-type confusion attacks).
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Frame Busting JavaScript:</strong> JavaScript frame busting adds minimal overhead (less than 1ms). However, it can interfere with legitimate framing scenarios. Test frame busting thoroughly before deployment. Consider user-agent detection to disable frame busting for known-good embedders.
         </p>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           <strong>Legitimate Embedding Impact:</strong> Strict framing policies block legitimate embedding (partner integrations, embedded widgets). Implement allowlisting for trusted origins. Use CSP frame-ancestors with specific origins instead of wildcard. Document legitimate embedding requirements.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>CSRF Token Overhead:</strong> CSRF tokens add minimal overhead (token generation less than 1ms, validation less than 5ms). Use stateless CSRF tokens (HMAC-based) to eliminate server-side storage. Cache CSRF tokens per session. Monitor CSRF validation latency.
         </p>
@@ -483,63 +483,63 @@ export default function ClickjackingPreventionArticle() {
 
       <section>
         <h2>Browser and Platform Compatibility</h2>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Clickjacking protection support varies across browsers, requiring careful compatibility planning.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>X-Frame-Options Support:</strong> Supported in all modern browsers (IE8+, all current versions). Deprecated but still enforced. Chrome 91+ shows deprecation warnings but continues to enforce. Use as fallback for older browsers.
         </p>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           <strong>CSP frame-ancestors Support:</strong> Supported in Chrome 39+, Firefox 50+, Safari 12.1+, Edge 79+. Not supported in IE11. Use both X-Frame-Options and CSP for maximum coverage. Test frame-ancestors across target browsers.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Sandbox Attribute Support:</strong> Supported in all modern browsers (IE10+, all current versions). Some older mobile browsers have partial sandbox support. Test sandbox effectiveness using browser DevTools. Document sandbox support in browser compatibility matrix.
         </p>
         <p>
           <strong>Mobile Browser Considerations:</strong> Mobile Chrome/Firefox match desktop support. iOS Safari has full support. Some older Android browsers have partial support. Test clickjacking protection on actual mobile devices.
         </p>
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>WebView Considerations:</strong> iOS WKWebView and Android WebView have separate framing behavior. Some apps intentionally embed web content in WebViews. Test clickjacking protection in actual app WebViews. Consider user-agent detection for WebView-specific policies.
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
         <h2>Real-World Use Cases</h2>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Banking Application:</strong> X-Frame-Options: DENY on all pages. CSP frame-ancestors 'none'. SameSite=Strict on session cookies. CSRF tokens on all transactions. Re-authentication for transfers. No legitimate embedding needed—maximum protection.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Social Media Platform:</strong> X-Frame-Options: SAMEORIGIN. CSP frame-ancestors 'self' for most pages. Allow specific partners for embedded posts (Twitter cards, Facebook posts). postMessage for cross-origin widget communication. Likejacking prevention critical.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>E-Commerce Platform:</strong> X-Frame-Options: DENY on checkout pages. CSP frame-ancestors 'self' for product pages. Allow payment processor embedding (Stripe, PayPal) via specific origins. CSRF tokens on cart modifications. Clickjacking prevention for "Buy Now" buttons.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Enterprise SaaS:</strong> X-Frame-Options: SAMEORIGIN. CSP frame-ancestors with customer domains for embedded widgets. Tenant-specific framing allowlists. postMessage for secure cross-origin communication. Customer-controlled embedding settings.
-          </li>
+          </HighlightBlock>
         </ul>
       </section>
 
       <section>
         <h2>Common Pitfalls</h2>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>No framing protection:</strong> Not setting X-Frame-Options or frame-ancestors leaves
             site vulnerable.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Using ALLOW-FROM:</strong> Deprecated and not supported in modern browsers. Use CSP
             frame-ancestors instead.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Relying only on frame busting:</strong> JavaScript can be bypassed. Always use HTTP
             headers as primary defense.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Allowing wildcard framing:</strong> <code className="text-sm">frame-ancestors *</code>
             defeats the purpose. Only allow specific trusted origins.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>GET requests for state changes:</strong> Actions like transfers, deletes via GET can
             be triggered by iframe src.
@@ -552,10 +552,10 @@ export default function ClickjackingPreventionArticle() {
             <strong>Long session durations:</strong> Persistent sessions increase clickjacking attack
             window.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Inconsistent headers:</strong> Setting headers on some pages but not others creates
             gaps in protection.
-          </li>
+          </HighlightBlock>
         </ul>
       </section>
 
@@ -596,35 +596,35 @@ export default function ClickjackingPreventionArticle() {
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
             <p className="font-semibold">Q4: When might you need to allow framing, and how do you do it securely?</p>
-            <p className="mt-2 text-sm">
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               A: Legitimate framing needs: embedded widgets, partner integrations, internal dashboards. Secure
               approach: (1) Use CSP <code className="text-sm">frame-ancestors</code> with specific allowed
               origins (not wildcard). (2) Verify Origin header server-side. (3) Use postMessage for
               cross-origin communication. (4) Apply sandbox attribute to embedded content. (5) Limit what
               framed pages can do (read-only, no state changes).
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
             <p className="font-semibold">Q5: Why is frame busting not sufficient on its own?</p>
-            <p className="mt-2 text-sm">
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               A: JavaScript frame busting can be bypassed: attackers can use sandbox attributes to disable
               scripts, use proxy pages, or modify the JavaScript. It&apos;s client-side code that attackers
               control once they&apos;ve framed the page. HTTP headers (X-Frame-Options, CSP) are enforced by
               the browser before the page loads—much more reliable. Use frame busting only as defense in
               depth, never as sole protection.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
             <p className="font-semibold">Q6: How does SameSite cookies help prevent clickjacking?</p>
-            <p className="mt-2 text-sm">
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               A: <code className="text-sm">SameSite=Lax</code> or <code className="text-sm">Strict</code>
               prevents cookies from being sent with cross-origin requests, including requests from iframes.
               If the user&apos;s session cookie isn&apos;t sent in the framed request, the framed page loads
               unauthenticated, making clickjacking ineffective. However, SameSite alone isn&apos;t sufficient—use
               with X-Frame-Options and CSP for comprehensive protection.
-            </p>
+            </HighlightBlock>
           </div>
         </div>
       </section>

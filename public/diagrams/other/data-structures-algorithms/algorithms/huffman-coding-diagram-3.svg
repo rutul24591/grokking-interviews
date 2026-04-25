@@ -1,0 +1,49 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="system-ui, sans-serif">
+  <rect width="900" height="500" fill="#f3f1f8"/>
+  <text x="450" y="32" text-anchor="middle" font-size="19" font-weight="700" fill="#1a1822">Huffman in Production — DEFLATE, JPEG, and Limits</text>
+
+  <rect x="40" y="60" width="400" height="200" fill="#fff" stroke="#6d5bd0" stroke-width="2" rx="6"/>
+  <text x="60" y="85" font-size="13" font-weight="700" fill="#6d5bd0">DEFLATE (gzip, zlib, PNG)</text>
+  <text x="60" y="110" font-size="11" fill="#1a1822">Lempel-Ziv (LZ77) back-references + Huffman</text>
+  <text x="60" y="128" font-size="11" fill="#1a1822">on literals, length codes, and distance codes.</text>
+  <text x="60" y="150" font-size="11" fill="#1a1822">Two Huffman tables per block, recomputed</text>
+  <text x="60" y="168" font-size="11" fill="#1a1822">for each 32KB–64KB chunk.</text>
+  <text x="60" y="195" font-size="11" fill="#1a1822">Dynamic Huffman: tables stored in-band.</text>
+  <text x="60" y="213" font-size="11" fill="#1a1822">Fixed Huffman: hard-coded when payload tiny.</text>
+  <text x="60" y="240" font-size="11" fill="#4caf50" font-weight="700">~70% compression on English text.</text>
+
+  <rect x="460" y="60" width="400" height="200" fill="#fff" stroke="#6d5bd0" stroke-width="2" rx="6"/>
+  <text x="480" y="85" font-size="13" font-weight="700" fill="#6d5bd0">JPEG entropy coding</text>
+  <text x="480" y="110" font-size="11" fill="#1a1822">Post-DCT quantized coefficients run through</text>
+  <text x="480" y="128" font-size="11" fill="#1a1822">a Huffman stage (fixed or custom tables).</text>
+  <text x="480" y="150" font-size="11" fill="#1a1822">Separate trees for DC and AC coefficients,</text>
+  <text x="480" y="168" font-size="11" fill="#1a1822">separate per luma/chroma.</text>
+  <text x="480" y="195" font-size="11" fill="#1a1822">JPEG-XL and WebP use asymmetric numeral</text>
+  <text x="480" y="213" font-size="11" fill="#1a1822">systems (ANS) — strictly better compression.</text>
+  <text x="480" y="240" font-size="11" fill="#cc4444" font-weight="700">Huffman is a 1952 algorithm; modern codecs move on.</text>
+
+  <rect x="40" y="280" width="820" height="195" fill="#fff" stroke="#6d5bd0" stroke-width="2" rx="6"/>
+  <text x="60" y="305" font-size="14" font-weight="700" fill="#6d5bd0">Limitations and alternatives</text>
+  <g font-size="11">
+    <text x="60" y="335" font-weight="700">Limitation</text>
+    <text x="420" y="335" font-weight="700">Alternative</text>
+
+    <text x="60" y="358">Integer code lengths → sub-bit loss</text>
+    <text x="420" y="358">Arithmetic coding, range coding</text>
+
+    <text x="60" y="378">Needs full alphabet stats up front</text>
+    <text x="420" y="378">Adaptive Huffman (Vitter), ANS</text>
+
+    <text x="60" y="398">Tree table stored overhead</text>
+    <text x="420" y="398">Canonical Huffman (store lengths only)</text>
+
+    <text x="60" y="418">2× worse than entropy for skewed input</text>
+    <text x="420" y="418">Arithmetic / rANS — reach within 1%</text>
+
+    <text x="60" y="438">Slow to decode symbol-by-symbol</text>
+    <text x="420" y="438">Length-limited + table-lookup decoding</text>
+
+    <text x="60" y="458">Adversarial input can force worst-case tree</text>
+    <text x="420" y="458">Fixed-length code or length-limited Huffman</text>
+  </g>
+</svg>

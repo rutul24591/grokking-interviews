@@ -248,34 +248,39 @@ export default function InputValidationSanitizationArticle() {
 
       <section>
         <h2>Common Validation Patterns</h2>
-        <p>
+        <HighlightBlock as="p" tier="important">
           These patterns cover the most common validation scenarios in web applications.
-        </p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="crucial">
+          For interviews, the key is not the exact regex. It&apos;s: choose allowlists, bound input sizes,
+          normalize before validating (trim, Unicode normalization), keep client/server rules consistent, and
+          treat validation as part of a threat model (XSS, injection, IDOR, abuse).
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Email Validation</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Use a basic email pattern which covers 99 percent of valid emails, or a more comprehensive RFC 5322 compliant pattern. Best practice: use built-in HTML5 validation (type email, required) plus server-side pattern matching. Server-side, check if email is a string, length is under 254 characters, and matches the pattern.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Username Validation</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Use an allowlist pattern for alphanumeric plus underscore, 3-20 characters. Include a reserved username check for words like admin, root, system, api, null, undefined. Implement a validateUsername function that checks the pattern and excludes reserved words (case-insensitive).
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Phone Number Validation</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Use libphonenumber library for production (handles international numbers) with parsePhoneNumber and isValidPhoneNumber. For simple North American numbers, use a pattern for optional plus, country code, area code, and local number. Sanitize by removing all non-digits except leading plus.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Numeric Range Validation</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Implement a validateNumber function that converts to Number, checks if it's actually a number (not NaN), checks integer requirement, and validates min/max range. Usage: validateNumber with age (min 18, max 120, integer true) or price (min 0) for non-negative.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Date Validation</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Implement a validateDate function that takes dateString with optional min and max parameters, creates a Date object, checks if valid (not NaN), validates min/max range, and optionally checks date is not in future. Usage: for date of birth validation, set minDob to 120 years ago and maxDob to 18 years ago, then validate the date is within that range.
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
@@ -289,7 +294,7 @@ export default function InputValidationSanitizationArticle() {
             </tr>
           </thead>
           <tbody className="divide-y divide-theme">
-            <tr>
+            <HighlightBlock as="tr" tier="crucial">
               <td className="p-3"><strong>Allowlist</strong></td>
               <td className="p-3">
                 • Maximum security<br/>
@@ -301,8 +306,8 @@ export default function InputValidationSanitizationArticle() {
                 • May reject edge cases<br/>
                 • More initial effort
               </td>
-            </tr>
-            <tr>
+            </HighlightBlock>
+            <HighlightBlock as="tr" tier="important">
               <td className="p-3"><strong>Blocklist</strong></td>
               <td className="p-3">
                 • Easy to implement initially<br/>
@@ -314,8 +319,8 @@ export default function InputValidationSanitizationArticle() {
                 • Bypasses always possible<br/>
                 • Requires constant updates
               </td>
-            </tr>
-            <tr>
+            </HighlightBlock>
+            <HighlightBlock as="tr" tier="important">
               <td className="p-3"><strong>Client-side only</strong></td>
               <td className="p-3">
                 • Immediate feedback<br/>
@@ -327,7 +332,7 @@ export default function InputValidationSanitizationArticle() {
                 • Easily bypassed<br/>
                 • False sense of security
               </td>
-            </tr>
+            </HighlightBlock>
             <tr>
               <td className="p-3"><strong>Server-side only</strong></td>
               <td className="p-3">
@@ -341,7 +346,7 @@ export default function InputValidationSanitizationArticle() {
                 • Users frustrated by late errors
               </td>
             </tr>
-            <tr>
+            <HighlightBlock as="tr" tier="crucial">
               <td className="p-3"><strong>Both (Recommended)</strong></td>
               <td className="p-3">
                 • Best of both worlds<br/>
@@ -353,7 +358,7 @@ export default function InputValidationSanitizationArticle() {
                 • Must keep rules in sync<br/>
                 • Higher initial effort
               </td>
-            </tr>
+            </HighlightBlock>
           </tbody>
         </table>
       </section>
@@ -487,33 +492,44 @@ export default function InputValidationSanitizationArticle() {
         <h2>Real-World Use Cases</h2>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">E-Commerce Product Search</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Challenge:</strong> Users search for products with various query formats. Need to prevent
           injection attacks while allowing flexible search.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Solution:</strong>
         </p>
         <ul className="space-y-2">
-          <li>Client-side: Trim whitespace, minimum 2 characters</li>
-          <li>Server-side: Escape LIKE query special characters (% and _)</li>
-          <li>Database: Use parameterized queries, never string concatenation</li>
+          <HighlightBlock as="li" tier="important">
+            Client-side: Trim whitespace, minimum 2 characters
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="crucial">
+            Server-side + database: Parameterize queries and escape LIKE patterns (input validation is not a SQLi defense by itself)
+          </HighlightBlock>
           <li>Output: Encode search term when displaying back to user</li>
-          <li>Rate limit: Prevent search enumeration attacks</li>
+          <HighlightBlock as="li" tier="important">
+            Rate limit: Prevent search enumeration attacks
+          </HighlightBlock>
         </ul>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">User Profile with Rich Bio</h3>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           <strong>Challenge:</strong> Allow users to format their bio with HTML while preventing XSS attacks.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Solution:</strong>
         </p>
         <ul className="space-y-2">
           <li>Client-side: WYSIWYG editor with limited formatting options</li>
-          <li>Server-side: DOMPurify with strict allowlist (b, i, em, strong, a, p, br)</li>
-          <li>URL validation: Sanitize href attributes, block javascript: protocol</li>
-          <li>Database: Store sanitized HTML, not raw input</li>
+          <HighlightBlock as="li" tier="crucial">
+            Server-side: Sanitize HTML with a strict allowlist (tags + attributes)
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
+            URL validation: Sanitize href attributes, block javascript: protocol
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
+            Database: Store sanitized HTML, not raw input
+          </HighlightBlock>
           <li>Output: Additional encoding when rendering (React auto-escapes)</li>
         </ul>
 
@@ -553,9 +569,9 @@ export default function InputValidationSanitizationArticle() {
 
       <section>
         <h2>Architecture at Scale: Validation in Enterprise Systems</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           Enterprise-scale validation requires coordinated validation policies, consistent sanitization configurations, and centralized monitoring across multiple applications, services, and geographic regions. In microservices architectures, each service must validate input consistently while supporting different validation requirements.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/frontend/security/validation-defense-layers.svg"
@@ -563,15 +579,15 @@ export default function InputValidationSanitizationArticle() {
           caption="Validation Defense Layers: Client (UX), Server (Security), Database (Integrity), Output (XSS Prevention). Each layer provides defense-in-depth."
         />
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Centralized Validation Service:</strong> Implement a centralized validation service that manages validation rules across all applications. Use schema validation (JSON Schema, Zod, Yup) for consistent validation. Document validation policies in security standards.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>API Gateway Validation:</strong> Implement input validation at the API gateway level. Use gateway-level validation for consistent enforcement across all services. Configure validation bypass for trusted internal services. Document API gateway validation configuration.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Multi-Tenant Validation:</strong> For SaaS applications, implement tenant-specific validation rules. Use tenant-aware validation policies. Support custom validation rules per tenant. Document multi-tenant validation architecture.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Schema Registry:</strong> Implement a schema registry that manages validation schemas centrally. Use schema versioning for backward compatibility. Implement schema evolution procedures. Document schema registry usage.
         </p>
@@ -579,15 +595,15 @@ export default function InputValidationSanitizationArticle() {
 
       <section>
         <h2>Testing Strategies: Validation Security Testing</h2>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Comprehensive validation testing requires automated scanning, manual verification, and penetration testing integrated into security operations.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="crucial">
           <strong>Automated Validation Testing:</strong> Use fuzzing tools (OWASP ZAP, Burp Suite) to test validation boundaries. Configure CI/CD pipelines to test validation after each deployment. Set up automated alerts for: validation bypass, SQL injection vulnerabilities, XSS vulnerabilities.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Fuzz Testing:</strong> Test validation with fuzzed input: (1) Boundary values (min, max, overflow), (2) Special characters, (3) Unicode characters, (4) Null bytes, (5) SQL injection payloads, (6) XSS payloads. Use automated fuzzing tools for comprehensive coverage.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Injection Testing:</strong> Test for injection vulnerabilities: (1) SQL injection, (2) XSS, (3) Command injection, (4) Path traversal, (5) LDAP injection. Use tools like SQLMap for automated injection testing. Document injection test results.
         </p>
@@ -598,12 +614,12 @@ export default function InputValidationSanitizationArticle() {
 
       <section>
         <h2>Compliance and Legal Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Validation implementation has significant compliance implications, particularly for applications handling financial transactions, healthcare data, or operating in regulated industries.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="crucial">
           <strong>PCI-DSS Requirements:</strong> PCI-DSS Requirement 6.5.1 requires input validation to prevent injection attacks. Implement input validation for all user-supplied data. Document validation controls in ROC (Report on Compliance). Annual penetration testing must include injection testing.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>HIPAA Requirements:</strong> HIPAA Security Rule 45 CFR 164.312(c)(1) requires integrity controls for ePHI. Input validation helps ensure data integrity. Document validation procedures in security policies. Implement audit logging for validation failures involving ePHI.
         </p>
@@ -620,15 +636,15 @@ export default function InputValidationSanitizationArticle() {
 
       <section>
         <h2>Performance Trade-offs: Security vs. User Experience</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           Validation measures introduce measurable performance overhead that must be balanced against security requirements and user experience.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Client-Side Validation:</strong> Client-side validation adds minimal latency (&lt;10ms) but provides immediate feedback. Use debouncing for real-time validation. Implement progressive validation (validate on blur, not on every keystroke). Monitor validation latency.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Server-Side Validation:</strong> Server-side validation adds 5-50ms per request depending on complexity. Use caching for repeated validation. Implement async validation for non-critical checks. Monitor validation latency percentiles.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Sanitization Overhead:</strong> HTML sanitization (DOMPurify) adds 10-100ms depending on input size. Use Web Workers for large inputs. Cache sanitized output for repeated content. Monitor sanitization latency.
         </p>
@@ -642,12 +658,12 @@ export default function InputValidationSanitizationArticle() {
 
       <section>
         <h2>Browser and Platform Compatibility</h2>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Validation support varies across browsers, operating systems, and platforms, requiring careful compatibility planning.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>HTML5 Validation:</strong> HTML5 validation attributes (required, pattern, min, max) supported in all modern browsers (IE10+, all current versions). Test HTML5 validation across target browsers. Document HTML5 validation browser support matrix.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>JavaScript Validation:</strong> JavaScript validation works in all browsers (IE6+, all current versions). Test validation across target browsers. Document validation browser support matrix.
         </p>
@@ -665,15 +681,15 @@ export default function InputValidationSanitizationArticle() {
       <section>
         <h2>Real-World Use Cases</h2>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>E-Commerce Checkout:</strong> Client-side validation for form fields (required, format). Server-side validation for all fields. Payment card validation (Luhn algorithm). Address validation (postal code format). Rate limiting on checkout attempts.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Social Media Platform:</strong> Rich text comment sanitization (DOMPurify). Image upload validation (MIME, size, malware scan). Username validation (alphanumeric, length). URL validation in posts (block javascript:). Rate limiting on posts.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Healthcare Portal:</strong> Strict input validation for ePHI fields. Date validation (DOB, appointment dates). Phone number validation (format, country code). File upload validation (medical records). Audit logging for all validation failures.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Financial Services:</strong> Strict validation for financial data. Amount validation (positive, within limits). Account number validation (format, checksum). Transaction description sanitization. Multi-layer validation (client, server, database).
           </li>
@@ -707,38 +723,38 @@ export default function InputValidationSanitizationArticle() {
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
             <p className="font-semibold">Q3: How would you validate and sanitize user input for a rich text comment field?</p>
-            <p className="mt-2 text-sm">
+            <HighlightBlock as="p" tier="crucial" className="mt-2 text-sm">
               A: Layered approach: (1) Client-side WYSIWYG editor with limited formatting options for UX.
               (2) Server-side sanitization using DOMPurify with strict allowlist: ALLOWED_TAGS:
               [&apos;b&apos;, &apos;i&apos;, &apos;em&apos;, &apos;strong&apos;, &apos;a&apos;, &apos;p&apos;, &apos;br&apos;],
               ALLOWED_ATTR: [&apos;href&apos;]. (3) URL validation in href attributes—block javascript:, data:
               protocols. (4) Store sanitized HTML in database. (5) Output encoding when rendering (React
               auto-escapes by default). (6) Rate limit comment submissions to prevent abuse.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
             <p className="font-semibold">Q4: What validation layers would you implement for a file upload feature?</p>
-            <p className="mt-2 text-sm">
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               A: Multiple layers: (1) Client-side: Check file type (MIME, not just extension), enforce size
               limit (e.g., 5MB), show preview. (2) Server-side: Verify MIME type by reading file header (magic
               bytes), scan for malware, check file size again. (3) Sanitization: Generate new filename (UUID),
               strip metadata (EXIF data can contain scripts), resize/re-encode images (destroys embedded
               payloads). (4) Storage: Store outside web root, serve through controlled endpoint (not direct URL
               access). (5) Content-Type header when serving files.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
             <p className="font-semibold">Q5: Why shouldn&apos;t you use detailed error messages for validation failures?</p>
-            <p className="mt-2 text-sm">
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               A: Detailed error messages help attackers understand your validation logic. &quot;Email format
               invalid&quot; tells them the email pattern check failed. &quot;Username already taken&quot;
               enables user enumeration attacks. &quot;Password must be 8+ characters&quot; confirms the password
               length requirement. Instead: return generic messages (&quot;Invalid input&quot;) to users, log
               detailed errors server-side for debugging, and monitor validation failure patterns for attack
               detection.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">

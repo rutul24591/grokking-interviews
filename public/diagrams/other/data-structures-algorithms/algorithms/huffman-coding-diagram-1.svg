@@ -1,0 +1,57 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="system-ui, sans-serif">
+  <rect width="900" height="500" fill="#f3f1f8"/>
+  <text x="450" y="32" text-anchor="middle" font-size="19" font-weight="700" fill="#1a1822">Huffman Coding — Merge Two Smallest, Repeat</text>
+  <text x="450" y="54" text-anchor="middle" font-size="12" fill="#1a1822">Frequencies: a=5, b=9, c=12, d=13, e=16, f=45. Build optimal prefix tree bottom-up.</text>
+
+  <!-- Tree -->
+  <g transform="translate(100,85)" font-size="11">
+    <!-- Root 100 -->
+    <circle cx="400" cy="0" r="18" fill="#6d5bd0"/><text x="400" y="4" text-anchor="middle" fill="#fff" font-weight="700">100</text>
+    <!-- left 45 = f, right 55 -->
+    <circle cx="200" cy="60" r="18" fill="#a89bec"/><text x="200" y="64" text-anchor="middle">f:45</text>
+    <circle cx="600" cy="60" r="18" fill="#a89bec"/><text x="600" y="64" text-anchor="middle">55</text>
+    <!-- 25, 30 -->
+    <circle cx="500" cy="120" r="18" fill="#a89bec"/><text x="500" y="124" text-anchor="middle">25</text>
+    <circle cx="700" cy="120" r="18" fill="#a89bec"/><text x="700" y="124" text-anchor="middle">30</text>
+    <!-- 25 children: c:12, b:9+a:5 = 14. Wait standard: 25 = c:12 + 13(a+b) where a+b=14 Hmm. Actually standard is: a+b=14, c+14=... Let me redo.
+      a=5,b=9,c=12,d=13,e=16,f=45
+      Step1: a+b=14
+      Step2: 14,c=12,d=13,e=16,f=45 → merge c+d=25
+      Step3: 14,25,e=16,f=45 → merge 14+e=30
+      Step4: 25,30,f=45 → merge 25+30=55
+      Step5: 55+f=100  -->
+    <circle cx="460" cy="180" r="18" fill="#e8e4f8" stroke="#6d5bd0"/><text x="460" y="184" text-anchor="middle">c:12</text>
+    <circle cx="540" cy="180" r="18" fill="#e8e4f8" stroke="#6d5bd0"/><text x="540" y="184" text-anchor="middle">d:13</text>
+    <circle cx="660" cy="180" r="18" fill="#e8e4f8" stroke="#6d5bd0"/><text x="660" y="184" text-anchor="middle">14</text>
+    <circle cx="740" cy="180" r="18" fill="#e8e4f8" stroke="#6d5bd0"/><text x="740" y="184" text-anchor="middle">e:16</text>
+    <circle cx="620" cy="240" r="18" fill="#e8e4f8" stroke="#6d5bd0"/><text x="620" y="244" text-anchor="middle">a:5</text>
+    <circle cx="700" cy="240" r="18" fill="#e8e4f8" stroke="#6d5bd0"/><text x="700" y="244" text-anchor="middle">b:9</text>
+
+    <line x1="386" y1="12" x2="214" y2="48" stroke="#6d5bd0"/>
+    <line x1="414" y1="12" x2="586" y2="48" stroke="#6d5bd0"/>
+    <line x1="590" y1="74" x2="510" y2="106" stroke="#6d5bd0"/>
+    <line x1="610" y1="74" x2="690" y2="106" stroke="#6d5bd0"/>
+    <line x1="490" y1="134" x2="464" y2="166" stroke="#6d5bd0"/>
+    <line x1="510" y1="134" x2="536" y2="166" stroke="#6d5bd0"/>
+    <line x1="690" y1="134" x2="664" y2="166" stroke="#6d5bd0"/>
+    <line x1="710" y1="134" x2="736" y2="166" stroke="#6d5bd0"/>
+    <line x1="654" y1="194" x2="626" y2="226" stroke="#6d5bd0"/>
+    <line x1="668" y1="194" x2="696" y2="226" stroke="#6d5bd0"/>
+
+    <!-- Edge labels 0/1 -->
+    <text x="295" y="30" font-size="10" fill="#cc4444">0</text>
+    <text x="505" y="30" font-size="10" fill="#cc4444">1</text>
+  </g>
+
+  <rect x="40" y="355" width="820" height="120" fill="#fff" stroke="#4caf50" stroke-width="2" rx="6"/>
+  <text x="60" y="380" font-size="13" font-weight="700" fill="#4caf50">Resulting codes (left=0, right=1)</text>
+  <g font-size="11" font-family="monospace">
+    <text x="60" y="408">f = 0        (1 bit, freq 45 → 45 bits)</text>
+    <text x="60" y="426">c = 100      (3 bits, freq 12 → 36 bits)</text>
+    <text x="60" y="444">d = 101      (3 bits, freq 13 → 39 bits)</text>
+    <text x="460" y="408">a = 1100     (4 bits, freq 5 → 20 bits)</text>
+    <text x="460" y="426">b = 1101     (4 bits, freq 9 → 36 bits)</text>
+    <text x="460" y="444">e = 111      (3 bits, freq 16 → 48 bits)</text>
+  </g>
+  <text x="60" y="470" font-size="11" fill="#1a1822">Total: 224 bits. Fixed 3-bit code would need 300 bits. 25% smaller.</text>
+</svg>

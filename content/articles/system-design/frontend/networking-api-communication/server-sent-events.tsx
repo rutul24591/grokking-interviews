@@ -149,22 +149,22 @@ export default function ServerSentEventsConciseArticle() {
 
       <section>
         <h2>Architecture & Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           The SSE lifecycle follows a predictable sequence that is important to
           understand for debugging production issues and designing resilient
           architectures:
-        </p>
+        </HighlightBlock>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-4 text-lg font-semibold">
             SSE Connection Lifecycle
           </h3>
           <ol className="space-y-3">
-            <li>
+            <HighlightBlock as="li" tier="important">
               <strong>1. Client Opens Connection:</strong> JavaScript constructs
               a new EventSource with the endpoint URL. The browser sends an HTTP
               GET request with <code>Accept: text/event-stream</code> header.
-            </li>
+            </HighlightBlock>
             <li>
               <strong>2. Server Accepts & Holds Open:</strong> The server
               responds with status 200,{" "}
@@ -190,17 +190,17 @@ export default function ServerSentEventsConciseArticle() {
               fires an <code>error</code> event and transitions readyState to
               CONNECTING.
             </li>
-            <li>
+            <HighlightBlock as="li" tier="crucial">
               <strong>6. Auto-Reconnect:</strong> After the retry interval,
               EventSource sends a new GET request with the{" "}
               <code>Last-Event-ID</code> header set to the id of the last
               received event.
-            </li>
-            <li>
+            </HighlightBlock>
+            <HighlightBlock as="li" tier="crucial">
               <strong>7. Server Resumes:</strong> The server reads
               Last-Event-ID, replays missed events from its buffer, then
               continues streaming new events.
-            </li>
+            </HighlightBlock>
           </ol>
         </div>
 
@@ -210,12 +210,12 @@ export default function ServerSentEventsConciseArticle() {
           caption="Server-Sent Events connection lifecycle showing initial handshake, event streaming, disconnect handling, and auto-reconnection with Last-Event-ID resume"
         />
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           The event stream format is deceptively simple but has nuances that
           matter in production. Understanding the exact wire format helps when
           debugging with browser DevTools or curl, and when implementing custom
           SSE servers.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/frontend/networking-api-communication/sse-event-format.svg"
@@ -223,7 +223,7 @@ export default function ServerSentEventsConciseArticle() {
           caption="Visual breakdown of the text/event-stream wire format showing the four field types (data, event, id, retry) with real-world examples"
         />
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           A key architectural consideration is how the server manages open
           connections. Each SSE client holds a long-lived HTTP connection, which
           means the server must maintain state (a writable response stream) for
@@ -234,7 +234,7 @@ export default function ServerSentEventsConciseArticle() {
           fan-out patterns (e.g., Redis Pub/Sub to distribute events to multiple
           SSE server instances), and the need for graceful shutdown logic that
           closes streams cleanly during deployments.
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
@@ -262,7 +262,7 @@ export default function ServerSentEventsConciseArticle() {
                 connection; must use separate HTTP requests.
               </td>
             </tr>
-            <tr>
+            <HighlightBlock as="tr" tier="crucial">
               <td className="p-3">
                 <strong>Reconnection</strong>
               </td>
@@ -274,7 +274,7 @@ export default function ServerSentEventsConciseArticle() {
                 Server must maintain an event buffer and implement replay logic.
                 Without it, Last-Event-ID header is wasted.
               </td>
-            </tr>
+            </HighlightBlock>
             <tr>
               <td className="p-3">
                 <strong>Protocol</strong>
@@ -325,9 +325,10 @@ export default function ServerSentEventsConciseArticle() {
           src="/diagrams/system-design-concepts/frontend/networking-api-communication/sse-vs-websocket.svg"
           alt="SSE vs WebSocket Comparison Diagram"
           caption="Side-by-side comparison of Server-Sent Events (unidirectional, HTTP-native) versus WebSockets (bidirectional, ws:// protocol upgrade)"
+          captionTier="important"
         />
 
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           The decision between SSE and WebSocket should be driven by
           directionality requirements. If the server pushes data and the client
           only consumes, SSE is almost always the better choice due to its
@@ -337,66 +338,66 @@ export default function ServerSentEventsConciseArticle() {
           receives far more, SSE for the downstream channel combined with
           standard HTTP requests for upstream is a pragmatic hybrid
           architecture.
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
         <h2>Best Practices</h2>
-        <p>
+        <HighlightBlock as="p" tier="important">
           These practices emerge from operating SSE at scale in production
           environments:
-        </p>
+        </HighlightBlock>
         <ol className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Always Assign Event IDs:</strong> Every event should include
             an <code>id:</code> field. Without it, the Last-Event-ID header on
             reconnect is empty, making it impossible for the server to determine
             what the client missed. Use monotonically increasing integers or
             timestamps.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Implement Server-Side Event Buffering:</strong> Maintain a
             bounded buffer of recent events (ring buffer, Redis stream, or
             database-backed log). On reconnect, read the Last-Event-ID header
             and replay events from that point forward. Set a maximum buffer
             window (e.g., 5 minutes or 1000 events) and send a full state
             snapshot if the gap is too large.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Send Keep-Alive Comments:</strong> Many proxies, load
             balancers, and CDNs will close idle connections after 30-60 seconds.
             Send a comment line (<code>: heartbeat</code>) every 15-30 seconds
             to prevent intermediate infrastructure from closing the connection.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Deploy Behind HTTP/2:</strong> Ensure your reverse proxy
             (nginx, Cloudflare, ALB) terminates HTTP/2. This eliminates the
             6-connection-per-origin limit and allows dozens of SSE streams to
             share a single TCP connection. Verify with browser DevTools that the
             protocol column shows h2.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Set Appropriate Retry Intervals:</strong> Send a{" "}
             <code>retry:</code> field early in the stream to override the
             browser default. Use exponential backoff patterns by sending
             progressively larger retry values during high-load periods. A
             reasonable default is 3000ms for normal operation.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Close Connections Explicitly:</strong> Always call{" "}
             <code>eventSource.close()</code> in cleanup functions (React
             useEffect return, component unmount, page unload). Abandoned
             EventSource instances will auto-reconnect indefinitely, wasting
             server resources.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Use Named Events for Multiplexing:</strong> Instead of
             sending all data through the default <code>message</code> event and
             parsing a type field in the JSON payload, use the{" "}
             <code>event:</code> field to dispatch different event types. This
             leverages the browser&apos;s native event dispatch and keeps handler
             logic clean.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Monitor Connection Counts:</strong> Track the number of
             active SSE connections per server instance. Set alerts for
@@ -409,12 +410,12 @@ export default function ServerSentEventsConciseArticle() {
 
       <section>
         <h2>Common Pitfalls</h2>
-        <p>
+        <HighlightBlock as="p" tier="important">
           These are the issues that most frequently surface in production SSE
           deployments, often discovered only after launch:
-        </p>
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Hitting the HTTP/1.1 6-Connection Limit:</strong> Opening
             multiple EventSource instances on HTTP/1.1 consumes browser
             connection slots shared with all other requests to the same origin
@@ -423,16 +424,16 @@ export default function ServerSentEventsConciseArticle() {
             each tab opens its own EventSource, compounding the problem. The fix
             is either HTTP/2 deployment or using SharedWorker / BroadcastChannel
             to share a single EventSource across tabs.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Not Implementing Last-Event-ID on the Server:</strong> The
             EventSource client sends Last-Event-ID automatically on reconnect,
             but if the server ignores it, clients silently miss events during
             disconnects. This creates data consistency issues that are extremely
             hard to diagnose because they only occur during transient network
             failures.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Memory Leaks from Unclosed EventSource:</strong> In
             single-page applications, navigating away from a component without
             calling <code>close()</code> leaves the EventSource running. It will
@@ -440,23 +441,23 @@ export default function ServerSentEventsConciseArticle() {
             server connections. In React, this manifests as the classic
             &quot;Can&apos;t perform a React state update on an unmounted
             component&quot; warning.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Ignoring the Text-Only Limitation:</strong> Attempting to
             send binary data (images, audio chunks, protobuf) over SSE without
             Base64 encoding causes parse failures. The event stream format is
             strictly UTF-8 text. For binary streaming needs, WebSocket with
             binary frames or fetch with ReadableStream is the correct approach.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Not Handling CORS Properly:</strong> When the SSE endpoint
             is on a different origin, forgetting to set{" "}
             <code>withCredentials: true</code> in the EventSource constructor or
             omitting the server-side CORS headers causes silent connection
             failures. The error event fires but provides no diagnostic
             information, making it difficult to debug.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Assuming SSE Works Through All Proxies:</strong> Some
             corporate proxies, CDN edge nodes, and older load balancers buffer
             the entire response before forwarding it to the client. This
@@ -465,7 +466,7 @@ export default function ServerSentEventsConciseArticle() {
             <code>X-Accel-Buffering: no</code> (for nginx), disable response
             buffering in your CDN configuration, or use{" "}
             <code>Cache-Control: no-transform</code>.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Confusing SSE with WebSocket Capabilities:</strong> Treating
             SSE as a bidirectional channel leads to anti-patterns like opening a
@@ -479,19 +480,19 @@ export default function ServerSentEventsConciseArticle() {
 
       <section>
         <h2>Real-World Use Cases</h2>
-        <p>
+        <HighlightBlock as="p" tier="important">
           SSE is the right choice when the data flow is predominantly
           server-to-client and HTTP compatibility is valued:
-        </p>
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>LLM Token Streaming (ChatGPT, Claude):</strong> AI
             assistants stream generated tokens to the browser in real time using
             SSE. Each token (or small batch of tokens) is sent as a data event.
             The connection closes when generation completes. This is the
             highest-profile modern use case and has driven widespread adoption
             of SSE in AI-powered applications.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Live News & Social Media Feeds:</strong> Breaking news
             updates, live blog entries, and social media timeline updates are
@@ -505,12 +506,12 @@ export default function ServerSentEventsConciseArticle() {
             preferred over WebSocket here when the client only reads data and
             doesn&apos;t place orders through the same channel.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>CI/CD Build Logs:</strong> GitHub Actions, GitLab CI, and
             similar systems stream build output to the browser as it happens.
             SSE is ideal because log output is unidirectional, text-based, and
             benefits from Last-Event-ID for resuming after page refreshes.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Notification Systems:</strong> Push notifications for web
             applications: new messages, system alerts, deployment status
@@ -556,24 +557,24 @@ export default function ServerSentEventsConciseArticle() {
 
       <section>
         <h2>Security Considerations</h2>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Server-Sent Events introduce unique security considerations due to
           their persistent, unidirectional nature and automatic reconnection
           behavior.
-        </p>
+        </HighlightBlock>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-4 text-lg font-semibold">
             Authentication & Authorization
           </h3>
           <ul className="space-y-2">
-            <li>
+            <HighlightBlock as="li" tier="crucial">
               <strong>Initial Connection Auth:</strong> Authenticate users
               during the initial HTTP handshake. Use cookies (HttpOnly session
               cookies) or Authorization header. Note: EventSource doesn't
               support custom headers, so use cookies or URL query parameters
               (less secure).
-            </li>
+            </HighlightBlock>
             <li>
               <strong>Per-Event Authorization:</strong> Authorize each event
               before sending. Just because a user is authenticated doesn't mean
@@ -598,11 +599,11 @@ export default function ServerSentEventsConciseArticle() {
               on the client and{" "}
               <code>Access-Control-Allow-Credentials: true</code> on the server.
             </li>
-            <li>
+            <HighlightBlock as="li" tier="important">
               <strong>Origin Validation:</strong> Validate the Origin header to
               prevent unauthorized cross-origin connections. Reject connections
               from untrusted origins.
-            </li>
+            </HighlightBlock>
             <li>
               <strong>CORS Headers:</strong> Set{" "}
               <code>Access-Control-Allow-Origin</code> to specific trusted
@@ -616,12 +617,12 @@ export default function ServerSentEventsConciseArticle() {
             Event Injection Prevention
           </h3>
           <ul className="space-y-2">
-            <li>
+            <HighlightBlock as="li" tier="crucial">
               <strong>Event Data Sanitization:</strong> Sanitize event data
               before sending to prevent XSS when the client renders events. Even
               though SSE is text-based, malicious data could be executed when
               rendered in the DOM.
-            </li>
+            </HighlightBlock>
             <li>
               <strong>Event Type Validation:</strong> Validate event types
               against an allowlist. Reject unknown event types to prevent
@@ -638,11 +639,11 @@ export default function ServerSentEventsConciseArticle() {
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-4 text-lg font-semibold">Connection Security</h3>
           <ul className="space-y-2">
-            <li>
+            <HighlightBlock as="li" tier="crucial">
               <strong>HTTPS Required:</strong> Always use <code>https://</code>{" "}
               for SSE endpoints. Never use <code>http://</code> in production.
               TLS encrypts the entire event stream.
-            </li>
+            </HighlightBlock>
             <li>
               <strong>Connection Timeouts:</strong> Implement server-side
               connection timeouts to prevent resource exhaustion. Close idle
@@ -659,10 +660,10 @@ export default function ServerSentEventsConciseArticle() {
 
       <section>
         <h2>Performance Benchmarks</h2>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Understanding SSE performance characteristics is essential for
           capacity planning and diagnosing production issues.
-        </p>
+        </HighlightBlock>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-4 text-lg font-semibold">
@@ -682,16 +683,16 @@ export default function ServerSentEventsConciseArticle() {
                 <td className="p-2">&lt;100ms</td>
                 <td className="p-2">50-150ms (HTTP handshake)</td>
               </tr>
-              <tr>
+              <HighlightBlock as="tr" tier="important">
                 <td className="p-2">Event Delivery Latency</td>
                 <td className="p-2">&lt;50ms</td>
                 <td className="p-2">10-100ms server-to-client</td>
-              </tr>
-              <tr>
+              </HighlightBlock>
+              <HighlightBlock as="tr" tier="crucial">
                 <td className="p-2">Connections per Server</td>
                 <td className="p-2">10,000+</td>
                 <td className="p-2">5,000-50,000 (depends on event rate)</td>
-              </tr>
+              </HighlightBlock>
               <tr>
                 <td className="p-2">Reconnection Rate</td>
                 <td className="p-2">&lt;5%</td>
@@ -753,10 +754,10 @@ export default function ServerSentEventsConciseArticle() {
 
       <section>
         <h2>Cost Analysis</h2>
-        <p>
+        <HighlightBlock as="p" tier="important">
           SSE has distinct cost characteristics compared to other real-time
           communication patterns.
-        </p>
+        </HighlightBlock>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-4 text-lg font-semibold">Infrastructure Costs</h3>
@@ -826,7 +827,7 @@ export default function ServerSentEventsConciseArticle() {
 
         <div className="my-6 rounded-lg border border-accent/30 bg-accent/10 p-6">
           <h3 className="mb-3 font-semibold">ROI Decision Framework</h3>
-          <p>
+          <HighlightBlock as="p" tier="crucial">
             Use SSE when: (1) server-to-client communication is the primary
             pattern (notifications, live feeds, dashboards), (2) automatic
             reconnection and event replay are valuable, (3) HTTP-native
@@ -834,27 +835,27 @@ export default function ServerSentEventsConciseArticle() {
             WebSocket when: bidirectional communication is required, sub-50ms
             latency is critical. Use HTTP polling when: updates are infrequent,
             simplicity is paramount, or legacy browser support is required.
-          </p>
+          </HighlightBlock>
         </div>
       </section>
 
       <section>
         <h2>Decision Framework: When to Use SSE</h2>
-        <p>
+        <HighlightBlock as="p" tier="important">
           SSE is not always the right solution. Use this decision framework to
           evaluate whether SSE is appropriate for your use case.
-        </p>
+        </HighlightBlock>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-4 text-lg font-semibold">Decision Tree</h3>
           <ul className="space-y-2">
-            <li>
+            <HighlightBlock as="li" tier="crucial">
               <strong>Is communication primarily server-to-client?</strong>
               <ul>
                 <li>Yes → SSE is a strong candidate</li>
                 <li>No → WebSocket may be better</li>
               </ul>
-            </li>
+            </HighlightBlock>
             <li>
               <strong>Do you need automatic reconnection?</strong>
               <ul>
@@ -953,7 +954,7 @@ export default function ServerSentEventsConciseArticle() {
               Q: How does SSE handle reconnection and what role does
               Last-Event-ID play?
             </p>
-            <p className="mt-2 text-sm">
+            <HighlightBlock as="p" tier="crucial" className="mt-2 text-sm">
               A: When an SSE connection drops, the EventSource API automatically
               attempts to reconnect after the configured retry interval (default
               ~3s, overridable via the retry: field). On reconnect, it sends a
@@ -966,14 +967,14 @@ export default function ServerSentEventsConciseArticle() {
               stream, or database log) and implement the replay logic. Without
               server-side support, the Last-Event-ID header is sent but ignored,
               and missed events are silently lost.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
             <p className="font-semibold">
               Q: When would you choose SSE over WebSocket, and vice versa?
             </p>
-            <p className="mt-2 text-sm">
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               A: Choose SSE when data flows predominantly server-to-client:
               notification feeds, live dashboards, LLM streaming, build logs.
               SSE advantages include automatic reconnection, Last-Event-ID
@@ -987,7 +988,7 @@ export default function ServerSentEventsConciseArticle() {
               server-to-client channel and standard HTTP POST requests for
               client-to-server messages, getting SSE&apos;s reliability benefits
               without WebSocket complexity.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
@@ -995,7 +996,7 @@ export default function ServerSentEventsConciseArticle() {
               Q: How would you scale SSE to support millions of concurrent
               connections?
             </p>
-            <p className="mt-2 text-sm">
+            <HighlightBlock as="p" tier="crucial" className="mt-2 text-sm">
               A: Scaling SSE requires addressing connection management, event
               distribution, and deployment concerns. First, use HTTP/2 to
               multiplex streams over fewer TCP connections, reducing
@@ -1011,7 +1012,7 @@ export default function ServerSentEventsConciseArticle() {
               extreme scale, consider edge SSE: terminate connections at CDN
               edge nodes (Cloudflare Workers, Lambda@Edge) to reduce round-trip
               latency and distribute connection load geographically.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">

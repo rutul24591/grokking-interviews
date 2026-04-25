@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -35,14 +36,14 @@ export default function AccessibleFormsArticle() {
       {/* ─── Section 1: Definition & Context ─── */}
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Accessible forms</strong> are web forms designed so that all users — including those
           using screen readers, keyboard navigation, voice control, or other assistive technologies —
           can understand, complete, and submit them successfully. Forms are the primary mechanism for
           user input on the web (registration, checkout, search, settings), making their accessibility
           critical for equal access.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           WCAG addresses form accessibility through multiple success criteria:
           <strong> 1.3.1 Info and Relationships</strong> (Level A) requires programmatic
           label-input association; <strong>3.3.1 Error Identification</strong> (Level A) requires
@@ -54,7 +55,7 @@ export default function AccessibleFormsArticle() {
           Entry</strong> (Level A) requiring that previously entered information is auto-populated
           and <strong>3.3.8 Accessible Authentication</strong> (Level AA) preventing cognitive
           function tests as the sole authentication method.
-        </p>
+        </HighlightBlock>
         <p>
           Form accessibility failures are consistently among the top issues found in accessibility
           audits. The WebAIM Million study finds that 45.9% of form inputs lack proper labels —
@@ -62,7 +63,7 @@ export default function AccessibleFormsArticle() {
           validation timing, required field indication, and group labeling (fieldset/legend) all
           present challenges.
         </p>
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Why accessible forms matter for staff/principal engineers:</strong> Form patterns
           are reused across entire applications. A form component library with poor accessibility
           propagates failures to every feature that uses it. Technical leaders must design form
@@ -70,18 +71,18 @@ export default function AccessibleFormsArticle() {
           less effort than doing the wrong thing. This means label association, error announcement,
           and required field indication should be built into the component, not added as an
           afterthought by each consuming team.
-        </p>
+        </HighlightBlock>
 
         <div className="my-6 rounded-lg border border-accent/30 bg-accent/10 p-6">
           <h3 className="mb-3 font-semibold">Key Insight: Labels Are Not Optional — They Are the Foundation</h3>
-          <p>
+          <HighlightBlock as="p" tier="crucial">
             Every form input must have a programmatically associated label. Placeholder text is not
             a label — it disappears when the user types, leaving no context. Visual proximity is not
             association — screen readers can&apos;t infer which text &quot;belongs to&quot; which
             input. The <code>&lt;label&gt;</code> element with a <code>for</code>/<code>htmlFor</code>
             attribute is the most robust association method. Without it, screen reader users hear
             &quot;edit text, blank&quot; instead of &quot;Email address, edit text.&quot;
-          </p>
+          </HighlightBlock>
         </div>
       </section>
 
@@ -89,28 +90,28 @@ export default function AccessibleFormsArticle() {
       <section>
         <h2>Core Concepts</h2>
         <ul className="space-y-2">
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Label Association:</strong> The programmatic link between a label and its form
             control. Four methods exist: (1) Explicit: <code>&lt;label for=&quot;id&quot;&gt;</code>
             matching <code>&lt;input id=&quot;id&quot;&gt;</code>. (2) Implicit: wrapping the input
             inside the <code>&lt;label&gt;</code>. (3) <code>aria-label</code>: direct string label
             (no visible text). (4) <code>aria-labelledby</code>: references external element IDs.
             Explicit association is the most widely supported.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Fieldset and Legend:</strong> Groups of related controls (radio buttons, checkboxes,
             address fields) should be wrapped in <code>&lt;fieldset&gt;</code> with a
             <code>&lt;legend&gt;</code> providing the group label. Screen readers announce the legend
             before each control in the group, providing context: &quot;Shipping address, Street,
             edit text&quot; instead of just &quot;Street, edit text.&quot;
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Error Identification and Description:</strong> Errors must be communicated through
             text (not just color) and programmatically associated with the failing input via
             <code>aria-describedby</code> or <code>aria-errormessage</code>. Error text should
             describe what went wrong and how to fix it: &quot;Email must include an @ symbol&quot;
             rather than &quot;Invalid email.&quot;
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Required Fields:</strong> Mark required fields with both visual indication
             (asterisk, &quot;required&quot; text) and programmatic indication
@@ -131,12 +132,12 @@ export default function AccessibleFormsArticle() {
             feedback but can be disorienting if too aggressive; on-input can create excessive
             screen reader announcements.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Error Summary Pattern:</strong> After submission with errors, display a summary
             at the top of the form listing all errors with links to the failing fields. Move focus
             to the summary. This pattern (used by GOV.UK) ensures screen reader users are immediately
             aware of all errors without having to navigate the entire form.
-          </li>
+          </HighlightBlock>
         </ul>
       </section>
 
@@ -145,38 +146,40 @@ export default function AccessibleFormsArticle() {
         <h2>Architecture &amp; Flow</h2>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Label-Input Association Patterns</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           There are multiple ways to associate labels with form controls, each with different levels
           of browser and screen reader support. Understanding these patterns and their trade-offs is
           essential for building accessible form components.
-        </p>
+        </HighlightBlock>
         <ArticleImage
           src="/diagrams/system-design-concepts/frontend/accessibility-a11y/accessible-forms-diagram-1.svg"
           alt="Label-input association patterns showing explicit, implicit, aria-label, and aria-labelledby methods"
           caption="Four label association methods: explicit (for/id), implicit (wrapping), aria-label (string), and aria-labelledby (reference). Explicit association is the most widely supported."
+          captionTier="important"
         />
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Accessible FormField Component Pattern</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Create a reusable FormField component using React's useId hook to generate unique IDs. The component accepts label, type, required, error, and helpText props. Generate unique IDs for the field, error message, and help text using template literals. Build aria-describedby by conditionally including error and help text IDs. The component renders a label with htmlFor pointing to the field ID, an asterisk for required fields with aria-hidden set to true, an input with id, type, required, aria-required, aria-invalid reflecting error state, and aria-describedby pointing to the description IDs. Conditionally render help text and error paragraphs with appropriate IDs and roles. Usage example shows a FormField for email address with type email, required, help text, error state, and autocomplete set to email.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Error Announcement Flow</h3>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           When a form submission fails validation, the error handling flow must ensure that screen
           reader users are aware of all errors and can navigate to each one efficiently. The error
           summary pattern combined with inline error messages provides the best experience.
-        </p>
+        </HighlightBlock>
         <ArticleImage
           src="/diagrams/system-design-concepts/frontend/accessibility-a11y/accessible-forms-diagram-2.svg"
           alt="Error announcement flow showing form submission, validation failure, error summary display, and focus management"
           caption="Error handling flow: Submit → Validate → Show error summary at top → Move focus to summary → User clicks error links to jump to fields → Inline errors visible on each field."
+          captionTier="important"
         />
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">ErrorSummary Component Pattern</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Create an ErrorSummary component using useRef and useEffect hooks. The component accepts an errors array. Use a ref to reference the summary div for focus management. In useEffect, when errors length is greater than zero, focus the summary element. Return null if no errors exist. Otherwise render a div with ref, role set to alert, aria-labelledby pointing to the title ID, tabIndex set to negative one for programmatic focus, and a CSS class for styling. Include an h2 heading that announces the error count (singular or plural), and an unordered list where each error is a list item containing a link that, when clicked, prevents default behavior and focuses the corresponding form field by ID.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Complete Accessible Form with Validation</h3>
         <p>
@@ -197,26 +200,38 @@ export default function AccessibleFormsArticle() {
               </tr>
             </thead>
             <tbody>
-              <tr className="border-b border-accent/10">
+              <HighlightBlock
+                as="tr"
+                tier="crucial"
+                className="border-b border-accent/10"
+              >
                 <td className="p-3 font-medium">Explicit Label (for/id)</td>
                 <td className="p-3">Most widely supported, clicking label focuses input, clear programmatic relationship</td>
                 <td className="p-3">Requires generating unique IDs, slightly more markup, ID conflicts in component reuse</td>
-              </tr>
+              </HighlightBlock>
               <tr className="border-b border-accent/10">
                 <td className="p-3 font-medium">Implicit Label (wrapping)</td>
                 <td className="p-3">No IDs needed, simpler markup, naturally groups label and input</td>
                 <td className="p-3">Some older screen readers don&apos;t support it, harder to style label and input independently</td>
               </tr>
-              <tr className="border-b border-accent/10">
+              <HighlightBlock
+                as="tr"
+                tier="important"
+                className="border-b border-accent/10"
+              >
                 <td className="p-3 font-medium">On-Submit Validation</td>
                 <td className="p-3">Fewer interruptions, user can review all fields first, complete error summary possible</td>
                 <td className="p-3">User doesn&apos;t know about errors until submission, may need to scroll back to fix fields</td>
-              </tr>
-              <tr className="border-b border-accent/10">
+              </HighlightBlock>
+              <HighlightBlock
+                as="tr"
+                tier="important"
+                className="border-b border-accent/10"
+              >
                 <td className="p-3 font-medium">On-Blur Validation</td>
                 <td className="p-3">Immediate feedback, errors caught early, progressive disclosure of issues</td>
                 <td className="p-3">Can be premature (user hasn&apos;t finished entering data), each error triggers screen reader announcement</td>
-              </tr>
+              </HighlightBlock>
               <tr className="border-b border-accent/10">
                 <td className="p-3 font-medium">On-Input Validation</td>
                 <td className="p-3">Real-time feedback, instant correction guidance, good for complex format requirements</td>
@@ -231,40 +246,40 @@ export default function AccessibleFormsArticle() {
       <section>
         <h2>Best Practices</h2>
         <ol className="space-y-2">
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Every input must have a visible, programmatically associated label:</strong> Use
             <code>&lt;label htmlFor=&quot;id&quot;&gt;</code> as the default. Generate unique IDs
             with React&apos;s <code>useId()</code>. Placeholder text is never a substitute for a
             label.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Group related controls with fieldset/legend:</strong> Radio button groups,
             checkbox groups, and address field groups should use <code>&lt;fieldset&gt;</code> and
             <code>&lt;legend&gt;</code>. This provides context that individual labels can&apos;t:
             &quot;Payment method: Credit card, radio button, 1 of 3.&quot;
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Associate error messages with aria-describedby:</strong> When a field has an
             error, set <code>aria-invalid=&quot;true&quot;</code> on the input and point
             <code>aria-describedby</code> to the error message element. The error is announced when
             the user focuses the field.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Provide an error summary on submit:</strong> After failed submission, show a
             summary at the top of the form with links to each errored field. Move focus to the
             summary. This is the most efficient pattern for screen reader users to understand and
             fix all errors.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Use autocomplete attributes:</strong> Add appropriate <code>autocomplete</code>
             values to personal information fields. This helps users with cognitive disabilities,
             motor impairments, and everyone else by reducing typing and preventing errors.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Indicate required fields clearly:</strong> Use both visual (asterisk + legend)
             and programmatic (<code>required</code> attribute) indication. Explain the convention
             at the top: &quot;Fields marked with * are required.&quot;
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Write helpful error messages:</strong> Say what went wrong and how to fix it:
             &quot;Enter a date in DD/MM/YYYY format&quot; instead of &quot;Invalid date.&quot;
@@ -277,23 +292,23 @@ export default function AccessibleFormsArticle() {
       <section>
         <h2>Common Pitfalls</h2>
         <ul className="space-y-2">
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Using placeholder as the only label:</strong> Placeholders disappear when the
             user types, removing context. Screen readers may not announce placeholders consistently.
             Always provide a persistent visible label in addition to any placeholder.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Error messages not associated with inputs:</strong> An error message displayed
             near a field visually but not linked via <code>aria-describedby</code> won&apos;t be
             announced when the screen reader user focuses the field. They must hunt for errors
             instead of being told directly.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Missing aria-invalid on errored fields:</strong> Without
             <code>aria-invalid=&quot;true&quot;</code>, screen readers don&apos;t indicate that a
             field has an error. Users may not realize their input is rejected until they try to
             submit again.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Custom select/dropdown without ARIA:</strong> Native <code>&lt;select&gt;</code>
             elements are accessible by default. Custom dropdown implementations often lack proper
@@ -324,28 +339,28 @@ export default function AccessibleFormsArticle() {
       <section>
         <h2>Real-World Use Cases</h2>
         <ul className="space-y-2">
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>GOV.UK:</strong> The gold standard for accessible forms. Uses error summary
             pattern with links, inline errors with aria-describedby, clear fieldset/legend
             grouping, and highly specific error messages. Their form pattern is documented in the
             GOV.UK Design System and has been adopted by governments worldwide.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Stripe Checkout:</strong> Accessible payment forms with proper label association,
             keyboard navigation between card number/expiry/CVC fields, and clear error handling.
             Demonstrates how complex form interactions (auto-advancing fields) can be made accessible.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>React Hook Form:</strong> Popular form library that supports accessible
             validation via <code>aria-invalid</code> and error association. The library&apos;s
             <code>register</code> function accepts validation rules and the <code>errors</code>
             object maps to accessible error display.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Shopify Polaris:</strong> Their form components enforce accessibility by
             requiring label props, auto-generating IDs, and associating error/help text via
             aria-describedby — making the accessible path the easiest path.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>USDS (United States Digital Service):</strong> The U.S. Web Design System
             provides form components with built-in accessibility, including proper label association,
@@ -375,7 +390,7 @@ export default function AccessibleFormsArticle() {
 
         <div className="my-4 rounded-lg border border-accent/20 bg-accent/5 p-4">
           <h3 className="mb-2 font-semibold">Q: How should form errors be announced to screen reader users?</h3>
-          <p>
+          <HighlightBlock as="p" tier="crucial">
             Two complementary patterns: (1) <strong>Error summary:</strong> After submission, display
             a summary at the top with <code>role=&quot;alert&quot;</code>, listing all errors with
             links to the failing fields. Move focus to the summary via <code>focus()</code>. (2)
@@ -384,7 +399,7 @@ export default function AccessibleFormsArticle() {
             input. When the user focuses a field, they hear: &quot;Email, edit text, invalid,
             Enter an email address in the correct format.&quot; The error summary provides an
             overview; inline errors provide per-field context.
-          </p>
+          </HighlightBlock>
         </div>
 
         <div className="my-4 rounded-lg border border-accent/20 bg-accent/5 p-4">
@@ -454,18 +469,18 @@ export default function AccessibleFormsArticle() {
       <section>
         <h2>References &amp; Further Reading</h2>
         <ul className="space-y-2">
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <a href="https://www.w3.org/WAI/tutorials/forms/" target="_blank" rel="noopener noreferrer" className="text-accent hover:underline">
               W3C WAI: Forms Tutorial
             </a>{" "}
             — Comprehensive guide to building accessible forms.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <a href="https://design-system.service.gov.uk/patterns/validation/" target="_blank" rel="noopener noreferrer" className="text-accent hover:underline">
               GOV.UK: Form Validation Pattern
             </a>{" "}
             — The error summary and inline error pattern used by GOV.UK.
-          </li>
+          </HighlightBlock>
           <li>
             <a href="https://www.w3.org/WAI/WCAG22/Understanding/labels-or-instructions.html" target="_blank" rel="noopener noreferrer" className="text-accent hover:underline">
               Understanding WCAG 3.3.2: Labels or Instructions

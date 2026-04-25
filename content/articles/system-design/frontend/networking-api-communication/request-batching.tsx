@@ -166,12 +166,12 @@ export default function RequestBatchingConciseArticle() {
 
       <section>
         <h2>Architecture & Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="important">
           The batching lifecycle follows a well-defined sequence from individual
           request initiation through collection, dispatch, and response
           distribution. Understanding this flow is essential for debugging
           timing issues and optimizing batch sizes.
-        </p>
+        </HighlightBlock>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-4 text-lg font-semibold">Batching Lifecycle</h3>
@@ -224,7 +224,7 @@ export default function RequestBatchingConciseArticle() {
           caption="Request Batching Flow - Individual requests at different times are collected into a single batch, sent as one network call, and demultiplexed back to callers"
         />
 
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           The DataLoader pattern specifically leverages the JavaScript event
           loop's microtask queue. When code calls loader.load(key), the
           DataLoader schedules a batch dispatch via process.nextTick (Node.js)
@@ -234,7 +234,7 @@ export default function RequestBatchingConciseArticle() {
           batches align naturally with React render cycles: all components
           rendered in the same synchronous pass will have their data requests
           batched together.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/frontend/networking-api-communication/dataloader-pattern.svg"
@@ -242,7 +242,7 @@ export default function RequestBatchingConciseArticle() {
           caption="DataLoader Pattern - Components request overlapping data, DataLoader deduplicates and batches within a single event loop tick"
         />
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           For server-side batch processing, the architecture must handle partial
           failures gracefully. If a batch contains five operations and two fail,
           the response must clearly indicate which operations succeeded and
@@ -250,7 +250,7 @@ export default function RequestBatchingConciseArticle() {
           for batch endpoints typically return 200 for the batch itself, with
           individual status codes embedded in each response object within the
           array.
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
@@ -264,7 +264,7 @@ export default function RequestBatchingConciseArticle() {
             </tr>
           </thead>
           <tbody className="divide-y divide-theme">
-            <tr>
+            <HighlightBlock as="tr" tier="crucial">
               <td className="p-3">
                 <strong>Network Efficiency</strong>
               </td>
@@ -280,8 +280,8 @@ export default function RequestBatchingConciseArticle() {
                 • Larger individual payload sizes may hit body limits
                 <br />• Single point of failure for all batched operations
               </td>
-            </tr>
-            <tr>
+            </HighlightBlock>
+            <HighlightBlock as="tr" tier="important">
               <td className="p-3">
                 <strong>Server Load</strong>
               </td>
@@ -297,8 +297,8 @@ export default function RequestBatchingConciseArticle() {
                 • Batch processing logic adds complexity
                 <br />• Harder to implement granular rate limiting
               </td>
-            </tr>
-            <tr>
+            </HighlightBlock>
+            <HighlightBlock as="tr" tier="important">
               <td className="p-3">
                 <strong>Error Handling</strong>
               </td>
@@ -313,7 +313,7 @@ export default function RequestBatchingConciseArticle() {
                 <br />• Retry logic must handle individual vs batch-level
                 failures
               </td>
-            </tr>
+            </HighlightBlock>
             <tr>
               <td className="p-3">
                 <strong>Caching</strong>
@@ -356,18 +356,18 @@ export default function RequestBatchingConciseArticle() {
 
       <section>
         <h2>Best Practices</h2>
-        <p>
+        <HighlightBlock as="p" tier="important">
           To implement effective request batching in production frontend
           applications, follow these practices:
-        </p>
+        </HighlightBlock>
         <ol className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Use Hybrid Collection Windows:</strong> Combine time-based
             and size-based thresholds (for example, batch after 10ms or 20
             requests, whichever comes first). This ensures optimal batch sizes
             during high throughput while preventing unbounded delays during low
             activity.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Scope DataLoader Instances per Request:</strong> In
             server-side rendering or API route handlers, create a new DataLoader
@@ -376,29 +376,29 @@ export default function RequestBatchingConciseArticle() {
             users. In client-side applications, scope instances to the user
             session or component lifecycle.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Implement Partial Failure Handling:</strong> Design batch
             responses to include per-operation status codes and error details.
             Callers should be able to handle their individual operation's
             failure independently without the entire batch being marked as
             failed. Map errors back to specific callers using positional
             correlation.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Set Maximum Batch Size Limits:</strong> Enforce upper bounds
             on batch size (typically 50-100 operations) to prevent oversized
             payloads, server timeouts, and memory pressure. When the limit is
             reached, split into multiple concurrent batch requests rather than
             one monolithic batch.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Preserve Request Priority:</strong> Not all requests have
             equal urgency. Critical user-facing requests (authentication,
             primary data) should bypass batching or have shorter collection
             windows than background operations (analytics, prefetching).
             Implement priority-aware batching that flushes high-priority
             requests immediately.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Monitor Batch Efficiency Metrics:</strong> Track average
             batch size, batch utilization rate (actual size vs maximum),
@@ -428,19 +428,19 @@ export default function RequestBatchingConciseArticle() {
         <h2>Common Pitfalls</h2>
         <p>Avoid these common mistakes when implementing request batching:</p>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Unbounded Collection Windows:</strong> Using only size-based
             batching without a time-based fallback, causing requests to wait
             indefinitely when traffic is low. Always pair size thresholds with a
             maximum wait time to guarantee requests are dispatched within a
             known upper bound.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Shared DataLoader Across Requests:</strong> Reusing a single
             DataLoader instance across multiple user requests on the server,
             leading to stale cached data being served to the wrong user. This is
             a security vulnerability. Always create request-scoped instances.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Ignoring HTTP/2 Multiplexing:</strong> Implementing complex
             client-side batching when the infrastructure already supports HTTP/2
@@ -449,13 +449,13 @@ export default function RequestBatchingConciseArticle() {
             processing, the marginal benefit is lower with modern protocols.
             Measure before adding complexity.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Batch-Level Retry Instead of Operation-Level:</strong>{" "}
             Retrying the entire batch when only one operation fails, wasting
             bandwidth and potentially causing duplicate side effects for
             operations that already succeeded. Implement per-operation retry
             with idempotency keys.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Not Handling Payload Size Limits:</strong> Constructing
             batches that exceed server body size limits (commonly 1MB or 10MB),
@@ -471,13 +471,13 @@ export default function RequestBatchingConciseArticle() {
             Separate mutation batches from query batches, or enforce sequential
             processing.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Blocking Critical Requests:</strong> Forcing all requests
             through the batching pipeline, including time-sensitive operations
             like authentication token refresh or real-time event
             acknowledgments. These should bypass batching entirely and be
             dispatched immediately.
-          </li>
+          </HighlightBlock>
         </ul>
       </section>
 
@@ -485,29 +485,29 @@ export default function RequestBatchingConciseArticle() {
         <h2>Real-World Use Cases</h2>
         <p>Request batching excels in these production scenarios:</p>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>GraphQL Applications:</strong> Apollo Client's BatchLink and
             Relay's network layer automatically batch multiple GraphQL queries
             dispatched in the same render cycle into a single POST. This is
             particularly impactful in component-driven architectures where each
             component declares its own data requirements (fragments) that result
             in separate queries during server-side rendering.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Dashboard and Analytics UIs:</strong> Dashboards rendering
             10-20 independent widgets, each requesting different metrics from
             the same API. Batching widget data requests into a single call
             reduces the initial load from 20 parallel requests to 1-2 batch
             requests, avoiding browser connection limits and reducing
             time-to-interactive.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Social Media Feeds:</strong> Rendering a feed where each
             post may need author data, like counts, comment previews, and media
             metadata. The DataLoader pattern batches all user lookups across all
             posts into a single bulk query (SELECT * FROM users WHERE id IN
             (...)), solving the N+1 problem.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>E-Commerce Product Listings:</strong> Product catalog pages
             where each item needs pricing, inventory, reviews, and
@@ -560,21 +560,21 @@ export default function RequestBatchingConciseArticle() {
 
       <section>
         <h2>Security Considerations</h2>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Request batching introduces security considerations around batch validation and data isolation.
-        </p>
+        </HighlightBlock>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-4 text-lg font-semibold">Batch Validation</h3>
           <ul className="space-y-2">
-            <li>
+            <HighlightBlock as="li" tier="crucial">
               <strong>The Risk:</strong> Batching multiple operations in one request can bypass
               per-operation rate limits and validation.
-            </li>
-            <li>
+            </HighlightBlock>
+            <HighlightBlock as="li" tier="important">
               <strong>Mitigation:</strong> Validate each operation in the batch individually.
               Apply rate limits at both batch level and individual operation level.
-            </li>
+            </HighlightBlock>
             <li>
               <strong>Implementation:</strong> Return per-operation status codes in batch
               response. Don't fail entire batch for single operation failure.
@@ -585,10 +585,10 @@ export default function RequestBatchingConciseArticle() {
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-4 text-lg font-semibold">Data Isolation</h3>
           <ul className="space-y-2">
-            <li>
+            <HighlightBlock as="li" tier="important">
               <strong>Multi-Tenant Isolation:</strong> Ensure batched requests from different
               users are never combined. Batch only within a single user session.
-            </li>
+            </HighlightBlock>
             <li>
               <strong>Authorization:</strong> Validate authorization for each operation in the
               batch. Don't assume batch-level auth covers all operations.
@@ -639,9 +639,9 @@ export default function RequestBatchingConciseArticle() {
 
       <section>
         <h2>Performance Benchmarks</h2>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Understanding request batching performance characteristics is essential for tuning batch parameters.
-        </p>
+        </HighlightBlock>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-4 text-lg font-semibold">Industry Performance Data</h3>
@@ -664,16 +664,16 @@ export default function RequestBatchingConciseArticle() {
                 <td className="p-2">10-50ms</td>
                 <td className="p-2">10-100ms</td>
               </tr>
-              <tr>
+              <HighlightBlock as="tr" tier="crucial">
                 <td className="p-2">Request Reduction</td>
                 <td className="p-2">&gt;50%</td>
                 <td className="p-2">40-80%</td>
-              </tr>
-              <tr>
+              </HighlightBlock>
+              <HighlightBlock as="tr" tier="important">
                 <td className="p-2">Added Latency</td>
                 <td className="p-2">&lt;50ms</td>
                 <td className="p-2">10-100ms</td>
-              </tr>
+              </HighlightBlock>
               <tr>
                 <td className="p-2">Batch Success Rate</td>
                 <td className="p-2">&gt;95%</td>
@@ -686,14 +686,14 @@ export default function RequestBatchingConciseArticle() {
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-4 text-lg font-semibold">Real-World Benchmarks</h3>
           <ul className="space-y-2">
-            <li>
+            <HighlightBlock as="li" tier="important">
               <strong>GraphQL DataLoader:</strong> Reduces N+1 queries to single batch query.
               Typical reduction: 10-100x fewer database queries per request.
-            </li>
-            <li>
+            </HighlightBlock>
+            <HighlightBlock as="li" tier="important">
               <strong>Apollo BatchLink:</strong> Batches multiple GraphQL queries into single
               HTTP request. Reduces HTTP requests by 60-80% in typical apps.
-            </li>
+            </HighlightBlock>
             <li>
               <strong>Google Batch API:</strong> Supports up to 100 operations per batch.
               Reduces API quota usage and network overhead significantly.
@@ -722,23 +722,23 @@ export default function RequestBatchingConciseArticle() {
 
       <section>
         <h2>Cost Analysis</h2>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Request batching has infrastructure and development costs that must be weighed against efficiency benefits.
-        </p>
+        </HighlightBlock>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-4 text-lg font-semibold">Infrastructure Costs</h3>
           <ul className="space-y-2">
-            <li>
+            <HighlightBlock as="li" tier="important">
               <strong>Server Processing:</strong> Batch processing requires more memory and
               CPU per request but fewer total requests. Net effect: 20-40% reduction in
               infrastructure costs for high-traffic APIs.
-            </li>
-            <li>
+            </HighlightBlock>
+            <HighlightBlock as="li" tier="important">
               <strong>Network Costs:</strong> Reduced HTTP requests mean lower network
               overhead (headers, TLS handshakes). CDN egress costs may increase slightly
               due to larger payloads.
-            </li>
+            </HighlightBlock>
             <li>
               <strong>Database Costs:</strong> Batched database queries reduce connection
               overhead and can leverage bulk operations. 30-50% reduction in database
@@ -785,47 +785,47 @@ export default function RequestBatchingConciseArticle() {
 
         <div className="my-6 rounded-lg border border-accent/30 bg-accent/10 p-6">
           <h3 className="mb-3 font-semibold">ROI Decision Framework</h3>
-          <p>
+          <HighlightBlock as="p" tier="crucial">
             Use request batching when: (1) you have N+1 query problems, (2) high request
             volume (&gt;1000/minute), (3) GraphQL or similar query language, (4) backend
             supports batch operations. Use individual requests when: (1) low traffic,
             (2) HTTP/2 with multiplexing is sufficient, (3) real-time latency is critical.
             Consider HTTP/2 when: you want multiplexing without batching complexity.
-          </p>
+          </HighlightBlock>
         </div>
       </section>
 
       <section>
         <h2>Decision Framework: When to Use Request Batching</h2>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Request batching is not always the right solution. Use this decision framework to evaluate whether
           batching is appropriate for your use case.
-        </p>
+        </HighlightBlock>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-4 text-lg font-semibold">Decision Tree</h3>
           <ul className="space-y-2">
-            <li>
+            <HighlightBlock as="li" tier="crucial">
               <strong>Do you have N+1 query patterns?</strong>
               <ul>
                 <li>Yes → Batching is highly beneficial</li>
                 <li>No → Evaluate other factors</li>
               </ul>
-            </li>
-            <li>
+            </HighlightBlock>
+            <HighlightBlock as="li" tier="important">
               <strong>Is request volume &gt;1000/minute?</strong>
               <ul>
                 <li>Yes → Batching reduces infrastructure costs</li>
                 <li>No → May not justify complexity</li>
               </ul>
-            </li>
-            <li>
+            </HighlightBlock>
+            <HighlightBlock as="li" tier="important">
               <strong>Does backend support batch operations?</strong>
               <ul>
                 <li>Yes → Proceed with batching</li>
                 <li>No → Requires backend changes first</li>
               </ul>
-            </li>
+            </HighlightBlock>
             <li>
               <strong>Is latency tolerance &gt;50ms?</strong>
               <ul>
@@ -913,7 +913,7 @@ export default function RequestBatchingConciseArticle() {
               Q: How does the DataLoader pattern solve the N+1 problem in
               GraphQL?
             </p>
-            <p className="mt-2 text-sm">
+            <HighlightBlock as="p" tier="crucial" className="mt-2 text-sm">
               A: DataLoader leverages the JavaScript microtask queue to defer
               data loading until all synchronous resolver execution completes
               within a single tick. When a GraphQL query resolves a list of N
@@ -926,7 +926,7 @@ export default function RequestBatchingConciseArticle() {
               This reduces N+1 database queries to exactly 2 queries (one for
               the list, one batched query for the related entities), regardless
               of list size.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
@@ -934,7 +934,7 @@ export default function RequestBatchingConciseArticle() {
               Q: What is the trade-off between batch window size and request
               latency?
             </p>
-            <p className="mt-2 text-sm">
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               A: The batch window represents a fundamental tension between
               throughput and latency. A larger window (e.g., 50ms) collects more
               requests per batch, maximizing network efficiency and reducing
@@ -947,7 +947,7 @@ export default function RequestBatchingConciseArticle() {
               (aligned with one animation frame) is a common sweet spot. For
               background operations like analytics, windows of 1-5 seconds are
               acceptable.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
@@ -955,7 +955,7 @@ export default function RequestBatchingConciseArticle() {
               Q: How would you implement request batching in a React application
               that uses REST APIs?
             </p>
-            <p className="mt-2 text-sm">
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               A: Create a BatchScheduler class that exposes an add(request)
               method returning a Promise. The scheduler maintains an internal
               queue and a timer. When the first request arrives, start a 10ms
@@ -968,14 +968,14 @@ export default function RequestBatchingConciseArticle() {
               into React via a custom hook (useBatchedFetch) or by wrapping the
               fetch function at the API client layer. Ensure the scheduler is
               scoped to the application instance and handles cleanup on unmount.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
             <p className="font-semibold">
               Q: How do you handle partial failures in batch requests?
             </p>
-            <p className="mt-2 text-sm">
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               A: Batch endpoints should return an array of results where each
               result includes both the data and a status (success/failure with
               error details). The client iterates results and resolves/rejects
@@ -987,7 +987,7 @@ export default function RequestBatchingConciseArticle() {
               idempotency keys to prevent duplicates. For critical operations,
               consider falling back to individual requests for failed items
               rather than failing the entire batch.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">

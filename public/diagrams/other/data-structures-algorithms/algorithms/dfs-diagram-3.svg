@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="system-ui, sans-serif">
+  <rect width="900" height="500" fill="#f3f1f8"/>
+  <text x="450" y="32" text-anchor="middle" font-size="19" font-weight="700" fill="#1a1822">DFS in Production</text>
+
+  <rect x="40" y="60" width="820" height="200" fill="#fff" stroke="#6d5bd0" stroke-width="2" rx="6"/>
+  <text x="60" y="85" font-size="13" font-weight="700" fill="#6d5bd0">Real-world applications</text>
+  <text x="60" y="112" font-size="11">• Build systems (Bazel, Make, Gradle): topological sort dependencies via DFS post-order.</text>
+  <text x="60" y="132" font-size="11">• Module loaders / linkers: detect circular imports via gray-color cycle detection.</text>
+  <text x="60" y="152" font-size="11">• Compilers: control-flow graph dominator analysis via DFS spanning tree.</text>
+  <text x="60" y="172" font-size="11">• Filesystem tree walkers (find, du, npm install): natural recursion = DFS.</text>
+  <text x="60" y="192" font-size="11">• Tarjan's SCC / Kosaraju in static analyzers (deadlock detection, data-flow).</text>
+  <text x="60" y="212" font-size="11">• Garbage-collector mark phase (some GCs prefer DFS stack-locality vs BFS frontier).</text>
+  <text x="60" y="232" font-size="11">• Game-tree search (chess, Go) — minimax, alpha-beta, MCTS rollouts.</text>
+
+  <rect x="40" y="280" width="820" height="195" fill="#fff" stroke="#4caf50" stroke-width="2" rx="6"/>
+  <text x="60" y="305" font-size="13" font-weight="700" fill="#4caf50">DFS vs BFS — when to pick which</text>
+  <text x="60" y="330" font-size="11">DFS wins for:</text>
+  <text x="60" y="350" font-size="11">  • structural questions (cycles, SCC, topological order, articulation points)</text>
+  <text x="60" y="370" font-size="11">  • deep narrow trees where memory must stay tight (only depth × call-frame space)</text>
+  <text x="60" y="390" font-size="11">  • backtracking search where you need to undo state on return</text>
+  <text x="60" y="410" font-size="11">BFS wins for:</text>
+  <text x="60" y="430" font-size="11">  • shortest path in unweighted graphs, level-order, or bounded-depth questions</text>
+  <text x="60" y="450" font-size="11">  • graphs where DFS depth would overflow stack but BFS frontier fits</text>
+  <text x="60" y="470" font-size="11" fill="#4caf50" font-weight="700">Both are O(V + E); pick by what the answer's structure resembles.</text>
+</svg>

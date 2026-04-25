@@ -179,9 +179,9 @@ export default function CSRFProtectionArticle() {
           <li>
             <strong>Account takeover:</strong> Email/password changes, 2FA disablement, recovery option updates
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Data manipulation:</strong> Profile changes, preference updates, content modification
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Destructive actions:</strong> Account deletion, data erasure, service cancellation
           </li>
@@ -192,20 +192,20 @@ export default function CSRFProtectionArticle() {
 
         <div className="my-6 rounded-lg border border-accent/30 bg-accent/10 p-6">
           <h3 className="mb-3 font-semibold">Key Insight: CSRF Targets State-Changing Operations</h3>
-          <p>
+          <HighlightBlock as="p" tier="crucial">
             CSRF only affects requests that change server state. Read-only GET requests (fetching data, viewing
             profiles) are not CSRF targets because they don&apos;t cause side effects. However, GET requests that
             perform mutations are critically vulnerable.
-          </p>
+          </HighlightBlock>
         </div>
       </section>
 
       <section>
         <h2>CSRF Defense Strategies</h2>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Effective CSRF protection requires multiple layers of defense. No single technique is perfect, but
           combining approaches provides robust protection.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/frontend/security/csrf-defense-layers.svg"
@@ -214,10 +214,10 @@ export default function CSRFProtectionArticle() {
         />
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Defense 1: CSRF Tokens (Synchronizer Token Pattern)</h3>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           CSRF tokens are the gold standard for CSRF prevention. The server generates a unique, unpredictable
           token per user session (or per request) and requires it with every state-changing request.
-        </p>
+        </HighlightBlock>
 
         <h4 className="mt-4 mb-2 font-semibold">How CSRF Tokens Work</h4>
         <ol className="space-y-2">
@@ -237,10 +237,10 @@ export default function CSRFProtectionArticle() {
             <strong>Token validation:</strong> Server verifies the token matches the session before processing
           </li>
         </ol>
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Why this works:</strong> The attacker cannot predict or retrieve the token (same-origin policy
           prevents reading the response). Without the token, forged requests fail validation.
-        </p>
+        </HighlightBlock>
 
         <h4 className="mt-4 mb-2 font-semibold">Token Storage Strategies</h4>
         <ul className="space-y-2">
@@ -297,10 +297,10 @@ export default function CSRFProtectionArticle() {
         </ul>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Defense 2: SameSite Cookies</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           The <code className="text-sm">SameSite</code> cookie attribute tells browsers when to send cookies
           with cross-origin requests. This is a modern, browser-enforced CSRF defense.
-        </p>
+        </HighlightBlock>
 
         <h4 className="mt-4 mb-2 font-semibold">SameSite Values</h4>
         <ul className="space-y-2">
@@ -433,29 +433,35 @@ export default function CSRFProtectionArticle() {
 
         <div className="my-6 rounded-lg border border-accent/30 bg-accent/10 p-6">
           <h3 className="mb-3 font-semibold">Key Insight: Layer CSRF Defenses</h3>
-          <p>
+          <HighlightBlock as="p" tier="crucial">
             No single CSRF defense is perfect. SameSite cookies provide excellent baseline protection but have
             browser support gaps. CSRF tokens are robust but require implementation effort. Origin validation is
             useful but headers can be missing. Combine all three for defense in depth.
-          </p>
+          </HighlightBlock>
         </div>
       </section>
 
       <section>
         <h2>CSRF in Modern Architectures</h2>
-        <p>
+        <HighlightBlock as="p" tier="important">
           CSRF protection varies based on authentication architecture. Understanding these differences is
           critical for designing secure systems.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Cookie-Based Authentication (Traditional)</h3>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           Session cookies are the classic CSRF target. Defense requires:
-        </p>
+        </HighlightBlock>
         <ul className="space-y-2">
-          <li>CSRF tokens (synchronizer token pattern or double-submit cookie)</li>
-          <li>SameSite=Lax or SameSite=Strict cookies</li>
-          <li>Origin/Referer validation as secondary check</li>
+          <HighlightBlock as="li" tier="crucial">
+            CSRF tokens (synchronizer token pattern or double-submit cookie)
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
+            SameSite=Lax or SameSite=Strict cookies
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
+            Origin/Referer validation as secondary check
+          </HighlightBlock>
           <li>HttpOnly + Secure cookie flags (limit XSS impact)</li>
         </ul>
 
@@ -464,23 +470,23 @@ export default function CSRFProtectionArticle() {
           When using bearer tokens (JWT, OAuth access tokens) stored in localStorage or sessionStorage:
         </p>
         <ul className="space-y-2">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Not vulnerable to CSRF:</strong> Tokens aren&apos;t automatically sent with requests.
             Attacker can&apos;t forge requests without the token.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Vulnerable to XSS:</strong> localStorage is accessible to JavaScript. XSS can steal tokens.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Best practice:</strong> Store tokens in memory (React state, Redux) rather than
             localStorage when possible.
-          </li>
+          </HighlightBlock>
         </ul>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           <strong>Hybrid approach (recommended):</strong> Store tokens in HttpOnly cookies (not accessible to
           JavaScript) and use CSRF tokens. This protects against both XSS (can&apos;t read cookie) and CSRF
           (need token).
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">API/REST Services</h3>
         <p>
@@ -494,37 +500,38 @@ export default function CSRFProtectionArticle() {
             <strong>CORS configuration:</strong> Proper CORS can prevent cross-origin requests but requires
             careful setup
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Content-Type enforcement:</strong> Require <code className="text-sm">application/json</code>
             and reject form-encoded requests from unknown origins
-          </li>
+          </HighlightBlock>
         </ul>
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Recommended:</strong> Use JWT in HttpOnly cookies + CSRF tokens, or require Authorization
           header (which triggers CORS preflight).
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">GraphQL APIs</h3>
         <p>
           GraphQL endpoints are CSRF targets if they accept mutations via POST:
         </p>
         <ul className="space-y-2">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>CSRF tokens:</strong> Include token in GraphQL operation context or headers
-          </li>
+          </HighlightBlock>
           <li>
             <strong>CORS:</strong> Strict CORS configuration with explicit allowed origins
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Content-Type:</strong> Require <code className="text-sm">application/json</code> and reject
             other content types
-          </li>
+          </HighlightBlock>
         </ul>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/frontend/security/csrf-authentication-comparison.svg"
           alt="CSRF Vulnerability by Authentication Method comparing Cookie-based, Token-based, and Hybrid approaches"
           caption="CSRF Vulnerability by Authentication Method: Cookie-based auth requires CSRF tokens, token-based auth is immune to CSRF but vulnerable to XSS, hybrid provides best protection."
+          captionTier="important"
         />
       </section>
 
@@ -539,7 +546,7 @@ export default function CSRFProtectionArticle() {
             </tr>
           </thead>
           <tbody className="divide-y divide-theme">
-            <tr>
+            <HighlightBlock as="tr" tier="crucial">
               <td className="p-3"><strong>CSRF Tokens</strong></td>
               <td className="p-3">
                 • Gold standard protection<br/>
@@ -551,8 +558,8 @@ export default function CSRFProtectionArticle() {
                 • Token management overhead<br/>
                 • SPA integration challenges
               </td>
-            </tr>
-            <tr>
+            </HighlightBlock>
+            <HighlightBlock as="tr" tier="important">
               <td className="p-3"><strong>SameSite Cookies</strong></td>
               <td className="p-3">
                 • Browser-enforced (no code changes)<br/>
@@ -564,8 +571,8 @@ export default function CSRFProtectionArticle() {
                 • SameSite=Lax has edge cases<br/>
                 • Breaks some cross-origin flows
               </td>
-            </tr>
-            <tr>
+            </HighlightBlock>
+            <HighlightBlock as="tr" tier="important">
               <td className="p-3"><strong>Origin/Referer Validation</strong></td>
               <td className="p-3">
                 • No client-side changes<br/>
@@ -577,7 +584,7 @@ export default function CSRFProtectionArticle() {
                 • Privacy settings can strip<br/>
                 • Not reliable as primary defense
               </td>
-            </tr>
+            </HighlightBlock>
             <tr>
               <td className="p-3"><strong>Custom Headers</strong></td>
               <td className="p-3">
@@ -618,18 +625,18 @@ export default function CSRFProtectionArticle() {
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Architectural</h3>
         <ul className="space-y-2">
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Use POST/PUT/DELETE for mutations:</strong> Never use GET for state-changing operations.
             GET requests should be idempotent and side-effect free.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Implement defense in depth:</strong> Combine CSRF tokens + SameSite cookies + Origin validation.
             Don&apos;t rely on a single defense.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Choose authentication wisely:</strong> HttpOnly cookie + CSRF token provides better security
             than localStorage JWT (protects against both XSS and CSRF).
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Design secure APIs:</strong> Require specific Content-Type, use CORS properly, validate
             Origin/Referer headers.
@@ -638,10 +645,10 @@ export default function CSRFProtectionArticle() {
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">CSRF Token Implementation</h3>
         <ul className="space-y-2">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Generate securely:</strong> Use cryptographically secure random generation (minimum 128 bits
             of entropy)
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Validate properly:</strong> Use constant-time comparison to prevent timing attacks
           </li>
@@ -652,16 +659,16 @@ export default function CSRFProtectionArticle() {
           <li>
             <strong>Exclude safe methods:</strong> Don&apos;t validate tokens for GET, HEAD, OPTIONS
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Fail securely:</strong> Reject requests with missing or invalid tokens (403 Forbidden)
-          </li>
+          </HighlightBlock>
         </ul>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Cookie Configuration</h3>
         <ul className="space-y-2">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>SameSite=Lax minimum:</strong> Use Lax as baseline, Strict for high-security apps
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Always use Secure:</strong> Cookies only over HTTPS
           </li>
@@ -675,10 +682,10 @@ export default function CSRFProtectionArticle() {
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">CORS Configuration</h3>
         <ul className="space-y-2">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Explicit allowed origins:</strong> Never use <code className="text-sm">*</code> with
             <code className="text-sm">Access-Control-Allow-Credentials</code>
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Restrict methods:</strong> Only allow necessary HTTP methods
           </li>
@@ -724,15 +731,15 @@ export default function CSRFProtectionArticle() {
           (cookie auth without tokens) and over-reliance on SameSite defaults.
         </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Relying solely on SameSite:</strong> SameSite cookies are excellent but not comprehensive.
             Older browsers don&apos;t support them, and SameSite=Lax has edge cases. Always combine with CSRF
             tokens.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Using GET for mutations:</strong> GET requests should never change state. Using GET for
             mutations makes CSRF trivial (just an image tag or link).
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Validating tokens with timing-vulnerable comparison:</strong> Using <code className="text-sm">==</code> or
             <code className="text-sm">===</code> for token comparison allows timing attacks. Use constant-time
@@ -765,15 +772,15 @@ export default function CSRFProtectionArticle() {
 
       <section>
         <h2>Architecture at Scale: CSRF Defense in Enterprise Systems</h2>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Enterprise-scale CSRF protection requires coordinated defense across multiple architectural layers. In microservices architectures, each service must independently validate CSRF tokens, as there is no central authorization layer. API gateways can enforce CSRF validation at the edge for all state-changing requests, while service meshes can inject additional validation at the sidecar level.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="crucial">
           <strong>Token Management at Scale:</strong> For high-traffic applications, CSRF token generation and validation must be stateless. Use JWT-based tokens signed with HMAC-SHA256 that encode user session ID and expiration. Store token blacklist in Redis with TTL matching token expiration for revocation scenarios. Implement token rotation on privilege changes (password change, role modification).
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Cross-Service CSRF:</strong> In microservices, service-to-service calls should use mutual TLS (mTLS) or service account tokens instead of CSRF tokens. CSRF protection is for user-initiated requests; service communication requires different authentication mechanisms. Document which endpoints are user-facing vs. service-facing in API documentation.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Mobile App Considerations:</strong> Native mobile apps cannot use cookie-based CSRF tokens. Use custom Authorization headers with Bearer tokens instead. For hybrid apps (React Native, Flutter with WebView), ensure WebView doesn&apos; inherit browser cookies that could be CSRF targets. Implement app-specific token validation that differs from web token validation.
         </p>
@@ -781,18 +788,18 @@ export default function CSRFProtectionArticle() {
 
       <section>
         <h2>Testing Strategies: Automated CSRF Detection</h2>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Comprehensive CSRF testing requires both automated scanning and manual verification integrated into CI/CD pipelines.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="crucial">
           <strong>Automated CSRF Scanning:</strong> OWASP ZAP and Burp Suite Professional include CSRF detection modules that identify forms without tokens, weak token implementations, and SameSite cookie misconfigurations. Configure scanners to run against staging environments with authenticated sessions. Use CI plugins (OWASP ZAP GitHub Action) to fail builds on critical CSRF findings.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Token Validation Testing:</strong> Write integration tests that verify: (1) requests without tokens are rejected with 403, (2) requests with expired tokens are rejected, (3) requests with tokens from different sessions are rejected, (4) token comparison uses constant-time functions. Use test frameworks like Jest or Pytest with CSRF-specific test suites.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>SameSite Cookie Testing:</strong> Verify SameSite attribute is set correctly on all authentication cookies. Test cross-origin request behavior: POST requests from external domains should fail, while same-origin requests succeed. Use browser DevTools Application panel to inspect cookie attributes. Test across browsers (Chrome, Firefox, Safari, Edge) as SameSite implementation varies.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Penetration Testing:</strong> Include CSRF in quarterly penetration test scope. Provide testers with test accounts and application documentation. Specific test cases: (1) CSRF to change email/password, (2) CSRF to initiate financial transactions, (3) CSRF to modify user permissions, (4) CSRF via subdomain or related domains. Require remediation of all CSRF findings before production deployment.
         </p>
@@ -803,18 +810,18 @@ export default function CSRFProtectionArticle() {
 
       <section>
         <h2>Compliance & Legal Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="important">
           CSRF vulnerabilities have significant compliance implications, particularly for applications handling financial transactions or personal data.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>OWASP Top 10:</strong> CSRF was #8 in OWASP Top 10 2017 but was merged into &quot;Broken Access Control&quot; in 2021. Despite the consolidation, CSRF remains a critical vulnerability class. Many compliance auditors still reference OWASP Top 10 2017 and expect explicit CSRF protection measures.
         </p>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           <strong>PCI-DSS Requirements:</strong> PCI-DSS Requirement 6.5.8 requires protection against CSRF for payment processing systems. Annual penetration testing (Requirement 11.3) must include CSRF testing. Non-compliance can result in fines up to $500,000 per incident and potential loss of payment processing capabilities. Document CSRF protection mechanisms for annual ROC (Report on Compliance).
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>GDPR Implications:</strong> CSRF that leads to unauthorized data modification or exfiltration constitutes a data breach under GDPR Article 33. Organizations must notify supervisory authorities within 72 hours of breach discovery. Fines can reach 4% of annual global revenue or €20 million. Document CSRF prevention measures as part of Article 32 &quot;security of processing&quot; requirements.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>SOC 2 Controls:</strong> CSRF prevention maps to SOC 2 Common Criteria CC6.1 (logical access controls) and CC7.2 (system monitoring). Document CSRF token implementation, testing procedures, and monitoring for annual SOC 2 audits. Track CSRF-related incidents as part of security event monitoring.
         </p>
@@ -825,18 +832,18 @@ export default function CSRFProtectionArticle() {
 
       <section>
         <h2>Performance Trade-offs: Security vs. Latency</h2>
-        <p>
+        <HighlightBlock as="p" tier="important">
           CSRF protection measures introduce minimal but measurable latency that must be considered in high-throughput systems.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="crucial">
           <strong>Token Generation Overhead:</strong> Cryptographically secure token generation (crypto.randomBytes) takes 0.1-1ms per token. For high-traffic applications, pre-generate token pools during idle periods. Use token caching with LRU eviction to avoid regenerating tokens for returning users. Consider stateless JWT tokens that don&apos;t require server-side storage.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Token Validation Latency:</strong> Server-side token validation (database lookup) adds 5-20ms per request. Use Redis for sub-millisecond token validation. Implement token caching at the application layer with TTL matching token expiration. For stateless tokens (JWT), validation takes 1-5ms for signature verification.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>SameSite Cookie Impact:</strong> SameSite cookies have zero performance impact as validation happens in the browser. However, SameSite=Strict can break legitimate cross-origin flows (SSO, payment gateways). Test cross-origin flows thoroughly before deploying SameSite=Strict. Consider SameSite=Lax as default with Strict for high-risk operations.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Origin/Referer Validation:</strong> Header validation adds &lt;1ms per request but requires parsing and comparison. Implement early-exit validation: check Referer first (faster), then Origin if Referer is missing. Cache validated origins to avoid repeated DNS lookups. Be aware that some privacy-focused browsers strip Referer headers.
         </p>
@@ -847,21 +854,21 @@ export default function CSRFProtectionArticle() {
 
       <section>
         <h2>Browser & Platform Compatibility</h2>
-        <p>
+        <HighlightBlock as="p" tier="important">
           CSRF protection effectiveness varies across browsers and platforms, requiring careful compatibility testing.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="crucial">
           <strong>SameSite Support:</strong> SameSite cookies supported in Chrome 51+, Firefox 60+, Safari 12.1+, Edge 79+. Chrome 80+ enforces SameSite=Lax as default for cookies without explicit attribute. For older browsers, SameSite is ignored (treated as SameSite=None). Always combine SameSite with CSRF tokens for comprehensive protection.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Origin/Referer Reliability:</strong> Referer header stripped by some privacy extensions, HTTPS→HTTP transitions, and mobile browsers. Origin header more reliable but not sent by older browsers (IE11 partial support). Never rely solely on header validation; always use CSRF tokens as primary defense.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Mobile WebView Considerations:</strong> iOS WKWebView and Android WebView have different cookie handling than mobile browsers. WKWebView uses separate cookie storage from Safari. Test CSRF protection in actual app WebViews, not just mobile browsers. Consider using custom Authorization headers for mobile apps instead of cookie-based authentication.
         </p>
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>CORS Preflight Interaction:</strong> CSRF tokens in custom headers trigger CORS preflight (OPTIONS) requests. For high-traffic APIs, this doubles request count. Consider using cookie-based token transmission (no preflight) or implement CORS preflight caching (Access-Control-Max-Age). Test CSRF with CORS-enabled endpoints thoroughly.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Progressive Web Apps (PWA):</strong> PWAs running in standalone mode have different cookie behavior than browser tabs. Service workers can intercept requests and modify headers, potentially bypassing CSRF protection. Implement CSRF validation in service worker scope or exclude service-worker-handled requests from cookie-based auth.
         </p>
@@ -871,32 +878,38 @@ export default function CSRFProtectionArticle() {
         <h2>Real-World Use Cases</h2>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">E-Commerce Platform</h3>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           <strong>Challenge:</strong> Users add items to cart, update shipping addresses, and complete purchases.
           Attackers could CSRF users into changing shipping addresses or making unauthorized purchases.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Solution:</strong>
         </p>
         <ul className="space-y-2">
-          <li>CSRF tokens on all checkout and account modification forms</li>
-          <li>SameSite=Lax on session cookies</li>
+          <HighlightBlock as="li" tier="important">
+            CSRF tokens on all checkout and account modification forms
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">SameSite=Lax on session cookies</HighlightBlock>
           <li>Re-authentication required for payment method changes</li>
           <li>Order confirmation emails for all purchases (detect unauthorized orders)</li>
           <li>CORS configured to only allow requests from trusted domains</li>
         </ul>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Banking Application</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Challenge:</strong> High-risk financial transactions (money transfers, bill payments) are
           prime CSRF targets. Attackers could drain accounts via forged requests.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Solution:</strong>
         </p>
         <ul className="space-y-2">
-          <li>Per-request CSRF tokens (not session-based) for all transactions</li>
-          <li>SameSite=Strict on all authentication cookies</li>
+          <HighlightBlock as="li" tier="crucial">
+            Per-request CSRF tokens (not session-based) for all transactions
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
+            SameSite=Strict on all authentication cookies
+          </HighlightBlock>
           <li>Mandatory re-authentication for transfers above threshold</li>
           <li>Transaction confirmation via separate channel (SMS, email, push notification)</li>
           <li>Origin/Referer validation as secondary check</li>
@@ -958,13 +971,13 @@ export default function CSRFProtectionArticle() {
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
             <p className="font-semibold">Q2: How do CSRF tokens prevent CSRF attacks?</p>
-            <p className="mt-2 text-sm">
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               A: CSRF tokens are unique, unpredictable values generated by the server and required with every
               state-changing request. The token is embedded in forms or provided via API, and the server validates
               it before processing. This works because of the same-origin policy: the attacker can&apos;t read
               the token from the legitimate site (no XSS), so they can&apos;t include it in forged requests.
               Without the correct token, the server rejects the request.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
@@ -982,14 +995,14 @@ export default function CSRFProtectionArticle() {
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
             <p className="font-semibold">Q4: You&apos;re building a REST API with cookie-based authentication. How do you prevent CSRF?</p>
-            <p className="mt-2 text-sm">
+            <HighlightBlock as="p" tier="crucial" className="mt-2 text-sm">
               A: Layered approach: (1) CSRF tokens required for all POST/PUT/DELETE/PATCH requests, sent in
               custom header (X-CSRF-Token). (2) SameSite=Lax on session cookies. (3) Strict CORS configuration
               with explicit allowed origins, never wildcard with credentials. (4) Require
               <code className="text-sm">Content-Type: application/json</code> and reject form-encoded requests
               from unknown origins. (5) Origin/Referer header validation as secondary check. (6) Consider JWT in
               HttpOnly cookies instead of localStorage for better XSS+CSRF protection.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">

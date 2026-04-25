@@ -273,7 +273,7 @@ export default function GraphQLConciseArticle() {
             </tr>
           </thead>
           <tbody className="divide-y divide-theme">
-            <tr>
+            <HighlightBlock as="tr" tier="crucial">
               <td className="p-3">
                 <strong>Data Fetching</strong>
               </td>
@@ -286,8 +286,8 @@ export default function GraphQLConciseArticle() {
                 responses (all or nothing per field). Requires query complexity
                 analysis.
               </td>
-            </tr>
-            <tr>
+            </HighlightBlock>
+            <HighlightBlock as="tr" tier="important">
               <td className="p-3">
                 <strong>Caching</strong>
               </td>
@@ -301,7 +301,7 @@ export default function GraphQLConciseArticle() {
                 is complex to debug. List operations require manual cache
                 updates. Cache eviction strategies are non-trivial.
               </td>
-            </tr>
+            </HighlightBlock>
             <tr>
               <td className="p-3">
                 <strong>Tooling</strong>
@@ -316,7 +316,7 @@ export default function GraphQLConciseArticle() {
                 Compiler has steep learning curve.
               </td>
             </tr>
-            <tr>
+            <HighlightBlock as="tr" tier="important">
               <td className="p-3">
                 <strong>Performance</strong>
               </td>
@@ -330,7 +330,7 @@ export default function GraphQLConciseArticle() {
                 DataLoader. Deep queries can cause exponential resolver
                 execution. No CDN caching without persisted queries + GET.
               </td>
-            </tr>
+            </HighlightBlock>
             <tr>
               <td className="p-3">
                 <strong>Learning Curve</strong>
@@ -353,17 +353,18 @@ export default function GraphQLConciseArticle() {
           src="/diagrams/system-design-concepts/frontend/networking-api-communication/graphql-query-flow.svg"
           alt="GraphQL Query Flow Diagram"
           caption="GraphQL Query Flow - From component render through cache check to server resolution and cache update"
+          captionTier="important"
         />
       </section>
 
       <section>
         <h2>Best Practices</h2>
-        <p>
+        <HighlightBlock as="p" tier="important">
           These practices represent hard-won lessons from teams running GraphQL
           at scale:
-        </p>
+        </HighlightBlock>
         <ol className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Colocate Fragments with Components:</strong> Define a
             GraphQL fragment in each component that describes exactly the data
             that component renders. Parent components compose child fragments
@@ -372,8 +373,8 @@ export default function GraphQLConciseArticle() {
             and under-fetching at the component level. When a component is
             removed, its fragment is removed too, automatically trimming the
             query.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Use Persisted Queries in Production:</strong> Instead of
             sending full query strings over the wire, pre-register queries at
             build time and send only a hash at runtime. This reduces request
@@ -381,8 +382,8 @@ export default function GraphQLConciseArticle() {
             concern), and enables GET-based requests that can be cached by CDNs
             and HTTP proxies. Apollo's Automatic Persisted Queries (APQ) provide
             a graceful fallback.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Implement Cache Policies Per Query:</strong> Use cache-first
             for stable reference data (user profiles, configuration),
             network-first for volatile data (notifications, real-time feeds),
@@ -390,24 +391,24 @@ export default function GraphQLConciseArticle() {
             fresh (product listings, search results). A blanket cache policy
             across all queries leads to either stale data or unnecessary network
             requests.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Use Code Generation for Type Safety:</strong> Run GraphQL
             Code Generator or Relay Compiler to produce TypeScript types from
             your schema and queries. This catches field typos, type mismatches,
             and missing variables at compile time rather than runtime. Integrate
             codegen into your CI pipeline so schema changes surface as type
             errors immediately.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Batch Queries with DataLoader on Server:</strong> Implement
             Facebook's DataLoader pattern in every resolver that accesses a data
             source. DataLoader batches all individual loads within a single tick
             of the event loop into a single batch request, then deduplicates
             identical requests. Without DataLoader, a query fetching 50 users
             with their posts generates 51 database queries; with it, just 2.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Paginate with Relay-Style Connections:</strong> Use the
             Relay connection specification (edges, nodes, pageInfo with cursors)
             rather than simple offset/limit pagination. Cursor-based pagination
@@ -415,16 +416,16 @@ export default function GraphQLConciseArticle() {
             normalized caching (each edge is a separate cache entity), and
             supports both forward and backward pagination. Apollo and urql both
             provide built-in merge functions for connection types.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Avoid Deeply Nested Queries:</strong> Implement server-side
             depth limiting and query complexity analysis. A query nested 10
             levels deep can trigger exponential resolver execution and memory
             consumption. Set a maximum depth (typically 7-10) and a maximum
             complexity score based on the estimated cost of each field. Reject
             queries that exceed these thresholds before execution.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Use @defer for Non-Critical Fields:</strong> When a query
             includes both critical above-the-fold data and secondary data
             (recommendations, analytics, related items), use the @defer
@@ -432,18 +433,18 @@ export default function GraphQLConciseArticle() {
             This reduces Time to First Byte for the critical path while still
             fetching everything in a single query. Pair with React Suspense
             boundaries for a seamless progressive rendering experience.
-          </li>
+          </HighlightBlock>
         </ol>
       </section>
 
       <section>
         <h2>Common Pitfalls</h2>
-        <p>
+        <HighlightBlock as="p" tier="important">
           These are the issues that most frequently cause production problems in
           GraphQL frontends:
-        </p>
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>N+1 Queries on Server Without DataLoader:</strong> The most
             infamous GraphQL performance problem. When a resolver for a list
             field triggers individual database queries for each item's
@@ -451,7 +452,7 @@ export default function GraphQLConciseArticle() {
             not a GraphQL-inherent problem but a resolver implementation
             problem. Every data access layer in your resolvers should use
             DataLoader or an equivalent batching mechanism.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Over-Normalized Cache Causing Stale Reads:</strong>{" "}
             Normalized caching assumes entities are identified by __typename +
@@ -469,7 +470,7 @@ export default function GraphQLConciseArticle() {
             of the UI show different data for the same entity. Fragment
             colocation eliminates this class of bug entirely.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>
               Sending Entire Schema via Introspection in Production:
             </strong>{" "}
@@ -478,8 +479,8 @@ export default function GraphQLConciseArticle() {
             fields, and schema comments. Disable introspection in production and
             use schema registries or Apollo Studio for development exploration
             instead.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Ignoring Query Complexity and Depth Limits:</strong> Without
             server-side query analysis, a malicious or poorly-written client
             query can bring down your GraphQL server. A query requesting users
@@ -487,8 +488,8 @@ export default function GraphQLConciseArticle() {
             creates exponential load. Implement both depth limiting and cost
             analysis, assigning weights to expensive fields (like full-text
             search or aggregations).
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Not Handling Partial Errors:</strong> Unlike REST where a
             500 means the entire request failed, GraphQL can return a 200
             response with both a data field (containing successfully resolved
@@ -497,7 +498,7 @@ export default function GraphQLConciseArticle() {
             field-level errors entirely. Always inspect the errors array,
             implement error policies (Apollo's errorPolicy: "all"), and handle
             partial data gracefully in the UI.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Cache Invalidation After Mutations:</strong> Mutations that
             create new entities or modify list membership (adding a comment,
@@ -513,18 +514,18 @@ export default function GraphQLConciseArticle() {
 
       <section>
         <h2>Real-World Use Cases</h2>
-        <p>
+        <HighlightBlock as="p" tier="important">
           GraphQL has been adopted at massive scale by organizations with
           complex data requirements:
-        </p>
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>GitHub API v4:</strong> GitHub's GraphQL API replaced their
             REST v3 API for complex operations. A single query can fetch a
             repository, its issues, labels on those issues, and comment counts
             -- something that required dozens of REST calls. They report 10x
             fewer API calls from integrations after migration.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Shopify Storefront API:</strong> Shopify uses GraphQL for
             their public Storefront API, enabling merchants to build custom
@@ -532,13 +533,13 @@ export default function GraphQLConciseArticle() {
             typing enables code generation for their SDKs across JavaScript,
             Ruby, and mobile platforms.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Facebook / Meta:</strong> The original creator of GraphQL,
             Facebook serves billions of GraphQL queries daily across their
             mobile and web applications. Their Relay framework is purpose-built
             for GraphQL at scale, with a compiler that optimizes queries and a
             runtime that manages the normalized store.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Airbnb:</strong> Airbnb adopted GraphQL to unify their
             frontend data layer across web and mobile platforms. Their schema
@@ -557,12 +558,14 @@ export default function GraphQLConciseArticle() {
 
         <div className="mt-6 rounded-lg border border-theme bg-panel-soft p-6">
           <h3 className="mb-3 font-semibold">When NOT to Use GraphQL</h3>
-          <p>GraphQL adds complexity that is not always justified:</p>
+          <HighlightBlock as="p" tier="important">
+            GraphQL adds complexity that is not always justified:
+          </HighlightBlock>
           <ul className="mt-2 space-y-2">
-            <li>
+            <HighlightBlock as="li" tier="important">
               Simple CRUD applications with straightforward data models -- REST
               is simpler and sufficient
-            </li>
+            </HighlightBlock>
             <li>
               File upload-heavy applications -- GraphQL requires multipart
               request workarounds that add friction
@@ -588,30 +591,30 @@ export default function GraphQLConciseArticle() {
 
       <section>
         <h2>Security Considerations</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           GraphQL introduces unique security considerations due to its flexible
           query language and single endpoint architecture. Understanding these
           risks is essential for production deployments.
-        </p>
+        </HighlightBlock>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-4 text-lg font-semibold">
             Query Complexity Attacks
           </h3>
           <ul className="space-y-2">
-            <li>
+            <HighlightBlock as="li" tier="crucial">
               <strong>The Risk:</strong> A malicious client can send deeply
               nested queries that explode exponentially. Example: querying a
               user's friends, then their friends' friends, etc. A 10-level deep
               query could trigger millions of database operations.
-            </li>
-            <li>
+            </HighlightBlock>
+            <HighlightBlock as="li" tier="important">
               <strong>Mitigation:</strong> Implement query depth limiting (max
               depth: 5-10). Use query complexity analysis to assign costs to
               fields and reject queries exceeding a threshold. Example: a{" "}
               <code>posts</code> field costs 1, but <code>posts.comments</code>{" "}
               costs 10.
-            </li>
+            </HighlightBlock>
             <li>
               <strong>Implementation:</strong> Libraries like{" "}
               <code>graphql-depth-limit</code> and
@@ -673,12 +676,12 @@ export default function GraphQLConciseArticle() {
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-4 text-lg font-semibold">Persisted Queries</h3>
           <ul className="space-y-2">
-            <li>
+            <HighlightBlock as="li" tier="important">
               <strong>Security Benefit:</strong> Persisted queries prevent
               arbitrary query injection. Clients send a query hash instead of
               the full query string. The server only executes pre-approved
               queries.
-            </li>
+            </HighlightBlock>
             <li>
               <strong>Implementation:</strong> Apollo's Automatic Persisted
               Queries (APQ) or manual query registration. Store query hashes
@@ -695,10 +698,10 @@ export default function GraphQLConciseArticle() {
 
       <section>
         <h2>Performance Benchmarks</h2>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Understanding GraphQL performance characteristics is essential for
           capacity planning and diagnosing production issues.
-        </p>
+        </HighlightBlock>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-4 text-lg font-semibold">
@@ -713,11 +716,11 @@ export default function GraphQLConciseArticle() {
               </tr>
             </thead>
             <tbody className="divide-y divide-theme">
-              <tr>
+              <HighlightBlock as="tr" tier="crucial">
                 <td className="p-2">Query Latency (p95)</td>
                 <td className="p-2">&lt;200ms</td>
                 <td className="p-2">100-300ms (depends on query complexity)</td>
-              </tr>
+              </HighlightBlock>
               <tr>
                 <td className="p-2">Resolver Execution Time</td>
                 <td className="p-2">&lt;50ms per resolver</td>
@@ -733,11 +736,11 @@ export default function GraphQLConciseArticle() {
                 <td className="p-2">100-500 items</td>
                 <td className="p-2">50-200 items per batch</td>
               </tr>
-              <tr>
+              <HighlightBlock as="tr" tier="important">
                 <td className="p-2">Cache Hit Rate</td>
                 <td className="p-2">&gt;70%</td>
                 <td className="p-2">60-85% (normalized cache)</td>
-              </tr>
+              </HighlightBlock>
             </tbody>
           </table>
         </div>
@@ -768,11 +771,11 @@ export default function GraphQLConciseArticle() {
             Diagnosing Performance Issues
           </h3>
           <ul className="space-y-2">
-            <li>
+            <HighlightBlock as="li" tier="important">
               <strong>Slow Queries:</strong> Use query tracing (Apollo Studio,
               GraphQL Inspector) to identify slow resolvers. Look for N+1
               patterns (many small database calls).
-            </li>
+            </HighlightBlock>
             <li>
               <strong>High Memory Usage:</strong> Large query responses or
               unbounded list fields. Implement pagination with{" "}
@@ -789,10 +792,10 @@ export default function GraphQLConciseArticle() {
 
       <section>
         <h2>Cost Analysis</h2>
-        <p>
+        <HighlightBlock as="p" tier="important">
           GraphQL has distinct cost characteristics compared to REST APIs.
           Understanding these helps make informed build-vs-buy decisions.
-        </p>
+        </HighlightBlock>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-4 text-lg font-semibold">Development Costs</h3>
@@ -861,7 +864,7 @@ export default function GraphQLConciseArticle() {
 
         <div className="my-6 rounded-lg border border-accent/30 bg-accent/10 p-6">
           <h3 className="mb-3 font-semibold">ROI Decision Framework</h3>
-          <p>
+          <HighlightBlock as="p" tier="crucial">
             Use GraphQL when: (1) multiple clients need different data views
             (web, mobile, third-party), (2) your data model has complex
             relationships (N+1 is a real problem), (3) reducing round trips is
@@ -869,21 +872,21 @@ export default function GraphQLConciseArticle() {
             Use REST when: (1) simple CRUD with flat resources, (2) HTTP caching
             is paramount, (3) team lacks GraphQL expertise and learning curve is
             prohibitive.
-          </p>
+          </HighlightBlock>
         </div>
       </section>
 
       <section>
         <h2>Decision Framework: When to Use GraphQL</h2>
-        <p>
+        <HighlightBlock as="p" tier="important">
           GraphQL is not always the right solution. Use this decision framework
           to evaluate whether GraphQL is appropriate for your use case.
-        </p>
+        </HighlightBlock>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-4 text-lg font-semibold">Decision Tree</h3>
           <ul className="space-y-2">
-            <li>
+            <HighlightBlock as="li" tier="crucial">
               <strong>
                 Do you have multiple clients with different data requirements?
               </strong>
@@ -891,7 +894,7 @@ export default function GraphQLConciseArticle() {
                 <li>Yes → GraphQL is a strong candidate</li>
                 <li>No → REST may be simpler</li>
               </ul>
-            </li>
+            </HighlightBlock>
             <li>
               <strong>
                 Does your data model have complex nested relationships?
@@ -934,18 +937,18 @@ export default function GraphQLConciseArticle() {
               </tr>
             </thead>
             <tbody className="divide-y divide-theme">
-              <tr>
+              <HighlightBlock as="tr" tier="important">
                 <td className="p-2">GraphQL</td>
                 <td className="p-2">✅ High (client-controlled)</td>
                 <td className="p-2">⚠️ Application-level only</td>
                 <td className="p-2">High</td>
-              </tr>
-              <tr>
+              </HighlightBlock>
+              <HighlightBlock as="tr" tier="crucial">
                 <td className="p-2">REST</td>
                 <td className="p-2">❌ Low (server-controlled)</td>
                 <td className="p-2">✅ HTTP-native caching</td>
                 <td className="p-2">Low-Medium</td>
-              </tr>
+              </HighlightBlock>
               <tr>
                 <td className="p-2">tRPC</td>
                 <td className="p-2">⚠️ Medium (TypeScript-only)</td>

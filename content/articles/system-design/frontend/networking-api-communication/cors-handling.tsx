@@ -338,7 +338,7 @@ export default function CorsHandlingArticle() {
             </tr>
           </thead>
           <tbody className="divide-y divide-theme">
-            <tr>
+            <HighlightBlock as="tr" tier="important">
               <td className="p-3">
                 <strong>Wildcard Origin (*)</strong>
               </td>
@@ -354,8 +354,8 @@ export default function CorsHandlingArticle() {
                 • Allows any site to consume your API
                 <br />• No granular origin-based access control
               </td>
-            </tr>
-            <tr>
+            </HighlightBlock>
+            <HighlightBlock as="tr" tier="crucial">
               <td className="p-3">
                 <strong>Specific Origin</strong>
               </td>
@@ -371,8 +371,8 @@ export default function CorsHandlingArticle() {
                 • Must maintain allowed origins list
                 <br />• Vary: Origin required for proper CDN caching
               </td>
-            </tr>
-            <tr>
+            </HighlightBlock>
+            <HighlightBlock as="tr" tier="important">
               <td className="p-3">
                 <strong>Preflight Caching</strong>
               </td>
@@ -388,8 +388,8 @@ export default function CorsHandlingArticle() {
                 • Varies by browser (inconsistent behavior)
                 <br />• Per-method, per-header cache (limited benefit for diverse APIs)
               </td>
-            </tr>
-            <tr>
+            </HighlightBlock>
+            <HighlightBlock as="tr" tier="important">
               <td className="p-3">
                 <strong>Dynamic Origin Echo</strong>
               </td>
@@ -405,7 +405,7 @@ export default function CorsHandlingArticle() {
                 • Must set Vary: Origin to prevent cache poisoning
                 <br />• Slightly more complex server configuration
               </td>
-            </tr>
+            </HighlightBlock>
           </tbody>
         </table>
 
@@ -435,12 +435,12 @@ export default function CorsHandlingArticle() {
 
       <section>
         <h2>Best Practices</h2>
-        <p>
+        <HighlightBlock as="p" tier="important">
           These practices represent hard-won lessons from operating CORS-enabled
           frontend applications at scale:
-        </p>
+        </HighlightBlock>
         <ol className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Use Specific Origins for Authenticated APIs:</strong> Never
             use <code>Access-Control-Allow-Origin: *</code> for APIs that
             require authentication or return sensitive data. Always validate the
@@ -449,8 +449,8 @@ export default function CorsHandlingArticle() {
             authenticated responses. For SaaS applications with customer
             domains, maintain a dynamic whitelist in your database and validate
             origins at runtime.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Always Include Vary: Origin:</strong> When using dynamic
             origin echo (different Access-Control-Allow-Origin values based on
             request), always include <code>Vary: Origin</code> in the response.
@@ -459,8 +459,8 @@ export default function CorsHandlingArticle() {
             malicious site. This is critical even if you think your CDN is
             "smart" -- without Vary, cache behavior is undefined and may change
             with CDN configuration updates.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Set Access-Control-Max-Age for Stable APIs:</strong> For
             APIs with stable CORS policies (methods and headers do not change
             frequently), set <code>Access-Control-Max-Age: 86400</code> (24
@@ -468,8 +468,8 @@ export default function CorsHandlingArticle() {
             round trip for subsequent requests, reducing latency by 50-200ms.
             For APIs that change frequently, use a lower value (3600 for 1 hour)
             or omit the header to use browser defaults.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Minimize Custom Headers to Avoid Preflight:</strong> Design
             APIs to work with simple headers where possible. Custom headers
             trigger preflight requests, adding latency. If you must use custom
@@ -477,8 +477,8 @@ export default function CorsHandlingArticle() {
             body (for POST) to keep the request "simple." For example, instead
             of <code>X-User-ID: 123</code>, use query parameter{" "}
             <code>?userId=123</code> for GET requests.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Handle OPTIONS Requests Efficiently:</strong> Preflight
             OPTIONS requests should be handled at the edge (API gateway, load
             balancer, reverse proxy) rather than reaching your application
@@ -486,7 +486,7 @@ export default function CorsHandlingArticle() {
             OPTIONS with appropriate CORS headers without proxying to backend
             services. This reduces backend load and latency for preflight
             requests.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Test CORS in All Environments:</strong> CORS issues often
             surface only in production due to domain differences
@@ -519,12 +519,12 @@ export default function CorsHandlingArticle() {
 
       <section>
         <h2>Common Pitfalls</h2>
-        <p>
+        <HighlightBlock as="p" tier="important">
           These mistakes appear frequently even in production applications at
           well-funded companies:
-        </p>
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Using Wildcard with Credentials:</strong> Setting both{" "}
             <code>Access-Control-Allow-Origin: *</code> and{" "}
             <code>Access-Control-Allow-Credentials: true</code>. Browsers reject
@@ -534,8 +534,8 @@ export default function CorsHandlingArticle() {
             wildcard '*' when the request's credentials mode is 'include'") is
             cryptic but the fix is simple: use specific origin echo instead of
             wildcard when credentials are needed.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Forgetting Vary: Origin:</strong> Returning dynamic
             Access-Control-Allow-Origin without <code>Vary: Origin</code>. CDNs
             cache the first response (e.g., with Access-Control-Allow-Origin:
@@ -543,14 +543,14 @@ export default function CorsHandlingArticle() {
             including those from https://evil.com. The malicious site can then
             read responses it should not access. Always include Vary: Origin
             when origin values vary by request.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Not Handling OPTIONS Requests:</strong> Backend services
             that do not implement OPTIONS handlers, causing 404 or 405 responses
             to preflight requests. The browser sees the failed preflight and
             blocks the actual request. Ensure your framework or API gateway
             handles OPTIONS and returns 200 with appropriate CORS headers.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>CORS Errors Masking Real Issues:</strong> Assuming all
             cross-origin request failures are CORS issues. A 401 Unauthorized or
@@ -577,7 +577,7 @@ export default function CorsHandlingArticle() {
             methods. A blanket "GET, POST, PUT, DELETE, PATCH, OPTIONS" is
             common and safe.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Ignoring Preflight Cache Invalidation:</strong> Setting a
             long Access-Control-Max-Age (e.g., 86400) and then changing CORS
             policies. Browsers that cached the old preflight response will
@@ -585,7 +585,7 @@ export default function CorsHandlingArticle() {
             stale allowed methods/headers. For APIs with evolving CORS policies,
             use shorter Max-Age values or implement cache busting by changing
             the preflight request (e.g., adding a query parameter).
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Assuming CORS Applies to All Resources:</strong> CORS only
             applies to XMLHttpRequest and fetch API calls. It does not apply to{" "}
@@ -601,11 +601,11 @@ export default function CorsHandlingArticle() {
 
       <section>
         <h2>Real-World Use Cases</h2>
-        <p>
+        <HighlightBlock as="p" tier="important">
           CORS configuration is critical in these production scenarios:
-        </p>
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Single-Page Application with Separate API Domain:</strong>{" "}
             A React app hosted on <code>https://app.example.com</code> consumes
             an API on <code>https://api.example.com</code>. Configuration: API
@@ -616,7 +616,7 @@ export default function CorsHandlingArticle() {
             86400, and allows methods GET, POST, PUT, DELETE, PATCH. For
             authenticated requests, also sets Access-Control-Allow-Credentials:
             true and frontend sets credentials: 'include'.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>SaaS Application with Customer Domains:</strong> A
             white-label SaaS product embedded on customer domains (customer1.com,

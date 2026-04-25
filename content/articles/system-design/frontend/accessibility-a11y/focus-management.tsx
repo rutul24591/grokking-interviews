@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -34,14 +35,14 @@ export default function FocusManagementArticle() {
       {/* ─── Section 1: Definition & Context ─── */}
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Focus management</strong> is the practice of programmatically controlling which
           element receives keyboard focus during user interactions, ensuring that keyboard and screen
           reader users always know where they are on the page and can efficiently navigate through
           dynamic content changes. It encompasses focus trapping (confining focus within a region),
           focus restoration (returning focus after a transient interaction), and focus routing
           (directing focus to new content after navigation or state changes).
-        </p>
+        </HighlightBlock>
         <p>
           In static web pages, focus management is largely handled by the browser — users tab through
           links and form controls in DOM order. But modern web applications introduce dynamic
@@ -50,7 +51,7 @@ export default function FocusManagementArticle() {
           accordion panels that expand to reveal new interactive elements, and infinite scroll that
           appends content below the viewport.
         </p>
-        <p>
+        <HighlightBlock as="p" tier="important">
           WCAG addresses focus management through several success criteria:
           <strong> 2.4.3 Focus Order</strong> (Level A) requires a meaningful and operable focus
           sequence; <strong>2.4.7 Focus Visible</strong> (Level AA) mandates visible focus indicators;
@@ -58,25 +59,25 @@ export default function FocusManagementArticle() {
           element receives focus. WCAG 2.2 added <strong>2.4.11 Focus Not Obscured (Minimum)</strong>
           (Level AA) requiring that focused elements are at least partially visible, and
           <strong>2.4.12 Focus Not Obscured (Enhanced)</strong> (Level AAA) requiring full visibility.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Why focus management matters for staff/principal engineers:</strong> Poor focus
           management is one of the most common accessibility failures in SPAs and is notoriously
           difficult to retrofit. Architectural decisions about routing, component lifecycle, overlay
           patterns, and state management all impact focus behavior. Technical leaders must establish
           focus management patterns at the component library level to prevent individual teams from
           implementing inconsistent or broken focus behavior.
-        </p>
+        </HighlightBlock>
 
         <div className="my-6 rounded-lg border border-accent/30 bg-accent/10 p-6">
           <h3 className="mb-3 font-semibold">Key Insight: Focus Is the Keyboard User&apos;s Cursor</h3>
-          <p>
+          <HighlightBlock as="p" tier="crucial">
             For mouse users, the cursor provides constant visual feedback about position. For
             keyboard users, focus serves the same role. When focus is lost (moved to the body element
             or to an invisible element), keyboard users are stranded — they have no idea where they
             are on the page and must tab through the entire page to reorient. Every dynamic content
             change must answer the question: &quot;Where should focus go?&quot;
-          </p>
+          </HighlightBlock>
         </div>
       </section>
 
@@ -84,26 +85,26 @@ export default function FocusManagementArticle() {
       <section>
         <h2>Core Concepts</h2>
         <ul className="space-y-2">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Programmatic Focus (element.focus()):</strong> JavaScript can move focus to any
             element with <code>tabindex=&quot;-1&quot;</code> or any natively focusable element using
             <code>element.focus()</code>. In React, this is typically done via <code>useRef</code>
             combined with <code>useEffect</code>. The <code>preventScroll</code> option prevents
             the browser from scrolling the element into view when focus moves.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Focus Trap:</strong> A pattern that confines Tab/Shift+Tab cycling to a subset
             of the page — typically a modal dialog or flyout panel. Focus wraps from the last
             focusable element back to the first (and vice versa). The <code>inert</code> HTML
             attribute can disable all interactions on background content, providing a native
             alternative to JavaScript-based focus traps.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Focus Restoration:</strong> When a transient UI element (modal, tooltip, dropdown)
             closes, focus should return to the element that triggered it. This prevents the
             &quot;focus lost to body&quot; problem where keyboard users are stranded after closing
             an overlay.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>:focus-visible Pseudo-class:</strong> Applies focus styles only when the browser
             determines the user is navigating via keyboard (not mouse or touch). This solves the
@@ -116,19 +117,19 @@ export default function FocusManagementArticle() {
             any field within it is focused) and for keeping dropdown menus visible while focus is
             inside them.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>The inert Attribute:</strong> A boolean HTML attribute that marks an element and
             all its descendants as non-interactive. Elements with <code>inert</code> are removed from
             the tab order, ignored by screen readers, and unclickable. This is the correct way to
             make background content inaccessible when a modal is open, replacing complex
             <code>aria-hidden</code> + <code>tabindex=&quot;-1&quot;</code> juggling.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="crucial">
             <strong>SPA Route Change Focus:</strong> When a SPA navigates to a new &quot;page,&quot;
             screen readers don&apos;t receive the page load event they rely on. Focus must be
             explicitly moved — typically to the new page&apos;s <code>&lt;h1&gt;</code>, a skip
             link target, or a visually hidden route announcement element.
-          </li>
+          </HighlightBlock>
         </ul>
       </section>
 
@@ -137,16 +138,17 @@ export default function FocusManagementArticle() {
         <h2>Architecture &amp; Flow</h2>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Focus Trap in Modal Lifecycle</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           The focus trap lifecycle has four phases: activation (focus moves into the trap), cycling
           (Tab/Shift+Tab wrap within the trap), interaction (user works within the confined area),
           and deactivation (focus returns to the trigger element). Getting each phase right is
           critical for a seamless keyboard experience.
-        </p>
+        </HighlightBlock>
         <ArticleImage
           src="/diagrams/system-design-concepts/frontend/accessibility-a11y/focus-management-diagram-1.svg"
           alt="Focus trap lifecycle in a modal showing activation, cycling, interaction, and deactivation phases"
           caption="Focus trap lifecycle: Open triggers focus movement into the modal, Tab/Shift+Tab cycle within, Escape deactivates and restores focus to the original trigger."
+          captionTier="important"
         />
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Focus Trap Implementation Pattern</h3>
@@ -155,16 +157,17 @@ export default function FocusManagementArticle() {
         </p>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Route Change Focus Strategy</h3>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           When a SPA navigates between routes, the page content changes but the browser doesn&apos;t
           fire a traditional page load event. Without explicit focus management, keyboard and screen
           reader users are left at their previous position in a page that no longer exists — they
           must tab through the entire new page to find the content.
-        </p>
+        </HighlightBlock>
         <ArticleImage
           src="/diagrams/system-design-concepts/frontend/accessibility-a11y/focus-management-diagram-2.svg"
           alt="Route change focus strategy showing focus moving to the main heading after SPA navigation"
           caption="After SPA route change, focus should move to the new page's main heading (h1) or a designated focus target, and the document title should update."
+          captionTier="important"
         />
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">SPA Route Change Focus Management</h3>
@@ -173,21 +176,22 @@ export default function FocusManagementArticle() {
         </p>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Focus Ring Visibility States</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           The <code>:focus</code>, <code>:focus-visible</code>, and <code>:focus-within</code>
           pseudo-classes provide different levels of focus styling control. Understanding when each
           applies is essential for balancing visual design with accessibility requirements.
-        </p>
+        </HighlightBlock>
         <ArticleImage
           src="/diagrams/system-design-concepts/frontend/accessibility-a11y/focus-management-diagram-3.svg"
           alt="Focus ring visibility states showing :focus, :focus-visible, and :focus-within pseudo-classes"
           caption=":focus applies on all focus events; :focus-visible applies only on keyboard focus; :focus-within applies when any descendant is focused."
+          captionTier="important"
         />
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Focus Ring CSS Patterns</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           For focus visibility CSS patterns, remove default outline on button focus and add custom focus-visible ring with 2px solid color and 2px offset. For form groups, use focus-within to style the container when any descendant is focused with border color change and box shadow. For WCAG 2.4.11 compliance, use 3px solid outline on focus-visible with box-shadow for high contrast focus indicators that are visible against any background. For mouse users, use focus not focus-visible to remove outline and box-shadow while keeping keyboard focus visible.
-        </p>
+        </HighlightBlock>
       </section>
 
       {/* ─── Section 4: Trade-offs & Comparisons ─── */}
@@ -203,31 +207,47 @@ export default function FocusManagementArticle() {
               </tr>
             </thead>
             <tbody>
-              <tr className="border-b border-accent/10">
+              <HighlightBlock
+                as="tr"
+                tier="important"
+                className="border-b border-accent/10"
+              >
                 <td className="p-3 font-medium">JavaScript Focus Trap</td>
                 <td className="p-3">Full control over trap behavior, works in all browsers, can handle edge cases (dynamically added elements)</td>
                 <td className="p-3">Complex to implement correctly, must handle edge cases manually, can break with third-party content</td>
-              </tr>
-              <tr className="border-b border-accent/10">
+              </HighlightBlock>
+              <HighlightBlock
+                as="tr"
+                tier="crucial"
+                className="border-b border-accent/10"
+              >
                 <td className="p-3 font-medium">inert Attribute</td>
                 <td className="p-3">Native browser support, handles focus, click, and screen reader access in one attribute, simpler code</td>
                 <td className="p-3">Requires polyfill for older browsers, all-or-nothing (can&apos;t partially inert), less granular control</td>
-              </tr>
+              </HighlightBlock>
               <tr className="border-b border-accent/10">
                 <td className="p-3 font-medium">Native &lt;dialog&gt; Element</td>
                 <td className="p-3">Built-in focus trap via showModal(), Escape handling, backdrop, top layer rendering</td>
                 <td className="p-3">Limited styling options for backdrop, inconsistent browser behavior for focus restoration, animation constraints</td>
               </tr>
-              <tr className="border-b border-accent/10">
+              <HighlightBlock
+                as="tr"
+                tier="important"
+                className="border-b border-accent/10"
+              >
                 <td className="p-3 font-medium">Focus to H1 on Route Change</td>
                 <td className="p-3">Clear landmark for screen readers, consistent pattern, natural reading flow</td>
                 <td className="p-3">H1 needs tabindex=&quot;-1&quot; (not naturally focusable), some screen readers may not announce non-interactive elements on focus</td>
-              </tr>
-              <tr className="border-b border-accent/10">
+              </HighlightBlock>
+              <HighlightBlock
+                as="tr"
+                tier="important"
+                className="border-b border-accent/10"
+              >
                 <td className="p-3 font-medium">Live Region Route Announcement</td>
                 <td className="p-3">Non-disruptive, doesn&apos;t move focus, works with any page structure</td>
                 <td className="p-3">User must manually navigate to new content, may miss the announcement, requires maintaining announcement text</td>
-              </tr>
+              </HighlightBlock>
             </tbody>
           </table>
         </div>
@@ -237,41 +257,41 @@ export default function FocusManagementArticle() {
       <section>
         <h2>Best Practices</h2>
         <ol className="space-y-2">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Always restore focus after transient interactions:</strong> When a modal, popover,
             dropdown, or tooltip closes, return focus to the trigger element. Store a reference to
             <code>document.activeElement</code> when the overlay opens and call <code>.focus()</code>
             on it when the overlay closes.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Use the inert attribute for background content:</strong> When a modal is open,
             add <code>inert</code> to all sibling content containers. This is more robust than
             manually setting <code>aria-hidden</code> and <code>tabindex=&quot;-1&quot;</code> on
             every interactive element.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Move focus on SPA route changes:</strong> After navigation, focus the new
             page&apos;s H1 heading (with <code>tabindex=&quot;-1&quot;</code>) or use a visually
             hidden route announcer with <code>aria-live</code>. Both strategies work; combining them
             provides the best experience.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Use :focus-visible for focus indicators:</strong> Apply custom focus styles on
             <code>:focus-visible</code> rather than <code>:focus</code> to avoid showing focus rings
             on mouse clicks while maintaining keyboard visibility.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Ensure focus indicators meet WCAG 2.4.11 contrast requirements:</strong> Focus
             indicators need at least 3:1 contrast against adjacent colors and must have a minimum
             area of 2px on the shortest side. Double-ring patterns (white inner ring + colored outer
             ring) work against any background.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Test focus behavior after every state change:</strong> Ask &quot;where is focus
             now?&quot; after every dynamic change: content loading, item deletion, form submission,
             accordion expansion, tab switch, error display. If the answer is unclear, you have a
             focus management bug.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Prefer native &lt;dialog&gt; for modal dialogs:</strong> The native
             <code>&lt;dialog&gt;</code> element with <code>showModal()</code> provides built-in focus
@@ -285,18 +305,18 @@ export default function FocusManagementArticle() {
       <section>
         <h2>Common Pitfalls</h2>
         <ul className="space-y-2">
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Focus lost to document body:</strong> When a focused element is removed from the
             DOM (e.g., deleting a list item, closing a panel), focus falls to the body element.
             Keyboard users must Tab through the entire page to reorient. Always move focus to a
             logical next element before removing the currently focused one.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Focus moving to invisible or off-screen elements:</strong> Programmatic focus
             on an element that&apos;s hidden via CSS (opacity: 0, visibility: hidden, or
             positioned off-screen) confuses users because the focus indicator isn&apos;t visible.
             Ensure the target is visible before focusing.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Multiple focus traps without proper nesting:</strong> Stacked modals (modal
             opening another modal) create nested focus traps. The inner trap must deactivate before
@@ -309,17 +329,17 @@ export default function FocusManagementArticle() {
             who expect to start reading from the top. Only auto-focus when the page&apos;s primary
             purpose is the focused element (e.g., a login form, a search page).
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Using outline: none without replacement:</strong> Removing focus outlines
             globally (<code>{`*:focus { outline: none }`}</code>) without providing alternative
             focus indicators makes the application completely unusable for keyboard users. Always
             pair outline removal with <code>:focus-visible</code> styling.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Forgetting to handle Escape key in overlays:</strong> Users expect Escape to
             close modals, popovers, and dropdowns. Failing to handle this key leaves keyboard users
             trapped in overlays with no way to dismiss them.
-          </li>
+          </HighlightBlock>
         </ul>
       </section>
 
@@ -327,32 +347,32 @@ export default function FocusManagementArticle() {
       <section>
         <h2>Real-World Use Cases</h2>
         <ul className="space-y-2">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Radix UI Primitives:</strong> Provides unstyled, accessible components with
             built-in focus trapping, focus restoration, and <code>inert</code> support. Their Dialog
             component automatically traps focus, restores it on close, and marks background content
             as inert.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Next.js Route Announcer:</strong> Next.js includes a built-in route announcer
             component that uses an aria-live region to announce page navigations for screen reader
             users, solving the SPA route change problem at the framework level.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Google Workspace:</strong> Gmail, Google Docs, and Google Sheets implement
             complex focus management for multi-panel layouts, inline editing, collaboration cursors,
             and nested dialogs within dialogs.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Shopify Polaris:</strong> Their design system components handle focus management
             for complex patterns like resource lists (focus management when items are selected,
             deleted, or filtered) and multi-step wizards (focus moves to the new step on transition).
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Adobe React Spectrum:</strong> Uses the FocusScope component to manage focus
             containment, auto-focus, and focus restoration across all interactive components, with
             comprehensive support for virtual focus via <code>aria-activedescendant</code>.
-          </li>
+          </HighlightBlock>
         </ul>
       </section>
 
@@ -362,7 +382,7 @@ export default function FocusManagementArticle() {
 
         <div className="my-4 rounded-lg border border-accent/20 bg-accent/5 p-4">
           <h3 className="mb-2 font-semibold">Q: How do you implement a focus trap for a modal dialog?</h3>
-          <p>
+          <HighlightBlock as="p" tier="important">
             A focus trap confines Tab/Shift+Tab cycling within the modal. Implementation: (1) Store
             <code>document.activeElement</code> as the trigger reference when the modal opens.
             (2) Query all focusable elements inside the modal. (3) On Tab at the last element,
@@ -371,12 +391,12 @@ export default function FocusManagementArticle() {
             (6) On close, remove <code>inert</code> and restore focus to the stored trigger.
             Alternatively, use the native <code>&lt;dialog&gt;</code> element with
             <code>showModal()</code> which handles most of this automatically.
-          </p>
+          </HighlightBlock>
         </div>
 
         <div className="my-4 rounded-lg border border-accent/20 bg-accent/5 p-4">
           <h3 className="mb-2 font-semibold">Q: What is the inert attribute and how does it improve accessibility?</h3>
-          <p>
+          <HighlightBlock as="p" tier="important">
             The <code>inert</code> HTML attribute makes an element and all its descendants
             non-interactive: they&apos;re removed from the tab order, ignored by screen readers,
             and unclickable. It replaces the complex pattern of manually setting
@@ -385,12 +405,12 @@ export default function FocusManagementArticle() {
             to the main content container while the modal is open ensures background content is
             completely inaccessible, solving both focus trapping and screen reader isolation in one
             attribute.
-          </p>
+          </HighlightBlock>
         </div>
 
         <div className="my-4 rounded-lg border border-accent/20 bg-accent/5 p-4">
           <h3 className="mb-2 font-semibold">Q: How should focus be managed during SPA route changes?</h3>
-          <p>
+          <HighlightBlock as="p" tier="crucial">
             Three complementary strategies: (1) <strong>Focus the main heading:</strong> After
             navigation, set <code>tabindex=&quot;-1&quot;</code> on the new page&apos;s H1 and call
             <code>.focus()</code>. This orients screen readers to the new content. (2)
@@ -399,7 +419,7 @@ export default function FocusManagementArticle() {
             (3) <strong>Update document title:</strong> Change <code>document.title</code> so screen
             readers announce the new page title. Next.js handles this with a built-in route
             announcer. Custom SPAs need explicit implementation.
-          </p>
+          </HighlightBlock>
         </div>
 
         <div className="my-4 rounded-lg border border-accent/20 bg-accent/5 p-4">
@@ -418,7 +438,7 @@ export default function FocusManagementArticle() {
 
         <div className="my-4 rounded-lg border border-accent/20 bg-accent/5 p-4">
           <h3 className="mb-2 font-semibold">Q: What happens when a focused element is removed from the DOM?</h3>
-          <p>
+          <HighlightBlock as="p" tier="important">
             When the currently focused element is removed, focus falls back to the
             <code>&lt;body&gt;</code> element. This is called &quot;focus loss&quot; and is a serious
             usability problem for keyboard users — they lose their place and must tab through the
@@ -427,12 +447,12 @@ export default function FocusManagementArticle() {
             ref to track what should receive focus after removal. (3) For list item deletion,
             focus the previous item, or the next item if the first was deleted, or the list
             heading if the list is now empty.
-          </p>
+          </HighlightBlock>
         </div>
 
         <div className="my-4 rounded-lg border border-accent/20 bg-accent/5 p-4">
           <h3 className="mb-2 font-semibold">Q: How do you handle focus management in nested modals?</h3>
-          <p>
+          <HighlightBlock as="p" tier="important">
             Nested modals (a modal opening another modal) create a stack of focus traps. The
             approach: (1) Each modal stores its own trigger reference independently. (2) When the
             inner modal opens, the inner trap activates and the outer trap pauses. (3) The inner
@@ -441,7 +461,7 @@ export default function FocusManagementArticle() {
             the outer trap reactivates. Libraries like focus-trap support this via a
             &quot;trap stack&quot; pattern. The native <code>&lt;dialog&gt;</code> handles this
             through the top layer rendering order.
-          </p>
+          </HighlightBlock>
         </div>
       </section>
 
@@ -449,30 +469,30 @@ export default function FocusManagementArticle() {
       <section>
         <h2>References &amp; Further Reading</h2>
         <ul className="space-y-2">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <a href="https://www.w3.org/WAI/WCAG22/Understanding/focus-visible.html" target="_blank" rel="noopener noreferrer" className="text-accent hover:underline">
               Understanding WCAG 2.4.7: Focus Visible
             </a>{" "}
             — Requirements for visible focus indicators.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <a href="https://www.w3.org/WAI/WCAG22/Understanding/focus-not-obscured-minimum.html" target="_blank" rel="noopener noreferrer" className="text-accent hover:underline">
               Understanding WCAG 2.4.11: Focus Not Obscured
             </a>{" "}
             — WCAG 2.2 requirements for focus indicator visibility.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="crucial">
             <a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Global_attributes/inert" target="_blank" rel="noopener noreferrer" className="text-accent hover:underline">
               MDN: The inert attribute
             </a>{" "}
             — Native HTML attribute for disabling interaction with background content.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <a href="https://github.com/focus-trap/focus-trap" target="_blank" rel="noopener noreferrer" className="text-accent hover:underline">
               focus-trap Library
             </a>{" "}
             — Production-grade JavaScript focus trapping library.
-          </li>
+          </HighlightBlock>
           <li>
             <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/:focus-visible" target="_blank" rel="noopener noreferrer" className="text-accent hover:underline">
               MDN: :focus-visible

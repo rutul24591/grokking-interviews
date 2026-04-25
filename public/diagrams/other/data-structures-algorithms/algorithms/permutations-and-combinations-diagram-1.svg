@@ -1,0 +1,62 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="system-ui, sans-serif">
+  <rect width="900" height="500" fill="#f3f1f8"/>
+  <text x="450" y="32" text-anchor="middle" font-size="19" font-weight="700" fill="#1a1822">Permutations &amp; Combinations — Three Backtracking Skeletons</text>
+
+  <rect x="40" y="60" width="270" height="400" fill="#fff" stroke="#6d5bd0" stroke-width="2" rx="6"/>
+  <text x="60" y="85" font-size="13" font-weight="700" fill="#6d5bd0">Subsets (power set)</text>
+  <text x="60" y="115" font-size="11" font-family="monospace">subsets(i, path):</text>
+  <text x="60" y="133" font-size="11" font-family="monospace">  if i == n:</text>
+  <text x="60" y="151" font-size="11" font-family="monospace">    emit(path); return</text>
+  <text x="60" y="169" font-size="11" font-family="monospace">  # exclude</text>
+  <text x="60" y="187" font-size="11" font-family="monospace">  subsets(i+1, path)</text>
+  <text x="60" y="205" font-size="11" font-family="monospace">  # include</text>
+  <text x="60" y="223" font-size="11" font-family="monospace">  path.push(a[i])</text>
+  <text x="60" y="241" font-size="11" font-family="monospace">  subsets(i+1, path)</text>
+  <text x="60" y="259" font-size="11" font-family="monospace">  path.pop()</text>
+  <text x="60" y="290" font-size="11" font-weight="700">Output: 2ⁿ subsets</text>
+  <text x="60" y="310" font-size="11">Time: O(n · 2ⁿ)</text>
+  <text x="60" y="335" font-size="11">Iterative bitmask version:</text>
+  <text x="60" y="355" font-size="11" font-family="monospace">for mask in 0..2^n:</text>
+  <text x="60" y="373" font-size="11" font-family="monospace">  pick a[i] where bit i set</text>
+  <text x="60" y="405" font-size="11" fill="#4caf50">Use Gray code for adjacent</text>
+  <text x="60" y="423" font-size="11" fill="#4caf50">subsets differing by 1 bit.</text>
+
+  <rect x="320" y="60" width="270" height="400" fill="#fff" stroke="#4caf50" stroke-width="2" rx="6"/>
+  <text x="340" y="85" font-size="13" font-weight="700" fill="#4caf50">Permutations</text>
+  <text x="340" y="115" font-size="11" font-family="monospace">permute(start):</text>
+  <text x="340" y="133" font-size="11" font-family="monospace">  if start == n:</text>
+  <text x="340" y="151" font-size="11" font-family="monospace">    emit(a); return</text>
+  <text x="340" y="169" font-size="11" font-family="monospace">  for i = start..n−1:</text>
+  <text x="340" y="187" font-size="11" font-family="monospace">    swap(a[start], a[i])</text>
+  <text x="340" y="205" font-size="11" font-family="monospace">    permute(start+1)</text>
+  <text x="340" y="223" font-size="11" font-family="monospace">    swap(a[start], a[i])</text>
+  <text x="340" y="259" font-size="11" font-weight="700">Output: n! permutations</text>
+  <text x="340" y="279" font-size="11">Time: O(n · n!)</text>
+  <text x="340" y="305" font-size="11">Heap's Algorithm produces all</text>
+  <text x="340" y="323" font-size="11">n! by adjacent swaps only.</text>
+  <text x="340" y="350" font-size="11">next_permutation (lexicographic):</text>
+  <text x="340" y="368" font-size="11">find largest i with a[i]&lt;a[i+1],</text>
+  <text x="340" y="386" font-size="11">find largest j&gt;i with a[j]&gt;a[i],</text>
+  <text x="340" y="404" font-size="11">swap, reverse suffix.</text>
+  <text x="340" y="438" font-size="11" fill="#4caf50">Skip duplicates: sort + skip</text>
+  <text x="340" y="455" font-size="11" fill="#4caf50">a[i] equal to a[i−1] when used.</text>
+
+  <rect x="600" y="60" width="270" height="400" fill="#fff" stroke="#6d5bd0" stroke-width="2" rx="6"/>
+  <text x="620" y="85" font-size="13" font-weight="700" fill="#6d5bd0">Combinations C(n, k)</text>
+  <text x="620" y="115" font-size="11" font-family="monospace">combine(start, path):</text>
+  <text x="620" y="133" font-size="11" font-family="monospace">  if path.size == k:</text>
+  <text x="620" y="151" font-size="11" font-family="monospace">    emit(path); return</text>
+  <text x="620" y="169" font-size="11" font-family="monospace">  for i = start..n−1:</text>
+  <text x="620" y="187" font-size="11" font-family="monospace">    if remain &lt; need: break  ← prune</text>
+  <text x="620" y="205" font-size="11" font-family="monospace">    path.push(a[i])</text>
+  <text x="620" y="223" font-size="11" font-family="monospace">    combine(i+1, path)</text>
+  <text x="620" y="241" font-size="11" font-family="monospace">    path.pop()</text>
+  <text x="620" y="275" font-size="11" font-weight="700">Output: C(n, k)</text>
+  <text x="620" y="295" font-size="11">Time: O(k · C(n, k))</text>
+  <text x="620" y="325" font-size="11">i+1 in recursion (not start+1)</text>
+  <text x="620" y="343" font-size="11">prevents duplicates from reuse.</text>
+  <text x="620" y="370" font-size="11">Pruning: stop when remaining</text>
+  <text x="620" y="388" font-size="11">elements can't fill k slots.</text>
+  <text x="620" y="425" font-size="11" fill="#4caf50">Combinations with replacement</text>
+  <text x="620" y="443" font-size="11" fill="#4caf50">recurse with i (not i+1).</text>
+</svg>

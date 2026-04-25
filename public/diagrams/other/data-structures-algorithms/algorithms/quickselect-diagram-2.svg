@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="system-ui, sans-serif">
+  <rect width="900" height="500" fill="#f3f1f8"/>
+  <text x="450" y="32" text-anchor="middle" font-size="19" font-weight="700" fill="#1a1822">Median of Medians — Worst-Case O(n) Pivot</text>
+
+  <rect x="40" y="60" width="820" height="210" fill="#fff" stroke="#6d5bd0" stroke-width="2" rx="6"/>
+  <text x="60" y="85" font-size="13" font-weight="700" fill="#6d5bd0">BFPRT (Blum–Floyd–Pratt–Rivest–Tarjan, 1973)</text>
+  <text x="60" y="110" font-size="11">1. Partition input into groups of 5. (O(n))</text>
+  <text x="60" y="130" font-size="11">2. Sort each group, take its median. (O(n), sort of 5 is O(1).)</text>
+  <text x="60" y="150" font-size="11">3. Recursively quickselect the median of those ⌈n/5⌉ medians. (T(n/5))</text>
+  <text x="60" y="170" font-size="11">4. Use that as pivot; partition input; recurse into one side. (T(7n/10) + n)</text>
+  <text x="60" y="200" font-size="11" font-weight="700" fill="#4caf50">T(n) ≤ T(n/5) + T(7n/10) + O(n) → Θ(n).</text>
+  <text x="60" y="225" font-size="11">Why 7n/10? The pivot beats at least 3 of the 5 elements in at least half of the groups</text>
+  <text x="60" y="243" font-size="11">= 3n/10 elements, so the larger side holds ≤ 7n/10.</text>
+
+  <rect x="40" y="290" width="820" height="185" fill="#fff" stroke="#4caf50" stroke-width="2" rx="6"/>
+  <text x="60" y="315" font-size="13" font-weight="700" fill="#4caf50">Variants &amp; improvements</text>
+  <text x="60" y="340" font-size="11">• Groups of 3: T(n/3) + T(2n/3) + n → Θ(n log n). NOT linear. 5 is the smallest group size that works.</text>
+  <text x="60" y="360" font-size="11">• Groups of 7: linear too, smaller constant; rarely seen because 5 is the textbook standard.</text>
+  <text x="60" y="380" font-size="11">• Floyd–Rivest (1975): samples ~√n elements, picks two bounds from the sample, partitions 3-way.</text>
+  <text x="60" y="398" font-size="11">  Expected comparisons: n + k + o(n) — tightest known constant.</text>
+  <text x="60" y="418" font-size="11">• Introselect (STL nth_element): quickselect with random pivot, fall back to median-of-medians</text>
+  <text x="60" y="436" font-size="11">  if depth exceeds 2·log n. Gives O(n) worst-case with quickselect's average constants.</text>
+  <text x="60" y="458" font-size="11" fill="#cc4444">Median-of-medians has large constants — use only when worst-case matters.</text>
+</svg>

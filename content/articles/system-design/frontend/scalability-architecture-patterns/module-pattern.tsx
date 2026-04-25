@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -30,7 +31,7 @@ export default function ModulePatternArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           The <strong>Module Pattern</strong> is a design pattern that provides
           a way to encapsulate private members within a closure, exposing only a
           public API. It is one of the most foundational patterns in JavaScript
@@ -38,8 +39,8 @@ export default function ModulePatternArticle() {
           encapsulation mechanisms. Before ES Modules became standard, this
           pattern was the primary tool for avoiding global namespace pollution,
           organizing code into cohesive units, and enforcing information hiding.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The pattern traces its origins to the early 2000s, when JavaScript
           applications were growing beyond simple form validations into
           full-fledged web applications. Douglas Crockford popularized the use
@@ -47,8 +48,8 @@ export default function ModulePatternArticle() {
           Immediately Invoked Function Expressions (IIFEs) as the canonical way
           to create isolated scopes. Libraries like jQuery, Backbone.js, and
           Dojo Toolkit were all structured around variants of this pattern.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The evolution from IIFEs to CommonJS (Node.js, 2009), AMD (RequireJS,
           2010), UMD, and finally ES Modules (ES2015) represents the JavaScript
           ecosystem&apos;s journey toward a native module system. Understanding
@@ -56,7 +57,7 @@ export default function ModulePatternArticle() {
           codebases with mixed module formats, configure bundlers that reconcile
           them, and make informed decisions about module boundaries in
           large-scale applications.
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
@@ -66,7 +67,7 @@ export default function ModulePatternArticle() {
           senior engineer should internalize:
         </p>
         <ul>
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Closure-Based Privacy:</strong> JavaScript closures allow
             inner functions to retain access to variables declared in their
             enclosing scope even after that scope has returned. The Module
@@ -74,7 +75,7 @@ export default function ModulePatternArticle() {
             scope and returning an object that references those variables
             through closure, creating true information hiding without class
             syntax or access modifiers.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Immediately Invoked Function Expression (IIFE):</strong> The
             classic implementation wraps a function in parentheses and
@@ -83,14 +84,14 @@ export default function ModulePatternArticle() {
             only way to create block-level scoping before ES2015 introduced let
             and const.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Revealing Module Pattern:</strong> A refinement where all
             functions and variables are declared privately, and an object
             literal is returned that maps public names to private functions.
             This improves readability by making the public API explicit at the
             bottom of the module and allows internal functions to call each
             other without the public API prefix.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Namespace Pattern:</strong> A simpler variant where an
             object literal is used to group related functions under a single
@@ -105,24 +106,24 @@ export default function ModulePatternArticle() {
             contribute to the same logical module, a pattern commonly seen in
             large jQuery plugins.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>ES Module Static Structure:</strong> ES Modules use import
             and export declarations that are statically analyzable at parse
             time, enabling tree-shaking, circular dependency resolution, and
             live bindings. Unlike CommonJS, ES Module exports are read-only
             views into the exporting module&apos;s binding, meaning changes to
             the export are reflected in all importers.
-          </li>
+          </HighlightBlock>
         </ul>
       </section>
 
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Understanding how different module systems create scope boundaries is
           essential for debugging bundler issues, resolving circular
           dependencies, and designing clean module APIs.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/frontend/scalability-architecture-patterns/module-pattern-diagram-1.svg"
@@ -130,14 +131,14 @@ export default function ModulePatternArticle() {
           caption="Scope boundaries in IIFE modules vs ES Modules — IIFEs use function scope while ES Modules have their own module scope"
         />
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           In the IIFE approach, a function scope acts as the encapsulation
           boundary. Variables declared inside are truly private — not accessible
           from outside, not enumerable, not even visible to debugger tools
           unless a breakpoint is set within the closure. The returned object is
           the sole interface to the module&apos;s capabilities.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="crucial">
           ES Modules, by contrast, introduce a dedicated module scope. Each file
           is its own module with its own top-level scope. Named exports create
           live bindings — if the exporting module changes the value, importers
@@ -145,7 +146,7 @@ export default function ModulePatternArticle() {
           primary export of a module. This static structure is what enables
           bundlers to perform dead-code elimination (tree shaking) with
           confidence.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/frontend/scalability-architecture-patterns/module-pattern-diagram-2.svg"
@@ -153,7 +154,7 @@ export default function ModulePatternArticle() {
           caption="Module dependency graph showing directed imports between modules — circular dependencies are valid in ES Modules but require careful ordering"
         />
 
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           At scale, module dependency graphs can become deeply nested and even
           circular. ES Modules handle circular dependencies through a
           three-phase process: parsing (building the graph), instantiation
@@ -161,7 +162,7 @@ export default function ModulePatternArticle() {
           top-to-bottom). Because bindings are created before evaluation,
           circular references resolve correctly as long as the referenced export
           is initialized before first access.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/frontend/scalability-architecture-patterns/module-pattern-diagram-3.svg"
@@ -198,7 +199,7 @@ export default function ModulePatternArticle() {
                 <br />• Over-encapsulation leads to cumbersome APIs
               </td>
             </tr>
-            <tr>
+            <HighlightBlock as="tr" tier="crucial">
               <td className="p-3">
                 <strong>Dependency Management</strong>
               </td>
@@ -214,7 +215,7 @@ export default function ModulePatternArticle() {
                 • Circular dependencies require careful design
                 <br />• Dynamic imports add complexity to dependency graphs
               </td>
-            </tr>
+            </HighlightBlock>
             <tr>
               <td className="p-3">
                 <strong>Developer Experience</strong>
@@ -258,12 +259,12 @@ export default function ModulePatternArticle() {
       <section>
         <h2>Best Practices</h2>
         <ol className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Use ES Modules Everywhere:</strong> Default to ES Module
             syntax for all new code. Configure package.json with
             &quot;type&quot;: &quot;module&quot; for Node.js projects. Use .mjs
             extension only when coexisting with CommonJS in the same package.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Keep Modules Focused:</strong> Each module should have a
             single responsibility. If a module exports more than 7-10 items,
@@ -278,13 +279,13 @@ export default function ModulePatternArticle() {
             exports. Default exports should be reserved for the primary
             abstraction of a module.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Avoid Barrel File Bloat:</strong> Re-exporting everything
             from a directory&apos;s index.ts can defeat tree-shaking if the
             bundler cannot determine side-effect-free modules. Mark packages
             with &quot;sideEffects&quot;: false in package.json and use direct
             imports for performance-critical paths.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Design Module APIs for Consumers:</strong> Think about the
             import statement your consumers will write. Group related exports,
@@ -304,21 +305,21 @@ export default function ModulePatternArticle() {
       <section>
         <h2>Common Pitfalls</h2>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Circular Dependency Deadlocks:</strong> While ES Modules
             technically support circular imports, accessing a binding before its
             module has been evaluated yields undefined. This manifests as
             mysterious runtime errors that are difficult to trace. Use
             dependency analysis tools (Madge, webpack circular dependency
             plugin) to detect and break cycles.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Side Effects in Module Initialization:</strong> Code that
             runs at the top level of a module (DOM manipulation, API calls,
             global event listeners) executes when the module is first imported,
             which may happen at unexpected times during code splitting. Move
             side effects into explicitly called initialization functions.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Over-Reliance on Barrel Files:</strong> A single index.ts
             that re-exports hundreds of modules forces the bundler to process
@@ -393,9 +394,9 @@ export default function ModulePatternArticle() {
 
       <section>
         <h2>Security Considerations</h2>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Module Pattern introduces security considerations around encapsulation, private state protection, and the potential for information leakage through public APIs.
-        </p>
+        </HighlightBlock>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-4 text-lg font-semibold">Module Security Patterns</h3>
@@ -406,9 +407,9 @@ export default function ModulePatternArticle() {
             <li>
               <strong>API Surface Minimization:</strong> Expose only necessary public methods. Mitigation: use module pattern to encapsulate implementation details, document public API clearly, avoid leaking internal state.
             </li>
-            <li>
+            <HighlightBlock as="li" tier="crucial">
               <strong>Cross-Origin Module Security:</strong> Modules loaded from different origins can be exploited. Mitigation: use ES modules with strict CSP, validate module sources, avoid dynamic imports from untrusted sources.
-            </li>
+            </HighlightBlock>
           </ul>
         </div>
 
@@ -482,9 +483,9 @@ export default function ModulePatternArticle() {
 
       <section>
         <h2>Cost Analysis</h2>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Module Pattern has minimal direct costs but significant benefits for code organization and maintainability.
-        </p>
+        </HighlightBlock>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-4 text-lg font-semibold">Development Costs</h3>
@@ -500,9 +501,9 @@ export default function ModulePatternArticle() {
 
         <div className="my-6 rounded-lg border border-accent/30 bg-accent/10 p-6">
           <h3 className="mb-3 font-semibold">When to Use Module Pattern</h3>
-          <p>
+          <HighlightBlock as="p" tier="crucial">
             Use modules when: (1) you need encapsulation and information hiding, (2) you want to organize related code, (3) you need to avoid global namespace pollution. ES modules are preferred for all modern JavaScript code. IIFE modules only for legacy compatibility.
-          </p>
+          </HighlightBlock>
         </div>
       </section>
 
@@ -514,7 +515,7 @@ export default function ModulePatternArticle() {
               Q: What problem does the Module Pattern solve, and why was it
               necessary before ES Modules?
             </p>
-            <p className="mt-2 text-sm">
+            <HighlightBlock as="p" tier="crucial" className="mt-2 text-sm">
               A: JavaScript originally had no module system — all scripts shared
               a single global scope. The Module Pattern uses IIFEs and closures
               to create private scopes, preventing variable collisions and
@@ -523,7 +524,7 @@ export default function ModulePatternArticle() {
               modules. The pattern provides information hiding (private state),
               namespace organization (grouping related code), and dependency
               declaration (passing globals as IIFE parameters).
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">

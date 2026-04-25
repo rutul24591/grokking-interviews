@@ -255,12 +255,12 @@ export default function TokenRefreshStrategiesArticle() {
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Token Lifetime</h3>
         <ul className="space-y-2">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Access tokens:</strong> 15-60 minutes (shorter for high-security apps)
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Refresh tokens:</strong> 7-30 days (balance UX vs security)
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Absolute session limit:</strong> 30-90 days maximum (force re-authentication)
           </li>
@@ -271,15 +271,15 @@ export default function TokenRefreshStrategiesArticle() {
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Storage</h3>
         <ul className="space-y-2">
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Both tokens in HttpOnly cookies:</strong> Most secure option
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Secure + SameSite:</strong> Always set these flags
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Never localStorage:</strong> Accessible via XSS
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Domain scoping:</strong> Restrict cookies to specific subdomain
           </li>
@@ -287,12 +287,12 @@ export default function TokenRefreshStrategiesArticle() {
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Rotation</h3>
         <ul className="space-y-2">
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Rotate on every use:</strong> New refresh token each time
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Track used tokens:</strong> Detect reuse (theft detection)
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Invalidate family:</strong> If reuse detected, invalidate all related tokens
           </li>
@@ -309,12 +309,12 @@ export default function TokenRefreshStrategiesArticle() {
           <li>
             <strong>Refresh failure:</strong> Clear all tokens, redirect to login
           </li>
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Concurrent requests:</strong> Queue requests during refresh
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Network errors:</strong> Retry with exponential backoff
-          </li>
+          </HighlightBlock>
         </ul>
 
         <div className="my-6 rounded-lg border border-accent/30 bg-accent/10 p-6">
@@ -335,30 +335,30 @@ export default function TokenRefreshStrategiesArticle() {
           login reliability.
         </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>No token rotation:</strong> Static refresh tokens can be used indefinitely if stolen.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Too long access token lifetime:</strong> 24-hour access tokens = 24-hour damage window.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Storing tokens in localStorage:</strong> XSS = instant account takeover.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>No multi-tab coordination:</strong> Multiple tabs refresh simultaneously, race conditions.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Not handling refresh failures:</strong> App breaks when refresh fails, no fallback.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Infinite sliding sessions:</strong> Sessions that never expire are security risks.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>No absolute timeout:</strong> Even active sessions should eventually require re-authentication.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Ignoring token reuse detection:</strong> Missing opportunity to detect token theft.
-          </li>
+          </HighlightBlock>
         </ul>
       </section>
 

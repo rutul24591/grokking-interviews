@@ -1,0 +1,59 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="system-ui, sans-serif">
+  <rect width="900" height="500" fill="#f3f1f8"/>
+  <text x="450" y="32" text-anchor="middle" font-size="19" font-weight="700" fill="#1a1822">The Multiplication Algorithm Family</text>
+
+  <rect x="40" y="60" width="820" height="240" fill="#fff" stroke="#6d5bd0" stroke-width="2" rx="6"/>
+  <text x="60" y="85" font-size="13" font-weight="700" fill="#6d5bd0">Asymptotic landscape</text>
+  <g font-size="11">
+    <text x="60" y="115" font-weight="700">Algorithm</text>
+    <text x="280" y="115" font-weight="700">Year</text>
+    <text x="360" y="115" font-weight="700">Complexity</text>
+    <text x="600" y="115" font-weight="700">Crossover (digits)</text>
+
+    <text x="60" y="138">Schoolbook</text>
+    <text x="280" y="138">~3000 BC</text>
+    <text x="360" y="138">O(n²)</text>
+    <text x="600" y="138">— (always, for tiny n)</text>
+
+    <text x="60" y="160">Karatsuba</text>
+    <text x="280" y="160">1962</text>
+    <text x="360" y="160">O(n^1.585)</text>
+    <text x="600" y="160">~30–80 (machine-word units)</text>
+
+    <text x="60" y="182">Toom-Cook 3</text>
+    <text x="280" y="182">1963/66</text>
+    <text x="360" y="182">O(n^1.465)</text>
+    <text x="600" y="182">~250</text>
+
+    <text x="60" y="204">Toom-Cook k</text>
+    <text x="280" y="204">—</text>
+    <text x="360" y="204">O(n^(log_k(2k−1)))</text>
+    <text x="600" y="204">tunable</text>
+
+    <text x="60" y="226">Schönhage–Strassen (FFT)</text>
+    <text x="280" y="226">1971</text>
+    <text x="360" y="226">O(n log n log log n)</text>
+    <text x="600" y="226">~20 000+</text>
+
+    <text x="60" y="248">Fürer</text>
+    <text x="280" y="248">2007</text>
+    <text x="360" y="248">O(n log n · 2^O(log* n))</text>
+    <text x="600" y="248">galactic</text>
+
+    <text x="60" y="270">Harvey–van der Hoeven</text>
+    <text x="280" y="270">2019</text>
+    <text x="360" y="270">O(n log n)</text>
+    <text x="600" y="270">galactic</text>
+
+    <text x="60" y="290" fill="#cc4444">"Galactic" = asymptotically optimal but n must be astronomical for it to win.</text>
+  </g>
+
+  <rect x="40" y="320" width="820" height="155" fill="#fff" stroke="#4caf50" stroke-width="2" rx="6"/>
+  <text x="60" y="345" font-size="13" font-weight="700" fill="#4caf50">Real-world bigint libraries</text>
+  <text x="60" y="370" font-size="11">• GMP (GNU Multiple Precision): schoolbook → Karatsuba → Toom-3/4/6/8 → SSA, by size.</text>
+  <text x="60" y="390" font-size="11">• Python int (CPython): schoolbook below ~70 digits, Karatsuba above. PyPy uses GMP.</text>
+  <text x="60" y="410" font-size="11">• Java BigInteger: schoolbook → Karatsuba → Toom-Cook 3 above 240 ints.</text>
+  <text x="60" y="430" font-size="11">• OpenSSL / libsecp256k1 (RSA, ECC): hand-tuned schoolbook with Karatsuba for &gt;2048-bit moduli.</text>
+  <text x="60" y="450" font-size="11">• Cryptographic FHE schemes (BFV, CKKS): NTT-based polynomial multiplication, FFT cousin.</text>
+  <text x="60" y="468" font-size="11">• Computer-algebra systems (Mathematica, SageMath): pyMPC / GMP under the hood.</text>
+</svg>

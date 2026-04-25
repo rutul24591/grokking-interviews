@@ -26,23 +26,25 @@ export default function AuthenticationPatternsArticle() {
       <section>
         <h2>Definition & Context</h2>
         <HighlightBlock as="p" tier="crucial">
-          <strong>Authentication</strong> is the process of verifying a user&apos;s identity—answering the
+          <strong>Authentication</strong> is the process of verifying a user&apos;s identity, answering the
           question &quot;Who are you?&quot; It&apos;s distinct from <strong>authorization</strong> which
           determines what an authenticated user can do. Authentication is foundational to web security;
           every other security control depends on correctly identifying users.
         </HighlightBlock>
-        <p>
-          There are three primary authentication patterns for web applications:
-        </p>
+        <HighlightBlock as="p" tier="important">
+          There are three primary authentication patterns for web applications, and staff/principal-level
+          decisions typically come down to token/session <strong>storage</strong>, <strong>revocation</strong>,
+          <strong>cross-domain</strong> constraints, and how your auth layer scales across services.
+        </HighlightBlock>
         <ul className="space-y-2">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Session-based authentication:</strong> Server maintains session state, client holds
             session identifier in cookie. Traditional, battle-tested approach.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Token-based authentication (JWT):</strong> Server issues signed tokens containing user
             claims, client stores and sends tokens with requests. Stateless, scalable.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>OAuth 2.0 / OpenID Connect:</strong> Delegated authentication via third-party identity
             providers. Enables &quot;Login with Google/Facebook&quot; and SSO.
@@ -167,8 +169,8 @@ export default function AuthenticationPatternsArticle() {
       <section>
         <h2>Token-Based Authentication (JWT)</h2>
         <HighlightBlock as="p" tier="crucial">
-          Token-based authentication uses signed tokens (typically JWT—JSON Web Tokens) to represent user
-          identity. Unlike sessions, tokens are stateless—the server doesn&apos;t store token state.
+          Token-based authentication uses signed tokens (typically JWT, JSON Web Tokens) to represent user
+          identity. Unlike sessions, tokens are stateless; the server doesn&apos;t store token state.
         </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">JWT Structure</h3>
@@ -262,7 +264,7 @@ export default function AuthenticationPatternsArticle() {
           <h3 className="mb-3 font-semibold">Key Insight: JWT Is Not a Security Magic Bullet</h3>
           <HighlightBlock as="p" tier="crucial">
             JWT solves statelessness, not security. A JWT stored in localStorage is vulnerable to XSS. A JWT
-            without proper expiration can be used indefinitely. JWT adds complexity—only use it when you need
+            without proper expiration can be used indefinitely. JWT adds complexity; only use it when you need
             stateless authentication. For many applications, session authentication is simpler and more secure.
           </HighlightBlock>
         </div>
@@ -330,16 +332,16 @@ export default function AuthenticationPatternsArticle() {
         </HighlightBlock>
 
         <h4 className="mt-4 mb-2 font-semibold">Implicit Flow (Deprecated)</h4>
-        <p>
+        <HighlightBlock as="p" tier="important">
           The Implicit flow returns tokens directly in the redirect URL (no code exchange).
-          <strong>Deprecated</strong> due to security vulnerabilities—tokens exposed in browser history,
+          <strong>Deprecated</strong> due to security vulnerabilities (tokens exposed in browser history,
           referrer headers. Use Authorization Code with PKCE instead.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">OpenID Connect (OIDC)</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           OpenID Connect extends OAuth 2.0 with an ID token containing user identity information. The ID token is in JWT format and contains claims like iss (issuer such as https://accounts.google.com), sub (subject/user ID), aud (audience/your client ID), exp (expiration), iat (issued at), email, email_verified, name, and picture URL.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>ID Token vs Access Token:</strong>
         </p>
@@ -376,6 +378,16 @@ export default function AuthenticationPatternsArticle() {
 
       <section>
         <h2>Authentication Pattern Comparison</h2>
+        <HighlightBlock as="p" tier="important">
+          Use this table to drive an interview-quality recommendation: sessions maximize control and
+          revocation, JWT optimizes distributed scale and heterogeneous clients, and OAuth/OIDC externalizes
+          identity while adding integration and governance complexity.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
+          A strong answer explicitly calls out where you expect <strong>CSRF</strong> (cookie sessions),
+          where you expect <strong>XSS</strong> to be the dominant risk (browser-accessible tokens), and how
+          you handle <strong>logout/revocation</strong> (stateful sessions vs. JWT blocklists/short TTL).
+        </HighlightBlock>
         <HighlightBlock tier="crucial" className="overflow-x-auto">
           <table className="w-full border-collapse">
             <thead>
@@ -553,18 +565,18 @@ export default function AuthenticationPatternsArticle() {
             <strong>Missing HTTPS:</strong> Sending credentials or tokens over HTTP exposes them to
             interception.
           </HighlightBlock>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Not validating OAuth state:</strong> Missing state parameter allows CSRF attacks on OAuth
             flow.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Storing sensitive data in JWT:</strong> JWT payload is encoded, not encrypted. Anyone can
             decode it.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>No rate limiting:</strong> Login endpoints without rate limiting are vulnerable to
             brute-force attacks.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Session fixation:</strong> Not rotating session ID on login allows session fixation
             attacks.
@@ -581,65 +593,102 @@ export default function AuthenticationPatternsArticle() {
 
       <section>
         <h2>Real-World Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          In production systems, you rarely pick a single pattern globally. The staff/principal answer is
+          usually a <strong>portfolio</strong>: browser sessions (HttpOnly, SameSite cookies) for the web app,
+          short-lived access tokens for APIs, refresh tokens for continuity, and SSO where enterprise identity
+          and lifecycle management matter. The goal is to align <strong>risk</strong>, <strong>UX</strong>, and
+          <strong>operational control</strong> (revocation, auditing, incident response).
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">E-Commerce Platform</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Challenge:</strong> Customer accounts, order history, saved payment methods, guest checkout.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Solution:</strong>
         </p>
         <ul className="space-y-2">
-          <li>Session-based authentication for customer accounts (HttpOnly cookies)</li>
+          <HighlightBlock as="li" tier="crucial">
+            Session-based authentication for customer accounts (HttpOnly + Secure + SameSite cookies)
+          </HighlightBlock>
           <li>Guest checkout with temporary session (no account required)</li>
-          <li>JWT for mobile app API access (stateless, scalable)</li>
+          <HighlightBlock as="li" tier="important">
+            JWT for mobile app API access (stateless, scalable) with short-lived access tokens + refresh
+            tokens
+          </HighlightBlock>
           <li>MFA optional for high-value accounts</li>
           <li>Session invalidation on password change</li>
         </ul>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">SaaS B2B Platform</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Challenge:</strong> Multiple organizations, role-based access, SSO requirements, API access.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Solution:</strong>
         </p>
         <ul className="space-y-2">
-          <li>OIDC for SSO integration (Okta, Azure AD)</li>
-          <li>JWT for API access (microservices architecture)</li>
-          <li>Organization context in JWT claims</li>
-          <li>Refresh tokens for long-lived sessions</li>
+          <HighlightBlock as="li" tier="crucial">
+            OIDC for SSO integration (Okta, Azure AD) with centralized provisioning/deprovisioning
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
+            JWT for API access (microservices architecture), validated at an API gateway/edge layer
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
+            Organization/tenant context in token/session claims with strict tenant isolation guarantees
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
+            Refresh tokens (rotating) for long-lived sessions and revocation workflows
+          </HighlightBlock>
           <li>Service accounts with API keys for integrations</li>
         </ul>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Social Media Platform</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Challenge:</strong> &quot;Login with Google/Facebook&quot;, mobile apps, third-party
           integrations.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Solution:</strong>
         </p>
         <ul className="space-y-2">
-          <li>OAuth 2.0 for third-party login (Google, Facebook, Twitter)</li>
-          <li>JWT for mobile app authentication</li>
-          <li>Session-based for web (better security with HttpOnly cookies)</li>
-          <li>OAuth 2.0 for third-party app integrations (scoped access tokens)</li>
+          <HighlightBlock as="li" tier="crucial">
+            OAuth 2.0 / OIDC for third-party login (Authorization Code + PKCE), with strict redirect URI and
+            state/nonce validation
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
+            JWT for mobile app authentication with device-bound refresh token rotation
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
+            Session-based for web for stronger XSS posture (HttpOnly cookies), paired with CSRF defenses
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
+            OAuth 2.0 for third-party app integrations using scoped access tokens and revocation
+          </HighlightBlock>
           <li>Refresh tokens for persistent login</li>
         </ul>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Banking Application</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Challenge:</strong> Maximum security, regulatory compliance, fraud detection.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Solution:</strong>
         </p>
         <ul className="space-y-2">
-          <li>Session-based authentication with strict timeout (15 minutes idle)</li>
-          <li>MFA mandatory for all users</li>
-          <li>Device fingerprinting for fraud detection</li>
-          <li>Step-up authentication for high-value transactions</li>
+          <HighlightBlock as="li" tier="crucial">
+            Session-based authentication with strict idle/absolute timeouts and continuous risk evaluation
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="crucial">
+            MFA mandatory for all users (phishing-resistant MFA for privileged/high-risk actions)
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
+            Device binding / fingerprinting signals for anomaly detection, with careful false-positive handling
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
+            Step-up authentication for high-value transactions and sensitive profile/security changes
+          </HighlightBlock>
           <li>Session binding to IP and device</li>
           <li>No third-party OAuth (full control over authentication)</li>
         </ul>
@@ -647,112 +696,112 @@ export default function AuthenticationPatternsArticle() {
 
       <section>
         <h2>Architecture at Scale: Authentication in Enterprise Systems</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           Enterprise-scale authentication requires coordinated identity management, consistent session policies, and centralized monitoring across multiple applications, business units, and geographic regions. In microservices architectures, each service must validate authentication consistently while supporting different authentication methods.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Centralized Identity Provider:</strong> Implement a centralized IdP (Okta, Auth0, Azure AD, Keycloak) that manages user identities across all applications. Use SAML or OIDC for SSO integration. Implement user provisioning/deprovisioning workflows with HR systems. Document identity architecture in system design documentation.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Multi-Tenant Authentication:</strong> For SaaS applications, implement tenant isolation at the authentication layer. Use organization claims in JWT tokens. Implement tenant-aware session management. Support custom domains with tenant-specific authentication policies. Document multi-tenant authentication in security architecture.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>API Authentication Strategy:</strong> For API-heavy architectures, use OAuth 2.0 with JWT access tokens. Implement API gateway that validates tokens at the edge. Use service accounts with API keys for server-to-server communication. Implement rate limiting per API key. Document API authentication in developer documentation.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Hybrid Authentication:</strong> Support multiple authentication methods (password, SSO, MFA, magic links) with consistent session management. Implement authentication method negotiation based on security requirements. Use step-up authentication for high-risk operations. Document authentication policies in security standards.
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
         <h2>Testing Strategies: Authentication Security Validation</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           Comprehensive authentication testing requires automated scanning, manual verification, and penetration testing integrated into security operations.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Automated Authentication Testing:</strong> Use OWASP ZAP, Burp Suite to test authentication flows. Configure CI/CD pipelines to test authentication after each deployment. Set up automated alerts for: weak password policies, missing MFA for admin accounts, session fixation vulnerabilities, insecure password reset flows.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Credential Stuffing Tests:</strong> Test for credential stuffing protection: (1) Attempt login with known breached credentials, (2) Verify rate limiting triggers, (3) Verify account lockout after failed attempts. Implement breach password detection (Have I Been Pwned API). Document credential stuffing test results.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Session Management Testing:</strong> Test session security: (1) Session ID entropy (should be greater than 128 bits), (2) Session timeout enforcement, (3) Session invalidation on logout, (4) Concurrent session limits. Use tools like Burp Sequencer for session ID analysis. Document session test results.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>MFA Testing:</strong> Test MFA implementation: (1) MFA bypass attempts, (2) MFA code replay attacks, (3) MFA enrollment security, (4) Backup code security. Verify MFA codes expire within 30 seconds. Test MFA recovery flows. Document MFA test results in security assessments.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Penetration Testing:</strong> Include authentication in quarterly penetration tests. Specific test cases: (1) Password spraying attacks, (2) Session hijacking, (3) OAuth flow vulnerabilities, (4) JWT token manipulation, (5) MFA bypass attempts. Require remediation of all authentication findings before production deployment.
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
         <h2>Compliance and Legal Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           Authentication implementation has significant compliance implications, particularly for applications handling financial transactions, healthcare data, or operating in regulated industries.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>NIST Guidelines:</strong> NIST SP 800-63B specifies digital identity guidelines. Requires minimum 8-character passwords (no arbitrary complexity rules), MFA for privileged access, secure password recovery. Document NIST compliance in security policies.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>PCI-DSS Requirements:</strong> PCI-DSS Requirement 8 requires strong authentication for cardholder data access. MFA mandatory for all remote access. Password complexity, expiration, and history requirements. Annual penetration testing must include authentication testing. Document authentication controls in ROC.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>HIPAA Requirements:</strong> HIPAA Security Rule 45 CFR 164.312(d) requires authentication for ePHI access. Implement unique user identification, emergency access procedures, automatic logoff. Document authentication procedures in security policies. Audit authentication events involving ePHI.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>GDPR Implications:</strong> GDPR Article 32 requires appropriate authentication for personal data protection. Implement MFA for high-risk processing. Document authentication measures as part of security of processing. Authentication logs containing personal data must follow GDPR retention policies.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>SOC 2 Controls:</strong> Authentication maps to SOC 2 Common Criteria CC6.1 (logical access controls). Document authentication policies, MFA implementation, session management for annual SOC 2 audits. Track authentication-related security incidents.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Industry Regulations:</strong> FFIEC requires MFA for online banking. PSD2 requires Strong Customer Authentication (SCA) for EU payments. COPPA requires verifiable parental consent for children&apos;s accounts. Document compliance with applicable regulations.
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
         <h2>Performance Trade-offs: Security vs. User Experience</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           Authentication measures introduce measurable performance overhead that must be balanced against security requirements and user experience.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>MFA Latency:</strong> MFA adds 5-30 seconds to login flow (SMS delivery, authenticator app, hardware token). Use push notifications for faster MFA. Implement MFA exemptions for trusted devices. Offer multiple MFA methods (SMS, authenticator, hardware key) for user choice. Monitor MFA completion rates and abandonment.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Token Validation Overhead:</strong> JWT validation adds 1-5ms per request for signature verification. Use symmetric algorithms (HS256) for single-service, asymmetric (RS256) for microservices. Cache token validation results with TTL. For high-traffic APIs (&gt;10K RPS), consider token introspection caching.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Session Storage Latency:</strong> Server-side session validation adds 5-20ms (Redis lookup) per request. Use session caching with TTL matching session expiration. Implement lazy session loading. For stateless requirements, use JWT tokens to eliminate server-side lookup.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Password Hashing Cost:</strong> Argon2/bcrypt hashing takes 100-500ms per password. This is intentional (slows brute force). Use appropriate cost factors (memory, iterations). Hash passwords in background threads to avoid blocking login response. Monitor password hashing latency and adjust cost factors based on hardware.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>SSO Latency:</strong> SAML/OIDC flows add 200-1000ms for redirect-based authentication. Use silent SSO for returning users. Implement token caching to reduce IdP round-trips. Test SSO latency across geographic regions. Consider IdP geographic distribution for global applications.
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
         <h2>Browser and Platform Compatibility</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           Authentication support varies across browsers, operating systems, and platforms, requiring careful compatibility planning.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>MFA Browser Support:</strong> WebAuthn/FIDO2 supported in Chrome 67+, Firefox 60+, Safari 14+, Edge 79+. SMS/Authenticator app MFA works in all browsers. Test MFA flows across target browsers. Provide fallback MFA methods for older browsers. Document MFA browser support matrix.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Mobile App Authentication:</strong> Native mobile apps should use custom Authorization headers, not cookies. Implement biometric authentication (Touch ID, Face ID) for mobile. Use secure enclave for token storage. Test authentication on actual devices, not just emulators.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>WebView Considerations:</strong> iOS WKWebView and Android WebView have separate cookie storage. OAuth flows in WebViews may have different behavior than system browsers. Test OAuth redirects in actual app WebViews. Consider using system browser (Safari/Chrome) for OAuth flows instead of in-app WebView.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Password Manager Compatibility:</strong> Test with major password managers (1Password, LastPass, Bitwarden, browser built-in). Ensure password managers can detect login forms, save credentials, and auto-fill. Use standard form elements (form, input type=&quot;password&quot;) for compatibility. Document password manager compatibility issues.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Legacy Browser Support:</strong> IE11 has limited WebAuthn support. Older mobile browsers may not support modern authentication features. Document minimum browser requirements. Consider progressive enhancement for authentication features. Provide fallback authentication for legacy browsers.
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
@@ -774,7 +823,7 @@ export default function AuthenticationPatternsArticle() {
             <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               A: <strong>HttpOnly cookie (recommended):</strong> Protected from XSS (JavaScript can&apos;t
               read), automatically sent with requests, SameSite provides CSRF protection.
-              <strong>localStorage:</strong> Easy access but vulnerable to XSS—any script can read and steal
+              <strong>localStorage:</strong> Easy access but vulnerable to XSS; any script can read and steal
               tokens. For most applications, HttpOnly cookies are more secure. Use localStorage only if you
               have strong XSS controls and need client-side token access.
             </HighlightBlock>
@@ -806,8 +855,8 @@ export default function AuthenticationPatternsArticle() {
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
             <p className="font-semibold">Q5: How do you handle session/token revocation?</p>
             <p className="mt-2 text-sm">
-              A: <strong>Sessions:</strong> Delete session record from database/cache—immediate revocation.
-              <strong>JWT:</strong> More difficult—JWTs are stateless. Options: (1) Short expiration (wait it
+              A: <strong>Sessions:</strong> Delete session record from database/cache for immediate revocation.
+              <strong>JWT:</strong> More difficult since JWTs are stateless. Options: (1) Short expiration (wait it
               out), (2) Token blocklist (store revoked JWT IDs in Redis), (3) Version number in token
               (increment on logout, check against user record). For applications requiring immediate revocation,
               session-based auth is simpler.

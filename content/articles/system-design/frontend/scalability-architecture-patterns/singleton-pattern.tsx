@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -30,7 +31,7 @@ export default function SingletonPatternArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           The <strong>Singleton Pattern</strong> restricts the instantiation of
           a class or object to a single instance, providing a global point of
           access to that instance. In frontend development, singletons appear
@@ -38,8 +39,8 @@ export default function SingletonPatternArticle() {
           effectively a singleton (evaluated once and cached), every React
           Context provider at the root is a singleton, and state management
           stores like Redux or Zustand are singletons by design.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The pattern originated in the Gang of Four&apos;s 1994 &quot;Design
           Patterns&quot; book, where it was presented as a creational pattern
           for ensuring a class has only one instance. In classical
@@ -48,8 +49,8 @@ export default function SingletonPatternArticle() {
           fields, and thread-safe lazy initialization. In JavaScript, the module
           system itself provides singleton semantics — a module is loaded once
           and its exports are shared across all importers.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Despite its simplicity, the Singleton Pattern is one of the most
           debated patterns in software engineering. Critics argue that
           singletons introduce hidden dependencies, make testing difficult, and
@@ -59,102 +60,105 @@ export default function SingletonPatternArticle() {
           skill is knowing when a singleton is the right tool versus when
           dependency injection or factory patterns would better serve the
           architecture.
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
         <h2>Core Concepts</h2>
         <ul>
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Single Instance Guarantee:</strong> The core invariant — no
             matter how many times the singleton is accessed, the same instance
             is returned. In JavaScript, this is naturally achieved through
             module caching: when a module is imported, Node.js or the bundler
             caches the module&apos;s exports and returns the cached version on
             subsequent imports.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Lazy Initialization:</strong> The instance is created on
             first access rather than at application startup. This defers
             resource allocation until the singleton is actually needed,
             improving startup performance. In frontend apps, lazy singletons are
             useful for services that may not be needed on all routes (analytics,
             feature flags, WebSocket connections).
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Global Access Point:</strong> The singleton provides a
             well-known entry point for consumers to access the shared instance.
             In frontend frameworks, this manifests as React Context (useContext
             hook), service locator patterns, or simply importing from a module.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>State Preservation:</strong> Because the instance persists
             for the application&apos;s lifetime, its internal state is preserved
             across all consumers. This is the foundation of centralized state
             management — a single store holds the application state, and all
             components read from and write to the same instance.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Module-Level Singleton:</strong> In ES Modules, any object
             exported from a module is de facto a singleton. The module&apos;s
             top-level code runs once, and all importers share the same exports
             object. This makes the classic singleton class pattern largely
             unnecessary in modern JavaScript.
-          </li>
+          </HighlightBlock>
         </ul>
       </section>
 
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           The Singleton Pattern&apos;s architecture revolves around controlling
           instance creation and providing access to the shared instance across
           the application.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/frontend/scalability-architecture-patterns/singleton-pattern-diagram-1.svg"
           alt="Singleton Lazy Initialization Access Flow"
           caption="Lazy initialization flow — first access creates the instance, subsequent accesses return the cached instance"
+          captionTier="crucial"
         />
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           The lazy initialization flow ensures that resource-heavy singletons
           (WebSocket connections, IndexedDB instances, analytics services) are
           only created when a component or service first requests them. This is
           particularly important in code-split applications where entire feature
           modules may never be loaded during a user session.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/frontend/scalability-architecture-patterns/singleton-pattern-diagram-2.svg"
           alt="Shared Service Registry"
           caption="Shared service registry — multiple consumers access centralized services (logger, config, cache) through a singleton registry"
+          captionTier="important"
         />
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           A service registry is a common application of the singleton pattern in
           large frontend applications. Rather than each component importing
           services directly, a central registry holds references to shared
           services. This enables runtime service replacement (for testing or
           feature flags) and provides a single point for initialization
           ordering.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/frontend/scalability-architecture-patterns/singleton-pattern-diagram-3.svg"
           alt="Global State Coupling vs Dependency Injection"
           caption="Comparison of singleton global access (tight coupling) vs dependency injection (loose coupling, testable)"
+          captionTier="important"
         />
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           The diagram above illustrates the fundamental trade-off between
           singleton access and dependency injection. With singletons, components
           reach out to the global instance, creating an implicit dependency that
           is invisible in the component&apos;s API. With dependency injection,
           the dependency is passed in explicitly (via props, context, or
           constructor), making it visible, replaceable, and testable.
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
@@ -190,14 +194,18 @@ export default function SingletonPatternArticle() {
                 <strong>Testing</strong>
               </td>
               <td className="p-3">
-                • Single source of truth simplifies integration tests
-                <br />• Consistent behavior across test suite
+                <HighlightBlock tier="important">
+                  • Single source of truth simplifies integration tests
+                  <br />• Consistent behavior across test suite
+                </HighlightBlock>
               </td>
               <td className="p-3">
-                • Shared state leaks between tests
-                <br />
-                • Mocking singletons requires module-level hacks
-                <br />• Cannot run tests in parallel safely
+                <HighlightBlock tier="crucial">
+                  • Shared state leaks between tests
+                  <br />
+                  • Mocking singletons requires module-level hacks
+                  <br />• Cannot run tests in parallel safely
+                </HighlightBlock>
               </td>
             </tr>
             <tr>
@@ -222,14 +230,18 @@ export default function SingletonPatternArticle() {
                 <strong>Micro-Frontends</strong>
               </td>
               <td className="p-3">
-                • Shared singletons reduce duplicate instances
-                <br />• Consistent state across micro-apps
+                <HighlightBlock tier="important">
+                  • Shared singletons reduce duplicate instances
+                  <br />• Consistent state across micro-apps
+                </HighlightBlock>
               </td>
               <td className="p-3">
-                • Module-level singletons break across MFE boundaries
-                <br />
-                • Version conflicts create multiple instances
-                <br />• Coupling between independently deployed apps
+                <HighlightBlock tier="important">
+                  • Module-level singletons break across MFE boundaries
+                  <br />
+                  • Version conflicts create multiple instances
+                  <br />• Coupling between independently deployed apps
+                </HighlightBlock>
               </td>
             </tr>
           </tbody>
@@ -239,7 +251,7 @@ export default function SingletonPatternArticle() {
       <section>
         <h2>Best Practices</h2>
         <ol className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>
               Prefer Module-Level Singletons Over Class Singletons:
             </strong>{" "}
@@ -247,27 +259,27 @@ export default function SingletonPatternArticle() {
             already a singleton. There is no need for the classic getInstance()
             pattern. Simply export a created instance or use a factory function
             that caches its result.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Make Singletons Injectable:</strong> Even when using
             singletons, design them to accept dependencies through
             initialization rather than importing them directly. This allows
             tests to inject mocks without module-level patching.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Provide Reset Mechanisms for Testing:</strong> Expose a
             reset or destroy method on singletons that clears internal state.
             Call this in test teardown (afterEach) to prevent state leakage
             between test cases. Guard this method with environment checks in
             production builds.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Use React Context for Component-Scoped Singletons:</strong>{" "}
             When a singleton should be scoped to a component subtree rather than
             the entire application, use React Context with a Provider. This
             enables multiple instances in different parts of the tree (useful
             for testing, micro-frontends, or multi-tenant UIs).
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Document Singleton Lifecycle:</strong> Singletons that hold
             resources (connections, timers, subscriptions) should document when
@@ -287,27 +299,27 @@ export default function SingletonPatternArticle() {
       <section>
         <h2>Common Pitfalls</h2>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Test Pollution:</strong> The most common singleton pitfall —
             state from one test leaks into subsequent tests because the
             singleton is not reset. This creates flaky tests that pass
             individually but fail when run together. Always reset singleton
             state in test teardown hooks.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Hidden Dependencies:</strong> When components import
             singletons directly, the dependency is invisible from the
             component&apos;s interface. This makes refactoring dangerous — you
             cannot determine a component&apos;s dependencies by examining its
             props or constructor.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Memory Leaks in SPAs:</strong> Singletons that accumulate
             state (event listeners, cached data, subscriptions) without cleanup
             grow unbounded in long-running single-page applications. Implement
             size limits, LRU eviction, and proper cleanup on relevant lifecycle
             events.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Multiple Instances in Micro-Frontends:</strong> When
             different micro-frontends bundle the same library, each gets its own
@@ -316,7 +328,7 @@ export default function SingletonPatternArticle() {
             scopes via Module Federation or external singleton registration on
             the window object.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Premature Singletonification:</strong> Making something a
             singleton before confirming that only one instance is needed creates
             inflexibility. If requirements later demand multiple instances
@@ -324,38 +336,38 @@ export default function SingletonPatternArticle() {
             singleton is expensive. Start with dependency injection and promote
             to singleton only when the single-instance constraint is genuinely
             required.
-          </li>
+          </HighlightBlock>
         </ul>
       </section>
 
       <section>
         <h2>Real-World Use Cases</h2>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Redux/Zustand Stores:</strong> State management stores are
             singletons by design — one store holds the entire application state
             tree. Redux explicitly creates a single store via createStore(),
             while Zustand stores are module-level singletons that components
             subscribe to via hooks.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Analytics Services:</strong> Services like Segment,
             Amplitude, or Mixpanel are initialized once with an API key and
             shared across the entire application. Multiple instances would
             duplicate events and waste bandwidth.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Authentication Managers:</strong> Auth state (tokens, user
             info, session) is inherently global — there is one authenticated
             user per browser tab. Auth managers like Auth0&apos;s SDK or
             Firebase Auth operate as singletons.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>WebSocket Connection Pools:</strong> Applications that use
             real-time features (chat, notifications, live updates) maintain a
             single WebSocket connection managed by a singleton service. Multiple
             connections would waste server resources and create ordering issues.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Feature Flag Clients:</strong> LaunchDarkly, Unleash, and
             similar services provide singleton clients that maintain a
@@ -367,22 +379,22 @@ export default function SingletonPatternArticle() {
 
       <section>
         <h2>Security Considerations</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           Singletons introduce unique security considerations around global state mutation, information leakage between components, and the potential for single points of failure.
-        </p>
+        </HighlightBlock>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-4 text-lg font-semibold">Global State Security</h3>
           <ul className="space-y-2">
-            <li>
+            <HighlightBlock as="li" tier="important">
               <strong>State Mutation Attacks:</strong> Malicious code can mutate singleton state to affect all consumers. Mitigation: use Object.freeze() for immutable singletons, implement state validation, use private fields (#field) for encapsulation.
-            </li>
-            <li>
+            </HighlightBlock>
+            <HighlightBlock as="li" tier="important">
               <strong>Information Leakage:</strong> Singletons shared across components can leak sensitive data. Mitigation: implement access control on singleton methods, use separate singleton instances for different security contexts, avoid storing sensitive data in global singletons.
-            </li>
-            <li>
+            </HighlightBlock>
+            <HighlightBlock as="li" tier="important">
               <strong>Cross-Origin Risks:</strong> Singletons accessible across iframe boundaries can be exploited. Mitigation: use postMessage for cross-origin communication, implement strict origin checks, avoid exposing singletons to window object.
-            </li>
+            </HighlightBlock>
           </ul>
         </div>
 
@@ -404,18 +416,18 @@ export default function SingletonPatternArticle() {
             <li>
               <strong>Memory Leaks:</strong> Long-lived singletons can accumulate data and cause memory leaks. Mitigation: implement cleanup methods, use WeakMap for caches, monitor memory usage in production.
             </li>
-            <li>
+            <HighlightBlock as="li" tier="important">
               <strong>Denial of Service:</strong> Singletons can become bottlenecks under high load. Mitigation: implement rate limiting, use lazy initialization, consider distributed alternatives for high-scale scenarios.
-            </li>
+            </HighlightBlock>
           </ul>
         </div>
       </section>
 
       <section>
         <h2>Testing Strategies</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           Testing singletons requires careful attention to state isolation, test independence, and proper cleanup to avoid test pollution.
-        </p>
+        </HighlightBlock>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-4 text-lg font-semibold">Testing Pyramid for Singletons</h3>
@@ -426,9 +438,9 @@ export default function SingletonPatternArticle() {
             <li>
               <strong>Integration Tests (Middle):</strong> Test singleton interaction with consumers. Verify that state changes propagate correctly. Test concurrent access patterns.
             </li>
-            <li>
+            <HighlightBlock as="li" tier="important">
               <strong>State Isolation Tests (Middle):</strong> Test that singleton state is properly reset between tests. Verify no test pollution occurs. Run tests in random order to detect hidden dependencies.
-            </li>
+            </HighlightBlock>
             <li>
               <strong>Memory Tests (Top):</strong> Test for memory leaks in long-running singletons. Monitor heap growth over time. Use WeakRef and FinalizationRegistry for cleanup verification.
             </li>
@@ -441,12 +453,12 @@ export default function SingletonPatternArticle() {
             Preventing test pollution from singleton state:
           </p>
           <ol className="mt-3 space-y-2">
-            <li>
+            <HighlightBlock as="li" tier="important">
               <strong>Reset Methods:</strong> Implement reset() or clear() methods on singletons. Call in afterEach hooks. Reset all internal state to initial values.
-            </li>
-            <li>
+            </HighlightBlock>
+            <HighlightBlock as="li" tier="important">
               <strong>Dependency Injection:</strong> Pass singleton as dependency rather than importing directly. Tests can provide mock implementations. Preferred for testability.
-            </li>
+            </HighlightBlock>
             <li>
               <strong>Module Mocking:</strong> Use jest.mock() or vi.mock() to replace singleton modules. Reset mocks between tests. Verify mock interactions.
             </li>
@@ -471,9 +483,9 @@ export default function SingletonPatternArticle() {
 
       <section>
         <h2>Performance Benchmarks</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           Singleton performance depends on initialization strategy, access patterns, and cleanup overhead. Understanding performance characteristics is essential for production systems.
-        </p>
+        </HighlightBlock>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-4 text-lg font-semibold">Performance Metrics to Track</h3>
@@ -524,9 +536,9 @@ export default function SingletonPatternArticle() {
             <li>
               <strong>Eager Initialization:</strong> Singleton created at module load. Pros: no initialization latency on first access. Cons: increases bundle load time, may create unused singletons.
             </li>
-            <li>
+            <HighlightBlock as="li" tier="important">
               <strong>Lazy Initialization:</strong> Singleton created on first access. Pros: only created if needed, faster initial load. Cons: first access has initialization latency.
-            </li>
+            </HighlightBlock>
             <li>
               <strong>Double-Checked Locking:</strong> Check instance existence before and after acquiring lock. Pros: minimizes lock contention. Cons: complex implementation, potential race conditions if not implemented correctly.
             </li>
@@ -539,9 +551,9 @@ export default function SingletonPatternArticle() {
             Based on published benchmarks from singleton implementations:
           </p>
           <ul className="mt-3 space-y-2">
-            <li>
+            <HighlightBlock as="li" tier="important">
               <strong>ES Module Singleton:</strong> Access: ~0.001ms. Zero runtime overhead. Most efficient for JavaScript applications.
-            </li>
+            </HighlightBlock>
             <li>
               <strong>Class-based Singleton:</strong> Access: ~0.01ms. Minimal overhead from getInstance() call. Suitable for most applications.
             </li>
@@ -554,9 +566,9 @@ export default function SingletonPatternArticle() {
 
       <section>
         <h2>Cost Analysis</h2>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Singleton Pattern has minimal direct costs but significant implications for code maintainability and testability.
-        </p>
+        </HighlightBlock>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-4 text-lg font-semibold">Development Costs</h3>
@@ -564,12 +576,12 @@ export default function SingletonPatternArticle() {
             <li>
               <strong>Implementation Simplicity:</strong> Singletons are simple to implement. Estimate: &lt;1 day for basic singleton with proper encapsulation.
             </li>
-            <li>
+            <HighlightBlock as="li" tier="important">
               <strong>Testing Overhead:</strong> Singletons require careful test isolation. Estimate: 10-20% more test code for proper mocking and cleanup.
-            </li>
-            <li>
+            </HighlightBlock>
+            <HighlightBlock as="li" tier="important">
               <strong>Refactoring Cost:</strong> Removing singletons later is expensive. All consumers must be updated. Consider dependency injection from the start if singleton necessity is uncertain.
-            </li>
+            </HighlightBlock>
           </ul>
         </div>
 
@@ -579,24 +591,30 @@ export default function SingletonPatternArticle() {
             <li>
               <strong>Memory Overhead:</strong> Singletons persist for application lifetime. Memory is never reclaimed. For most singletons: &lt;1MB. For large caches: monitor carefully.
             </li>
-            <li>
+            <HighlightBlock as="li" tier="important">
               <strong>Contention:</strong> Singletons with locks can become bottlenecks under high concurrency. Mitigation: use lock-free data structures, reduce critical section size.
-            </li>
+            </HighlightBlock>
           </ul>
         </div>
 
-        <div className="my-6 rounded-lg border border-accent/30 bg-accent/10 p-6">
+        <HighlightBlock
+          className="my-6 rounded-lg border border-accent/30 bg-accent/10 p-6"
+          tier="crucial"
+        >
           <h3 className="mb-3 font-semibold">When to Use Singleton Pattern</h3>
           <p>
             Use singletons when: (1) exactly one instance is required (database connections, WebSocket connections), (2) global coordination is needed (event buses, feature flags), (3) lazy initialization is beneficial. Avoid when: (1) you need multiple instances (user sessions, shopping carts), (2) testability is critical without dependency injection, (3) you anticipate needing multiple instances in the future.
           </p>
-        </div>
+        </HighlightBlock>
       </section>
 
       <section>
         <h2>Common Interview Questions</h2>
         <div className="space-y-4">
-          <div className="rounded-lg border border-theme bg-panel-soft p-4">
+          <HighlightBlock
+            className="rounded-lg border border-theme bg-panel-soft p-4"
+            tier="important"
+          >
             <p className="font-semibold">
               Q: Why are ES Modules effectively singletons, and what are the
               implications?
@@ -613,9 +631,12 @@ export default function SingletonPatternArticle() {
               singleton behavior. However, this breaks down in micro-frontend
               scenarios where each app has its own module scope.
             </p>
-          </div>
+          </HighlightBlock>
 
-          <div className="rounded-lg border border-theme bg-panel-soft p-4">
+          <HighlightBlock
+            className="rounded-lg border border-theme bg-panel-soft p-4"
+            tier="important"
+          >
             <p className="font-semibold">
               Q: How do you test code that depends on singletons?
             </p>
@@ -630,9 +651,12 @@ export default function SingletonPatternArticle() {
               mocking. Zustand, for example, provides a way to create stores
               within test setup to avoid shared state.
             </p>
-          </div>
+          </HighlightBlock>
 
-          <div className="rounded-lg border border-theme bg-panel-soft p-4">
+          <HighlightBlock
+            className="rounded-lg border border-theme bg-panel-soft p-4"
+            tier="crucial"
+          >
             <p className="font-semibold">
               Q: When should you use a singleton vs dependency injection?
             </p>
@@ -647,9 +671,12 @@ export default function SingletonPatternArticle() {
               concept of two instances is nonsensical (two analytics pipelines
               sending duplicate events), a singleton is appropriate.
             </p>
-          </div>
+          </HighlightBlock>
 
-          <div className="rounded-lg border border-theme bg-panel-soft p-4">
+          <HighlightBlock
+            className="rounded-lg border border-theme bg-panel-soft p-4"
+            tier="important"
+          >
             <p className="font-semibold">
               Q: How do singletons behave in micro-frontend architectures?
             </p>
@@ -665,7 +692,7 @@ export default function SingletonPatternArticle() {
               Federation requires webpack, window globals lack type safety, and
               shell-provided services create coupling to the shell&apos;s API.
             </p>
-          </div>
+          </HighlightBlock>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
             <p className="font-semibold">

@@ -112,7 +112,7 @@ export default function WebRtcPeerToPeerArticle() {
             sockets, retransmissions, congestion control, and quality adaptation
             automatically.
           </HighlightBlock>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>SDP (Session Description Protocol):</strong> A text-based
             format for describing multimedia session capabilities. SDP includes:
             media types (audio, video, data), codecs supported (H.264, VP8,
@@ -124,7 +124,7 @@ export default function WebRtcPeerToPeerArticle() {
             now know each other's capabilities and can establish a connection.
             SDP is opaque to applications -- developers treat it as a blob to
             transmit, not parse.
-          </li>
+          </HighlightBlock>
           <HighlightBlock as="li" tier="important">
             <strong>ICE Candidates:</strong> Network addresses that a peer can
             receive data on. A peer typically has multiple candidates: host
@@ -151,7 +151,7 @@ export default function WebRtcPeerToPeerArticle() {
             STUN servers (stun.l.google.com:19302); TURN requires self-hosting
             (coturn) or paid services (Twilio, Xirsys).
           </HighlightBlock>
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>RTCDataChannel:</strong> A bidirectional channel for
             arbitrary data transfer over an RTCPeerConnection. Data channels use
             SCTP over DTLS, providing reliable or unreliable delivery, ordered
@@ -161,8 +161,8 @@ export default function WebRtcPeerToPeerArticle() {
             WebSockets for P2P scenarios (no server relay) and support both
             string and binary data. The API is similar to WebSocket: send(),
             onmessage, onopen, onclose.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>MediaStream and Tracks:</strong> MediaStream represents a
             stream of media (audio, video) from a capture device (camera,
             microphone) or remote peer. It contains MediaStreamTracks (individual
@@ -172,60 +172,60 @@ export default function WebRtcPeerToPeerArticle() {
             ontrack event and attaches them to a video/audio element for
             playback. MediaStream is also used for screen sharing (getDisplayMedia)
             and advanced scenarios like multi-party calls (multiple streams).
-          </li>
+          </HighlightBlock>
         </ul>
       </section>
 
       <section>
         <h2>Architecture & Flow</h2>
-      <p>
+        <HighlightBlock as="p" tier="important">
           The WebRTC connection lifecycle involves signaling exchange, ICE
           gathering, connectivity checks, and finally media/data transfer.
           Understanding this flow is essential for debugging connection issues
           and building robust applications.
-        </p>
+        </HighlightBlock>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-4 text-lg font-semibold">
             WebRTC Connection Lifecycle
           </h3>
           <ol className="space-y-3">
-            <li>
+            <HighlightBlock as="li" tier="crucial">
               <strong>1. Initialize Peer Connections:</strong> Both peers create
               RTCPeerConnection with STUN/TURN server configuration
-            </li>
-            <li>
+            </HighlightBlock>
+            <HighlightBlock as="li" tier="important">
               <strong>2. Capture Media:</strong> Initiating peer calls
               getUserMedia() to capture local camera/microphone
-            </li>
-            <li>
+            </HighlightBlock>
+            <HighlightBlock as="li" tier="crucial">
               <strong>3. Create Offer:</strong> Initiating peer calls
               createOffer(), gets SDP offer describing capabilities
-            </li>
-            <li>
+            </HighlightBlock>
+            <HighlightBlock as="li" tier="important">
               <strong>4. Send Offer via Signaling:</strong> Offer is sent to
               remote peer via WebSocket, HTTP, or custom signaling channel
-            </li>
-            <li>
+            </HighlightBlock>
+            <HighlightBlock as="li" tier="important">
               <strong>5. Create Answer:</strong> Remote peer calls
               setRemoteDescription(offer), createAnswer(), gets SDP answer
-            </li>
-            <li>
+            </HighlightBlock>
+            <HighlightBlock as="li" tier="important">
               <strong>6. Send Answer via Signaling:</strong> Answer is sent back
               to initiating peer
-            </li>
-            <li>
+            </HighlightBlock>
+            <HighlightBlock as="li" tier="crucial">
               <strong>7. Exchange ICE Candidates:</strong> Both peers discover
               and exchange ICE candidates incrementally
-            </li>
-            <li>
+            </HighlightBlock>
+            <HighlightBlock as="li" tier="important">
               <strong>8. Connectivity Checks:</strong> ICE agent tests candidate
               pairs, finds working path (direct or via TURN)
-            </li>
-            <li>
+            </HighlightBlock>
+            <HighlightBlock as="li" tier="crucial">
               <strong>9. Connection Established:</strong> RTCPeerConnection
               transitions to "connected", media/data flows P2P
-            </li>
+            </HighlightBlock>
           </ol>
         </div>
 
@@ -233,9 +233,10 @@ export default function WebRtcPeerToPeerArticle() {
           src="/diagrams/system-design-concepts/frontend/networking-api-communication/webrtc-connection-flow.svg"
           alt="WebRTC Connection Flow Diagram"
           caption="WebRTC Connection Flow: Signaling exchanges SDP offer/answer and ICE candidates, then media flows directly P2P via SRTP"
+          captionTier="important"
         />
 
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           The signaling phase is application-specific and not standardized by
           WebRTC. Most applications use WebSockets for signaling due to its
           low-latency, bidirectional nature. The signaling server's role is
@@ -244,9 +245,9 @@ export default function WebRtcPeerToPeerArticle() {
           a message router. Once peers have exchanged enough information, they
           connect directly, and the signaling server is no longer involved in
           the media/data path.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           NAT traversal is the most complex part of WebRTC. Most devices are
           behind NAT (Network Address Translation), where multiple devices share
           a single public IP. The NAT router maps internal (private IP, port)
@@ -257,9 +258,9 @@ export default function WebRtcPeerToPeerArticle() {
           peers have server-reflexive candidates, they can send packets directly
           to each other's public addresses, and the NAT routers forward them
           correctly.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           However, some NATs are symmetric -- they assign different external
           ports for different destinations. In this case, the port discovered
           via STUN is not the port that Peer B will use to send to Peer A. P2P
@@ -268,15 +269,16 @@ export default function WebRtcPeerToPeerArticle() {
           reliably but introduces latency (extra hop) and server costs (bandwidth
           charges). Approximately 10-20% of WebRTC connections require TURN,
           depending on the user base's network topology.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/frontend/networking-api-communication/webrtc-nat-traversal.svg"
           alt="WebRTC NAT Traversal Diagram"
           caption="NAT Traversal: STUN discovers public IP for direct P2P; TURN relays when direct connection fails due to symmetric NAT or firewall"
+          captionTier="important"
         />
 
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           For multi-party calls (3+ participants), there are two architectures:
           mesh and SFU. In a <strong>mesh topology</strong>, each peer connects
           to every other peer directly. For N participants, there are N*(N-1)/2
@@ -289,12 +291,13 @@ export default function WebRtcPeerToPeerArticle() {
           not transcode (unlike an MCU) -- it simply forwards packets, reducing
           server CPU. SFU is the standard for large video conferences (Zoom,
           Google Meet use variants of this).
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/frontend/networking-api-communication/webrtc-mesh-vs-sfu.svg"
           alt="WebRTC Mesh vs SFU Architecture Comparison"
           caption="Mesh vs SFU: Mesh has direct P2P connections between all peers (N*(N-1)/2 connections); SFU routes all streams through a central server (N connections)"
+          captionTier="important"
         />
       </section>
 
@@ -309,7 +312,7 @@ export default function WebRtcPeerToPeerArticle() {
             </tr>
           </thead>
           <tbody className="divide-y divide-theme">
-            <tr>
+            <HighlightBlock as="tr" tier="crucial">
               <td className="p-3">
                 <strong>Latency</strong>
               </td>
@@ -325,8 +328,8 @@ export default function WebRtcPeerToPeerArticle() {
                 • TURN relay introduces extra hop (20-50ms additional)
                 <br />• Connection setup is slower than WebSocket
               </td>
-            </tr>
-            <tr>
+            </HighlightBlock>
+            <HighlightBlock as="tr" tier="important">
               <td className="p-3">
                 <strong>Bandwidth</strong>
               </td>
@@ -342,8 +345,8 @@ export default function WebRtcPeerToPeerArticle() {
                 • Upload bandwidth limits participant count
                 <br />• TURN relay consumes server bandwidth
               </td>
-            </tr>
-            <tr>
+            </HighlightBlock>
+            <HighlightBlock as="tr" tier="crucial">
               <td className="p-3">
                 <strong>Reliability</strong>
               </td>
@@ -359,8 +362,8 @@ export default function WebRtcPeerToPeerArticle() {
                 • Some corporate firewalls block WebRTC entirely
                 <br />• Mobile networks may terminate idle connections
               </td>
-            </tr>
-            <tr>
+            </HighlightBlock>
+            <HighlightBlock as="tr" tier="important">
               <td className="p-3">
                 <strong>Security</strong>
               </td>
@@ -376,7 +379,7 @@ export default function WebRtcPeerToPeerArticle() {
                 • TURN server can see relayed traffic
                 <br />• Signaling server must be secured separately
               </td>
-            </tr>
+            </HighlightBlock>
           </tbody>
         </table>
 
@@ -402,12 +405,12 @@ export default function WebRtcPeerToPeerArticle() {
 
       <section>
         <h2>Best Practices</h2>
-        <p>
+        <HighlightBlock as="p" tier="important">
           These practices represent hard-won lessons from operating WebRTC
           applications at scale:
-        </p>
+        </HighlightBlock>
         <ol className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Use Reliable STUN/TURN Infrastructure:</strong> Deploy
             multiple STUN servers (Google's free servers are reliable but
             rate-limited) and self-host TURN servers (coturn) in multiple
@@ -415,8 +418,8 @@ export default function WebRtcPeerToPeerArticle() {
             prevent abuse. Monitor TURN usage and set bandwidth limits per user
             to prevent cost overruns. For production, use a managed TURN service
             (Twilio, Xirsys) unless you have specific requirements.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Implement Connection Quality Monitoring:</strong> Use
             RTCPeerConnection.getStats() to monitor connection quality: packet
             loss, jitter, round-trip time, bitrate, and resolution. Display
@@ -424,8 +427,8 @@ export default function WebRtcPeerToPeerArticle() {
             Adapt media quality based on network conditions: reduce video
             resolution when packet loss exceeds 5%, switch to audio-only when
             bandwidth is insufficient.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Handle Network Changes Gracefully:</strong> Mobile devices
             frequently switch networks (Wi-Fi to cellular, cellular to Wi-Fi).
             WebRTC connections may break on network changes. Implement
@@ -433,16 +436,16 @@ export default function WebRtcPeerToPeerArticle() {
             re-negotiate if needed, and re-establish the connection. For data
             channels, queue messages during disconnection and flush on
             reconnection.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Use ICE Restart for Failed Connections:</strong> When a
             connection fails (state transitions to "failed" or "disconnected"),
             call peerConnection.restartIce() to restart ICE gathering. This
             discovers new candidates (e.g., if the device's IP changed) and
             attempts to reconnect. Combine with signaling to exchange new ICE
             candidates. ICE restart is faster than full re-negotiation.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Implement Proper Cleanup:</strong> When a call ends, release
             all resources: close RTCPeerConnection, close RTCDataChannels, stop
             MediaStreamTracks (camera/microphone), and remove event listeners.
@@ -450,8 +453,8 @@ export default function WebRtcPeerToPeerArticle() {
             battery and showing the recording indicator. The pattern is to call
             getTracks on the stream, iterate over each track, call stop on each
             track, and then close the peer connection.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Secure Signaling Channel:</strong> The signaling channel
             (WebSocket, HTTP) must be secured with TLS (wss://, https://). SDP
             contains IP addresses and media capabilities -- if intercepted, an
@@ -459,7 +462,7 @@ export default function WebRtcPeerToPeerArticle() {
             users before allowing signaling, and validate that users are
             authorized to connect to each other (e.g., both are in the same
             meeting room).
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Handle Browser Compatibility:</strong> WebRTC APIs vary
             across browsers. Use adapter.js (a WebRTC shim) to normalize
@@ -482,33 +485,33 @@ export default function WebRtcPeerToPeerArticle() {
 
       <section>
         <h2>Common Pitfalls</h2>
-        <p>
+        <HighlightBlock as="p" tier="important">
           These mistakes appear frequently even in production applications at
           well-funded companies:
-        </p>
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Not Handling ICE Connection Failures:</strong> Assuming P2P
             always succeeds. Approximately 10-20% of connections require TURN
             relay. Without TURN configuration, these connections fail silently.
             Always configure iceServers with both STUN and TURN. Monitor
             iceConnectionState and alert if it stays in "checking" for more
             than 10 seconds.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Not Stopping Media Tracks:</strong> Forgetting to call
             track.stop() when ending a call. The camera/microphone remains
             active, draining battery and showing the recording indicator. Always
             stop all tracks when the call ends by calling getTracks on the
             stream and stopping each track.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Exposing IP Addresses Without Consent:</strong> WebRTC leaks
             the user's local and public IP addresses to peers. For privacy-sensitive
             applications, inform users that their IP will be visible, or route
             all traffic through TURN (which hides the real IP). Some users may
             want to use a VPN to mask their IP.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Not Handling Signaling Failures:</strong> Assuming signaling
             messages always arrive. Network issues, server crashes, and message
@@ -516,20 +519,20 @@ export default function WebRtcPeerToPeerArticle() {
             acknowledgments and retries for signaling messages. Use sequence
             numbers to detect out-of-order delivery.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Mesh Topology for Large Groups:</strong> Using P2P mesh for
             groups larger than 5-6 participants. Each peer must encode and
             upload N-1 video streams, which quickly exceeds upload bandwidth and
             CPU capacity. Use SFU architecture for groups larger than 6
             participants.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Not Adapting to Network Conditions:</strong> Sending
             high-bitrate video regardless of network quality. This causes packet
             loss, jitter, and frozen video. Monitor getStats() and adapt bitrate
             dynamically. Reduce resolution, frame rate, or switch to audio-only
             when network degrades.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Ignoring Mobile Constraints:</strong> Not accounting for
             mobile network characteristics: higher latency, lower bandwidth,
@@ -550,11 +553,11 @@ export default function WebRtcPeerToPeerArticle() {
 
       <section>
         <h2>Real-World Use Cases</h2>
-        <p>
+        <HighlightBlock as="p" tier="important">
           WebRTC is the foundation for these production scenarios:
-        </p>
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Video Conferencing (Google Meet, Zoom, Whereby):</strong>{" "}
             Multi-party video calls with screen sharing, chat, and recording.
             Implementation: SFU architecture for groups larger than 4, adaptive
@@ -562,15 +565,15 @@ export default function WebRtcPeerToPeerArticle() {
             networks, and simulcast (sending multiple resolutions) for bandwidth
             adaptation. Server-side: SFU routes streams, recording service
             captures streams, and signaling coordinates participants.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Peer-to-Peer File Sharing (WebTorrent, FilePizza):</strong>{" "}
             Direct file transfer between browsers without server storage.
             Implementation: RTCDataChannel for file chunks, chunk-based transfer
             with progress tracking, multiple parallel connections for speed, and
             magnet link support for torrent-style discovery. Files never touch
             the server -- only signaling metadata passes through.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Remote Desktop and Screen Sharing (Chrome Remote Desktop,
             Screenhero):</strong> Low-latency screen sharing with remote
@@ -611,7 +614,7 @@ export default function WebRtcPeerToPeerArticle() {
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
             <p className="font-semibold">Q1: Explain the WebRTC connection setup process.</p>
-            <p className="mt-2 text-sm">
+            <HighlightBlock as="p" tier="crucial" className="mt-2 text-sm">
               <strong>Answer:</strong> WebRTC connection setup involves: (1)
               Both peers create RTCPeerConnection with STUN/TURN config. (2)
               Initiating peer captures media with getUserMedia(), creates SDP
@@ -623,12 +626,12 @@ export default function WebRtcPeerToPeerArticle() {
               performs connectivity checks, finds working path (direct via STUN
               or relay via TURN). (8) Connection transitions to "connected",
               media flows P2P via SRTP.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
             <p className="font-semibold">Q2: What is the role of STUN and TURN servers in WebRTC?</p>
-            <p className="mt-2 text-sm">
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               <strong>Answer:</strong> STUN servers help peers discover their
               public IP address behind NAT. A peer sends a request to STUN,
               which responds with the peer's public IP and port. This enables
@@ -637,13 +640,13 @@ export default function WebRtcPeerToPeerArticle() {
               -- it introduces latency and server costs, so it is used only when
               STUN-based direct connection fails. Approximately 80-90% of
               connections succeed via STUN; 10-20% require TURN.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
             <p className="font-semibold">Q3: How do you handle multi-party calls (3+ participants) in
               WebRTC?</p>
-            <p className="mt-2 text-sm">
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               <strong>Answer:</strong> For small groups (up to 5-6
               participants), use mesh topology where each peer connects to every
               other peer directly. For larger groups, use SFU (Selective
@@ -653,12 +656,12 @@ export default function WebRtcPeerToPeerArticle() {
               simply forwards packets, reducing server CPU. For very large
               groups (100+), use simulcast (multiple resolutions) and layer
               switching.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
             <p className="font-semibold">Q4: How do you monitor and adapt to network conditions in WebRTC?</p>
-            <p className="mt-2 text-sm">
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               <strong>Answer:</strong> I use RTCPeerConnection.getStats() to
               collect metrics: packet loss, jitter, round-trip time, bitrate,
               and resolution. I monitor these metrics periodically (every 5
@@ -666,7 +669,7 @@ export default function WebRtcPeerToPeerArticle() {
               resolution; if bitrate drops, reduce frame rate; if RTT exceeds
               500ms, switch to audio-only. I display quality indicators to users
               and log metrics for debugging.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">

@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -25,13 +26,13 @@ export default function AriaAttributesArticle() {
       {/* ─────────────────── 1. Definition & Context ─────────────────── */}
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>WAI-ARIA</strong> (Web Accessibility Initiative &ndash; Accessible Rich Internet Applications) is a W3C
           specification that defines a set of HTML attributes you can add to elements to supplement native semantics.
           ARIA attributes bridge the gap between what a browser&apos;s accessibility tree exposes and what modern
           JavaScript-driven interfaces actually do. They let assistive technologies&mdash;primarily screen readers&mdash;understand
           custom widgets, dynamic content updates, and complex interaction patterns that go far beyond standard form controls.
-        </p>
+        </HighlightBlock>
         <p>
           The specification was born from a practical problem: HTML4 had a limited vocabulary of interactive elements
           (&lt;input&gt;, &lt;select&gt;, &lt;a&gt;, &lt;button&gt;). As single-page applications, rich text editors, drag-and-drop
@@ -40,29 +41,29 @@ export default function AriaAttributesArticle() {
           keyboard-only users, and voice-control software. WAI-ARIA 1.0 reached W3C Recommendation status in 2014,
           with WAI-ARIA 1.1 following in 2017 and WAI-ARIA 1.2 in 2023, each expanding the role and property vocabulary.
         </p>
-        <p>
+        <HighlightBlock as="p" tier="important">
           For staff and principal engineers, ARIA proficiency goes beyond knowing individual attributes. It means understanding
           the accessibility tree as a parallel DOM, knowing when ARIA is the correct tool versus when native HTML suffices,
           designing component APIs that enforce accessibility contracts, and establishing team-wide testing strategies that
           prevent ARIA misuse. ARIA is not a checkbox to pass an audit; it is an architectural concern that affects component
           design, state management, routing, focus management, and even build tooling.
-        </p>
+        </HighlightBlock>
 
         <div className="my-6 rounded-lg border border-accent/30 bg-accent/10 p-6">
           <h3 className="mb-3 font-semibold">The First Rule of ARIA</h3>
-          <p>
+          <HighlightBlock as="p" tier="crucial">
             &quot;If you can use a native HTML element or attribute with the semantics and behavior you require already
             built in, instead of re-purposing an element and adding an ARIA role, state, or property to make it accessible,
             then do so.&quot; &mdash; W3C WAI-ARIA Authoring Practices. Native elements carry implicit roles, keyboard handling,
             and focus management for free. ARIA should be used to augment, not replace, HTML semantics. Using ARIA on a
             &lt;div&gt; to mimic a &lt;button&gt; means you must also manually implement keyboard support (Enter and Space),
             focus management, and the pointer cursor&mdash;all of which &lt;button&gt; provides natively.
-          </p>
+          </HighlightBlock>
         </div>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           The five rules of ARIA use, as outlined by the W3C, are essential context for any ARIA discussion:
-        </p>
+        </HighlightBlock>
         <ol className="space-y-2">
           <li><strong>Rule 1:</strong> Use native HTML when possible. If a native element provides the semantics, use it.</li>
           <li><strong>Rule 2:</strong> Do not change native semantics unless you really have to. Adding role=&quot;heading&quot; to a &lt;h2&gt; is redundant and can confuse assistive technologies.</li>
@@ -77,20 +78,20 @@ export default function AriaAttributesArticle() {
         <h2>Core Concepts</h2>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Roles</h3>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           An ARIA role defines what an element <em>is</em> to assistive technology. Roles fall into four categories:
           <strong> widget roles</strong> (button, checkbox, slider, tab, dialog), <strong>document structure roles</strong>
           (heading, list, table, toolbar), <strong>landmark roles</strong> (banner, navigation, main, complementary,
           contentinfo), and <strong>live region roles</strong> (alert, status, log, timer). Once a role is set, it overrides
           the element&apos;s implicit role in the accessibility tree. A &lt;div role=&quot;button&quot;&gt; will be announced
           as &quot;button&quot; rather than as a generic container.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Roles are <strong>not inherited</strong> by children (except for certain required owned elements) and they
           are <strong>immutable once set</strong>&mdash;you should not dynamically change a role via JavaScript during the
           element&apos;s lifecycle. Doing so can crash or confuse screen readers. If you need a different role, render a
           different element or component.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">States vs. Properties</h3>
         <p>
@@ -98,8 +99,12 @@ export default function AriaAttributesArticle() {
           aria-* attribute syntax, but they differ in volatility:
         </p>
         <ul className="space-y-2">
-          <li><strong>States</strong> change frequently during interaction. Examples: aria-expanded (true/false as an accordion opens/closes), aria-checked (checkbox toggle), aria-selected (list item selection), aria-disabled (dynamic enabling/disabling), aria-pressed (toggle button). These must be updated in response to user actions.</li>
-          <li><strong>Properties</strong> are set once (or rarely change). Examples: aria-label, aria-labelledby, aria-describedby, aria-haspopup, aria-controls, aria-owns, aria-required. These describe structural relationships or naming that typically remain constant.</li>
+          <HighlightBlock as="li" tier="important">
+            <strong>States</strong> change frequently during interaction. Examples: aria-expanded (true/false as an accordion opens/closes), aria-checked (checkbox toggle), aria-selected (list item selection), aria-disabled (dynamic enabling/disabling), aria-pressed (toggle button). These must be updated in response to user actions.
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
+            <strong>Properties</strong> are set once (or rarely change). Examples: aria-label, aria-labelledby, aria-describedby, aria-haspopup, aria-controls, aria-owns, aria-required. These describe structural relationships or naming that typically remain constant.
+          </HighlightBlock>
         </ul>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">aria-label and aria-labelledby</h3>
@@ -189,10 +194,10 @@ export default function AriaAttributesArticle() {
       {/* ─────────────────── 3. Architecture & Flow ─────────────────── */}
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Understanding how ARIA attributes flow from your code through the browser to assistive technology is essential
           for debugging accessibility issues and designing robust component APIs.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">ARIA Role Taxonomy</h3>
         <p>
@@ -208,31 +213,31 @@ export default function AriaAttributesArticle() {
         />
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Live Region Update Flow</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           When JavaScript mutates the content of an element marked with aria-live, the browser detects the DOM change,
           translates it into a platform accessibility event, and forwards it to the screen reader. The politeness level
           determines whether the announcement interrupts (assertive) or queues (polite). Understanding this flow is
           critical because race conditions, rapid re-renders, and improper region setup are the most common causes
           of &quot;silent&quot; live regions.
-        </p>
+        </HighlightBlock>
         <ArticleImage
           src="/diagrams/system-design-concepts/frontend/accessibility-a11y/aria-attributes-diagram-2.svg"
           alt="aria-live region update flow showing how DOM mutations propagate through the browser accessibility tree, platform API, and screen reader with polite vs assertive comparison"
           caption="Figure 2: The four-step flow of an aria-live region update: DOM mutation, browser detection, platform API notification, and screen reader announcement. Polite queues after current speech; assertive interrupts immediately."
         />
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           A common React pitfall with live regions: the container must exist in the DOM <em>before</em> the content changes.
           If you conditionally render the container and the content simultaneously, screen readers may miss the announcement
           because they only observe mutations within regions that are already tracked. Always render the live region container
           in the initial render and update its content dynamically. The wrong approach is conditionally rendering the alert div only when there is an error. The correct approach is to always have the div with role alert and aria-live assertive present, updating only its text content. An alternative is to use a visually-hidden persistent region with class sr-only, role status, aria-live polite, and aria-atomic true for non-urgent status messages.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">ARIA Decision Tree</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Before adding any ARIA attribute, walk through a decision tree: Can native HTML solve this? If not, does the
           element need a label? Does it have toggle state? Does its content update dynamically? Each answer points you
           toward the correct attribute.
-        </p>
+        </HighlightBlock>
         <ArticleImage
           src="/diagrams/system-design-concepts/frontend/accessibility-a11y/aria-attributes-diagram-3.svg"
           alt="ARIA states and properties decision tree flowchart showing decision points for native HTML, labeling, toggle states, and dynamic content"
@@ -243,11 +248,11 @@ export default function AriaAttributesArticle() {
       {/* ─────────────────── 4. Trade-offs & Comparisons ─────────────────── */}
       <section>
         <h2>Trade-offs &amp; Comparisons</h2>
-        <p>
+        <HighlightBlock as="p" tier="important">
           A central tension in accessibility engineering is deciding when native HTML semantics are sufficient and when
           ARIA is necessary. Overusing ARIA is as problematic as underusing it&mdash;redundant ARIA can introduce
           conflicting semantics, increase maintenance burden, and actively harm users when attributes become stale.
-        </p>
+        </HighlightBlock>
 
         <div className="overflow-x-auto">
           <table className="w-full border-collapse text-left text-sm">
@@ -264,26 +269,26 @@ export default function AriaAttributesArticle() {
                 <td className="py-2">Built-in (button, a, input all receive focus and respond to keyboard)</td>
                 <td className="py-2">Must be manually implemented with tabindex, onKeyDown handlers</td>
               </tr>
-              <tr className="border-b border-theme/40">
+              <HighlightBlock as="tr" tier="important" className="border-b border-theme/40">
                 <td className="py-2 font-semibold">Accessible name</td>
                 <td className="py-2">Derived from text content, &lt;label&gt;, alt attribute</td>
                 <td className="py-2">Requires explicit aria-label or aria-labelledby</td>
-              </tr>
-              <tr className="border-b border-theme/40">
+              </HighlightBlock>
+              <HighlightBlock as="tr" tier="crucial" className="border-b border-theme/40">
                 <td className="py-2 font-semibold">State management</td>
                 <td className="py-2">Automatic (checked, disabled, required map to accessibility tree)</td>
                 <td className="py-2">Manual updates needed (aria-checked, aria-disabled must be synced with visual state)</td>
-              </tr>
+              </HighlightBlock>
               <tr className="border-b border-theme/40">
                 <td className="py-2 font-semibold">Browser support</td>
                 <td className="py-2">Universal, decades of optimization</td>
                 <td className="py-2">Varies by role/attribute; some combinations have screen reader bugs</td>
               </tr>
-              <tr className="border-b border-theme/40">
+              <HighlightBlock as="tr" tier="important" className="border-b border-theme/40">
                 <td className="py-2 font-semibold">Maintenance burden</td>
                 <td className="py-2">Low&mdash;semantics are inherent</td>
                 <td className="py-2">High&mdash;attributes can drift from visual state during refactors</td>
-              </tr>
+              </HighlightBlock>
               <tr className="border-b border-theme/40">
                 <td className="py-2 font-semibold">Custom widget support</td>
                 <td className="py-2">Limited to native elements&apos; built-in behavior</td>
@@ -303,30 +308,30 @@ export default function AriaAttributesArticle() {
           </table>
         </div>
 
-        <p className="mt-4">
+        <HighlightBlock as="p" tier="important" className="mt-4">
           The practical guideline: use native HTML as the foundation, augment with ARIA only where gaps exist, and
           always test with actual screen readers (NVDA, JAWS, VoiceOver) rather than relying solely on automated tools.
           Automated testing catches roughly 30-40% of accessibility issues; the rest require manual and assistive
           technology testing.
-        </p>
+        </HighlightBlock>
       </section>
 
       {/* ─────────────────── 5. Best Practices ─────────────────── */}
       <section>
         <h2>Best Practices</h2>
         <ol className="space-y-2">
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Start with native HTML.</strong> Use &lt;button&gt;, &lt;input&gt;, &lt;select&gt;, &lt;details&gt;, &lt;dialog&gt;, &lt;nav&gt;, &lt;main&gt;, &lt;header&gt;, and &lt;footer&gt; before considering ARIA. These elements carry implicit roles, keyboard behavior, and state management.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>One accessible name per interactive element.</strong> Every button, link, input, and custom widget must have a programmatically determined name. Audit with the browser&apos;s Accessibility Inspector to verify the computed accessible name.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Keep aria-live regions persistent.</strong> Mount the live region container on initial render. Only change its text content. Removing and re-adding the container causes screen readers to lose track of it.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Sync ARIA states with visual states.</strong> If aria-expanded=&quot;true&quot;, the panel must be visible. If aria-disabled=&quot;true&quot;, the control must look and behave as disabled. Divergence between ARIA state and visual state is a critical accessibility defect.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Prefer aria-labelledby over aria-label.</strong> aria-labelledby references visible text, which keeps the label in sync with what sighted users see. aria-label creates an invisible label that can easily become stale during refactors.
           </li>
@@ -352,27 +357,27 @@ export default function AriaAttributesArticle() {
       <section>
         <h2>Common Pitfalls</h2>
         <ul className="space-y-2">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Redundant ARIA on native elements.</strong> Adding role=&quot;button&quot; to a &lt;button&gt; or role=&quot;link&quot; to an &lt;a&gt; is unnecessary and adds noise. Worse, adding role=&quot;heading&quot; to a &lt;div&gt; that already has an &lt;h2&gt; inside it can produce double announcements.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>aria-label on non-interactive elements.</strong> Screen readers generally ignore aria-label on &lt;div&gt; and &lt;span&gt; unless the element also has a role. Adding aria-label to a generic container does nothing for most users and can give a false sense of accessibility.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Stale aria-controls references.</strong> When the controlled element is conditionally rendered, the ID referenced by aria-controls may not exist in the DOM, creating a broken reference. Some screen readers handle this gracefully; others produce errors.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Using aria-live=&quot;assertive&quot; for routine updates.</strong> Overusing assertive interrupts the user&apos;s reading flow. A search result count update should be polite; only validation errors, session timeouts, and critical alerts warrant assertive.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Conditionally rendering the live region container.</strong> If the &lt;div role=&quot;alert&quot;&gt; is not in the DOM when the page loads, screen readers may not track it. Always keep the container mounted and change only its text content.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Forgetting keyboard support when using roles.</strong> Adding role=&quot;tab&quot; to a &lt;div&gt; without implementing arrow key navigation, Home/End, and focus management violates the WAI-ARIA Authoring Practices and creates a broken experience for keyboard users.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="crucial">
             <strong>aria-hidden on focusable elements.</strong> If a user can tab to an element that has aria-hidden=&quot;true&quot;, the screen reader says nothing&mdash;the user is lost. Either remove aria-hidden or add tabindex=&quot;-1&quot; and remove it from the tab order.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Conflicting roles and states.</strong> Setting role=&quot;checkbox&quot; without aria-checked, or aria-expanded without a disclosure trigger, leaves the accessibility tree in an inconsistent state. ARIA attributes must form a complete, valid contract.
           </li>
@@ -387,40 +392,40 @@ export default function AriaAttributesArticle() {
         <h2>Real-World Use Cases</h2>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">GOV.UK Design System</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           The UK government&apos;s design system is one of the most thoroughly accessibility-tested component libraries in the
           world. Every component ships with exhaustive ARIA attributes tested across JAWS, NVDA, and VoiceOver. Their
           accordion component uses aria-expanded, aria-controls, and section role=&quot;region&quot; with aria-labelledby
           to create a fully accessible disclosure pattern. They document expected screen reader announcements for every
           interaction state, treating these as acceptance criteria.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Slack</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Slack&apos;s web application uses extensive aria-live regions for real-time message delivery. New messages in the
           active channel are announced via polite live regions, while direct messages and mentions use assertive
           announcements. They implement a custom screen reader mode that serializes message content to avoid overwhelming
           users in high-traffic channels. Their combobox pattern for the channel switcher (Cmd+K) follows the ARIA combobox
           1.2 pattern with aria-activedescendant for virtual focus management.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Adobe Spectrum</h3>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           Adobe&apos;s React Spectrum library (react-aria) is an industry-leading example of ARIA done right at scale. They
           build headless hooks (useButton, useComboBox, useListBox, useDialog) that encapsulate all ARIA roles, states,
           and keyboard interactions. Consumers get accessibility without needing to understand ARIA internals. Their
           approach separates behavior (ARIA + keyboard) from presentation (CSS), enabling accessible components across
           any design system.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Airbnb</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Airbnb&apos;s date picker uses aria-selected to indicate the chosen dates, aria-disabled for unavailable dates,
           and aria-live polite regions to announce the currently focused date and selected range. Their search
           autocomplete implements the combobox pattern with aria-activedescendant, allowing screen reader users to
           navigate suggestions with arrow keys while the input retains focus. They run axe-core in CI/CD and conduct
           quarterly manual screen reader audits.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Stripe Dashboard</h3>
         <p>
@@ -437,7 +442,7 @@ export default function AriaAttributesArticle() {
 
         <div className="my-4 rounded-lg border border-accent/20 bg-accent/5 p-4">
           <h3 className="mb-2 font-semibold">Q: What is the first rule of ARIA, and why does it matter?</h3>
-          <p>
+          <HighlightBlock as="p" tier="crucial">
             The first rule states: &quot;If you can use a native HTML element or attribute with the semantics and behavior
             you require already built in, do so.&quot; This matters because native elements (&lt;button&gt;, &lt;input&gt;,
             &lt;select&gt;, &lt;nav&gt;) provide implicit roles, built-in keyboard handling, and automatic state
@@ -445,12 +450,12 @@ export default function AriaAttributesArticle() {
             you take on full responsibility for keyboard support, state synchronization, and cross-screen-reader
             testing. ARIA supplements HTML; it should not replace it. The cost of getting ARIA wrong (broken keyboard
             access, silent elements, conflicting semantics) often outweighs the benefit of custom styling.
-          </p>
+          </HighlightBlock>
         </div>
 
         <div className="my-4 rounded-lg border border-accent/20 bg-accent/5 p-4">
           <h3 className="mb-2 font-semibold">Q: Explain the difference between aria-label, aria-labelledby, and aria-describedby.</h3>
-          <p>
+          <HighlightBlock as="p" tier="important">
             <strong>aria-label</strong> is a string attribute that directly provides the accessible name when no visible
             label exists (e.g., an icon-only close button). <strong>aria-labelledby</strong> references one or more
             element IDs whose text content becomes the accessible name, and it takes highest priority in the accessible
@@ -459,12 +464,12 @@ export default function AriaAttributesArticle() {
             accessible name (e.g., help text, error messages, format hints). In the screen reader output, the name comes
             first (&quot;Password, edit text&quot;), followed by a pause and the description (&quot;Must be at least 12
             characters&quot;). A common mistake is using aria-label when aria-labelledby would be more maintainable.
-          </p>
+          </HighlightBlock>
         </div>
 
         <div className="my-4 rounded-lg border border-accent/20 bg-accent/5 p-4">
           <h3 className="mb-2 font-semibold">Q: How do aria-live regions work, and what are the pitfalls in React?</h3>
-          <p>
+          <HighlightBlock as="p" tier="important">
             aria-live regions enable screen readers to announce dynamic content changes without requiring the user to
             navigate to the changed element. When content inside an aria-live region changes, the browser detects the
             DOM mutation, sends an accessibility event through the OS platform API, and the screen reader announces
@@ -473,12 +478,12 @@ export default function AriaAttributesArticle() {
             its content. If both appear simultaneously, screen readers may not track the new region. The fix is to mount
             the container on initial render with empty content and then update the text content reactively. Another
             pitfall: rapid state changes can cause multiple announcements. Use debouncing or a queue to batch updates.
-          </p>
+          </HighlightBlock>
         </div>
 
         <div className="my-4 rounded-lg border border-accent/20 bg-accent/5 p-4">
           <h3 className="mb-2 font-semibold">Q: When should you use aria-hidden=&quot;true&quot;, and what are the dangers?</h3>
-          <p>
+          <HighlightBlock as="p" tier="important">
             Use aria-hidden=&quot;true&quot; to remove decorative or redundant content from the accessibility tree:
             decorative icons next to text labels, background images, duplicate content for visual layout, and off-screen
             content that should not be read. The critical danger is applying aria-hidden=&quot;true&quot; to a focusable
@@ -487,7 +492,7 @@ export default function AriaAttributesArticle() {
             is open so screen readers only see the modal content. When the modal closes, remove aria-hidden. Also be
             cautious with aria-hidden on containers: it removes all descendants from the accessibility tree, including
             focusable children.
-          </p>
+          </HighlightBlock>
         </div>
 
         <div className="my-4 rounded-lg border border-accent/20 bg-accent/5 p-4">

@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="system-ui, sans-serif">
+  <rect width="900" height="500" fill="#f3f1f8"/>
+  <text x="450" y="32" text-anchor="middle" font-size="19" font-weight="700" fill="#1a1822">N-Queens as a Benchmark &amp; Real-World Connection</text>
+
+  <rect x="40" y="60" width="820" height="200" fill="#fff" stroke="#6d5bd0" stroke-width="2" rx="6"/>
+  <text x="60" y="85" font-size="13" font-weight="700" fill="#6d5bd0">N-Queens in research &amp; production</text>
+  <text x="60" y="112" font-size="11">• Constraint-solver benchmark: every CSP and SAT solver paper benchmarks N-Queens.</text>
+  <text x="60" y="132" font-size="11">• GPU/parallel benchmarks: demonstrates work-stealing, branch divergence, Amdahl effects.</text>
+  <text x="60" y="152" font-size="11">• Distributed-computing teaching example: shard by first row's column choice.</text>
+  <text x="60" y="172" font-size="11">• n=27 took ~1 month on a 24-machine cluster (TU Dresden 2016) — a notable HPC milestone.</text>
+  <text x="60" y="192" font-size="11">• Jeff Somers' bitmask C code is the canonical fastest serial implementation.</text>
+  <text x="60" y="212" font-size="11">• Underlies more practical CSP problems: time-table, frequency-assignment, sensor placement.</text>
+
+  <rect x="40" y="280" width="820" height="195" fill="#fff" stroke="#4caf50" stroke-width="2" rx="6"/>
+  <text x="60" y="305" font-size="13" font-weight="700" fill="#4caf50">Variants</text>
+  <text x="60" y="330" font-size="11">• N-Rooks: only column conflicts → trivial, n! solutions.</text>
+  <text x="60" y="350" font-size="11">• N-Queens completion problem: given a partial board, can it be completed? NP-complete.</text>
+  <text x="60" y="370" font-size="11">• Toroidal N-Queens: diagonals wrap around — solutions exist iff gcd(n, 6) = 1.</text>
+  <text x="60" y="390" font-size="11">• N-Queens dominating set: minimum queens to attack every cell — NP-hard.</text>
+  <text x="60" y="410" font-size="11">• 1D variant (any-step queens, super-queens): different attack rules, different counts.</text>
+  <text x="60" y="430" font-size="11">• N-Queens with extra blockers: subset of cells forbidden — combinatorial completion problem.</text>
+  <text x="60" y="455" font-size="11" fill="#4caf50" font-weight="700">N-Queens completion is NP-complete; the placement problem itself is not (heuristic O(n) constructive).</text>
+</svg>

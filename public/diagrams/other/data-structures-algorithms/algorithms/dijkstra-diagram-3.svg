@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="system-ui, sans-serif">
+  <rect width="900" height="500" fill="#f3f1f8"/>
+  <text x="450" y="32" text-anchor="middle" font-size="19" font-weight="700" fill="#1a1822">Dijkstra in Production</text>
+
+  <rect x="40" y="60" width="820" height="200" fill="#fff" stroke="#6d5bd0" stroke-width="2" rx="6"/>
+  <text x="60" y="85" font-size="13" font-weight="700" fill="#6d5bd0">Real-world systems</text>
+  <text x="60" y="112" font-size="11">• <tspan font-weight="700">Routing protocols:</tspan> OSPF, IS-IS run Dijkstra over link-state databases for IP routing.</text>
+  <text x="60" y="132" font-size="11">• <tspan font-weight="700">Maps / navigation:</tspan> Google Maps, OSRM, Valhalla — Dijkstra + A* + contraction hierarchies.</text>
+  <text x="60" y="152" font-size="11">• <tspan font-weight="700">Game AI pathfinding:</tspan> A* (Dijkstra + heuristic) on grid / nav-mesh.</text>
+  <text x="60" y="172" font-size="11">• <tspan font-weight="700">Network flow / scheduling:</tspan> shortest augmenting paths in capacity-scaling max-flow.</text>
+  <text x="60" y="192" font-size="11">• <tspan font-weight="700">Telecom:</tspan> minimum-cost path through capacitated optical networks.</text>
+  <text x="60" y="212" font-size="11">• <tspan font-weight="700">Robotics motion planning:</tspan> grid + cell costs → shortest collision-free path.</text>
+  <text x="60" y="232" font-size="11">• <tspan font-weight="700">Currency arbitrage detection:</tspan> Dijkstra on log-weights detects no negative cycle.</text>
+
+  <rect x="40" y="280" width="820" height="195" fill="#fff" stroke="#4caf50" stroke-width="2" rx="6"/>
+  <text x="60" y="305" font-size="13" font-weight="700" fill="#4caf50">Pitfalls</text>
+  <text x="60" y="330" font-size="11">• <tspan font-weight="700">Negative edges:</tspan> silent wrong answers — detect at input or use Bellman-Ford.</text>
+  <text x="60" y="350" font-size="11">• <tspan font-weight="700">Float precision:</tspan> tie-breaking on equal distances may flap path choice; canonicalize.</text>
+  <text x="60" y="370" font-size="11">• <tspan font-weight="700">Memory:</tspan> lazy heap can hold O(E); on huge graphs prefer eager or external-memory variant.</text>
+  <text x="60" y="390" font-size="11">• <tspan font-weight="700">Dynamic graphs:</tspan> any edge weight change invalidates results — use D* Lite or LPA*.</text>
+  <text x="60" y="410" font-size="11">• <tspan font-weight="700">Integer overflow:</tspan> sum of weights can exceed INT_MAX — use 64-bit accumulators.</text>
+  <text x="60" y="430" font-size="11">• <tspan font-weight="700">Wrong PQ for graph density:</tspan> log V overhead dominates on V² edges; switch to array.</text>
+  <text x="60" y="465" font-size="11" fill="#4caf50" font-weight="700">Match the heap, weight type, and recompute cadence to the workload.</text>
+</svg>

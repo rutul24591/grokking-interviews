@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -35,15 +36,15 @@ export default function MonorepoVsPolyrepoArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           A <strong>monorepo</strong> is a single version-controlled repository
           that contains multiple distinct projects, packages, or services that
           may or may not be related. A <strong>polyrepo</strong>
           (also called multi-repo) is a strategy where each project or package
           lives in its own repository with its own version history, CI/CD
           pipeline, and release lifecycle.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The monorepo vs polyrepo decision is one of the most consequential
           architectural choices a frontend platform team makes. It affects
           developer workflow (atomic cross-package changes vs versioned
@@ -51,8 +52,8 @@ export default function MonorepoVsPolyrepoArticle() {
           independent pipelines), code sharing (internal imports vs published
           packages), and team coordination (trunk-based development vs
           independent release schedules).
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Google, Meta, Microsoft, and Uber operate massive monorepos containing
           billions of lines of code. Netflix, Amazon, and Spotify favor
           polyrepos aligned with autonomous team ownership. Neither approach is
@@ -61,7 +62,7 @@ export default function MonorepoVsPolyrepoArticle() {
           Many organizations use a hybrid: a monorepo for closely related
           packages (design system + shared utilities + main app) and polyrepos
           for independent services.
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
@@ -98,32 +99,32 @@ export default function MonorepoVsPolyrepoArticle() {
             autonomy within a shared repository. In polyrepos, ownership is
             implicit — each repo has its own maintainers.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Atomic Changes:</strong> In a monorepo, a single commit can
             modify multiple packages atomically — update a shared library and
             all consuming applications in one PR. In polyrepos, this requires
             coordinated releases: publish the library, then update each
             consumer&apos;s dependency in separate PRs. Atomic changes are the
             primary workflow advantage of monorepos.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Versioned Dependencies:</strong> In polyrepos, packages
             consume each other through versioned dependencies published to a
             package registry. This provides explicit version control (consumers
             choose when to upgrade) but requires a publish workflow and can lead
             to version fragmentation (different consumers on different
             versions).
-          </li>
+          </HighlightBlock>
         </ul>
       </section>
 
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           The architectural differences between monorepo and polyrepo manifest
           in every aspect of the development workflow — from code sharing to
           deployment.
-        </p>
+        </HighlightBlock>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-4 text-lg font-semibold">Monorepo Structure</h3>
@@ -188,6 +189,7 @@ export default function MonorepoVsPolyrepoArticle() {
           src="/diagrams/system-design-concepts/frontend/scalability-architecture-patterns/monorepo-vs-polyrepo-diagram-1.svg"
           alt="Monorepo vs Polyrepo structure comparison showing single repository with apps and packages folders versus multiple separate repositories"
           caption="Monorepo vs Polyrepo — structural differences between single repository with shared tooling versus multiple independent repositories"
+          captionTier="important"
         />
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
@@ -219,11 +221,11 @@ export default function MonorepoVsPolyrepoArticle() {
               depends on @my-org/* via npm
             </li>
           </ul>
-          <p className="mt-3">
+          <HighlightBlock as="p" tier="important" className="mt-3">
             Each repo has its own CI/CD pipeline, package.json, lockfile, and
             release schedule. Cross-repo changes require publishing a new
             version and updating consumers.
-          </p>
+          </HighlightBlock>
         </div>
       </section>
 
@@ -311,10 +313,12 @@ export default function MonorepoVsPolyrepoArticle() {
                 <strong>Scale</strong>
               </td>
               <td className="p-3">
-                • Git performance degrades with size
-                <br />
-                • Requires specialized tooling (Nx, Bazel)
-                <br />• Single lockfile can cause merge conflicts
+                <HighlightBlock tier="crucial">
+                  • Git performance degrades with size
+                  <br />
+                  • Requires specialized tooling (Nx, Bazel)
+                  <br />• Single lockfile can cause merge conflicts
+                </HighlightBlock>
               </td>
               <td className="p-3">
                 • Git performance is always fast
@@ -330,20 +334,20 @@ export default function MonorepoVsPolyrepoArticle() {
       <section>
         <h2>Best Practices</h2>
         <ol className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Choose Based on Code Sharing Frequency:</strong> If packages
             change together frequently (shared library + consumers), a monorepo
             eliminates version coordination overhead. If packages are truly
             independent with different release cadences, polyrepo provides
             cleaner boundaries.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Invest in Tooling Early for Monorepos:</strong> A monorepo
             without proper tooling (Nx, Turborepo, or Bazel) becomes a nightmare
             at scale. Set up affected detection, remote caching, and task
             orchestration before the repo grows beyond a few packages. The
             tooling investment pays for itself quickly.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Use CODEOWNERS for Monorepo Governance:</strong> Define
             clear ownership boundaries using CODEOWNERS files. Each package
@@ -365,12 +369,12 @@ export default function MonorepoVsPolyrepoArticle() {
             require them in each repo. Consistency reduces context-switching
             cost when developers move between packages.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Consider the Hybrid Approach:</strong> Use a monorepo for
             closely related packages (design system + apps that consume it) and
             polyrepos for truly independent services. This captures the benefits
             of both strategies where they are most applicable.
-          </li>
+          </HighlightBlock>
         </ol>
       </section>
 
@@ -378,25 +382,26 @@ export default function MonorepoVsPolyrepoArticle() {
         src="/diagrams/system-design-concepts/frontend/scalability-architecture-patterns/monorepo-vs-polyrepo-diagram-2.svg"
         alt="Monorepo affected detection and remote caching flow showing git diff analysis, dependency graph traversal, and cache hit/miss paths"
         caption="Affected detection &amp; remote caching — monorepo tools analyze changes and skip unchanged builds using cached artifacts"
+        captionTier="important"
       />
 
       <section>
         <h2>Common Pitfalls</h2>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Monorepo Without Tooling:</strong> Using a monorepo with
             only npm workspaces and no build orchestration tool leads to full
             rebuilds on every change, slow CI, and developer frustration. Nx or
             Turborepo are not optional — they are essential infrastructure for
             monorepo productivity.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Polyrepo Dependency Hell:</strong> In polyrepos, different
             consumers running different versions of shared packages creates a
             matrix of configurations that is difficult to test and support. Use
             automated dependency update tools (Renovate, Dependabot) and enforce
             a maximum version lag policy.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Monorepo Merge Conflicts:</strong> A single lockfile
             (pnpm-lock.yaml) in a monorepo with many active developers creates
@@ -410,24 +415,24 @@ export default function MonorepoVsPolyrepoArticle() {
             linked) but fails in CI or production. Use lint rules that enforce
             explicit dependency declarations.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Over-Coupling in Monorepos:</strong> Just because packages
             are in the same repo does not mean they should depend on each other.
             Maintain clear module boundaries. If every package imports from
             every other package, you have a monolith, not a monorepo.
-          </li>
+          </HighlightBlock>
         </ul>
       </section>
 
       <section>
         <h2>Real-World Use Cases</h2>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Google (Monorepo):</strong> Google operates one of the
             largest monorepos in the world with billions of lines of code across
             thousands of projects. They built custom tools (Blaze/Bazel) for
             build orchestration and Piper for version control at this scale.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Vercel/Next.js (Monorepo with Turborepo):</strong> The
             Next.js repository is a monorepo managed with Turborepo (which
@@ -447,28 +452,28 @@ export default function MonorepoVsPolyrepoArticle() {
             project graph visualization, affected commands, distributed task
             execution, and plugins for every major framework.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Design System Monorepos:</strong> Many organizations
             maintain their design system in a monorepo — component library,
             documentation site, icon package, token package, and playground all
             in one repo. This enables atomic changes across the system (update a
             token and its documentation simultaneously).
-          </li>
+          </HighlightBlock>
         </ul>
       </section>
 
       <section>
         <h2>Security Considerations</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           Monorepo and Polyrepo architectures introduce different security considerations around access control, dependency management, and supply chain security.
-        </p>
+        </HighlightBlock>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-4 text-lg font-semibold">Monorepo Security</h3>
           <ul className="space-y-2">
-            <li>
+            <HighlightBlock as="li" tier="important">
               <strong>Access Control:</strong> All developers have access to all code. Mitigation: implement CODEOWNERS for sensitive packages, use branch protection rules, audit all changes to security-critical code.
-            </li>
+            </HighlightBlock>
             <li>
               <strong>Dependency Management:</strong> Shared dependencies are deduplicated. Mitigation: use automated dependency updates (Dependabot, Renovate), pin exact versions, implement security scanning for all dependencies.
             </li>
@@ -481,9 +486,9 @@ export default function MonorepoVsPolyrepoArticle() {
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-4 text-lg font-semibold">Polyrepo Security</h3>
           <ul className="space-y-2">
-            <li>
+            <HighlightBlock as="li" tier="important">
               <strong>Access Control:</strong> Fine-grained access per repository. Mitigation: implement organization-wide security policies, audit access across all repositories, use SSO for all repositories.
-            </li>
+            </HighlightBlock>
             <li>
               <strong>Dependency Management:</strong> Each repo manages its own dependencies. Mitigation: use shared dependency baselines, implement automated security scanning, coordinate security updates across repos.
             </li>
@@ -496,9 +501,9 @@ export default function MonorepoVsPolyrepoArticle() {
 
       <section>
         <h2>Performance Benchmarks</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           Monorepo and Polyrepo performance depends on repository size, build tooling efficiency, and CI/CD infrastructure.
-        </p>
+        </HighlightBlock>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-4 text-lg font-semibold">Performance Metrics to Track</h3>
@@ -556,9 +561,9 @@ export default function MonorepoVsPolyrepoArticle() {
 
       <section>
         <h2>Cost Analysis</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           Monorepo and Polyrepo architectures have different cost profiles for infrastructure, tooling, and developer productivity.
-        </p>
+        </HighlightBlock>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-4 text-lg font-semibold">Monorepo Costs</h3>
@@ -590,18 +595,24 @@ export default function MonorepoVsPolyrepoArticle() {
           </ul>
         </div>
 
-        <div className="my-6 rounded-lg border border-accent/30 bg-accent/10 p-6">
+        <HighlightBlock
+          className="my-6 rounded-lg border border-accent/30 bg-accent/10 p-6"
+          tier="important"
+        >
           <h3 className="mb-3 font-semibold">ROI Decision Framework</h3>
           <p>
             Choose monorepo when: (1) you have 3+ teams sharing code, (2) you need atomic cross-package changes, (3) you have dedicated platform team. Choose polyrepo when: (1) teams need full autonomy, (2) packages have independent release cycles, (3) you lack monorepo expertise. For most startups with 3-10 teams, monorepo shows better ROI.
           </p>
-        </div>
+        </HighlightBlock>
       </section>
 
       <section>
         <h2>Common Interview Questions</h2>
         <div className="space-y-4">
-          <div className="rounded-lg border border-theme bg-panel-soft p-4">
+          <HighlightBlock
+            className="rounded-lg border border-theme bg-panel-soft p-4"
+            tier="crucial"
+          >
             <p className="font-semibold">
               Q: When would you choose a monorepo over a polyrepo?
             </p>
@@ -617,9 +628,12 @@ export default function MonorepoVsPolyrepoArticle() {
               tooling expertise, or the codebase would be too large for Git to
               handle efficiently.
             </p>
-          </div>
+          </HighlightBlock>
 
-          <div className="rounded-lg border border-theme bg-panel-soft p-4">
+          <HighlightBlock
+            className="rounded-lg border border-theme bg-panel-soft p-4"
+            tier="important"
+          >
             <p className="font-semibold">
               Q: How does affected detection work in monorepo build systems?
             </p>
@@ -635,9 +649,12 @@ export default function MonorepoVsPolyrepoArticle() {
               or CI runs), this keeps build times manageable even in large
               monorepos.
             </p>
-          </div>
+          </HighlightBlock>
 
-          <div className="rounded-lg border border-theme bg-panel-soft p-4">
+          <HighlightBlock
+            className="rounded-lg border border-theme bg-panel-soft p-4"
+            tier="important"
+          >
             <p className="font-semibold">
               Q: What is remote caching, and why is it important for monorepos?
             </p>
@@ -653,7 +670,7 @@ export default function MonorepoVsPolyrepoArticle() {
               because most packages have not changed and their cached outputs
               are reused.
             </p>
-          </div>
+          </HighlightBlock>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
             <p className="font-semibold">

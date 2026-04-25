@@ -1,0 +1,53 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="system-ui, sans-serif">
+  <rect width="900" height="500" fill="#f3f1f8"/>
+  <text x="450" y="32" text-anchor="middle" font-size="19" font-weight="700" fill="#1a1822">BFS — Properties &amp; Comparisons</text>
+
+  <rect x="40" y="60" width="820" height="200" fill="#fff" stroke="#6d5bd0" stroke-width="2" rx="6"/>
+  <text x="60" y="85" font-size="13" font-weight="700" fill="#6d5bd0">Key properties</text>
+  <text x="60" y="112" font-size="11">• Computes shortest path in unweighted graphs (number of edges).</text>
+  <text x="60" y="132" font-size="11">• Visits each vertex exactly once → O(V + E) time, O(V) space for queue.</text>
+  <text x="60" y="152" font-size="11">• BFS tree's depth = eccentricity of source. Diameter = max eccentricity.</text>
+  <text x="60" y="172" font-size="11">• Edges classified as tree, cross (same/adjacent levels). No back/forward in undirected.</text>
+  <text x="60" y="192" font-size="11">• Works for directed and undirected; handles disconnected graphs by re-seeding from unvisited vertex.</text>
+  <text x="60" y="212" font-size="11">• Bipartite check: 2-color BFS layers; conflict ⇒ odd cycle ⇒ not bipartite.</text>
+  <text x="60" y="232" font-size="11">• Connected components: outer loop over unvisited vertices, BFS each.</text>
+
+  <rect x="40" y="280" width="820" height="195" fill="#fff" stroke="#4caf50" stroke-width="2" rx="6"/>
+  <text x="60" y="305" font-size="13" font-weight="700" fill="#4caf50">BFS vs DFS vs Dijkstra</text>
+  <g font-size="11">
+    <text x="60" y="335" font-weight="700">Aspect</text>
+    <text x="280" y="335" font-weight="700">BFS</text>
+    <text x="450" y="335" font-weight="700">DFS</text>
+    <text x="650" y="335" font-weight="700">Dijkstra</text>
+
+    <text x="60" y="358">Memory frontier</text>
+    <text x="280" y="358">O(V) wide</text>
+    <text x="450" y="358">O(depth)</text>
+    <text x="650" y="358">O(V) heap</text>
+
+    <text x="60" y="378">Shortest path</text>
+    <text x="280" y="378">unweighted ✓</text>
+    <text x="450" y="378">no</text>
+    <text x="650" y="378">non-neg weights</text>
+
+    <text x="60" y="398">Cycles</text>
+    <text x="280" y="398">tree+cross only</text>
+    <text x="450" y="398">tree+back+fwd+cross</text>
+    <text x="650" y="398">tree+relaxations</text>
+
+    <text x="60" y="418">Topological sort</text>
+    <text x="280" y="418">Kahn's via in-degree</text>
+    <text x="450" y="418">post-order reverse</text>
+    <text x="650" y="418">N/A</text>
+
+    <text x="60" y="438">SCC</text>
+    <text x="280" y="438">no</text>
+    <text x="450" y="438">Tarjan / Kosaraju</text>
+    <text x="650" y="438">no</text>
+
+    <text x="60" y="458">Best for</text>
+    <text x="280" y="458">shortest hop</text>
+    <text x="450" y="458">structure / order</text>
+    <text x="650" y="458">weighted shortest</text>
+  </g>
+</svg>

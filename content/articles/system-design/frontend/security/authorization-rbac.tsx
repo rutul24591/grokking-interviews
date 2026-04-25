@@ -132,7 +132,7 @@ export default function AuthorizationRBACArticle() {
         </ul>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">RBAC Implementation</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           A typical RBAC database schema includes tables for users (with id and
           email), roles (with id, name like 'admin'/'editor'/'viewer', and
           description), permissions (with id, name like
@@ -143,26 +143,26 @@ export default function AuthorizationRBACArticle() {
           joining user_roles, role_permissions, and permissions tables,
           filtering by user_id and permission name, and checking if the count is
           greater than zero.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">
           Common Role Hierarchies
         </h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           A typical SaaS role hierarchy includes: super_admin with all
           permissions (wildcard), admin with organization-level permissions for
           users, settings, documents, and reports:read, manager with team-level
           permissions for documents, reports, and team:read, editor with content
           creation permissions for documents:read/write and reports:read, and
           viewer with read-only access to documents:read and reports:read.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">RBAC Best Practices</h3>
         <ul className="space-y-2">
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Principle of Least Privilege:</strong> Grant minimum
             permissions necessary for the role
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Role naming:</strong> Use descriptive names (ContentEditor
             not Role3)
@@ -171,10 +171,10 @@ export default function AuthorizationRBACArticle() {
             <strong>Permission granularity:</strong> Fine enough for security,
             coarse enough for manageability
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Audit role assignments:</strong> Log who assigned which role
             to whom
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Regular reviews:</strong> Periodically audit role
             permissions and user assignments
@@ -208,6 +208,12 @@ export default function AuthorizationRBACArticle() {
           action, and environment. It&apos;s more flexible than RBAC but also
           more complex.
         </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
+          ABAC is the right tool when &quot;role&quot; is not enough: multi-tenant rules,
+          ownership and sharing, time/device constraints, and regulated access controls.
+          The trade-off is policy authoring, policy testing, and making deny/allow outcomes
+          explainable to developers and auditors.
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">ABAC Components</h3>
         <ArticleImage
@@ -218,28 +224,28 @@ export default function AuthorizationRBACArticle() {
         />
 
         <ul className="space-y-2">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Subject Attributes:</strong> User properties (role,
             department, clearance level, location)
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Resource Attributes:</strong> Resource properties (owner,
             classification, sensitivity)
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Action Attributes:</strong> What&apos;s being done (read,
             write, delete, share)
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Environment Attributes:</strong> Context (time, location,
             device, network)
-          </li>
+          </HighlightBlock>
         </ul>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">
           ABAC Policy Examples
         </h3>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           ABAC policies evaluate attributes to make access decisions. Examples
           include: department-based access (ALLOW IF user.department ==
           resource.department), time-based access (ALLOW IF user.role ==
@@ -250,10 +256,15 @@ export default function AuthorizationRBACArticle() {
           policies combining multiple attributes like department match AND
           clearance level AND business hours AND (office location OR public
           resource).
-        </p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
+          In interviews, articulate how you prevent policy sprawl: explicit deny rules for
+          invariants (tenant isolation, disabled accounts), human-readable policy names,
+          ownership and change review, and regression tests with fixtures for edge cases.
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">ABAC Implementation</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Implement a Policy Evaluation Engine (ABACEngine) with an async{" "}
           <code className="text-sm">
             checkAccess(user, resource, action, environment)
@@ -268,15 +279,24 @@ export default function AuthorizationRBACArticle() {
           create an instance and call{" "}
           <code className="text-sm">checkAccess()</code> with user object,
           resource object, action string, and environment object.
-        </p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
+          Production ABAC usually adds: policy caching, deterministic evaluation ordering,
+          and an &quot;explain&quot; output (why denied, which policy matched). Without explainability,
+          ABAC becomes operationally expensive.
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">When to Use ABAC</h3>
         <p>
           <strong>Best for:</strong>
         </p>
         <ul className="space-y-2">
-          <li>Dynamic, context-dependent access decisions</li>
-          <li>Fine-grained resource-level permissions</li>
+          <HighlightBlock as="li" tier="important">
+            Dynamic, context-dependent access decisions
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
+            Fine-grained resource-level permissions
+          </HighlightBlock>
           <li>Regulated environments (healthcare, government, finance)</li>
           <li>Multi-tenant applications with complex requirements</li>
         </ul>
@@ -292,16 +312,22 @@ export default function AuthorizationRBACArticle() {
 
       <section>
         <h2>Frontend Authorization Patterns</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           Frontend authorization improves user experience by hiding unauthorized
           actions and showing appropriate UI. However, frontend authorization
           provides <strong>no security</strong>—always enforce on the server.
-        </p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
+          Treat UI authorization as <strong>affordance management</strong>: hide or disable actions,
+          show permission-aware empty states, and make the user&apos;s current scope explicit
+          (tenant, project, role). This reduces mistakes and support load, but it must mirror
+          server-side enforcement to avoid confusing mismatches.
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">
           Permission Checking in UI
         </h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Implement a <code className="text-sm">usePermission(permission)</code>{" "}
           React hook that reads the user from auth context and checks if their
           permissions array includes the required permission. Use it in
@@ -316,10 +342,14 @@ export default function AuthorizationRBACArticle() {
           that wraps a component and returns an AuthorizedComponent that checks
           the permission and renders UnauthorizedMessage if not authorized, or
           the WrappedComponent if authorized.
-        </p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
+          Prefer permission checks over direct role checks in UI code. Role checks tend to spread
+          special cases and create fragile coupling between product behavior and org structure.
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Route Protection</h3>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           For Next.js Middleware, create a middleware function that reads the
           auth_token cookie, verifies the token, allows public routes (like
           /public/*), redirects unauthenticated users to /login, and checks
@@ -329,12 +359,16 @@ export default function AuthorizationRBACArticle() {
           role, shows Loading while loading, redirects to /login if not
           authenticated, redirects to /unauthorized if missing required role, or
           renders children if authorized.
-        </p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
+          Route protection should fail closed. A common production bug is rendering protected UI before
+          permissions have loaded; ensure you have an explicit loading state and avoid &quot;flash of admin&quot;.
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">
           UI Element Authorization
         </h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Create an Authorized component pattern with props for children,
           permission, and fallback (default null). The component checks{" "}
           <code className="text-sm">usePermission(permission)</code> and returns
@@ -344,32 +378,37 @@ export default function AuthorizationRBACArticle() {
           "Admins only". For menu items, check permissions like{" "}
           <code className="text-sm">isAdmin</code> for admin:access and
           conditionally render admin menu items.
-        </p>
+        </HighlightBlock>
 
         <div className="my-6 rounded-lg border border-accent/30 bg-accent/10 p-6">
           <h3 className="mb-3 font-semibold">
             Key Insight: Frontend Authorization Is UX, Not Security
           </h3>
-          <p>
+          <HighlightBlock as="p" tier="crucial">
             Frontend authorization improves user experience by hiding
             unauthorized actions. But attackers can bypass frontend checks.
             Always enforce authorization on the server. Frontend authorization
             is about UX; backend authorization is about security.
-          </p>
+          </HighlightBlock>
         </div>
       </section>
 
       <section>
         <h2>Backend Authorization Enforcement</h2>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Backend authorization is where security happens. Every API endpoint
           must verify the user has permission for the requested action.
-        </p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="crucial">
+          The backend should return <strong>401</strong> (not authenticated) vs <strong>403</strong> (authenticated
+          but not authorized) consistently, log decisions for audit, and avoid leaking resource existence
+          when appropriate (e.g. return 404 for unauthorized access to sensitive resources).
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">
           Middleware-Based Authorization
         </h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Create a{" "}
           <code className="text-sm">requirePermission(permission)</code>{" "}
           middleware function that extracts the user from the request, returns
@@ -377,12 +416,12 @@ export default function AuthorizationRBACArticle() {
           and returns 403 Forbidden if not. Use it to protect routes like GET
           /api/documents with document:read, POST /api/documents with
           document:write, and DELETE /api/documents/:id with document:delete.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">
           Resource-Level Authorization
         </h3>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           For delete operations, check ownership before the action: find the
           document by ID, return 404 if not found, check if the user is the
           owner (document.ownerId === user.id) or has admin role, return 403
@@ -391,12 +430,16 @@ export default function AuthorizationRBACArticle() {
           action, and environment context (including updates and request
           metadata like time and IP), and return 403 with the reason if not
           allowed.
-        </p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
+          The staff-level signal is preventing <strong>IDOR</strong>: every endpoint that accepts a resource ID
+          must check ownership/tenant/sharing for that specific instance, not just a broad &quot;read&quot; permission.
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">
           Database-Level Authorization
         </h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Implement Row-Level Security in PostgreSQL by creating a policy on
           documents table that allows access if owner_id matches the current
           user ID (from app.current_user_id setting) OR if the user has an admin
@@ -405,7 +448,11 @@ export default function AuthorizationRBACArticle() {
           admin OR visibility is public. For ORM-level authorization with
           Prisma, use a where clause with OR conditions for ownerId match,
           public visibility, or sharedWith containing the user ID.
-        </p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
+          For multi-tenant systems, enforce tenant isolation as close to the data layer as feasible (RLS or
+          mandatory tenant scoping in every query) and treat cross-tenant reads as an incident.
+        </HighlightBlock>
       </section>
 
       <section>
@@ -420,38 +467,38 @@ export default function AuthorizationRBACArticle() {
             </tr>
           </thead>
           <tbody className="divide-y divide-theme">
-            <tr>
+            <HighlightBlock as="tr" tier="crucial">
               <td className="p-3">
                 <strong>RBAC</strong>
               </td>
               <td className="p-3">Low</td>
               <td className="p-3">Medium</td>
               <td className="p-3">Organizations with clear roles</td>
-            </tr>
-            <tr>
+            </HighlightBlock>
+            <HighlightBlock as="tr" tier="important">
               <td className="p-3">
                 <strong>ABAC</strong>
               </td>
               <td className="p-3">High</td>
               <td className="p-3">High</td>
               <td className="p-3">Context-dependent access</td>
-            </tr>
-            <tr>
+            </HighlightBlock>
+            <HighlightBlock as="tr" tier="important">
               <td className="p-3">
                 <strong>ACL</strong>
               </td>
               <td className="p-3">Medium</td>
               <td className="p-3">High</td>
               <td className="p-3">Resource-level permissions</td>
-            </tr>
-            <tr>
+            </HighlightBlock>
+            <HighlightBlock as="tr" tier="important">
               <td className="p-3">
                 <strong>Capability-Based</strong>
               </td>
               <td className="p-3">High</td>
               <td className="p-3">High</td>
               <td className="p-3">Distributed systems, microservices</td>
-            </tr>
+            </HighlightBlock>
           </tbody>
         </table>
 
@@ -469,18 +516,18 @@ export default function AuthorizationRBACArticle() {
           Authorization Design
         </h3>
         <ul className="space-y-2">
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Default deny:</strong> Deny by default, explicitly grant
             permissions
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Principle of least privilege:</strong> Grant minimum
             permissions necessary
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Separate concerns:</strong> Authentication (who) separate
             from authorization (what)
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Centralize authorization logic:</strong> Single source of
             truth for permissions
@@ -493,17 +540,17 @@ export default function AuthorizationRBACArticle() {
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Implementation</h3>
         <ul className="space-y-2">
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Enforce on server:</strong> Frontend authorization is UX
             only
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Check at every layer:</strong> API, service, data layers
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Log authorization decisions:</strong> Audit who accessed
             what
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Cache permission checks:</strong> For performance, with
             appropriate invalidation
@@ -516,14 +563,14 @@ export default function AuthorizationRBACArticle() {
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Maintenance</h3>
         <ul className="space-y-2">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Regular audits:</strong> Review role permissions and user
             assignments
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Deprovision promptly:</strong> Remove access when users
             leave or change roles
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Monitor for anomalies:</strong> Unusual access patterns,
             privilege escalation attempts
@@ -538,40 +585,40 @@ export default function AuthorizationRBACArticle() {
           <h3 className="mb-3 font-semibold">
             Key Insight: Authorization Is Ongoing
           </h3>
-          <p>
+          <HighlightBlock as="p" tier="crucial">
             Authorization isn&apos;t set-and-forget. Users change roles,
             requirements evolve, and permissions accumulate. Regular audits,
             monitoring, and deprovisioning are essential for maintaining secure
             authorization over time.
-          </p>
+          </HighlightBlock>
         </div>
       </section>
 
       <section>
         <h2>Common Pitfalls</h2>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Relying on frontend authorization:</strong> Frontend checks
             are for UX only. Always enforce on server.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Hardcoded role checks:</strong>{" "}
             <code className="text-sm">if (user.role === 'admin')</code>
             scattered throughout codebase. Use permission-based checks instead.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Missing resource-level checks:</strong> Checking user has
             &quot;read&quot; permission but not if they can read{" "}
             <em>this specific</em> resource.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Over-permissive roles:</strong> Admin role with all
             permissions. Create granular roles.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>No audit logging:</strong> Not logging authorization
             decisions makes incident response impossible.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Stale permissions:</strong> Cached permissions not
             invalidated when roles change.
@@ -589,37 +636,37 @@ export default function AuthorizationRBACArticle() {
 
       <section>
         <h2>Architecture at Scale: Authorization in Enterprise Systems</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           Enterprise-scale authorization requires coordinated permission management, consistent policy enforcement, and centralized auditing across multiple applications, business units, and geographic regions. In microservices architectures, each service must enforce authorization consistently while supporting different authorization models.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Centralized Policy Engine:</strong> Implement a centralized authorization service (Open Policy Agent, AWS Verified Permissions, AuthZed) that manages policies centrally. Services query the policy engine for authorization decisions. Use Rego (OPA) or Cedar (AWS) for policy definition. Document authorization architecture in system design documentation.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Multi-Tenant Authorization:</strong> For SaaS applications, implement tenant isolation at the authorization layer. Use tenant claims in JWT tokens. Implement tenant-aware permission checks. Support custom roles per tenant. Document multi-tenant authorization in security architecture.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>API Authorization Strategy:</strong> For API-heavy architectures, implement authorization at the API gateway level. Use OAuth 2.0 scopes for API permissions. Implement service-to-service authorization with mTLS or service account tokens. Document API authorization in developer documentation.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Hybrid Authorization Models:</strong> Support RBAC for standard permissions and ABAC for complex requirements. Use RBAC for role-based access (admin, editor, viewer) and ABAC for resource-level access (owner, team member). Implement policy composition for complex scenarios. Document authorization model selection criteria.
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
         <h2>Testing Strategies: Authorization Security Validation</h2>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Comprehensive authorization testing requires automated scanning, manual verification, and penetration testing integrated into security operations.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="crucial">
           <strong>Automated Authorization Testing:</strong> Use OWASP ZAP, Burp Suite to test authorization flows. Configure CI/CD pipelines to test authorization after each deployment. Set up automated alerts for: privilege escalation vulnerabilities, IDOR vulnerabilities, missing authorization checks on new endpoints.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>IDOR Testing:</strong> Test for Insecure Direct Object Reference: (1) Access resource with different user IDs, (2) Verify authorization checks prevent unauthorized access, (3) Test with sequential and non-sequential IDs. Use tools like Burp Intruder for automated IDOR testing. Document IDOR test results.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Privilege Escalation Testing:</strong> Test for privilege escalation: (1) Horizontal escalation (accessing other users&apos; resources), (2) Vertical escalation (accessing admin functions as regular user). Attempt parameter tampering, session manipulation, and API endpoint abuse. Document privilege escalation test results.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Permission Matrix Testing:</strong> Create permission matrix (roles x resources x actions). Test each cell in the matrix. Verify allowed actions succeed and denied actions fail with appropriate error messages. Use property-based testing for large permission matrices. Document permission matrix coverage.
         </p>
@@ -752,40 +799,40 @@ export default function AuthorizationRBACArticle() {
             <p className="font-semibold">
               Q4: How do you handle permission caching?
             </p>
-            <p className="mt-2 text-sm">
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               A: Cache permission checks for performance but invalidate on role
               changes. Use cache keys like
               <code className="text-sm">permissions:{`{userId}`}</code> with TTL
               (5-15 min). Invalidate cache when user&apos;s roles change, user
               is deactivated, or permissions are modified. For high-security
               applications, reduce TTL or skip caching.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
             <p className="font-semibold">
               Q5: What is the principle of least privilege?
             </p>
-            <p className="mt-2 text-sm">
+            <HighlightBlock as="p" tier="crucial" className="mt-2 text-sm">
               A: Grant users the minimum permissions necessary to perform their
               job functions. A content editor doesn&apos;t need delete
               permissions. A viewer doesn&apos;t need write permissions. This
               limits damage from compromised accounts, insider threats, and
               mistakes. Regularly audit and remove unnecessary permissions.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
             <p className="font-semibold">
               Q6: How would you design authorization for a multi-tenant SaaS?
             </p>
-            <p className="mt-2 text-sm">
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               A: Hybrid approach: RBAC for roles within each tenant (Admin,
               Member, Viewer), ABAC for cross-tenant isolation (user.tenantId
               === resource.tenantId). Add resource-level ownership checks. Cache
               permissions per tenant. Audit all cross-tenant access attempts.
               Consider data residency requirements for global tenants.
-            </p>
+            </HighlightBlock>
           </div>
         </div>
       </section>

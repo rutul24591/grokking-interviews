@@ -272,7 +272,7 @@ export default function WebSocketsConciseArticle() {
                 wss:// adds further latency to connection establishment.
               </td>
             </tr>
-            <tr>
+            <HighlightBlock as="tr" tier="crucial">
               <td className="p-3">
                 <strong>Scalability</strong>
               </td>
@@ -287,7 +287,7 @@ export default function WebSocketsConciseArticle() {
                 horizontal scaling — requires sticky sessions or pub/sub
                 infrastructure.
               </td>
-            </tr>
+            </HighlightBlock>
             <tr>
               <td className="p-3">
                 <strong>Battery / Mobile</strong>
@@ -318,7 +318,7 @@ export default function WebSocketsConciseArticle() {
                 Transparent proxies can interfere with unencrypted ws://.
               </td>
             </tr>
-            <tr>
+            <HighlightBlock as="tr" tier="important">
               <td className="p-3">
                 <strong>Complexity</strong>
               </td>
@@ -332,7 +332,7 @@ export default function WebSocketsConciseArticle() {
                 heartbeat implementation, message ordering, and scaling
                 infrastructure. Significantly more complex than REST or SSE.
               </td>
-            </tr>
+            </HighlightBlock>
           </tbody>
         </table>
 
@@ -340,17 +340,18 @@ export default function WebSocketsConciseArticle() {
           src="/diagrams/system-design-concepts/frontend/networking-api-communication/realtime-comparison.svg"
           alt="Real-time Communication Approaches Comparison Matrix"
           caption="Comparison matrix: WebSocket, SSE, Short Polling, and Long Polling across direction, latency, connection model, protocol, browser support, and ideal use case"
+          captionTier="important"
         />
       </section>
 
       <section>
         <h2>Best Practices</h2>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Production-grade WebSocket implementations require attention to these
           eight practices:
-        </p>
+        </HighlightBlock>
         <ol className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>
               Implement Reconnection with Exponential Backoff and Jitter:
             </strong>{" "}
@@ -360,32 +361,32 @@ export default function WebSocketsConciseArticle() {
             backoff (1s, 2s, 4s, 8s, up to a cap of 30-60s) with random jitter
             (add 0-50% of the interval) to spread reconnection attempts over
             time.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Use Heartbeat to Detect Zombie Connections:</strong>{" "}
             Implement application-level ping/pong on a 30-second interval. If no
             pong is received within 10 seconds, consider the connection dead and
             trigger cleanup. Do not rely solely on TCP keepalive, which operates
             on much longer timescales (typically 2 hours by default) and does
             not detect application-level hangs.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Implement Message Queuing During Reconnection:</strong>{" "}
             Buffer outbound messages while disconnected and flush them upon
             reconnection. Assign monotonically increasing sequence IDs to
             messages so the server can detect gaps and the client can request
             missed messages. This prevents data loss during brief network
             interruptions.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Use Binary Frames for Large Payloads:</strong> For payloads
             exceeding a few kilobytes, use binary frames with efficient
             serialization (Protocol Buffers, MessagePack, CBOR) instead of JSON
             text frames. Binary encoding reduces payload size by 30-70% and
             eliminates JSON parse overhead. This is especially important for
             high-frequency updates like real-time charts or game state.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Authenticate on Handshake, Not Per-Message:</strong> Pass
             authentication tokens via query parameters (
             <code>wss://api.example.com/ws?token=xyz</code>) or cookies during
@@ -393,16 +394,16 @@ export default function WebSocketsConciseArticle() {
             connection. Do not authenticate each message — it wastes bandwidth
             and processing. Implement token refresh by sending a new token over
             the existing connection before the current one expires.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Implement Message Acknowledgment for Critical Data:</strong>{" "}
             For messages where delivery must be guaranteed (financial
             transactions, chat messages, state mutations), implement
             application-level acknowledgments. The sender assigns a unique
             message ID, the receiver responds with an ack containing that ID,
             and the sender retransmits after a timeout if no ack is received.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Use a Battle-Tested Library for Production:</strong> The
             native WebSocket API is low-level and lacks reconnection, heartbeat,
             and multiplexing. Use libraries like Socket.IO (with fallback
@@ -410,34 +411,34 @@ export default function WebSocketsConciseArticle() {
             server side, use the <code>ws</code> library for Node.js — it is the
             fastest and most widely deployed WebSocket implementation for the
             platform.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Close Connections Cleanly on Page Unload:</strong> Listen
             for the <code>beforeunload</code> or <code>pagehide</code> event and
             call <code>socket.close(1000, &quot;page unload&quot;)</code>. This
             sends a proper close frame so the server can immediately reclaim
             resources instead of waiting for a heartbeat timeout to detect the
             disconnection.
-          </li>
+          </HighlightBlock>
         </ol>
       </section>
 
       <section>
         <h2>Common Pitfalls</h2>
-        <p>
+        <HighlightBlock as="p" tier="important">
           These mistakes cause the majority of WebSocket-related production
           incidents:
-        </p>
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Not Handling Reconnection:</strong> The most common mistake.
             Network interruptions, server deployments, and mobile backgrounding
             all cause disconnections. Without automatic reconnection, users
             silently stop receiving updates and believe the application is
             broken. Every WebSocket client must implement reconnection as a
             first-class feature.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Memory Leaks from Unclosed Connections:</strong> In
             single-page applications, navigating away from a component without
             closing the WebSocket leaves the connection open, accumulating event
@@ -445,16 +446,16 @@ export default function WebSocketsConciseArticle() {
             cleanup functions (React useEffect return, componentWillUnmount). On
             the server side, track connections in a Set and remove them on
             close/error events.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Not Implementing Heartbeat (Zombie Connections):</strong>{" "}
             Without ping/pong, a server may accumulate thousands of dead
             connections that silently failed (mobile network switch, laptop lid
             close, network cable unplug). Each zombie connection holds a file
             descriptor and memory. At scale, this leads to file descriptor
             exhaustion and eventual server crash.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Assuming Message Delivery During Reconnection Gaps:</strong>{" "}
             While WebSocket guarantees in-order delivery over an active
             connection (TCP ensures this), any messages sent by the server
@@ -462,16 +463,16 @@ export default function WebSocketsConciseArticle() {
             not implement gap detection (sequence IDs) or state reconciliation
             (fetching current state on reconnect) will have stale or incomplete
             data.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Not Handling Backpressure:</strong> Sending messages faster
             than the network can deliver them causes the browser's send buffer
             to grow without bound. The <code>bufferedAmount</code> property can
             reach hundreds of megabytes before the tab crashes. Always check
             bufferedAmount before sending high-frequency updates and implement
             throttling or message dropping when the buffer is full.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Using WebSocket When SSE Suffices:</strong> If the
             communication is unidirectional (server to client) — live feeds,
             notifications, dashboard updates — Server-Sent Events (SSE) is
@@ -479,8 +480,8 @@ export default function WebSocketsConciseArticle() {
             with standard HTTP infrastructure, and does not require a separate
             protocol. Using WebSocket for unidirectional streaming adds
             unnecessary complexity.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Forgetting wss:// in Production:</strong> Using unencrypted{" "}
             <code>ws://</code> in production exposes all messages to network
             intermediaries, fails on HTTPS pages due to mixed content
@@ -488,25 +489,25 @@ export default function WebSocketsConciseArticle() {
             firewalls. Always use <code>wss://</code> (WebSocket Secure) in
             production — it tunnels through TLS just like HTTPS and is
             transparent to intermediaries.
-          </li>
+          </HighlightBlock>
         </ul>
       </section>
 
       <section>
         <h2>Real-World Use Cases</h2>
-        <p>
+        <HighlightBlock as="p" tier="important">
           WebSocket is the protocol of choice for these categories of real-time
           applications:
-        </p>
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Chat & Messaging (Slack, Discord, WhatsApp Web):</strong>{" "}
             Bidirectional messaging requires both client-to-server (sending
             messages) and server-to-client (receiving messages from others).
             Typing indicators, presence status, and read receipts all demand
             low-latency push. Slack maintains one WebSocket per workspace
             connection, multiplexing channels over it.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Collaborative Editing (Figma, Google Docs, Miro):</strong>{" "}
             Multiplayer cursors, real-time text changes, and conflict resolution
@@ -573,34 +574,34 @@ export default function WebSocketsConciseArticle() {
 
       <section>
         <h2>Security Considerations</h2>
-        <p>
+        <HighlightBlock as="p" tier="important">
           WebSockets introduce unique security considerations due to their persistent, bidirectional nature.
-        </p>
+        </HighlightBlock>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-4 text-lg font-semibold">Origin Validation</h3>
           <ul className="space-y-2">
-            <li>
+            <HighlightBlock as="li" tier="crucial">
               <strong>The Risk:</strong> Without origin validation, any website can open a WebSocket to your
               server and perform actions on behalf of authenticated users.
-            </li>
-            <li>
+            </HighlightBlock>
+            <HighlightBlock as="li" tier="important">
               <strong>Mitigation:</strong> Validate the <code>Origin</code> header during the handshake.
               Reject connections from untrusted origins.
-            </li>
+            </HighlightBlock>
           </ul>
         </div>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-4 text-lg font-semibold">Message Validation</h3>
           <ul className="space-y-2">
-            <li>
+            <HighlightBlock as="li" tier="crucial">
               <strong>The Risk:</strong> WebSocket messages bypass standard HTTP middleware.
-            </li>
-            <li>
+            </HighlightBlock>
+            <HighlightBlock as="li" tier="important">
               <strong>Mitigation:</strong> Validate all incoming messages against a schema.
               Sanitize user input before processing or broadcasting.
-            </li>
+            </HighlightBlock>
           </ul>
         </div>
 
@@ -621,9 +622,9 @@ export default function WebSocketsConciseArticle() {
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-4 text-lg font-semibold">Data Protection</h3>
           <ul className="space-y-2">
-            <li>
+            <HighlightBlock as="li" tier="crucial">
               <strong>Encryption:</strong> Always use <code>wss://</code> (WebSocket over TLS).
-            </li>
+            </HighlightBlock>
             <li>
               <strong>Sensitive Data:</strong> Avoid sending PII or authentication tokens
               over WebSocket unless encrypted.
@@ -634,9 +635,9 @@ export default function WebSocketsConciseArticle() {
 
       <section>
         <h2>Performance Benchmarks</h2>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Understanding WebSocket performance characteristics is essential for capacity planning.
-        </p>
+        </HighlightBlock>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-4 text-lg font-semibold">Industry Performance Data</h3>
@@ -654,16 +655,16 @@ export default function WebSocketsConciseArticle() {
                 <td className="p-2">&lt;100ms</td>
                 <td className="p-2">50-150ms</td>
               </tr>
-              <tr>
+              <HighlightBlock as="tr" tier="crucial">
                 <td className="p-2">Message Latency</td>
                 <td className="p-2">&lt;10ms</td>
                 <td className="p-2">1-10ms</td>
-              </tr>
-              <tr>
+              </HighlightBlock>
+              <HighlightBlock as="tr" tier="important">
                 <td className="p-2">Connections per Server</td>
                 <td className="p-2">10,000+</td>
                 <td className="p-2">5,000-50,000</td>
-              </tr>
+              </HighlightBlock>
               <tr>
                 <td className="p-2">Reconnection Rate</td>
                 <td className="p-2">&lt;5%</td>
@@ -691,17 +692,17 @@ export default function WebSocketsConciseArticle() {
 
       <section>
         <h2>Cost Analysis</h2>
-        <p>
+        <HighlightBlock as="p" tier="important">
           WebSocket infrastructure has distinct cost characteristics.
-        </p>
+        </HighlightBlock>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-4 text-lg font-semibold">Infrastructure Costs</h3>
           <ul className="space-y-2">
-            <li>
+            <HighlightBlock as="li" tier="crucial">
               <strong>Server Resources:</strong> ~1-10KB per connection. For 100K connections:
               ~1-10GB RAM.
-            </li>
+            </HighlightBlock>
             <li>
               <strong>Pub/Sub Backbone:</strong> Redis Cluster: $500-2,000/month.
             </li>
@@ -725,30 +726,30 @@ export default function WebSocketsConciseArticle() {
 
         <div className="my-6 rounded-lg border border-accent/30 bg-accent/10 p-6">
           <h3 className="mb-3 font-semibold">ROI Decision Framework</h3>
-          <p>
+          <HighlightBlock as="p" tier="crucial">
             Use WebSockets when: (1) bidirectional real-time communication is required,
             (2) sub-second latency is critical. Use SSE when: server-to-client only.
             Use HTTP polling when: updates are infrequent.
-          </p>
+          </HighlightBlock>
         </div>
       </section>
 
       <section>
         <h2>Decision Framework: When to Use WebSockets</h2>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Use this decision framework to evaluate whether WebSockets are appropriate.
-        </p>
+        </HighlightBlock>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-4 text-lg font-semibold">Decision Tree</h3>
           <ul className="space-y-2">
-            <li>
+            <HighlightBlock as="li" tier="crucial">
               <strong>Do you need bidirectional communication?</strong>
               <ul>
                 <li>Yes → WebSocket is a strong candidate</li>
                 <li>No → SSE may be simpler</li>
               </ul>
-            </li>
+            </HighlightBlock>
             <li>
               <strong>Is sub-100ms latency critical?</strong>
               <ul>
@@ -778,18 +779,18 @@ export default function WebSocketsConciseArticle() {
               </tr>
             </thead>
             <tbody className="divide-y divide-theme">
-              <tr>
+              <HighlightBlock as="tr" tier="crucial">
                 <td className="p-2">WebSocket</td>
                 <td className="p-2">Bidirectional</td>
                 <td className="p-2">&lt;10ms</td>
                 <td className="p-2">High</td>
-              </tr>
-              <tr>
+              </HighlightBlock>
+              <HighlightBlock as="tr" tier="important">
                 <td className="p-2">SSE</td>
                 <td className="p-2">Server→Client</td>
                 <td className="p-2">&lt;50ms</td>
                 <td className="p-2">Low</td>
-              </tr>
+              </HighlightBlock>
               <tr>
                 <td className="p-2">Long Polling</td>
                 <td className="p-2">Server→Client</td>

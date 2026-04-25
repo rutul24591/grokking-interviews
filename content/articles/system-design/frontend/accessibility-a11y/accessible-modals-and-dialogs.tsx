@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -35,21 +36,21 @@ export default function AccessibleModalsAndDialogsArticle() {
       {/* ─── Section 1: Definition & Context ─── */}
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Accessible modals and dialogs</strong> are overlay UI patterns that temporarily
           interrupt the user&apos;s workflow to demand attention or input, implemented in a way
           that works equally well for mouse, keyboard, touch, and assistive technology users. A
           modal dialog blocks interaction with the rest of the page until dismissed; a non-modal
           dialog allows continued interaction with background content.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Modals are one of the most accessibility-challenged patterns on the web. They require
           coordinating multiple accessibility concerns simultaneously: focus must be trapped inside
           the modal, background content must be hidden from screen readers, the Escape key must
           close the dialog, focus must be restored to the trigger when closed, and the modal must
           announce itself properly to assistive technology. Getting any one of these wrong creates a
           broken experience for keyboard and screen reader users.
-        </p>
+        </HighlightBlock>
         <p>
           The WAI-ARIA Authoring Practices define two dialog patterns:
           <code>role=&quot;dialog&quot;</code> for general-purpose dialogs (confirmations, forms,
@@ -59,7 +60,7 @@ export default function AccessibleModalsAndDialogsArticle() {
           behavior via <code>showModal()</code>, including focus trapping, Escape handling, and top
           layer rendering.
         </p>
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Why accessible modals matter for staff/principal engineers:</strong> Modal patterns
           appear in almost every web application — login forms, confirmation dialogs, image galleries,
           settings panels, onboarding flows. A single inaccessible modal component propagates failures
@@ -67,18 +68,18 @@ export default function AccessibleModalsAndDialogsArticle() {
           <code>&lt;dialog&gt;</code>, custom implementations, and headless UI libraries, each with
           different trade-offs for accessibility, styling, and browser support. The architectural
           decision affects every team that uses modals.
-        </p>
+        </HighlightBlock>
 
         <div className="my-6 rounded-lg border border-accent/30 bg-accent/10 p-6">
           <h3 className="mb-3 font-semibold">Key Insight: The Native &lt;dialog&gt; Element Changes Everything</h3>
-          <p>
+          <HighlightBlock as="p" tier="crucial">
             Before <code>&lt;dialog&gt;</code>, accessible modals required hundreds of lines of
             JavaScript for focus trapping, scroll locking, aria-hidden toggling, and stacking context
             management. The native <code>&lt;dialog&gt;</code> with <code>showModal()</code> handles
             focus trapping, Escape dismissal, top layer rendering (no z-index issues), and backdrop
             styling natively. While custom solutions are still needed for advanced cases (animations,
             nested modals), <code>&lt;dialog&gt;</code> should be the default starting point.
-          </p>
+          </HighlightBlock>
         </div>
       </section>
 
@@ -86,20 +87,20 @@ export default function AccessibleModalsAndDialogsArticle() {
       <section>
         <h2>Core Concepts</h2>
         <ul className="space-y-2">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Modal vs. Non-Modal Dialog:</strong> A modal dialog blocks all interaction with
             the page behind it — the user must address it before continuing. A non-modal dialog
             (like a persistent search panel or floating toolbar) allows continued interaction with
             background content. Modal dialogs require focus trapping; non-modal dialogs do not.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="crucial">
             <strong>role=&quot;dialog&quot; and aria-modal=&quot;true&quot;:</strong> The
             <code>role=&quot;dialog&quot;</code> tells screen readers this is a dialog window.
             <code>aria-modal=&quot;true&quot;</code> tells screen readers that content outside the
             dialog is inert. Together they trigger proper dialog mode behavior in assistive
             technology. The dialog must also have <code>aria-labelledby</code> pointing to its
             title.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>role=&quot;alertdialog&quot;:</strong> A specialized dialog role for confirmations
             and critical alerts. Screen readers may announce it differently (more urgently) than
@@ -118,19 +119,19 @@ export default function AccessibleModalsAndDialogsArticle() {
             <code>focus()</code> on the stored reference. Without this, focus falls to
             <code>&lt;body&gt;</code> after the modal is removed from the DOM.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>The inert Attribute:</strong> Adding <code>inert</code> to all sibling content
             while a modal is open removes them from the tab order, hides them from screen readers,
             and prevents click events — all in one attribute. This replaces the complex pattern of
             manually managing <code>aria-hidden</code> and <code>tabindex</code> on multiple elements.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Native &lt;dialog&gt; Element:</strong> HTML5&apos;s <code>&lt;dialog&gt;</code>
             with <code>showModal()</code> provides built-in focus trapping, Escape key handling, top
             layer rendering (above all z-index contexts), and <code>::backdrop</code> pseudo-element
             for overlay styling. It auto-focuses the first focusable element (or the dialog itself
             if <code>autofocus</code> is specified).
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Scroll Locking:</strong> When a modal is open, background page scroll should be
             prevented. CSS <code>overflow: hidden</code> on <code>&lt;body&gt;</code> is the common
@@ -145,38 +146,40 @@ export default function AccessibleModalsAndDialogsArticle() {
         <h2>Architecture &amp; Flow</h2>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Modal Focus Trap Cycle</h3>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           The focus trap ensures keyboard users remain within the modal until they explicitly
           dismiss it. Tab cycles forward through focusable elements; Shift+Tab cycles backward.
           The cycle wraps seamlessly between the first and last focusable elements.
-        </p>
+        </HighlightBlock>
         <ArticleImage
           src="/diagrams/system-design-concepts/frontend/accessibility-a11y/accessible-modals-and-dialogs-diagram-1.svg"
           alt="Modal focus trap cycle showing Tab cycling through close button, form fields, and action buttons within the modal"
           caption="Focus trap cycle: Tab moves forward through all focusable elements in the modal, wrapping from last to first. Shift+Tab moves backward, wrapping from first to last."
+          captionTier="important"
         />
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Native Dialog Implementation</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           For native dialog implementation using the dialog element, create a NativeDialog component with useRef and useEffect. Store dialog ref, and in useEffect check if isOpen and dialog not open, call showModal which handles focus trapping, Escape key, and top layer positioning. If not isOpen and dialog open, call close. Handle close event with useCallback for onClose prop. Handle backdrop click by checking if event target equals the dialog ref, then call onClose. Render dialog element with ref, onClose handler, onClick handler, and aria-labelledby. Inside render content div with h2 title, children, and close button with aria-label. For CSS, use dialog backdrop with rgba black background at 50 percent opacity, and dialog with no border, 8px border-radius, and 24px padding.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Dialog ARIA Role Hierarchy</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           The ARIA dialog pattern defines a hierarchy of roles and attributes that screen readers
           use to understand the dialog&apos;s purpose and structure. The dialog must have a label,
           may have a description, and should communicate its modal nature.
-        </p>
+        </HighlightBlock>
         <ArticleImage
           src="/diagrams/system-design-concepts/frontend/accessibility-a11y/accessible-modals-and-dialogs-diagram-2.svg"
           alt="Dialog ARIA role hierarchy showing dialog/alertdialog roles with aria-modal, aria-labelledby, and aria-describedby"
           caption="ARIA dialog hierarchy: role='dialog' or 'alertdialog' with aria-modal='true', labeled via aria-labelledby, and optionally described via aria-describedby."
+          captionTier="important"
         />
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Custom Accessible Modal Pattern</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           For custom accessible modal with ARIA and focus management, create an AccessibleModal component using useEffect, useRef, useCallback, and createPortal. Store modalRef and triggerRef. For focus trapping, use useCallback to listen for Escape key to close, and Tab key to cycle focus. Query all focusable elements including links, buttons, inputs, selects, textareas, and tabindex elements. Get first and last focusable elements. If Shift+Tab on first element, prevent default and focus last. If Tab on last element, prevent default and focus first. In useEffect on isOpen, store trigger for focus restoration, set inert on app-root, prevent background scroll by setting body position fixed and adjusting top to negative scrollY, focus first focusable element using requestAnimationFrame. Cleanup removes inert, restores scroll position, and restores focus to trigger. Use createPortal to render modal-overlay div with onClick, inner div with ref, role dialog, aria-modal true, aria-labelledby, and aria-describedby if description exists.
-        </p>
+        </HighlightBlock>
       </section>
 
       {/* ─── Section 4: Trade-offs & Comparisons ─── */}
@@ -192,11 +195,15 @@ export default function AccessibleModalsAndDialogsArticle() {
               </tr>
             </thead>
             <tbody>
-              <tr className="border-b border-accent/10">
+              <HighlightBlock
+                as="tr"
+                tier="crucial"
+                className="border-b border-accent/10"
+              >
                 <td className="p-3 font-medium">Native &lt;dialog&gt; + showModal()</td>
                 <td className="p-3">Built-in focus trap, Escape handling, top layer (no z-index issues), ::backdrop styling, minimal JavaScript</td>
                 <td className="p-3">Limited animation support (no entry/exit transitions natively), focus restoration not automatic, backdrop click requires manual handling</td>
-              </tr>
+              </HighlightBlock>
               <tr className="border-b border-accent/10">
                 <td className="p-3 font-medium">Custom ARIA Dialog</td>
                 <td className="p-3">Full control over behavior, animations, and styling; can handle complex patterns (nested modals, custom transitions)</td>
@@ -212,11 +219,15 @@ export default function AccessibleModalsAndDialogsArticle() {
                 <td className="p-3">Renders outside parent DOM hierarchy avoiding CSS overflow issues, clean component tree</td>
                 <td className="p-3">Still needs all accessibility features manually, event bubbling crosses portal boundary, SSR considerations</td>
               </tr>
-              <tr className="border-b border-accent/10">
+              <HighlightBlock
+                as="tr"
+                tier="crucial"
+                className="border-b border-accent/10"
+              >
                 <td className="p-3 font-medium">CSS-Only Modal (using :target or checkbox hack)</td>
                 <td className="p-3">No JavaScript needed, progressive enhancement, simple</td>
                 <td className="p-3">Cannot trap focus, no Escape handling, no screen reader announcements, no scroll locking — NOT accessible</td>
-              </tr>
+              </HighlightBlock>
             </tbody>
           </table>
         </div>
@@ -226,27 +237,27 @@ export default function AccessibleModalsAndDialogsArticle() {
       <section>
         <h2>Best Practices</h2>
         <ol className="space-y-2">
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Start with the native &lt;dialog&gt; element:</strong> Use
             <code>showModal()</code> for modal dialogs and <code>show()</code> for non-modal. This
             gives you focus trapping, Escape handling, and top layer rendering for free. Only build
             a custom solution if native dialog doesn&apos;t meet your requirements.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Always label the dialog:</strong> Use <code>aria-labelledby</code> pointing to
             the dialog&apos;s heading. Every dialog must have an accessible name. Optionally use
             <code>aria-describedby</code> for supplementary description text.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Trap focus inside the modal:</strong> Tab and Shift+Tab must cycle within the
             modal. Never allow focus to escape to background content while the modal is open. Use
             <code>inert</code> on background content for the most robust approach.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Restore focus to the trigger on close:</strong> Store
             <code>document.activeElement</code> when the modal opens. Call <code>focus()</code> on
             it when the modal closes. This prevents the &quot;focus lost to body&quot; problem.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Close on Escape key:</strong> This is an expected convention that keyboard users
             rely on universally. The native <code>&lt;dialog&gt;</code> handles this automatically.
@@ -277,23 +288,23 @@ export default function AccessibleModalsAndDialogsArticle() {
       <section>
         <h2>Common Pitfalls</h2>
         <ul className="space-y-2">
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>No focus trap — focus escapes to background:</strong> Without focus trapping,
             Tab moves focus to navigation links and other elements behind the modal overlay.
             Keyboard users interact with hidden content, screen readers navigate away from the
             dialog, and the modal becomes a confusing experience.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Focus not restored after close:</strong> When the modal is removed from the DOM,
             focus falls to <code>&lt;body&gt;</code>. The user must Tab through the entire page to
             find their place again. Always restore focus to the trigger element.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Missing aria-modal or aria-hidden on background:</strong> Without
             <code>aria-modal=&quot;true&quot;</code> or <code>inert</code> on background content,
             screen readers can navigate to elements behind the modal using browse mode shortcuts
             (heading jumps, landmark navigation) even though they&apos;re visually obscured.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Auto-focusing the close button instead of meaningful content:</strong> While
             focus should move into the modal, focusing the close button first means screen readers
@@ -322,33 +333,33 @@ export default function AccessibleModalsAndDialogsArticle() {
       <section>
         <h2>Real-World Use Cases</h2>
         <ul className="space-y-2">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Radix UI Dialog:</strong> Headless, accessible dialog primitive for React.
             Provides focus trapping, focus restoration, Escape handling, and portal rendering out
             of the box. Supports animations via <code>data-state</code> attributes. Used by
             Vercel, Linear, and many other companies.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Headless UI (Tailwind Labs):</strong> Provides an accessible Dialog component
             for React and Vue. Uses the <code>inert</code> attribute for background isolation and
             manages focus automatically. Designed to work with Tailwind CSS.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Adobe React Spectrum:</strong> Their Dialog and AlertDialog components implement
             the full WAI-ARIA dialog pattern including auto-focus management, focus containment,
             and focus restoration. Supports nested dialogs via a dialog stack.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>GitHub:</strong> Uses accessible modals for code review comments, issue creation,
             settings panels, and file viewing. Their modals properly trap focus, support Escape,
             and restore focus — essential given the keyboard-heavy workflow of developers.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Shopify Polaris:</strong> Their Modal component enforces accessibility by default
             — developers can&apos;t create a modal without a title (used for aria-labelledby), focus
             trapping is built in, and Escape handling is automatic. The component API makes the
             accessible path the easiest path.
-          </li>
+          </HighlightBlock>
         </ul>
       </section>
 
@@ -358,7 +369,7 @@ export default function AccessibleModalsAndDialogsArticle() {
 
         <div className="my-4 rounded-lg border border-accent/20 bg-accent/5 p-4">
           <h3 className="mb-2 font-semibold">Q: What are the accessibility requirements for a modal dialog?</h3>
-          <p>
+          <HighlightBlock as="p" tier="crucial">
             Six requirements: (1) <strong>Focus trap:</strong> Tab/Shift+Tab must cycle within the
             modal, never escaping to background content. (2) <strong>Focus placement:</strong> When
             the modal opens, focus moves to the first focusable element or the dialog title. (3)
@@ -368,7 +379,7 @@ export default function AccessibleModalsAndDialogsArticle() {
             <code>aria-modal=&quot;true&quot;</code>, and <code>aria-labelledby</code> pointing to the
             title. (6) <strong>Background isolation:</strong> Background content must be hidden from
             screen readers (via <code>inert</code> or <code>aria-hidden</code>).
-          </p>
+          </HighlightBlock>
         </div>
 
         <div className="my-4 rounded-lg border border-accent/20 bg-accent/5 p-4">
@@ -387,7 +398,7 @@ export default function AccessibleModalsAndDialogsArticle() {
 
         <div className="my-4 rounded-lg border border-accent/20 bg-accent/5 p-4">
           <h3 className="mb-2 font-semibold">Q: How does the inert attribute improve modal accessibility?</h3>
-          <p>
+          <HighlightBlock as="p" tier="important">
             The <code>inert</code> attribute makes an element and all its descendants completely
             non-interactive: removed from the tab order, hidden from screen readers, and unclickable.
             For modals, adding <code>inert</code> to the main content container solves three
@@ -398,7 +409,7 @@ export default function AccessibleModalsAndDialogsArticle() {
             <code>aria-hidden=&quot;true&quot;</code> and <code>tabindex=&quot;-1&quot;</code> on
             every interactive background element — <code>inert</code> replaces all of that with a
             single attribute on the container.
-          </p>
+          </HighlightBlock>
         </div>
 
         <div className="my-4 rounded-lg border border-accent/20 bg-accent/5 p-4">
@@ -451,18 +462,18 @@ export default function AccessibleModalsAndDialogsArticle() {
       <section>
         <h2>References &amp; Further Reading</h2>
         <ul className="space-y-2">
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <a href="https://www.w3.org/WAI/ARIA/apg/patterns/dialog-modal/" target="_blank" rel="noopener noreferrer" className="text-accent hover:underline">
               WAI-ARIA APG: Dialog (Modal) Pattern
             </a>{" "}
             — Official ARIA pattern for modal dialogs.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Element/dialog" target="_blank" rel="noopener noreferrer" className="text-accent hover:underline">
               MDN: The &lt;dialog&gt; Element
             </a>{" "}
             — Native HTML dialog element documentation.
-          </li>
+          </HighlightBlock>
           <li>
             <a href="https://www.radix-ui.com/primitives/docs/components/dialog" target="_blank" rel="noopener noreferrer" className="text-accent hover:underline">
               Radix UI: Dialog Component

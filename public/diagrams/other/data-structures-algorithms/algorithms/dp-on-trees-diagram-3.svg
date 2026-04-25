@@ -1,0 +1,57 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="system-ui, sans-serif">
+  <rect width="900" height="500" fill="#f3f1f8"/>
+  <text x="450" y="32" text-anchor="middle" font-size="19" font-weight="700" fill="#1a1822">Tree DP Patterns — Taxonomy and Complexity</text>
+
+  <rect x="40" y="60" width="820" height="280" fill="#fff" stroke="#6d5bd0" stroke-width="2" rx="6"/>
+  <text x="60" y="85" font-size="14" font-weight="700" fill="#6d5bd0">Common tree-DP patterns</text>
+
+  <g font-size="11">
+    <text x="60" y="115" font-weight="700" fill="#1a1822">Pattern</text>
+    <text x="320" y="115" font-weight="700" fill="#1a1822">State</text>
+    <text x="600" y="115" font-weight="700" fill="#1a1822">Complexity</text>
+
+    <text x="60" y="140">Subtree sum / size</text>
+    <text x="320" y="140">dp[u] — aggregate over subtree(u)</text>
+    <text x="600" y="140">Θ(n)</text>
+
+    <text x="60" y="162">Max Independent Set</text>
+    <text x="320" y="162">dp[u][0/1] — u not/taken</text>
+    <text x="600" y="162">Θ(n)</text>
+
+    <text x="60" y="184">Tree diameter</text>
+    <text x="320" y="184">2 deepest children per node</text>
+    <text x="600" y="184">Θ(n)</text>
+
+    <text x="60" y="206">Vertex cover / dominating set</text>
+    <text x="320" y="206">dp[u][state of u] 2–3 states</text>
+    <text x="600" y="206">Θ(n)</text>
+
+    <text x="60" y="228">Knapsack on trees</text>
+    <text x="320" y="228">dp[u][budget] merged via knapsack</text>
+    <text x="600" y="228">Θ(n · W) — merge by siblings</text>
+
+    <text x="60" y="250">Count subtrees with property</text>
+    <text x="320" y="250">generating-function-like merge</text>
+    <text x="600" y="250">Θ(n · k) typical</text>
+
+    <text x="60" y="272">Rerooting (all-roots answer)</text>
+    <text x="320" y="272">subtree[u] + outside[u]</text>
+    <text x="600" y="272">Θ(n)</text>
+
+    <text x="60" y="294">Heavy-Light + segment tree</text>
+    <text x="320" y="294">path queries on trees</text>
+    <text x="600" y="294">Θ(log² n) per query</text>
+
+    <text x="60" y="316">Auxiliary tree / virtual tree</text>
+    <text x="320" y="316">subset queries via LCA</text>
+    <text x="600" y="316">Θ(k log n) per batch</text>
+  </g>
+
+  <!-- Applications -->
+  <rect x="40" y="360" width="820" height="115" fill="#fff" stroke="#4caf50" stroke-width="2" rx="6"/>
+  <text x="60" y="385" font-size="13" font-weight="700" fill="#4caf50">Real applications</text>
+  <text x="60" y="410" font-size="11" fill="#1a1822">• Network backbone: MIS on a tree models min number of routers needed for full coverage.</text>
+  <text x="60" y="428" font-size="11" fill="#1a1822">• File-system policy propagation: subtree DP rolls up permission/quota summaries in one pass.</text>
+  <text x="60" y="446" font-size="11" fill="#1a1822">• Phylogenetic trees: species-presence DP, Fitch algorithm uses tree DP for parsimony.</text>
+  <text x="60" y="464" font-size="11" fill="#1a1822">• DOM / component trees: layout-constraint propagation is essentially subtree DP.</text>
+</svg>

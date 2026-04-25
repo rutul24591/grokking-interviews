@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -27,7 +28,7 @@ export default function SemanticHTMLArticle() {
           ============================================================ */}
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Semantic HTML</strong> is the practice of using HTML elements that convey meaning about the
           structure, purpose, and relationships of content rather than relying on generic containers styled
           with CSS. Where a <code className="text-sm">&lt;div&gt;</code> or <code className="text-sm">&lt;span&gt;</code> communicates
@@ -36,7 +37,7 @@ export default function SemanticHTMLArticle() {
           <code className="text-sm">&lt;figure&gt;</code> carry intrinsic semantics that browsers, search engine
           crawlers, assistive technologies, and other automated consumers can parse without understanding CSS
           classes or JavaScript behavior.
-        </p>
+        </HighlightBlock>
         <p>
           The idea of semantic markup predates HTML5. Early HTML (versions 1 through 4) had limited structural
           elements&mdash;headings (<code className="text-sm">&lt;h1&gt;</code>&ndash;<code className="text-sm">&lt;h6&gt;</code>),
@@ -53,7 +54,7 @@ export default function SemanticHTMLArticle() {
           <code className="text-sm">&lt;summary&gt;</code>, <code className="text-sm">&lt;time&gt;</code>,{" "}
           <code className="text-sm">&lt;mark&gt;</code>, and others&mdash;designed to close this gap.
         </p>
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Why this matters for staff/principal engineers:</strong> Semantic HTML is the foundation of the
           accessibility stack. ARIA (Accessible Rich Internet Applications) exists to fill gaps where HTML semantics
           fall short, but the first rule of ARIA is &quot;don&apos;t use ARIA if a native HTML element provides the
@@ -64,11 +65,11 @@ export default function SemanticHTMLArticle() {
           semantic HTML in a design system or component library has compounding effects: every component that ships
           with correct semantics reduces the cognitive burden on product engineers who would otherwise need to
           remember to add ARIA attributes manually.
-        </p>
+        </HighlightBlock>
 
         <div className="my-6 rounded-lg border border-accent/30 bg-accent/10 p-6">
           <h3 className="mb-3 font-semibold">Key Insight: The First Rule of ARIA</h3>
-          <p>
+          <HighlightBlock as="p" tier="crucial">
             The W3C WAI-ARIA authoring practices explicitly state: &quot;If you can use a native HTML element or
             attribute with the semantics and behavior you require already built in, instead of re-purposing an
             element and adding an ARIA role, state, or property to make it accessible, then do so.&quot; Every{" "}
@@ -76,7 +77,7 @@ export default function SemanticHTMLArticle() {
             that could have been a <code className="text-sm">&lt;button&gt;</code> is a maintenance liability,
             an accessibility risk, and a signal of technical debt. Semantic HTML is not a nice-to-have&mdash;it is
             the lowest-cost, highest-impact accessibility investment available.
-          </p>
+          </HighlightBlock>
         </div>
       </section>
 
@@ -85,34 +86,34 @@ export default function SemanticHTMLArticle() {
           ============================================================ */}
       <section>
         <h2>Core Concepts</h2>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Semantic HTML elements can be grouped into several functional categories. Understanding these categories
           helps engineers select the right element for a given purpose and reason about the accessibility tree that
           the browser constructs from the DOM.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Sectioning &amp; Landmark Elements</h3>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           These elements define the high-level regions of a page. Assistive technologies expose them as
           &quot;landmarks&quot; that users can jump to directly, bypassing repetitive navigation.
-        </p>
+        </HighlightBlock>
         <ul className="space-y-2">
           <li>
             <strong>&lt;header&gt;</strong> &mdash; Introductory content for its nearest sectioning ancestor or for
             the page when used at the body level. Implicitly carries the <code className="text-sm">banner</code> role
             when it is a direct child of <code className="text-sm">&lt;body&gt;</code>.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>&lt;nav&gt;</strong> &mdash; A section containing navigation links. Maps to the{" "}
             <code className="text-sm">navigation</code> landmark role. When multiple <code className="text-sm">&lt;nav&gt;</code>{" "}
             elements exist on a page (primary nav, breadcrumbs, footer nav), each should receive a unique{" "}
             <code className="text-sm">aria-label</code> to distinguish them.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>&lt;main&gt;</strong> &mdash; The dominant content of the page. Must be unique (only one per page).
             Maps to the <code className="text-sm">main</code> landmark role and serves as the target for &quot;skip to
             content&quot; links.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>&lt;aside&gt;</strong> &mdash; Content tangentially related to the surrounding content. Maps to the{" "}
             <code className="text-sm">complementary</code> landmark role. Common uses: sidebars, pull quotes, advertising
@@ -248,63 +249,66 @@ export default function SemanticHTMLArticle() {
           ============================================================ */}
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           Understanding semantic HTML requires visualizing how semantic elements map to landmark regions, how they
           differ from generic containers, and how browsers translate them into implicit ARIA roles for the
           accessibility tree.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Semantic vs. Div Soup</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           The following diagram illustrates the fundamental difference between a document built with generic{" "}
           <code className="text-sm">&lt;div&gt;</code> containers and one using semantic elements. The semantic
           version produces an accessibility tree with navigable landmarks, a meaningful document outline, and
           implicit ARIA roles&mdash;all without a single line of JavaScript or explicit ARIA attribute.
-        </p>
+        </HighlightBlock>
         <ArticleImage
           src="/diagrams/system-design-concepts/frontend/accessibility-a11y/semantic-html-diagram-1.svg"
           alt="Side-by-side comparison of non-semantic div soup markup versus semantic HTML5 elements showing the difference in screen reader landmark exposure"
           caption="Figure 1: Semantic HTML provides landmark navigation, document outline, and implicit ARIA roles that div soup cannot."
+          captionTier="important"
         />
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Document Outline &amp; Landmark Regions</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           The landmark region model is the primary way screen reader users orient themselves on a page. Rather
           than reading top-to-bottom linearly, experienced screen reader users jump between landmarks (using the
           D key in NVDA/JAWS or the Rotor in VoiceOver) to quickly locate the content they need. The diagram
           below shows how semantic elements map to these landmark regions and how a typical page layout is
           perceived by assistive technologies.
-        </p>
+        </HighlightBlock>
         <ArticleImage
           src="/diagrams/system-design-concepts/frontend/accessibility-a11y/semantic-html-diagram-2.svg"
           alt="Page layout wireframe showing header, nav, main, article, section, aside, and footer elements mapped to their corresponding ARIA landmark roles"
           caption="Figure 2: Semantic elements create a landmark map that screen reader users navigate with keyboard shortcuts."
+          captionTier="important"
         />
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Implicit ARIA Role Mapping</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Every semantic HTML element carries an implicit ARIA role that the browser exposes to the accessibility
           tree. This mapping is defined in the{" "}
           <a href="https://www.w3.org/TR/html-aria/" target="_blank" rel="noopener noreferrer" className="text-accent underline">
             ARIA in HTML specification
           </a>. Understanding these mappings is essential for knowing when ARIA is redundant (and therefore a
           maintenance burden) versus when it&apos;s genuinely needed.
-        </p>
+        </HighlightBlock>
         <ArticleImage
           src="/diagrams/system-design-concepts/frontend/accessibility-a11y/semantic-html-diagram-3.svg"
           alt="Table mapping HTML elements (header, nav, main, aside, footer, article, section, form, button, a) to their implicit ARIA roles and assistive technology behaviors"
           caption="Figure 3: HTML elements carry built-in ARIA roles, eliminating the need for redundant role attributes."
+          captionTier="important"
         />
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">The Accessibility Tree</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Browsers construct the <strong>accessibility tree</strong> in parallel with the DOM tree. The
           accessibility tree is a simplified representation of the DOM that assistive technologies consume. It
           strips out presentational elements (e.g., <code className="text-sm">&lt;div&gt;</code>,{" "}
           <code className="text-sm">&lt;span&gt;</code> without roles) and includes only nodes with semantic
           significance: elements with roles, names, states, and properties. Semantic HTML directly controls the
           shape and quality of this tree.
-        </p>
+        </HighlightBlock>
         <h3 className="mt-8 mb-4 text-xl font-semibold">DOM Tree vs Accessibility Tree</h3>
         <p>
           The DOM tree contains all elements including divs and spans, while the accessibility tree is a filtered subset that represents what assistive technologies see. A proper DOM with semantic elements like header, nav, main, article, heading levels, button, footer, and small produces an accessibility tree with document, banner, navigation, main, heading level 1, heading level 2, article, paragraph, button, and contentinfo roles. Notice how generic div wrappers would have been invisible in this tree. The semantic elements create the structure that screen readers announce and that users navigate.
@@ -330,36 +334,52 @@ export default function SemanticHTMLArticle() {
               </tr>
             </thead>
             <tbody>
-              <tr className="border-b border-theme/40">
+              <HighlightBlock
+                as="tr"
+                tier="crucial"
+                className="border-b border-theme/40"
+              >
                 <td className="py-2 font-semibold">Accessibility</td>
                 <td className="py-2">Built-in landmark roles, heading outlines, native keyboard behavior. Zero-effort baseline compliance with WCAG 1.3.1 (Info and Relationships).</td>
                 <td className="py-2">Requires manual role=, aria-label, tabindex, keydown handlers. Error-prone and must be maintained separately from visual behavior.</td>
-              </tr>
+              </HighlightBlock>
               <tr className="border-b border-theme/40">
                 <td className="py-2 font-semibold">SEO</td>
                 <td className="py-2">Search engines use landmarks, headings, and article elements to understand content hierarchy and determine main content vs. boilerplate.</td>
                 <td className="py-2">Crawlers see flat, undifferentiated content. No structural signals for featured snippets, article rich results, or passage ranking.</td>
               </tr>
-              <tr className="border-b border-theme/40">
+              <HighlightBlock
+                as="tr"
+                tier="important"
+                className="border-b border-theme/40"
+              >
                 <td className="py-2 font-semibold">Maintainability</td>
                 <td className="py-2">Self-documenting code. A developer reading &lt;nav&gt; or &lt;aside&gt; immediately understands the purpose without consulting CSS classes.</td>
                 <td className="py-2">Relies on class naming conventions (BEM, utility classes) that vary across teams and can drift. &lt;div class=&quot;nav-wrapper&quot;&gt; requires context.</td>
-              </tr>
-              <tr className="border-b border-theme/40">
+              </HighlightBlock>
+              <HighlightBlock
+                as="tr"
+                tier="important"
+                className="border-b border-theme/40"
+              >
                 <td className="py-2 font-semibold">Bundle Size</td>
                 <td className="py-2">Native elements handle keyboard interaction, focus management, and state without JavaScript. &lt;details&gt; replaces accordion libraries.</td>
                 <td className="py-2">Custom implementations of disclosure widgets, dialogs, tabs often require 5-20 KB of JavaScript for behavior that native elements provide for free.</td>
-              </tr>
+              </HighlightBlock>
               <tr className="border-b border-theme/40">
                 <td className="py-2 font-semibold">Cross-Browser</td>
                 <td className="py-2">Semantic elements are supported in all modern browsers. Edge case: &lt;dialog&gt; lacked Safari support until 15.4 (2022); now universally available.</td>
                 <td className="py-2">Custom ARIA widgets behave identically only if every ARIA state, property, and keyboard pattern is implemented correctly across browsers.</td>
               </tr>
-              <tr className="border-b border-theme/40">
+              <HighlightBlock
+                as="tr"
+                tier="important"
+                className="border-b border-theme/40"
+              >
                 <td className="py-2 font-semibold">Testing</td>
                 <td className="py-2">Semantic queries (getByRole, getByLabelText) in Testing Library directly validate accessibility. Tests break when accessibility regresses.</td>
                 <td className="py-2">Tests typically query by class name or test ID, which cannot detect accessibility regressions. Separate a11y tests needed.</td>
-              </tr>
+              </HighlightBlock>
               <tr className="border-b border-theme/40">
                 <td className="py-2 font-semibold">Styling Flexibility</td>
                 <td className="py-2">Some elements have opinionated default styles (fieldset borders, details markers) that require CSS resets. Minor tradeoff.</td>
@@ -394,33 +414,33 @@ export default function SemanticHTMLArticle() {
           in organizations with dozens or hundreds of contributing engineers.
         </p>
         <ol className="space-y-2">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>1. Enforce semantic element usage in the design system.</strong> Wrap semantic elements inside
             reusable components so product engineers cannot accidentally produce div soup. A{" "}
             <code className="text-sm">&lt;Card&gt;</code> component should render an <code className="text-sm">&lt;article&gt;</code>{" "}
             internally. A <code className="text-sm">&lt;PageLayout&gt;</code> should output <code className="text-sm">&lt;header&gt;</code>,{" "}
             <code className="text-sm">&lt;main&gt;</code>, and <code className="text-sm">&lt;footer&gt;</code>. Bake semantics in
             so they are the default, not an opt-in.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>2. Maintain a strict heading hierarchy.</strong> Every page should have exactly one{" "}
             <code className="text-sm">&lt;h1&gt;</code>. Subsequent headings should not skip levels. Use an eslint rule
             (e.g., <code className="text-sm">jsx-a11y/heading-has-content</code>) and automated audits (axe-core) to catch
             violations. In component-based architectures, consider a HeadingLevel context provider that automatically
             adjusts heading levels based on nesting depth.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>3. Label all landmark regions.</strong> When a page has multiple <code className="text-sm">&lt;nav&gt;</code>{" "}
             elements, each must have a unique <code className="text-sm">aria-label</code> (e.g., &quot;Primary navigation&quot;,
             &quot;Breadcrumb&quot;, &quot;Footer links&quot;). Screen readers list all landmarks in a rotor, and
             &quot;navigation, navigation, navigation&quot; is not useful.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="crucial">
             <strong>4. Use native interactive elements.</strong> Never use <code className="text-sm">&lt;div&gt;</code> or{" "}
             <code className="text-sm">&lt;span&gt;</code> for clickable actions. Use <code className="text-sm">&lt;button&gt;</code>{" "}
             for actions and <code className="text-sm">&lt;a&gt;</code> for navigation. This single rule eliminates the majority
             of keyboard accessibility issues and is enforceable via <code className="text-sm">eslint-plugin-jsx-a11y</code>.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>5. Pair every form control with a label.</strong> Every <code className="text-sm">&lt;input&gt;</code>,{" "}
             <code className="text-sm">&lt;select&gt;</code>, and <code className="text-sm">&lt;textarea&gt;</code> must have
@@ -440,11 +460,11 @@ export default function SemanticHTMLArticle() {
             keyboard and screen reader support out of the box. Custom CSS can fully style these elements, including
             replacing the default disclosure triangle.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>8. Integrate semantic validation into CI.</strong> Run axe-core or Lighthouse accessibility audits
             in your CI pipeline. Configure rules to flag missing landmarks, incorrect heading levels, interactive elements
             without accessible names, and images without alt text. Make these checks blocking for merges.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>9. Use Testing Library queries by role.</strong> React Testing Library&apos;s{" "}
             <code className="text-sm">getByRole</code>, <code className="text-sm">getByLabelText</code>, and{" "}
@@ -466,57 +486,57 @@ export default function SemanticHTMLArticle() {
       <section>
         <h2>Common Pitfalls</h2>
         <ul className="space-y-2">
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Using &lt;div&gt; for interactive elements.</strong> The single most common semantic HTML violation.{" "}
             <code className="text-sm">&lt;div onClick=&quot;...&quot;&gt;</code> elements are not focusable via Tab, do not
             respond to Enter/Space keys, are not announced as interactive by screen readers, and do not appear in the
             browser&apos;s accessibility tree as actionable elements. This violates WCAG 2.1.1 (Keyboard), 4.1.2 (Name,
             Role, Value), and often 2.5.5 (Target Size).
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Wrapping &lt;a&gt; tags around block-level content without purpose.</strong> Making entire cards
             clickable by wrapping large areas in an anchor tag can create verbose screen reader announcements. Instead,
             use a pseudo-element overlay technique on a <code className="text-sm">&lt;a&gt;</code> inside the card with
             the headline as link text.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Skipping heading levels for visual sizing.</strong> Using <code className="text-sm">&lt;h4&gt;</code>{" "}
             instead of <code className="text-sm">&lt;h2&gt;</code> because the h4 default font size matches the design.
             Heading levels are structural, not visual. Use CSS to control size; use heading levels to maintain the
             document outline.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Using &lt;section&gt; as a generic container.</strong> A <code className="text-sm">&lt;section&gt;</code>{" "}
             is not a styled <code className="text-sm">&lt;div&gt;</code>. The spec states it should be used when the content
             has a heading and represents a thematic grouping. Using it for layout wrapping pollutes the document outline
             and adds noise to the accessibility tree.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Redundant ARIA roles on semantic elements.</strong> Writing{" "}
             <code className="text-sm">&lt;nav role=&quot;navigation&quot;&gt;</code> or{" "}
             <code className="text-sm">&lt;main role=&quot;main&quot;&gt;</code> is redundant. The implicit role is already
             the correct one. Redundant roles add maintenance burden and can mask underlying issues where the wrong
             element is used.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Missing accessible names on landmarks.</strong> A page with two{" "}
             <code className="text-sm">&lt;nav&gt;</code> elements and no <code className="text-sm">aria-label</code>{" "}
             presents as &quot;navigation&quot; and &quot;navigation&quot; in the screen reader landmark list. Users cannot
             distinguish between them without visual context.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Using &lt;table&gt; for layout.</strong> While less common in modern development, table-based
             layouts still appear in email templates and legacy codebases. Screen readers announce table structure
             (rows, columns, cells), making layout tables confusing. If a table must be used for layout (e.g., email),
             add <code className="text-sm">role=&quot;presentation&quot;</code> to suppress table semantics.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Placeholder text as the only label.</strong> The{" "}
             <code className="text-sm">placeholder</code> attribute is not an accessible label. It disappears when the
             user types, has insufficient color contrast in most browsers, and is not consistently announced by screen
             readers. Always provide a visible <code className="text-sm">&lt;label&gt;</code> or at minimum an{" "}
             <code className="text-sm">aria-label</code>.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Forgetting &lt;lang&gt; on &lt;html&gt;.</strong> The <code className="text-sm">lang</code>{" "}
             attribute on the root element tells screen readers which language synthesis engine to use. Without it,
@@ -533,7 +553,7 @@ export default function SemanticHTMLArticle() {
         <h2>Real-World Use Cases</h2>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">GitHub: Landmark Navigation at Scale</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           GitHub&apos;s web application uses semantic HTML extensively. Every page includes a{" "}
           <code className="text-sm">&lt;header&gt;</code> with the global navigation bar, a{" "}
           <code className="text-sm">&lt;main&gt;</code> containing the repository content, and multiple labeled{" "}
@@ -542,10 +562,10 @@ export default function SemanticHTMLArticle() {
           level, ensuring that all teams produce consistent accessibility output. Their switch to{" "}
           <code className="text-sm">&lt;dialog&gt;</code> for modals eliminated a significant portion of custom
           focus-trapping code.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">GOV.UK: Government Accessibility Standard</h3>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           The UK Government Digital Service (GDS) mandates WCAG 2.1 AA compliance for all government websites.
           Their design system is built on a strict semantic HTML foundation: every page template uses{" "}
           <code className="text-sm">&lt;header&gt;</code>, <code className="text-sm">&lt;main&gt;</code>, and{" "}
@@ -553,25 +573,25 @@ export default function SemanticHTMLArticle() {
           labels. Error messages are associated with inputs via <code className="text-sm">aria-describedby</code>.
           The GDS team publishes detailed guidance on when to use each semantic element and has open-sourced their
           component library (govuk-frontend) as a reference implementation.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Airbnb: Search Results as Articles</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Airbnb&apos;s listing search results use <code className="text-sm">&lt;article&gt;</code> elements for each
           property card. This communicates to screen readers that each result is a self-contained unit of content.
           Headings within each article provide the listing title, and pricing/rating information is exposed via
           structured markup. The booking flow uses <code className="text-sm">&lt;fieldset&gt;</code> and{" "}
           <code className="text-sm">&lt;legend&gt;</code> to group date selection, guest count, and payment fields.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Stripe: Documentation with Native Details</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Stripe&apos;s API documentation uses <code className="text-sm">&lt;details&gt;</code> and{" "}
           <code className="text-sm">&lt;summary&gt;</code> elements for expandable parameter descriptions. This
           eliminates JavaScript-dependent accordion components, reduces bundle size, and ensures that the
           expand/collapse behavior works even when JavaScript fails to load or is blocked. Each expandable section
           is keyboard-accessible and screen reader-compatible without any custom ARIA.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">React Component Library: Semantic Wrapper Pattern</h3>
         <p>
@@ -598,7 +618,7 @@ export default function SemanticHTMLArticle() {
 
         <div className="my-4 rounded-lg border border-accent/20 bg-accent/5 p-4">
           <h3 className="mb-2 font-semibold">Q: What is the difference between &lt;section&gt; and &lt;div&gt;? When should you use each?</h3>
-          <p>
+          <HighlightBlock as="p" tier="important">
             A <code className="text-sm">&lt;section&gt;</code> represents a thematic grouping of content that
             typically has a heading. It contributes to the document outline and, when labeled with{" "}
             <code className="text-sm">aria-label</code> or <code className="text-sm">aria-labelledby</code>, becomes
@@ -609,12 +629,12 @@ export default function SemanticHTMLArticle() {
             <code className="text-sm">&lt;div&gt;</code> for layout wrappers, styling containers, and JavaScript hook
             points where no semantic meaning is intended. A useful litmus test: if you would put a heading inside it,
             it&apos;s probably a section; if you would not, it&apos;s probably a div.
-          </p>
+          </HighlightBlock>
         </div>
 
         <div className="my-4 rounded-lg border border-accent/20 bg-accent/5 p-4">
           <h3 className="mb-2 font-semibold">Q: Why is using a &lt;button&gt; element important instead of a clickable &lt;div&gt;?</h3>
-          <p>
+          <HighlightBlock as="p" tier="crucial">
             A native <code className="text-sm">&lt;button&gt;</code> provides: (1) automatic focus management&mdash;it
             is included in the Tab order without adding <code className="text-sm">tabindex</code>; (2) keyboard
             activation&mdash;it responds to both Enter and Space keys natively; (3) an implicit{" "}
@@ -626,12 +646,12 @@ export default function SemanticHTMLArticle() {
             for the disabled state, and preventing default behavior on Space (which normally scrolls the page). This is
             6+ lines of code to poorly replicate what a single <code className="text-sm">&lt;button&gt;</code> provides
             for free.
-          </p>
+          </HighlightBlock>
         </div>
 
         <div className="my-4 rounded-lg border border-accent/20 bg-accent/5 p-4">
           <h3 className="mb-2 font-semibold">Q: What are landmark roles and why do they matter for screen reader navigation?</h3>
-          <p>
+          <HighlightBlock as="p" tier="important">
             Landmark roles (banner, navigation, main, complementary, contentinfo, form, region, search) are ARIA roles
             that define major regions of a page. Screen readers provide keyboard shortcuts to jump between landmarks
             (D key in NVDA/JAWS, Rotor in VoiceOver), enabling users to bypass repetitive content and navigate directly
@@ -642,7 +662,7 @@ export default function SemanticHTMLArticle() {
             screen reader users to navigate linearly through every element&mdash;on a complex page with 500+ elements,
             this makes the page effectively unusable. Having well-structured landmarks with unique labels is the single
             highest-impact accessibility improvement for screen reader users.
-          </p>
+          </HighlightBlock>
         </div>
 
         <div className="my-4 rounded-lg border border-accent/20 bg-accent/5 p-4">
@@ -663,7 +683,7 @@ export default function SemanticHTMLArticle() {
 
         <div className="my-4 rounded-lg border border-accent/20 bg-accent/5 p-4">
           <h3 className="mb-2 font-semibold">Q: How would you enforce semantic HTML standards across a large engineering organization?</h3>
-          <p>
+          <HighlightBlock as="p" tier="important">
             A multi-layered approach works best: (1) <strong>Design system enforcement</strong>&mdash;build semantic
             elements into reusable components so product engineers cannot produce div soup. A Card renders an article,
             a PageLayout renders header/main/footer. (2) <strong>Static analysis</strong>&mdash;configure{" "}
@@ -677,7 +697,7 @@ export default function SemanticHTMLArticle() {
             <strong>Manual testing rotation</strong>&mdash;schedule regular screen reader testing sessions. Pair sighted
             engineers with screen reader users for usability testing. Automated tools catch roughly 30-40% of
             accessibility issues; manual testing catches the rest.
-          </p>
+          </HighlightBlock>
         </div>
 
         <div className="my-4 rounded-lg border border-accent/20 bg-accent/5 p-4">
@@ -704,26 +724,26 @@ export default function SemanticHTMLArticle() {
       <section>
         <h2>References &amp; Further Reading</h2>
         <ul className="space-y-2">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <a href="https://html.spec.whatwg.org/multipage/" target="_blank" rel="noopener noreferrer" className="text-accent underline">
               WHATWG HTML Living Standard
             </a> &mdash; The authoritative specification for HTML elements, their semantics, and content models.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="crucial">
             <a href="https://www.w3.org/TR/html-aria/" target="_blank" rel="noopener noreferrer" className="text-accent underline">
               ARIA in HTML (W3C)
             </a> &mdash; Defines the mapping between HTML elements and their implicit ARIA roles, states, and properties.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <a href="https://www.w3.org/WAI/ARIA/apg/" target="_blank" rel="noopener noreferrer" className="text-accent underline">
               WAI-ARIA Authoring Practices Guide
             </a> &mdash; Design patterns and examples for building accessible web components, including when to use native HTML vs. ARIA.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <a href="https://www.w3.org/TR/WCAG21/" target="_blank" rel="noopener noreferrer" className="text-accent underline">
               Web Content Accessibility Guidelines (WCAG) 2.1
             </a> &mdash; The global standard for web accessibility. Semantic HTML directly supports Success Criteria 1.3.1, 2.4.1, 2.4.6, 4.1.2, and others.
-          </li>
+          </HighlightBlock>
           <li>
             <a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Element" target="_blank" rel="noopener noreferrer" className="text-accent underline">
               MDN Web Docs: HTML Elements Reference
@@ -739,11 +759,11 @@ export default function SemanticHTMLArticle() {
               Testing Library: ByRole Queries
             </a> &mdash; Documentation for role-based queries that validate accessibility as a side effect of functional testing.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <a href="https://www.deque.com/axe/" target="_blank" rel="noopener noreferrer" className="text-accent underline">
               Deque axe-core
             </a> &mdash; The industry-standard automated accessibility testing engine. Integrates with CI pipelines, browser extensions, and testing frameworks.
-          </li>
+          </HighlightBlock>
         </ul>
       </section>
     </ArticleLayout>

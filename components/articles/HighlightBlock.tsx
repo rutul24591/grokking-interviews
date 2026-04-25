@@ -6,7 +6,9 @@ import type { HighlightTier } from "@/components/articles/highlightMeta";
 import { classNames } from "@/lib/classNames";
 
 type HighlightBlockProps = {
-  as?: "div" | "p" | "li";
+  // Keep this intentionally constrained to tags we commonly need in articles,
+  // especially for comparison tables.
+  as?: "div" | "p" | "li" | "tr" | "td" | "th" | "blockquote";
   children: ReactNode;
   className?: string;
   tier: HighlightTier;

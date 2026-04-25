@@ -1,0 +1,48 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="system-ui, sans-serif">
+  <rect width="900" height="500" fill="#f3f1f8"/>
+  <text x="450" y="32" text-anchor="middle" font-size="19" font-weight="700" fill="#1a1822">Divide &amp; Conquer — Template &amp; Recursion Tree</text>
+
+  <rect x="40" y="60" width="400" height="200" fill="#fff" stroke="#6d5bd0" stroke-width="2" rx="6"/>
+  <text x="60" y="85" font-size="13" font-weight="700" fill="#6d5bd0">Three-step template</text>
+  <text x="60" y="115" font-size="12" fill="#1a1822"><tspan font-weight="700">1. Divide:</tspan> split problem of size n</text>
+  <text x="60" y="133" font-size="12" fill="#1a1822">into a subproblems of size n/b.</text>
+  <text x="60" y="160" font-size="12" fill="#1a1822"><tspan font-weight="700">2. Conquer:</tspan> solve recursively</text>
+  <text x="60" y="178" font-size="12" fill="#1a1822">until a base case is reached.</text>
+  <text x="60" y="205" font-size="12" fill="#1a1822"><tspan font-weight="700">3. Combine:</tspan> merge subresults</text>
+  <text x="60" y="223" font-size="12" fill="#1a1822">into an answer in time f(n).</text>
+  <text x="60" y="250" font-size="12" fill="#4caf50" font-weight="700">T(n) = a·T(n/b) + f(n)</text>
+
+  <rect x="460" y="60" width="400" height="200" fill="#fff" stroke="#4caf50" stroke-width="2" rx="6"/>
+  <text x="480" y="85" font-size="13" font-weight="700" fill="#4caf50">Canonical examples</text>
+  <text x="480" y="112" font-size="11">Merge sort: a=2, b=2, f=n → O(n log n)</text>
+  <text x="480" y="132" font-size="11">Binary search: a=1, b=2, f=1 → O(log n)</text>
+  <text x="480" y="152" font-size="11">Karatsuba: a=3, b=2, f=n → O(n^1.585)</text>
+  <text x="480" y="172" font-size="11">Strassen: a=7, b=2, f=n² → O(n^2.807)</text>
+  <text x="480" y="192" font-size="11">Closest pair: a=2, b=2, f=n → O(n log n)</text>
+  <text x="480" y="212" font-size="11">FFT: a=2, b=2, f=n → O(n log n)</text>
+  <text x="480" y="232" font-size="11">Quickselect (avg): T(n)=T(n/2)+n → O(n)</text>
+
+  <rect x="40" y="280" width="820" height="195" fill="#fff" stroke="#6d5bd0" stroke-width="2" rx="6"/>
+  <text x="60" y="305" font-size="13" font-weight="700" fill="#6d5bd0">Recursion tree (a=2, b=2, f=n)</text>
+  <g transform="translate(450,330)">
+    <circle r="18" fill="#a89bec" stroke="#6d5bd0"/><text text-anchor="middle" y="5" font-size="10">n</text>
+  </g>
+  <line x1="450" y1="348" x2="280" y2="390" stroke="#6d5bd0"/>
+  <line x1="450" y1="348" x2="620" y2="390" stroke="#6d5bd0"/>
+  <g transform="translate(280,400)"><circle r="16" fill="#a89bec" stroke="#6d5bd0"/><text text-anchor="middle" y="5" font-size="10">n/2</text></g>
+  <g transform="translate(620,400)"><circle r="16" fill="#a89bec" stroke="#6d5bd0"/><text text-anchor="middle" y="5" font-size="10">n/2</text></g>
+  <line x1="280" y1="416" x2="180" y2="450" stroke="#6d5bd0"/>
+  <line x1="280" y1="416" x2="380" y2="450" stroke="#6d5bd0"/>
+  <line x1="620" y1="416" x2="520" y2="450" stroke="#6d5bd0"/>
+  <line x1="620" y1="416" x2="720" y2="450" stroke="#6d5bd0"/>
+  <g font-size="10">
+    <text x="180" y="455" text-anchor="middle">n/4</text>
+    <text x="380" y="455" text-anchor="middle">n/4</text>
+    <text x="520" y="455" text-anchor="middle">n/4</text>
+    <text x="720" y="455" text-anchor="middle">n/4</text>
+  </g>
+  <text x="820" y="335" font-size="11">level work: n</text>
+  <text x="820" y="405" font-size="11">n/2+n/2=n</text>
+  <text x="820" y="455" font-size="11">4·n/4=n</text>
+  <text x="60" y="470" font-size="11" fill="#4caf50" font-weight="700">log n levels × n work/level = O(n log n).</text>
+</svg>

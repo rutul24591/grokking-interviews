@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="system-ui, sans-serif">
+  <rect width="900" height="500" fill="#f3f1f8"/>
+  <text x="450" y="32" text-anchor="middle" font-size="19" font-weight="700" fill="#1a1822">Karatsuba — 3 Multiplications Instead of 4</text>
+  <text x="450" y="54" text-anchor="middle" font-size="12">Multiply n-digit numbers in O(n^1.585), beating schoolbook O(n²).</text>
+
+  <rect x="40" y="80" width="820" height="170" fill="#fff" stroke="#6d5bd0" stroke-width="2" rx="6"/>
+  <text x="60" y="105" font-size="13" font-weight="700" fill="#6d5bd0">Setup</text>
+  <text x="60" y="130" font-size="11" font-family="monospace">x = x₁ · B^(n/2) + x₀     y = y₁ · B^(n/2) + y₀     (B = base, e.g. 10 or 2^32)</text>
+  <text x="60" y="155" font-size="11">Schoolbook: x·y = x₁y₁·B^n + (x₁y₀ + x₀y₁)·B^(n/2) + x₀y₀  → 4 sub-multiplications.</text>
+  <text x="60" y="180" font-size="11" font-weight="700" fill="#4caf50">Karatsuba's trick: compute the middle term using only one extra multiplication.</text>
+  <text x="60" y="205" font-size="11" font-family="monospace">z₂ = x₁ · y₁                        (high)</text>
+  <text x="60" y="223" font-size="11" font-family="monospace">z₀ = x₀ · y₀                        (low)</text>
+  <text x="60" y="241" font-size="11" font-family="monospace">z₁ = (x₁ + x₀)(y₁ + y₀) − z₂ − z₀   (middle = x₁y₀ + x₀y₁)</text>
+
+  <rect x="40" y="270" width="820" height="100" fill="#fff" stroke="#4caf50" stroke-width="2" rx="6"/>
+  <text x="60" y="295" font-size="13" font-weight="700" fill="#4caf50">Combine</text>
+  <text x="60" y="320" font-size="12" font-family="monospace">x · y = z₂ · B^n + z₁ · B^(n/2) + z₀</text>
+  <text x="60" y="345" font-size="11">3 recursive multiplications on n/2-digit numbers; additions and shifts cost O(n).</text>
+
+  <rect x="40" y="390" width="820" height="85" fill="#fff" stroke="#6d5bd0" stroke-width="2" rx="6"/>
+  <text x="60" y="415" font-size="13" font-weight="700" fill="#6d5bd0">Recurrence</text>
+  <text x="60" y="440" font-size="12" font-family="monospace">T(n) = 3 T(n/2) + O(n)  →  T(n) = Θ(n^(log₂ 3)) ≈ Θ(n^1.585)</text>
+  <text x="60" y="463" font-size="11" fill="#4caf50" font-weight="700">First sub-quadratic multiplication algorithm — Karatsuba &amp; Ofman, 1962.</text>
+</svg>

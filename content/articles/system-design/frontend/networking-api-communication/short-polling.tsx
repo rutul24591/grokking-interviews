@@ -175,14 +175,14 @@ export default function ShortPollingConciseArticle() {
 
       <section>
         <h2>Architecture & Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           The short polling lifecycle follows a predictable request-response
           cycle. The client initiates a timer, sends an HTTP request when the
           timer fires, processes the response, and schedules the next request.
           The critical architectural consideration is that each request is
           completely independent and stateless, which makes short polling
           inherently compatible with horizontally scaled server architectures.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/frontend/networking-api-communication/short-polling-flow.svg"
@@ -190,14 +190,14 @@ export default function ShortPollingConciseArticle() {
           caption="Short polling timeline showing fixed-interval requests. Gray responses indicate no new data (304 Not Modified), while green responses contain updated data. Notice that most requests are wasted during idle periods."
         />
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           The diagram above illustrates the fundamental inefficiency of naive
           short polling: the client sends requests at a fixed interval
           regardless of whether the server has new data. In this example, only 2
           out of 7 requests return actual data, meaning roughly 70% of requests
           are wasted. This is where adaptive intervals become essential for
           production deployments.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/frontend/networking-api-communication/short-polling-adaptive.svg"
@@ -217,7 +217,7 @@ export default function ShortPollingConciseArticle() {
           forgiving up to about 3-5 seconds for non-interactive data.
         </p>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           From the server's perspective, the architecture is remarkably simple.
           Each poll is a standard GET request handled by the existing HTTP
           infrastructure. The server checks for new data (typically by querying
@@ -228,16 +228,16 @@ export default function ShortPollingConciseArticle() {
           advantage, and it explains why it remains the default choice in many
           serverless and edge-function deployments where persistent connections
           are either impossible or prohibitively expensive.
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
         <h2>Trade-offs & Comparisons</h2>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Understanding where short polling fits among real-time communication
           patterns requires an honest assessment of its strengths and weaknesses
           relative to alternatives:
-        </p>
+        </HighlightBlock>
         <table className="w-full border-collapse">
           <thead>
             <tr className="border-b border-theme">
@@ -272,7 +272,7 @@ export default function ShortPollingConciseArticle() {
                 interval I generate N/I requests/second continuously
               </td>
             </tr>
-            <tr>
+            <HighlightBlock as="tr" tier="important">
               <td className="p-3">
                 <strong>Complexity</strong>
               </td>
@@ -284,8 +284,8 @@ export default function ShortPollingConciseArticle() {
                 Adaptive intervals, backoff, deduplication, and visibility
                 handling add significant complexity to do it well
               </td>
-            </tr>
-            <tr>
+            </HighlightBlock>
+            <HighlightBlock as="tr" tier="crucial">
               <td className="p-3">
                 <strong>Scalability</strong>
               </td>
@@ -297,7 +297,7 @@ export default function ShortPollingConciseArticle() {
                 Request volume scales linearly with clients; 100K users polling
                 every 5s = 20K requests/second
               </td>
-            </tr>
+            </HighlightBlock>
             <tr>
               <td className="p-3">
                 <strong>Network Efficiency</strong>
@@ -317,66 +317,67 @@ export default function ShortPollingConciseArticle() {
           src="/diagrams/system-design-concepts/frontend/networking-api-communication/polling-comparison.svg"
           alt="Polling Pattern Comparison Matrix"
           caption="Comparison of real-time communication patterns across key dimensions: latency, server load, implementation complexity, browser support, and proxy/firewall compatibility."
+          captionTier="important"
         />
       </section>
 
       <section>
         <h2>Best Practices</h2>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Building production-grade short polling requires attention to details
           that are often overlooked in tutorials:
-        </p>
+        </HighlightBlock>
         <ol className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Use Recursive setTimeout, Not setInterval:</strong> Always
             schedule the next poll after the current response completes.
             setInterval can stack requests if a response is slow, creating
             cascading failures. Recursive setTimeout ensures sequential
             execution and naturally incorporates network latency into the
             effective interval.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Implement Conditional Requests:</strong> Always use ETags or
             Last-Modified headers to avoid re-transferring unchanged data. This
             reduces bandwidth by 80-95% in typical scenarios where most polls
             return no changes. The server should return 304 Not Modified with no
             body when data has not changed.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Add Exponential Backoff with Jitter:</strong> On error, do
             not retry at the normal interval. Use exponential backoff (2^attempt
             * base, capped at max) with random jitter (0 to 1 second added).
             Jitter prevents synchronized retries from multiple clients
             overwhelming a recovering server.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Respect Page Visibility:</strong> Stop or dramatically
             reduce polling when the tab is hidden. Resume immediately when
             visibility is restored. This is especially critical for mobile
             browsers where background activity drains battery and may be
             throttled by the OS.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Use Adaptive Intervals:</strong> Start with an aggressive
             interval when the user first loads the page (expecting interaction),
             then gradually increase the interval if no changes are detected.
             Reset to the minimum interval when data changes or the user performs
             an action that might trigger server-side updates.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Deduplicate Requests:</strong> If multiple components need
             the same polled data, centralize the polling in a shared manager,
             hook, or state management layer. Use libraries like React Query or
             SWR that handle deduplication automatically when multiple components
             use the same query key with refetchInterval.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Set Appropriate Timeouts:</strong> Each poll request should
             have a timeout shorter than the polling interval. If the interval is
             5 seconds, set a request timeout of 4 seconds. A hanging request
             should not prevent the next poll from firing. AbortController makes
             this straightforward in modern browsers.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Monitor and Alert on Poll Volume:</strong> Track the
             aggregate request rate from polling endpoints in your server
@@ -390,34 +391,34 @@ export default function ShortPollingConciseArticle() {
 
       <section>
         <h2>Common Pitfalls</h2>
-        <p>
+        <HighlightBlock as="p" tier="important">
           These are the mistakes that most commonly cause short polling
           implementations to degrade performance or reliability:
-        </p>
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Polling Without Cleanup:</strong> Forgetting to clear the
             timeout/interval when the component unmounts or the user navigates
             away. This creates "zombie" pollers that continue firing requests in
             the background, wasting resources and potentially causing state
             updates on unmounted components. Always return a cleanup function
             from useEffect.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Fixed Interval Too Aggressive:</strong> Setting a 1-second
             interval "just in case" when the actual data changes once per
             minute. This wastes 59 out of 60 requests. Start with the longest
             acceptable interval and only decrease if freshness requirements
             demand it. Calculate the aggregate load: 10,000 users at 1-second
             intervals means 10,000 requests per second.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>No Error Handling or Backoff:</strong> Continuing to poll at
             the normal rate when the server is returning 500 errors. Without
             backoff, a struggling server faces the same request volume from
             polling clients plus the additional load of processing error
             responses, making recovery harder.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Ignoring HTTP Caching:</strong> Not implementing conditional
             requests, meaning every poll transfers the full payload even when
@@ -432,52 +433,52 @@ export default function ShortPollingConciseArticle() {
             not even looking at. This drains mobile battery and wastes server
             resources.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Race Conditions with Stale Closures:</strong> In React,
             using stale state values inside polling callbacks because the
             closure captured an old render's state. This leads to sending
             outdated parameters in poll requests or overwriting newer data with
             older data. Use refs to hold the latest values or leverage React
             Query's built-in state management.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="crucial">
             <strong>No Request Cancellation:</strong> Not aborting in-flight
             requests when the component unmounts or when a new poll fires before
             the previous one completes. This can cause responses to arrive out
             of order, applying an older response after a newer one. Use
             AbortController to cancel stale requests.
-          </li>
+          </HighlightBlock>
         </ul>
       </section>
 
       <section>
         <h2>Real-World Use Cases</h2>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Short polling remains the pragmatic choice in several well-defined
           scenarios:
-        </p>
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Dashboard Metrics and KPIs:</strong> Internal dashboards
             displaying sales figures, system health, or business metrics that
             update every 30-60 seconds. The low update frequency and small user
             base make short polling the simplest correct solution. Examples:
             Grafana dashboard panels, admin sales dashboards.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Serverless and Edge Function Environments:</strong>{" "}
             Platforms like AWS Lambda, Vercel Edge Functions, or Cloudflare
             Workers have execution time limits (typically 10-30 seconds) that
             make persistent connections impossible. Short polling is the only
             viable pattern for near-real-time updates in these environments.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Job Status Checking:</strong> Monitoring the status of a
             long-running background job (file processing, report generation,
             deployment pipeline) where the client polls a status endpoint until
             the job completes. This is inherently low-frequency and
             finite-duration, making short polling ideal.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Third-Party API Integration:</strong> Consuming APIs from
             external services that only offer REST endpoints (no WebSocket or
@@ -505,7 +506,9 @@ export default function ShortPollingConciseArticle() {
           <h3 className="mb-3 font-semibold">When NOT to Use Short Polling</h3>
           <p>Avoid short polling for:</p>
           <ul className="mt-2 space-y-2">
-            <li>- Chat applications requiring sub-second message delivery</li>
+            <HighlightBlock as="li" tier="crucial">
+              - Chat applications requiring sub-second message delivery
+            </HighlightBlock>
             <li>
               - Collaborative editing where multiple users see each other's
               changes in real-time
@@ -528,20 +531,20 @@ export default function ShortPollingConciseArticle() {
 
       <section>
         <h2>Security Considerations</h2>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Short polling has security considerations around abuse prevention.
-        </p>
+        </HighlightBlock>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-4 text-lg font-semibold">Rate Limiting</h3>
           <ul className="space-y-2">
-            <li>
+            <HighlightBlock as="li" tier="crucial">
               <strong>The Risk:</strong> Polling endpoints are vulnerable to abuse.
-            </li>
-            <li>
+            </HighlightBlock>
+            <HighlightBlock as="li" tier="important">
               <strong>Mitigation:</strong> Implement per-user rate limiting based on
               expected polling interval.
-            </li>
+            </HighlightBlock>
           </ul>
         </div>
 
@@ -561,9 +564,9 @@ export default function ShortPollingConciseArticle() {
 
       <section>
         <h2>Performance Benchmarks</h2>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Understanding short polling performance characteristics.
-        </p>
+        </HighlightBlock>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-4 text-lg font-semibold">Industry Performance Data</h3>
@@ -576,16 +579,16 @@ export default function ShortPollingConciseArticle() {
               </tr>
             </thead>
             <tbody className="divide-y divide-theme">
-              <tr>
+              <HighlightBlock as="tr" tier="important">
                 <td className="p-2">Request Latency</td>
                 <td className="p-2">&lt;100ms</td>
                 <td className="p-2">50-200ms</td>
-              </tr>
-              <tr>
+              </HighlightBlock>
+              <HighlightBlock as="tr" tier="crucial">
                 <td className="p-2">304 Response Rate</td>
                 <td className="p-2">&gt;90%</td>
                 <td className="p-2">80-95%</td>
-              </tr>
+              </HighlightBlock>
               <tr>
                 <td className="p-2">Data Freshness</td>
                 <td className="p-2">≤ polling interval</td>
@@ -610,17 +613,17 @@ export default function ShortPollingConciseArticle() {
 
       <section>
         <h2>Cost Analysis</h2>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Short polling has predictable costs but can become expensive at scale.
-        </p>
+        </HighlightBlock>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-4 text-lg font-semibold">Infrastructure Costs</h3>
           <ul className="space-y-2">
-            <li>
+            <HighlightBlock as="li" tier="crucial">
               <strong>Server Resources:</strong> For 100K users at 10s interval:
               600,000 requests/minute.
-            </li>
+            </HighlightBlock>
             <li>
               <strong>CDN Costs:</strong> CDN caching reduces origin load.
             </li>
@@ -641,36 +644,36 @@ export default function ShortPollingConciseArticle() {
 
         <div className="my-6 rounded-lg border border-accent/30 bg-accent/10 p-6">
           <h3 className="mb-3 font-semibold">ROI Decision Framework</h3>
-          <p>
+          <HighlightBlock as="p" tier="crucial">
             Use short polling when: update frequency is low (&lt;1/minute), user count
             is moderate, simplicity is priority. Use SSE when: you need sub-5s latency.
-          </p>
+          </HighlightBlock>
         </div>
       </section>
 
       <section>
         <h2>Decision Framework: When to Use Short Polling</h2>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Use this decision framework to evaluate whether short polling is appropriate.
-        </p>
+        </HighlightBlock>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-4 text-lg font-semibold">Decision Tree</h3>
           <ul className="space-y-2">
-            <li>
+            <HighlightBlock as="li" tier="crucial">
               <strong>Is update frequency &lt;1/minute?</strong>
               <ul>
                 <li>Yes → Short polling is efficient</li>
                 <li>No → Consider SSE or WebSockets</li>
               </ul>
-            </li>
-            <li>
+            </HighlightBlock>
+            <HighlightBlock as="li" tier="important">
               <strong>Is 5-30s latency acceptable?</strong>
               <ul>
                 <li>Yes → Short polling works</li>
                 <li>No → Need push-based solution</li>
               </ul>
-            </li>
+            </HighlightBlock>
             <li>
               <strong>Is simplicity a priority?</strong>
               <ul>
@@ -731,7 +734,7 @@ export default function ShortPollingConciseArticle() {
               10 seconds. Why might short polling be problematic, and how would
               you mitigate it?
             </p>
-            <p className="mt-2 text-sm">
+            <HighlightBlock as="p" tier="crucial" className="mt-2 text-sm">
               A: 100K users polling every 10 seconds generates 10,000 requests
               per second continuously. This is substantial but manageable with
               optimization. First, implement conditional requests (ETags) so 95%
@@ -744,7 +747,7 @@ export default function ShortPollingConciseArticle() {
               For truly high scale, consider Server-Sent Events or WebSockets
               with a pub/sub backend, but the cost is significantly higher
               infrastructure complexity and the loss of stateless simplicity.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
@@ -752,7 +755,7 @@ export default function ShortPollingConciseArticle() {
               Q: How would you implement graceful degradation from WebSockets to
               short polling?
             </p>
-            <p className="mt-2 text-sm">
+            <HighlightBlock as="p" tier="crucial" className="mt-2 text-sm">
               A: The transport layer should be abstracted behind a common
               interface that exposes subscribe/unsubscribe and emits data
               events. On initialization, attempt a WebSocket connection with a
@@ -764,7 +767,7 @@ export default function ShortPollingConciseArticle() {
               not know or care which transport is active. Store the current
               transport type for observability and surface it in developer tools
               so issues can be diagnosed.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
@@ -772,7 +775,7 @@ export default function ShortPollingConciseArticle() {
               Q: What is the difference between setInterval-based polling and
               recursive setTimeout polling? Why does it matter?
             </p>
-            <p className="mt-2 text-sm">
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               A: setInterval fires the callback at fixed intervals regardless of
               whether the previous execution completed. If a poll request takes
               3 seconds and the interval is 2 seconds, requests stack up.
@@ -784,7 +787,7 @@ export default function ShortPollingConciseArticle() {
               naturally absorbs network latency: if the interval is 5 seconds
               and the request takes 1 second, the effective period is 6 seconds,
               which is self-regulating under load.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
@@ -792,7 +795,7 @@ export default function ShortPollingConciseArticle() {
               Q: How do you handle polling when the user switches to a
               background tab?
             </p>
-            <p className="mt-2 text-sm">
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               A: Use the Page Visibility API (document.hidden and the
               visibilitychange event). When the tab becomes hidden, pause
               polling or increase the interval significantly (e.g., from 5s to
@@ -803,7 +806,7 @@ export default function ShortPollingConciseArticle() {
               (trading, monitoring), you may still poll in the background but
               at a reduced frequency. Also listen to the blur/focus events as a
               fallback for older browsers.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
@@ -811,7 +814,7 @@ export default function ShortPollingConciseArticle() {
               Q: What are the cost implications of short polling vs alternatives
               at scale?
             </p>
-            <p className="mt-2 text-sm">
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               A: Short polling has predictable, linear costs: N users × (1 /
               interval) = requests per second. For 100K users at 10s intervals,
               that&apos;s 10K RPS continuously. With conditional requests (304
@@ -825,7 +828,7 @@ export default function ShortPollingConciseArticle() {
               (&lt;1/minute), short polling is often cheapest. For high-frequency
               (&gt;1/second), WebSocket or SSE is more cost-effective. The
               break-even point is typically around 1 update per 5-10 seconds.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
@@ -833,7 +836,7 @@ export default function ShortPollingConciseArticle() {
               Q: How do you prevent race conditions when polling multiple
               related endpoints?
             </p>
-            <p className="mt-2 text-sm">
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               A: Race conditions occur when endpoint A returns before endpoint
               B, but A&apos;s data depends on B&apos;s state. Solutions: (1)
               Sequential polling — poll endpoints in dependency order, waiting
@@ -847,7 +850,7 @@ export default function ShortPollingConciseArticle() {
               coordinates requests. For dashboards with many widgets, approach
               (4) is most scalable: each widget declares its data needs, and the
               library batches and deduplicates automatically.
-            </p>
+            </HighlightBlock>
           </div>
         </div>
       </section>

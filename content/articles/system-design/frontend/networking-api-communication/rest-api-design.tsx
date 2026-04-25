@@ -143,7 +143,7 @@ export default function RestApiDesignConciseArticle() {
             handling based on status code families, not individual codes, for
             resilience.
           </HighlightBlock>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Content Negotiation:</strong> The Accept header tells the
             server what response format the client prefers (application/json,
             application/xml, text/html). The Content-Type header describes the
@@ -155,7 +155,7 @@ export default function RestApiDesignConciseArticle() {
             always set explicit Accept and Content-Type headers rather than
             relying on server defaults to avoid subtle bugs when API gateway
             configurations change.
-          </li>
+          </HighlightBlock>
           <HighlightBlock as="li" tier="important">
             <strong>
               HATEOAS (Hypermedia as the Engine of Application State):
@@ -171,7 +171,7 @@ export default function RestApiDesignConciseArticle() {
             instance) reduces coupling between client and server by allowing the
             server to change URI structures without breaking clients.
           </HighlightBlock>
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Statelessness:</strong> Every request must carry all
             necessary context: authentication tokens (in Authorization headers,
             not cookies if possible), pagination cursors, filter parameters, and
@@ -184,7 +184,7 @@ export default function RestApiDesignConciseArticle() {
             request context on every call. This pushes complexity to the client
             but unlocks server-side scalability and simplifies caching at every
             layer.
-          </li>
+          </HighlightBlock>
         </ul>
       </section>
 
@@ -226,7 +226,7 @@ export default function RestApiDesignConciseArticle() {
           captionTier="crucial"
         />
 
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           <strong>Pagination</strong> is one of the most consequential API
           design decisions for frontend performance. Three dominant patterns
           exist. <strong>Offset-based pagination</strong> (page=2&amp;limit=20)
@@ -247,15 +247,16 @@ export default function RestApiDesignConciseArticle() {
           generally the best default: it handles real-time data gracefully,
           prevents duplicate items in infinite scroll, and the opaque cursor
           hides implementation details from the client.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/frontend/networking-api-communication/rest-pagination-patterns.svg"
           alt="Comparison of REST Pagination Strategies"
           caption="Three pagination strategies compared: offset-based, cursor-based, and keyset pagination with their respective trade-offs"
+          captionTier="important"
         />
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>API versioning</strong> determines how breaking changes are
           introduced. URL path versioning (/v1/users, /v2/users) is the most
           common and most visible approach; it is simple to implement, easy to
@@ -268,7 +269,7 @@ export default function RestApiDesignConciseArticle() {
           arguably the most client-friendly approach because it decouples
           deployment cadence from breaking changes, but it requires
           sophisticated server-side version management.
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
@@ -282,7 +283,7 @@ export default function RestApiDesignConciseArticle() {
             </tr>
           </thead>
           <tbody className="divide-y divide-theme">
-            <tr>
+            <HighlightBlock as="tr" tier="important">
               <td className="p-3">
                 <strong>Simplicity</strong>
               </td>
@@ -298,8 +299,8 @@ export default function RestApiDesignConciseArticle() {
                 • Inconsistencies across different teams and APIs
                 <br />• Requires organizational API governance
               </td>
-            </tr>
-            <tr>
+            </HighlightBlock>
+            <HighlightBlock as="tr" tier="crucial">
               <td className="p-3">
                 <strong>Caching</strong>
               </td>
@@ -315,8 +316,8 @@ export default function RestApiDesignConciseArticle() {
                 • Cache invalidation for related resources is complex
                 <br />• Over-caching stale data if headers misconfigured
               </td>
-            </tr>
-            <tr>
+            </HighlightBlock>
+            <HighlightBlock as="tr" tier="crucial">
               <td className="p-3">
                 <strong>Over/Under-fetching</strong>
               </td>
@@ -332,7 +333,7 @@ export default function RestApiDesignConciseArticle() {
                 • Multiple endpoints needed for different views
                 <br />• Under-fetching requires N+1 requests for related data
               </td>
-            </tr>
+            </HighlightBlock>
             <tr>
               <td className="p-3">
                 <strong>Real-time</strong>
@@ -374,17 +375,18 @@ export default function RestApiDesignConciseArticle() {
           src="/diagrams/system-design-concepts/frontend/networking-api-communication/rest-vs-graphql.svg"
           alt="REST vs GraphQL Architecture Comparison"
           caption="REST uses multiple endpoints with fixed responses while GraphQL uses a single endpoint with flexible client-specified queries"
+          captionTier="important"
         />
       </section>
 
       <section>
         <h2>Best Practices</h2>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Eight practices that distinguish senior frontend engineers in REST API
           consumption and design advocacy:
-        </p>
+        </HighlightBlock>
         <ol className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Use Proper HTTP Methods:</strong> Map CRUD operations to
             GET, POST, PUT/PATCH, DELETE consistently. Never use POST for
             idempotent operations. Leverage HEAD for existence checks and
@@ -392,8 +394,8 @@ export default function RestApiDesignConciseArticle() {
             communicates intent to every layer in the stack: CDNs cache GET
             responses, proxies log mutation methods differently, and browsers
             handle preflight only for non-simple methods.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="crucial">
             <strong>
               Implement Cursor-Based Pagination for Large Datasets:
             </strong>{" "}
@@ -403,7 +405,7 @@ export default function RestApiDesignConciseArticle() {
             return pagination metadata (hasNextPage, cursor, total count if
             affordable to compute) in a consistent envelope so the frontend can
             render pagination UI and prefetch next pages.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Version APIs in URL Path for Simplicity:</strong> While
             header-based versioning is technically purer, URL path versioning
@@ -412,14 +414,14 @@ export default function RestApiDesignConciseArticle() {
             date-based versioning for platform APIs where backward compatibility
             windows are measured in years (Stripe model).
           </li>
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Use ETags for Conditional Requests:</strong> Implement
             If-None-Match headers to avoid re-downloading unchanged data. This
             reduces bandwidth, speeds up repeat fetches (304 responses carry no
             body), and is especially impactful for list endpoints fetched on
             polling intervals. On the frontend, store ETags alongside cached
             responses and attach them automatically via request interceptors.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Normalize API Responses on the Client:</strong> Flatten
             nested API responses into a normalized shape keyed by entity ID.
@@ -428,7 +430,7 @@ export default function RestApiDesignConciseArticle() {
             lookups. Libraries like normalizr or manual normalization functions
             integrated into the API client layer make this systematic.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Implement Request/Response Interceptors:</strong> Use
             interceptors (Axios interceptors, fetch wrappers) for cross-cutting
             concerns: attaching auth tokens, refreshing expired tokens with a
@@ -436,8 +438,8 @@ export default function RestApiDesignConciseArticle() {
             normalizing error shapes, and injecting correlation IDs. This keeps
             individual API calls clean and ensures consistent behavior across
             the application.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Use OpenAPI/Swagger for Contract-First Design:</strong>{" "}
             Define the API contract in OpenAPI spec before implementation
             begins. Generate TypeScript types from the spec to ensure frontend
@@ -445,8 +447,8 @@ export default function RestApiDesignConciseArticle() {
             orval to auto-generate typed API clients. This eliminates an entire
             class of runtime type errors and makes API changes visible in code
             review diffs.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Handle Partial Failures in Batch Endpoints:</strong> When
             consuming batch or bulk endpoints, design for partial success. The
             server may return 207 Multi-Status or a success response with
@@ -454,25 +456,25 @@ export default function RestApiDesignConciseArticle() {
             individually, showing success for items that succeeded and retry
             options for items that failed. Never treat batch operations as
             all-or-nothing unless the API guarantees transactional semantics.
-          </li>
+          </HighlightBlock>
         </ol>
       </section>
 
       <section>
         <h2>Common Pitfalls</h2>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Mistakes that reveal inexperience with REST API consumption at scale:
-        </p>
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Using POST for Everything:</strong> Treating REST as RPC by
             using POST /api/getUsers instead of GET /api/users. This breaks HTTP
             caching (CDNs and browsers do not cache POST), prevents meaningful
             status code usage, and makes the API opaque to intermediaries. It is
             a sign of Level 0 on the Richardson Maturity Model and should be
             challenged in design reviews.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Ignoring Idempotency:</strong> Retrying failed POST requests
             without idempotency keys causes duplicate resource creation: double
             charges, duplicate orders, repeated emails. The frontend must
@@ -480,16 +482,16 @@ export default function RestApiDesignConciseArticle() {
             it in a header (Idempotency-Key) so the server can deduplicate. This
             is a payment-critical concern that is frequently overlooked until it
             causes real financial damage.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Not Handling 429 (Rate Limit):</strong> Ignoring rate limit
             responses leads to cascading failures. The frontend must respect the
             Retry-After header, implement exponential backoff with jitter, and
             proactively track X-RateLimit-Remaining headers to throttle requests
             before hitting the limit. User-facing applications should queue and
             batch requests when approaching rate limits rather than failing.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Over-fetching and the N+1 Problem:</strong> Fetching a list
             of resources and then making individual requests for each item to
             get related data (fetching 50 users, then 50 requests for their
@@ -497,8 +499,8 @@ export default function RestApiDesignConciseArticle() {
             (?include=profile), using batch endpoints (/users?ids=1,2,3), or
             switching to GraphQL for screens that aggregate data from multiple
             resource types.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Inconsistent Error Response Formats:</strong> When different
             API endpoints return errors in different shapes (some with {"{"}
             &quot;error&quot;: &quot;message&quot;{"}"}, others with {"{"}
@@ -508,8 +510,8 @@ export default function RestApiDesignConciseArticle() {
             (RFC 7807 Problem Details is a good starting point) across all
             endpoints and normalize errors in the API client interceptor layer
             if the backend is inconsistent.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Not Using Conditional Requests:</strong> Re-fetching
             unchanged data on every poll or navigation wastes bandwidth and
             server resources. ETags and Last-Modified headers enable 304 Not
@@ -517,31 +519,33 @@ export default function RestApiDesignConciseArticle() {
             applications, this saves significant data and latency. Implement
             conditional request logic in the API client layer so all GET
             requests benefit automatically.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Tight Coupling to API Structure:</strong> Spreading API URL
             patterns, response parsing, and error handling across components
             creates fragile code. A change to the API response shape requires
             changes across dozens of files. Instead, centralize API calls in a
             service layer that maps API responses to client-side domain models.
             Components should never directly manipulate API response objects.
-          </li>
+          </HighlightBlock>
         </ul>
       </section>
 
       <section>
         <h2>Real-World Use Cases</h2>
-        <p>Exemplary REST APIs and the design lessons they teach:</p>
+        <HighlightBlock as="p" tier="important">
+          Exemplary REST APIs and the design lessons they teach:
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>GitHub API:</strong> One of the most well-designed public
             REST APIs. It uses Level 2+ REST with consistent resource naming,
             proper status codes, link headers for pagination (partial HATEOAS),
             conditional requests with ETags, and extensive rate limiting with
             clear headers. The GitHub API demonstrates how pagination links in
             response headers decouple the client from URL structure changes.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Stripe API:</strong> The gold standard for API versioning.
             Stripe uses date-based versioning (Stripe-Version: 2024-06-20) where
             each API key is pinned to a default version, and clients can
@@ -549,8 +553,8 @@ export default function RestApiDesignConciseArticle() {
             versions, allowing years of backward compatibility. Stripe also
             demonstrates excellent error response design with structured error
             objects containing type, code, message, and param fields.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Twitter API v2:</strong> Demonstrates field-level control
             with ?fields=id,text,created_at and
             ?expansions=author_id,referenced_tweets.id to combat over-fetching.
@@ -558,7 +562,7 @@ export default function RestApiDesignConciseArticle() {
             scale of social feeds. The migration from v1.1 to v2 also
             illustrates the challenges of evolving a REST API used by millions
             of developers.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Shopify API:</strong> Uniquely offers both REST and GraphQL
             for the same data, allowing developers to choose the right tool per
@@ -571,19 +575,21 @@ export default function RestApiDesignConciseArticle() {
 
         <div className="mt-6 rounded-lg border border-theme bg-panel-soft p-6">
           <h3 className="mb-3 font-semibold">When NOT to Use REST</h3>
-          <p>REST is a poor fit for:</p>
+          <HighlightBlock as="p" tier="important">
+            REST is a poor fit for:
+          </HighlightBlock>
           <ul className="mt-2 space-y-2">
-            <li>
+            <HighlightBlock as="li" tier="crucial">
               • <strong>Real-time bidirectional communication:</strong> Chat,
               collaborative editing, and live gaming require WebSockets or
               WebTransport, not request-response.
-            </li>
-            <li>
+            </HighlightBlock>
+            <HighlightBlock as="li" tier="important">
               • <strong>Highly relational data graphs:</strong> When a single
               screen needs data from 5+ related resources with varying field
               requirements, GraphQL eliminates the N+1 problem that REST
               creates.
-            </li>
+            </HighlightBlock>
             <li>
               • <strong>Mobile apps with bandwidth constraints:</strong> Fixed
               REST response shapes waste bytes on fields the mobile client does
@@ -602,28 +608,28 @@ export default function RestApiDesignConciseArticle() {
 
       <section>
         <h2>Security Considerations</h2>
-        <p>
+        <HighlightBlock as="p" tier="important">
           REST APIs have well-established security patterns.
-        </p>
+        </HighlightBlock>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-4 text-lg font-semibold">Authentication</h3>
           <ul className="space-y-2">
-            <li>
+            <HighlightBlock as="li" tier="crucial">
               <strong>Token-Based Auth:</strong> Use JWT or opaque tokens in Authorization header.
-            </li>
-            <li>
+            </HighlightBlock>
+            <HighlightBlock as="li" tier="important">
               <strong>Token Storage:</strong> Store tokens in HttpOnly cookies or in-memory.
-            </li>
+            </HighlightBlock>
           </ul>
         </div>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-4 text-lg font-semibold">Rate Limiting</h3>
           <ul className="space-y-2">
-            <li>
+            <HighlightBlock as="li" tier="important">
               <strong>Per-User Rate Limits:</strong> Implement rate limiting based on user ID or API key.
-            </li>
+            </HighlightBlock>
             <li>
               <strong>Response Headers:</strong> Return X-RateLimit headers for client self-regulation.
             </li>
@@ -633,9 +639,9 @@ export default function RestApiDesignConciseArticle() {
 
       <section>
         <h2>Performance Benchmarks</h2>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Understanding REST API performance characteristics.
-        </p>
+        </HighlightBlock>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-4 text-lg font-semibold">Industry Performance Data</h3>
@@ -648,21 +654,21 @@ export default function RestApiDesignConciseArticle() {
               </tr>
             </thead>
             <tbody className="divide-y divide-theme">
-              <tr>
+              <HighlightBlock as="tr" tier="crucial">
                 <td className="p-2">API Latency (p95)</td>
                 <td className="p-2">&lt;200ms</td>
                 <td className="p-2">100-300ms</td>
-              </tr>
+              </HighlightBlock>
               <tr>
                 <td className="p-2">Throughput</td>
                 <td className="p-2">1,000+ req/sec</td>
                 <td className="p-2">500-5,000 req/sec</td>
               </tr>
-              <tr>
+              <HighlightBlock as="tr" tier="important">
                 <td className="p-2">Cache Hit Rate</td>
                 <td className="p-2">&gt;80%</td>
                 <td className="p-2">60-90%</td>
-              </tr>
+              </HighlightBlock>
             </tbody>
           </table>
         </div>
@@ -682,16 +688,16 @@ export default function RestApiDesignConciseArticle() {
 
       <section>
         <h2>Cost Analysis</h2>
-        <p>
+        <HighlightBlock as="p" tier="important">
           REST APIs have predictable cost characteristics.
-        </p>
+        </HighlightBlock>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-4 text-lg font-semibold">Infrastructure Costs</h3>
           <ul className="space-y-2">
-            <li>
+            <HighlightBlock as="li" tier="important">
               <strong>API Gateway:</strong> AWS API Gateway: $3.50/million requests.
-            </li>
+            </HighlightBlock>
             <li>
               <strong>Caching Layer:</strong> Redis: $200-1,000/month.
             </li>
@@ -712,29 +718,29 @@ export default function RestApiDesignConciseArticle() {
 
         <div className="my-6 rounded-lg border border-accent/30 bg-accent/10 p-6">
           <h3 className="mb-3 font-semibold">ROI Decision Framework</h3>
-          <p>
+          <HighlightBlock as="p" tier="crucial">
             Use REST when: resources have stable shapes, HTTP caching is critical, simplicity matters.
             Use GraphQL when: multiple clients need different data views, reducing round trips is critical.
-          </p>
+          </HighlightBlock>
         </div>
       </section>
 
       <section>
         <h2>Decision Framework: When to Use REST</h2>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Use this decision framework to evaluate whether REST is appropriate.
-        </p>
+        </HighlightBlock>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-4 text-lg font-semibold">Decision Tree</h3>
           <ul className="space-y-2">
-            <li>
+            <HighlightBlock as="li" tier="crucial">
               <strong>Do you need HTTP-level caching (CDN, browser)?</strong>
               <ul>
                 <li>Yes → REST is the best choice</li>
                 <li>No → GraphQL or gRPC may be better</li>
               </ul>
-            </li>
+            </HighlightBlock>
             <li>
               <strong>Are your resources well-defined and stable?</strong>
               <ul>
@@ -764,12 +770,12 @@ export default function RestApiDesignConciseArticle() {
               </tr>
             </thead>
             <tbody className="divide-y divide-theme">
-              <tr>
+              <HighlightBlock as="tr" tier="crucial">
                 <td className="p-2">REST</td>
                 <td className="p-2">HTTP-native</td>
                 <td className="p-2">Fixed endpoints</td>
                 <td className="p-2">Low-Medium</td>
-              </tr>
+              </HighlightBlock>
               <tr>
                 <td className="p-2">GraphQL</td>
                 <td className="p-2">Application-level</td>
@@ -800,7 +806,7 @@ export default function RestApiDesignConciseArticle() {
             <p className="font-semibold">
               Q: What makes an API truly RESTful vs REST-like?
             </p>
-            <p className="mt-2 text-sm">
+            <HighlightBlock as="p" tier="crucial" className="mt-2 text-sm">
               A: A truly RESTful API satisfies all six of Fielding&apos;s
               constraints, critically including HATEOAS (Level 3 on the
               Richardson Maturity Model). The API responses must contain
@@ -817,7 +823,7 @@ export default function RestApiDesignConciseArticle() {
               pragmatically accepted Level 2 as &quot;REST&quot; because the
               cost of implementing and consuming full HATEOAS rarely justifies
               the benefits for most applications.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">

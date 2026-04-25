@@ -1,0 +1,52 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="system-ui, sans-serif">
+  <rect width="900" height="500" fill="#f3f1f8"/>
+  <text x="450" y="32" text-anchor="middle" font-size="19" font-weight="700" fill="#1a1822">Greedy Algorithm — Two Pillars of Correctness</text>
+
+  <rect x="40" y="70" width="400" height="200" fill="#fff" stroke="#6d5bd0" stroke-width="2" rx="6"/>
+  <text x="60" y="95" font-size="14" font-weight="700" fill="#6d5bd0">1. Greedy-Choice Property</text>
+  <text x="60" y="120" font-size="11" fill="#1a1822">A globally optimal solution can be</text>
+  <text x="60" y="138" font-size="11" fill="#1a1822">built by repeatedly making the locally</text>
+  <text x="60" y="156" font-size="11" fill="#1a1822">optimal choice — no backtracking.</text>
+  <text x="60" y="185" font-size="11" fill="#1a1822" font-weight="700">Exchange argument:</text>
+  <text x="60" y="203" font-size="11" fill="#1a1822">Assume optimal O differs from greedy G.</text>
+  <text x="60" y="221" font-size="11" fill="#1a1822">Show you can swap a G-choice into O</text>
+  <text x="60" y="239" font-size="11" fill="#1a1822">without worsening. Induct.</text>
+
+  <rect x="460" y="70" width="400" height="200" fill="#fff" stroke="#6d5bd0" stroke-width="2" rx="6"/>
+  <text x="480" y="95" font-size="14" font-weight="700" fill="#6d5bd0">2. Optimal Substructure</text>
+  <text x="480" y="120" font-size="11" fill="#1a1822">After making the greedy choice, the</text>
+  <text x="480" y="138" font-size="11" fill="#1a1822">remaining subproblem is of the same</text>
+  <text x="480" y="156" font-size="11" fill="#1a1822">form and its optimum extends G.</text>
+  <text x="480" y="185" font-size="11" fill="#1a1822" font-weight="700">If both hold → greedy is correct.</text>
+  <text x="480" y="210" font-size="11" fill="#1a1822">If only optimal substructure holds →</text>
+  <text x="480" y="228" font-size="11" fill="#1a1822">DP is the right hammer, not greedy.</text>
+
+  <!-- Greedy when? -->
+  <rect x="40" y="290" width="820" height="185" fill="#fff" stroke="#4caf50" stroke-width="2" rx="6"/>
+  <text x="60" y="315" font-size="14" font-weight="700" fill="#4caf50">Classic greedy successes (and why)</text>
+  <g font-size="11">
+    <text x="60" y="345" font-weight="700">Problem</text>
+    <text x="300" y="345" font-weight="700">Greedy rule</text>
+    <text x="620" y="345" font-weight="700">Proof technique</text>
+
+    <text x="60" y="368">Activity selection</text>
+    <text x="300" y="368">earliest finishing time</text>
+    <text x="620" y="368">exchange argument</text>
+
+    <text x="60" y="388">Huffman coding</text>
+    <text x="300" y="388">merge two lowest freqs</text>
+    <text x="620" y="388">optimal-prefix tree property</text>
+
+    <text x="60" y="408">Kruskal / Prim MST</text>
+    <text x="300" y="408">cheapest safe edge</text>
+    <text x="620" y="408">cut property + matroid</text>
+
+    <text x="60" y="428">Dijkstra</text>
+    <text x="300" y="428">closest unsettled vertex</text>
+    <text x="620" y="428">non-negative weights invariant</text>
+
+    <text x="60" y="448">Fractional knapsack</text>
+    <text x="300" y="448">highest value-per-unit-weight</text>
+    <text x="620" y="448">exchange argument</text>
+  </g>
+</svg>

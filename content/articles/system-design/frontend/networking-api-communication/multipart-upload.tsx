@@ -172,14 +172,14 @@ export default function MultipartUploadArticle() {
 
       <section>
         <h2>Architecture & Flow</h2>
-      <p>
+        <HighlightBlock as="p" tier="important">
           The multipart upload architecture consists of several layers working
           together: a chunker that splits files into parts, a session manager
           that handles upload initiation and completion, a chunk uploader that
           transfers individual parts with retry logic, a progress tracker that
           calculates and reports upload progress, and a resumability layer that
           persists state for recovery.
-        </p>
+        </HighlightBlock>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-4 text-lg font-semibold">
@@ -230,7 +230,7 @@ export default function MultipartUploadArticle() {
           caption="Multipart Upload Flow: File is chunked, upload session initiated, chunks uploaded in parallel, progress tracked, and final assembly triggered"
         />
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           The chunking process uses the File API's slice() method, which creates
           a Blob representing a byte range of the file. For a 100MB file with
           10MB chunks, the client creates 10 slices: file.slice(0, 10MB),
@@ -238,9 +238,9 @@ export default function MultipartUploadArticle() {
           Critically, slice() does not copy the underlying data -- it creates a
           view into the file, making chunking memory-efficient even for
           multi-gigabyte files.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           Parallel chunk upload requires concurrency control to avoid
           overwhelming the network or server. A typical configuration is 3-5
           concurrent uploads. The chunk uploader maintains a queue of pending
@@ -249,7 +249,7 @@ export default function MultipartUploadArticle() {
           request queue with a concurrency limit (see the Request Queuing
           article for detailed patterns). Failed chunks are re-queued for retry
           with exponential backoff.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/frontend/networking-api-communication/multipart-parallel-upload.svg"
@@ -257,7 +257,7 @@ export default function MultipartUploadArticle() {
           caption="Parallel Chunk Upload: Multiple chunks upload concurrently with configurable concurrency, progress aggregated across all chunks"
         />
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           For resumability, the client persists upload state to localStorage or
           IndexedDB after session initiation and after each chunk completion.
           The state includes: uploadId, file metadata (name, size, type), chunk
@@ -267,7 +267,7 @@ export default function MultipartUploadArticle() {
           (in case server state differs), and resume uploading missing chunks.
           This pattern is essential for large files where upload may span hours
           or days.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/frontend/networking-api-communication/multipart-resume-flow.svg"
@@ -275,7 +275,7 @@ export default function MultipartUploadArticle() {
           caption="Resume Flow: On recovery, client reads persisted state, queries server for uploaded chunks, and resumes uploading only missing chunks"
         />
 
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           Server-side assembly is the final step. The server receives the
           completion request with a manifest listing all chunk IDs in order. It
           validates: all chunks are present (no gaps), chunk hashes match (data
@@ -288,7 +288,7 @@ export default function MultipartUploadArticle() {
           performs post-processing: virus scanning, image/video transcoding,
           thumbnail generation, and indexing. Only after post-processing
           completes is the file made available to other users.
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
@@ -302,7 +302,7 @@ export default function MultipartUploadArticle() {
             </tr>
           </thead>
           <tbody className="divide-y divide-theme">
-            <tr>
+            <HighlightBlock as="tr" tier="crucial">
               <td className="p-3">
                 <strong>Reliability</strong>
               </td>
@@ -318,8 +318,8 @@ export default function MultipartUploadArticle() {
                 • Abandoned uploads consume storage until cleanup
                 <br />• More complex error handling (partial failures)
               </td>
-            </tr>
-            <tr>
+            </HighlightBlock>
+            <HighlightBlock as="tr" tier="important">
               <td className="p-3">
                 <strong>Performance</strong>
               </td>
@@ -335,7 +335,7 @@ export default function MultipartUploadArticle() {
                 • Server assembly adds latency after final chunk
                 <br />• Parallel uploads may congest network
               </td>
-            </tr>
+            </HighlightBlock>
             <tr>
               <td className="p-3">
                 <strong>User Experience</strong>
@@ -377,7 +377,7 @@ export default function MultipartUploadArticle() {
           <h3 className="mb-3 font-semibold">
             Multipart Upload vs. Single-Request Upload
           </h3>
-          <p>
+          <HighlightBlock as="p" tier="important">
             For files under 10MB, single-request upload is simpler and
             sufficient: one HTTP POST with the file as the body, server saves
             the file, done. For files over 10MB, multipart upload becomes
@@ -391,26 +391,26 @@ export default function MultipartUploadArticle() {
             networks, single-request may work up to 50MB. For consumer
             applications with global users on varied networks, use multipart
             upload for anything over 5MB.
-          </p>
+          </HighlightBlock>
         </div>
       </section>
 
       <section>
         <h2>Best Practices</h2>
-        <p>
+        <HighlightBlock as="p" tier="important">
           These practices represent hard-won lessons from operating multipart
           upload systems at scale:
-        </p>
+        </HighlightBlock>
         <ol className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Choose Chunk Size Based on File Size:</strong> Use adaptive
             chunk sizing: for files under 100MB, use 5MB chunks; for 100MB-1GB,
             use 10MB chunks; for 1GB+, use 25-50MB chunks. This balances
             overhead (fewer requests for large files) with progress granularity
             (more frequent updates for small files). AWS S3 uses 5MB minimum,
             and their SDK automatically adjusts chunk size based on file size.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Limit Concurrent Uploads:</strong> Use 3-5 concurrent chunk
             uploads. More than 5 concurrent uploads provides diminishing returns
             (TCP congestion control limits total throughput) and may overwhelm
@@ -418,15 +418,15 @@ export default function MultipartUploadArticle() {
             Implement a chunk queue with a concurrency limit, and adjust based
             on observed throughput (increase concurrency if network is
             underutilized).
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Implement Chunk-Level Retry:</strong> Retry failed chunks
             with exponential backoff (1s, 2s, 4s, 8s) up to 3-5 attempts. Do not
             fail the entire upload due to a single chunk failure -- retry the
             chunk independently. Track retry count per chunk, not per file. After
             max retries, pause the upload and prompt the user to retry or
             cancel.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Persist Upload State for Resumability:</strong> After
             session initiation and after each chunk completion, persist state to
@@ -452,7 +452,7 @@ export default function MultipartUploadArticle() {
             immediately rather than discovering issues at assembly time. Return
             chunk ETag or ID for later manifest.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Clean Up Abandoned Sessions:</strong> Implement server-side
             cleanup for abandoned upload sessions. Set a TTL (24 hours to 7
             days) on sessions. Run a background job that deletes sessions older
@@ -460,7 +460,7 @@ export default function MultipartUploadArticle() {
             abandoned uploads consume storage indefinitely. For cloud storage
             like S3, use lifecycle policies to delete incomplete multipart
             uploads after N days.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Handle Large File Edge Cases:</strong> For files over 5GB,
             be aware of browser limitations: Chrome and Firefox handle
@@ -475,24 +475,24 @@ export default function MultipartUploadArticle() {
 
       <section>
         <h2>Common Pitfalls</h2>
-        <p>
+        <HighlightBlock as="p" tier="important">
           These mistakes appear frequently even in production applications at
           well-funded companies:
-        </p>
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Not Handling Chunk Upload Failures:</strong> Assuming all
             chunks will succeed and not implementing retry logic. Network
             failures, server errors, and timeouts are common for large uploads.
             Without retry, a single failed chunk fails the entire upload.
             Implement per-chunk retry with exponential backoff.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Not Persisting Upload State:</strong> Only keeping upload
             state in memory. If the browser crashes or the user closes the tab,
             the upload is lost and must restart from zero. Persist state to
             IndexedDB after each chunk completion to enable resumability.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Inaccurate Progress Calculation:</strong> Only counting
             completed chunks, ignoring in-flight chunks. This causes the
@@ -500,13 +500,13 @@ export default function MultipartUploadArticle() {
             chunks 6-10 are uploading). Include in-flight bytes in progress
             calculation based on observed throughput.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Too Many Concurrent Uploads:</strong> Setting concurrency to
             10-20 concurrent chunk uploads, which overwhelms the network and
             causes TCP congestion. This actually reduces throughput due to
             packet loss and retransmission. Use 3-5 concurrent uploads and
             adjust based on observed performance.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Not Cleaning Up Abandoned Uploads:</strong> Server does not
             implement TTL-based cleanup for incomplete upload sessions. Over
@@ -541,11 +541,11 @@ export default function MultipartUploadArticle() {
 
       <section>
         <h2>Real-World Use Cases</h2>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Multipart upload is essential in these production scenarios:
-        </p>
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Video Sharing Platforms (YouTube, Vimeo):</strong> Users
             upload video files ranging from 100MB to 100GB+. Implementation:
             chunk size 10MB for files under 1GB, 50MB for larger files, parallel
@@ -554,8 +554,8 @@ export default function MultipartUploadArticle() {
             storage, assembly triggers video transcoding pipeline, and video is
             processed asynchronously. Users can close the browser and return
             later to check upload status.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Cloud Backup Services (Backblaze, Dropbox):</strong>
             Backup clients upload large files (disk images, database dumps)
             ranging from 1GB to TB scale. Implementation: adaptive chunk sizing
@@ -565,7 +565,7 @@ export default function MultipartUploadArticle() {
             long-term resumability (uploads can resume days later). Server-side:
             chunks are deduplicated across users, assembled into encrypted
             blobs, and stored in geographically distributed storage.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Scientific Data Portals:</strong> Researchers upload
             datasets (genomic sequences, telescope imagery, climate models)
@@ -577,7 +577,7 @@ export default function MultipartUploadArticle() {
             Uploads may take days or weeks, so resumability and progress
             tracking are critical.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Enterprise Document Management:</strong> Legal and
             healthcare organizations upload large documents (discovery files,
             medical imaging) ranging from 100MB to 10GB. Implementation:
@@ -586,7 +586,7 @@ export default function MultipartUploadArticle() {
             network interruptions. Server-side: chunks are scanned for malware,
             assembled, indexed for e-discovery, and stored with retention
             policies.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Game Distribution Platforms (Steam, Epic):</strong> Game
             developers upload builds ranging from 1GB to 100GB+. Implementation:
@@ -615,7 +615,7 @@ export default function MultipartUploadArticle() {
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
             <p className="font-semibold">Q1: How do you decide on chunk size for multipart upload?</p>
-            <p className="mt-2 text-sm">
+            <HighlightBlock as="p" tier="crucial" className="mt-2 text-sm">
               <strong>Answer:</strong> I use adaptive chunk sizing based on file
               size. For files under 100MB, I use 5MB chunks (fine-grained
               progress, low overhead). For 100MB-1GB, I use 10MB chunks. For 1GB+,
@@ -625,12 +625,12 @@ export default function MultipartUploadArticle() {
               mean fewer requests but coarser progress and more data to
               re-upload on failure. AWS S3 uses 5MB minimum, and their SDK
               automatically adjusts based on file size.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
             <p className="font-semibold">Q2: How do you handle failed chunk uploads?</p>
-            <p className="mt-2 text-sm">
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               <strong>Answer:</strong> I implement per-chunk retry with
               exponential backoff. Each chunk upload is wrapped in a retry loop:
               on failure, wait 1 second and retry, then 2 seconds, then 4
@@ -639,12 +639,12 @@ export default function MultipartUploadArticle() {
               and prompt the user to retry or cancel. I do not fail the entire
               upload due to a single chunk failure -- only the affected chunk is
               retried.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
             <p className="font-semibold">Q3: How do you calculate accurate upload progress?</p>
-            <p className="mt-2 text-sm">
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               <strong>Answer:</strong> I track both completed chunks and
               in-flight chunks. For completed chunks, I sum their sizes. For
               in-flight chunks, I estimate bytes sent based on elapsed time and
@@ -652,12 +652,12 @@ export default function MultipartUploadArticle() {
               is (completed bytes + in-flight bytes) / total file size. I update
               the progress UI at most 10 times per second to avoid thrashing. I
               also display ETA based on remaining bytes and current throughput.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
             <p className="font-semibold">Q4: How do you enable resumable uploads after browser crash?</p>
-            <p className="mt-2 text-sm">
+            <HighlightBlock as="p" tier="crucial" className="mt-2 text-sm">
               <strong>Answer:</strong> I persist upload state to IndexedDB after
               session initiation and after each chunk completion. The state
               includes: uploadId, file metadata (name, size, type), chunk size,
@@ -666,13 +666,13 @@ export default function MultipartUploadArticle() {
               uploaded chunks (to reconcile any differences), then resume
               uploading missing chunks. I clear persisted state only after
               successful completion.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
             <p className="font-semibold">Q5: How do you handle parallel chunk uploads without overwhelming
               the network?</p>
-            <p className="mt-2 text-sm">
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               <strong>Answer:</strong> I use a chunk queue with a concurrency
               limit of 3-5 concurrent uploads. The queue maintains pending
               chunks, dispatches up to N chunks simultaneously, and as each
@@ -681,12 +681,12 @@ export default function MultipartUploadArticle() {
               adjust concurrency: if throughput is low and network is
               underutilized, I may increase concurrency; if packet loss is high,
               I decrease concurrency.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
             <p className="font-semibold">Q6: What server-side cleanup is required for multipart upload?</p>
-            <p className="mt-2 text-sm">
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               <strong>Answer:</strong> The server must implement TTL-based
               cleanup for abandoned upload sessions. Each session has a
               timestamp, and a background job runs periodically (e.g., daily) to
@@ -695,7 +695,7 @@ export default function MultipartUploadArticle() {
               storage indefinitely. For cloud storage like S3, I use lifecycle
               policies to automatically delete incomplete multipart uploads
               after N days.
-            </p>
+            </HighlightBlock>
           </div>
         </div>
       </section>

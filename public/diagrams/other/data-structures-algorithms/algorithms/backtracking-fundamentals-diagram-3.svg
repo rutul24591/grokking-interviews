@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="system-ui, sans-serif">
+  <rect width="900" height="500" fill="#f3f1f8"/>
+  <text x="450" y="32" text-anchor="middle" font-size="19" font-weight="700" fill="#1a1822">Backtracking in Production</text>
+
+  <rect x="40" y="60" width="820" height="200" fill="#fff" stroke="#6d5bd0" stroke-width="2" rx="6"/>
+  <text x="60" y="85" font-size="13" font-weight="700" fill="#6d5bd0">Where backtracking shows up</text>
+  <text x="60" y="112" font-size="11">• Constraint solvers (Z3, MiniSAT, OR-Tools): DPLL is backtracking + unit propagation.</text>
+  <text x="60" y="132" font-size="11">• Compiler register allocation: graph coloring via backtracking.</text>
+  <text x="60" y="152" font-size="11">• Crossword / puzzle generation: assign words under length + cross constraints.</text>
+  <text x="60" y="172" font-size="11">• ML hyperparameter search (legacy): grid + prune dominated configs.</text>
+  <text x="60" y="192" font-size="11">• Layout engines: tableau / floorplan packers backtrack on infeasible placements.</text>
+  <text x="60" y="212" font-size="11">• Type inference: Hindley–Milner unification rolls back on conflict.</text>
+  <text x="60" y="232" font-size="11">• Theorem provers (Coq, Lean): tactic search backtracks on unprovable subgoals.</text>
+
+  <rect x="40" y="280" width="820" height="195" fill="#fff" stroke="#4caf50" stroke-width="2" rx="6"/>
+  <text x="60" y="305" font-size="13" font-weight="700" fill="#4caf50">When to reach for backtracking</text>
+  <text x="60" y="330" font-size="11">✓ Search space is combinatorial (subsets, permutations, assignments).</text>
+  <text x="60" y="350" font-size="11">✓ Constraints reject many partial states early — pruning is effective.</text>
+  <text x="60" y="370" font-size="11">✓ Need ALL solutions, or to enumerate, or proof of no solution.</text>
+  <text x="60" y="395" font-size="11" fill="#cc4444">✗ Polynomial DP exists — use that instead (knapsack with small values).</text>
+  <text x="60" y="415" font-size="11" fill="#cc4444">✗ Greedy is provably optimal — skip the search.</text>
+  <text x="60" y="435" font-size="11" fill="#cc4444">✗ Need approximate answer fast — use local search (simulated annealing, beam).</text>
+  <text x="60" y="460" font-size="11" font-weight="700" fill="#4caf50">Rule: backtracking is a structured way to enumerate; pruning is what makes it fast.</text>
+</svg>

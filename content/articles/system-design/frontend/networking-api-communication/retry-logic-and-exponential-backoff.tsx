@@ -129,7 +129,7 @@ export default function RetryLogicAndExponentialBackoffConciseArticle() {
             shared across all request types, with tokens replenishing at a fixed
             rate.
           </HighlightBlock>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Idempotency Keys:</strong> Retries are only safe when the
             operation can be executed multiple times without different outcomes.
             GET requests are naturally idempotent, but POST, PUT, and DELETE
@@ -140,8 +140,8 @@ export default function RetryLogicAndExponentialBackoffConciseArticle() {
             each request attempt) and include it in headers (typically
             Idempotency-Key). Stripe popularized this pattern, requiring
             idempotency keys for all mutating API calls.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Retryable vs. Non-Retryable Errors:</strong> Not all errors
             warrant retries. The distinction is critical:{" "}
             <strong>Retryable</strong> errors include 5xx server errors (502,
@@ -154,7 +154,7 @@ export default function RetryLogicAndExponentialBackoffConciseArticle() {
             retrying 401 errors -- the correct response is to refresh the auth
             token and then retry with the new token, which is a different
             pattern (token refresh middleware) rather than blind retry.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Max Retries and Circuit Breaking Integration:</strong> Every
             retry strategy must define a maximum attempt count (typically 3-5
@@ -252,7 +252,7 @@ export default function RetryLogicAndExponentialBackoffConciseArticle() {
                 Predictable wait times but slow to surface errors
               </td>
             </tr>
-            <tr>
+            <HighlightBlock as="tr" tier="important">
               <td className="p-3">
                 <strong>Linear Backoff</strong>
               </td>
@@ -267,8 +267,8 @@ export default function RetryLogicAndExponentialBackoffConciseArticle() {
               <td className="p-3">
                 Reasonable growth in wait times (1s, 2s, 3s, 4s)
               </td>
-            </tr>
-            <tr>
+            </HighlightBlock>
+            <HighlightBlock as="tr" tier="important">
               <td className="p-3">
                 <strong>Exponential Backoff</strong>
               </td>
@@ -282,8 +282,8 @@ export default function RetryLogicAndExponentialBackoffConciseArticle() {
               <td className="p-3">
                 Fast initial retry, but later attempts can feel very slow
               </td>
-            </tr>
-            <tr>
+            </HighlightBlock>
+            <HighlightBlock as="tr" tier="crucial">
               <td className="p-3">
                 <strong>Exponential + Jitter</strong>
               </td>
@@ -298,7 +298,7 @@ export default function RetryLogicAndExponentialBackoffConciseArticle() {
               <td className="p-3">
                 Less predictable per-request, but best aggregate behavior
               </td>
-            </tr>
+            </HighlightBlock>
           </tbody>
         </table>
 
@@ -312,7 +312,7 @@ export default function RetryLogicAndExponentialBackoffConciseArticle() {
           <h3 className="mb-3 font-semibold">
             Key Trade-off: Resilience vs. Latency
           </h3>
-          <p>
+          <HighlightBlock as="p" tier="crucial">
             Every retry adds latency to the user experience. Three retries with
             exponential backoff (1s + 2s + 4s = 7 seconds minimum) means the
             user waits at least 7 seconds before seeing an error. For background
@@ -322,58 +322,58 @@ export default function RetryLogicAndExponentialBackoffConciseArticle() {
             error states. The optimal strategy depends on the specific use case:
             a payment submission should retry carefully with idempotency keys,
             while a dashboard data refresh can fail fast and show stale data.
-          </p>
+          </HighlightBlock>
         </div>
       </section>
 
       <section>
         <h2>Best Practices</h2>
-        <p>
+        <HighlightBlock as="p" tier="important">
           These practices represent hard-won lessons from operating retry logic
           at scale:
-        </p>
+        </HighlightBlock>
         <ol className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Always use jitter, preferably decorrelated:</strong>{" "}
             Exponential backoff without jitter is an incomplete solution. The
             AWS Architecture Blog benchmarks show decorrelated jitter completes
             all retries in roughly 40% less time than no-jitter backoff while
             generating significantly smoother server load.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Implement retry budgets globally:</strong> Per-request max
             retries are necessary but insufficient. A global retry budget (10%
             of total traffic) prevents amplification cascades during widespread
             failures. Track the ratio of retries to total requests and alert
             when it exceeds thresholds.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Classify errors precisely:</strong> Build a centralized
             error classifier that maps HTTP status codes, network errors, and
             timeout conditions to retryable/non-retryable categories. Never
             retry 4xx errors blindly. Handle 429 specially by reading the
             Retry-After header.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Generate idempotency keys at the action level:</strong>{" "}
             Create a UUID when the user clicks "Submit," not when the HTTP
             request fires. This ensures all retry attempts for the same user
             action share the same idempotency key, allowing the server to
             deduplicate safely.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Cap maximum delay:</strong> Set a ceiling (typically 30
             seconds) on backoff delays. Without a cap, the eighth retry attempt
             would wait 256 seconds (over 4 minutes), which is never appropriate
             in a frontend context.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Provide user feedback during retries:</strong> Show a subtle
             indicator ("Reconnecting...") rather than a spinner for background
             retries. For user-initiated requests, consider letting the user
             cancel and retry manually rather than waiting through multiple
             backoff cycles.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Instrument and monitor retry rates:</strong> Track retry
             counts, success-after-retry rates, and final failure rates per
@@ -391,12 +391,12 @@ export default function RetryLogicAndExponentialBackoffConciseArticle() {
 
       <section>
         <h2>Common Pitfalls</h2>
-        <p>
+        <HighlightBlock as="p" tier="important">
           These mistakes appear frequently even in production applications at
           well-funded companies:
-        </p>
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>
               Retrying non-idempotent operations without idempotency keys:
             </strong>{" "}
@@ -407,36 +407,36 @@ export default function RetryLogicAndExponentialBackoffConciseArticle() {
             keys for mutating operations, even if the backend does not yet
             support them -- push for backend changes rather than risk
             duplication.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Retrying 4xx errors:</strong> A 400 Bad Request or 422
             Unprocessable Entity will never succeed on retry because the request
             payload itself is invalid. Retrying wastes time and budget. The
             exception is 408 Request Timeout and 429 Too Many Requests, which
             are semantically retryable.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="crucial">
             <strong>No backoff or jitter:</strong> Immediate retries or
             fixed-delay retries create thundering herds. Even a small system
             with 1,000 concurrent users can generate 3,000 simultaneous retry
             requests if all fail at once with no backoff -- enough to overwhelm
             most API servers.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Unbounded retries:</strong> Retrying indefinitely (or with
             very high max attempts) for user-initiated requests creates terrible
             UX and wastes resources. Three to five retries is typically the
             right range. For critical background tasks (e.g., event tracking),
             consider persisting failed requests to IndexedDB and retrying later
             with a longer backoff.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Not respecting Retry-After headers:</strong> When a server
             sends 429 or 503 with a Retry-After header, it is explicitly telling
             you when to retry. Ignoring this and using your own backoff schedule
             means you retry too early (getting another 429) or too late
             (unnecessary delay). Always check for and honor Retry-After.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Retry storms during deployments:</strong> Rolling
             deployments cause brief 502/503 errors. If every client retries
@@ -456,27 +456,27 @@ export default function RetryLogicAndExponentialBackoffConciseArticle() {
 
       <section>
         <h2>Real-World Use Cases</h2>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Retry logic with exponential backoff is used extensively across
           frontend applications:
-        </p>
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Payment Processing (Stripe, PayPal):</strong> When a payment
             API returns 502 or times out, the frontend retries with an
             idempotency key to ensure exactly-once semantics. Stripe's client
             SDKs implement exponential backoff with 2 retries by default, using
             the idempotency key to guarantee the charge processes exactly once
             even if the response is lost.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Real-Time Collaboration (Google Docs, Figma):</strong>{" "}
             Operational Transform or CRDT sync requests retry with backoff when
             the collaboration server is temporarily unreachable. The client
             continues accepting local edits (optimistic updates) and replays
             them once connectivity is restored, using version vectors to resolve
             conflicts.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>CDN and Asset Loading:</strong> When a JavaScript chunk
             fails to load (common with code-split applications), frameworks like
@@ -498,13 +498,13 @@ export default function RetryLogicAndExponentialBackoffConciseArticle() {
             user-facing, these retries can use longer backoff periods (minutes
             to hours) and larger retry counts without impacting UX.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>WebSocket Reconnection:</strong> When a WebSocket connection
             drops, the client reconnects using exponential backoff with jitter.
             Libraries like Socket.io implement this natively, starting with a
             1-second delay and backing off to 30 seconds, with full jitter to
             prevent all clients from reconnecting simultaneously.
-          </li>
+          </HighlightBlock>
         </ul>
 
         <div className="mt-6 rounded-lg border border-theme bg-panel-soft p-6">
@@ -536,40 +536,40 @@ export default function RetryLogicAndExponentialBackoffConciseArticle() {
 
       <section>
         <h2>Security Considerations</h2>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Retry logic introduces security considerations around abuse prevention.
-        </p>
+        </HighlightBlock>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-4 text-lg font-semibold">Retry Abuse Prevention</h3>
           <ul className="space-y-2">
-            <li>
+            <HighlightBlock as="li" tier="crucial">
               <strong>The Risk:</strong> Attackers can exploit retry logic to amplify attacks.
-            </li>
-            <li>
+            </HighlightBlock>
+            <HighlightBlock as="li" tier="important">
               <strong>Mitigation:</strong> Implement retry budgets at the client level.
-            </li>
+            </HighlightBlock>
           </ul>
         </div>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-4 text-lg font-semibold">Authentication</h3>
           <ul className="space-y-2">
-            <li>
+            <HighlightBlock as="li" tier="important">
               <strong>Token Expiration:</strong> Handle 401 by refreshing tokens, not retrying.
-            </li>
-            <li>
+            </HighlightBlock>
+            <HighlightBlock as="li" tier="important">
               <strong>Idempotency:</strong> Use idempotency keys for mutating operations.
-            </li>
+            </HighlightBlock>
           </ul>
         </div>
       </section>
 
       <section>
         <h2>Performance Benchmarks</h2>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Understanding retry performance characteristics.
-        </p>
+        </HighlightBlock>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-4 text-lg font-semibold">Industry Performance Data</h3>
@@ -582,21 +582,21 @@ export default function RetryLogicAndExponentialBackoffConciseArticle() {
               </tr>
             </thead>
             <tbody className="divide-y divide-theme">
-              <tr>
+              <HighlightBlock as="tr" tier="crucial">
                 <td className="p-2">Retry Success Rate</td>
                 <td className="p-2">&gt;80%</td>
                 <td className="p-2">70-90%</td>
-              </tr>
+              </HighlightBlock>
               <tr>
                 <td className="p-2">Average Retry Count</td>
                 <td className="p-2">&lt;2</td>
                 <td className="p-2">1-3 retries</td>
               </tr>
-              <tr>
+              <HighlightBlock as="tr" tier="important">
                 <td className="p-2">Retry Overhead</td>
                 <td className="p-2">&lt;10%</td>
                 <td className="p-2">5-15%</td>
-              </tr>
+              </HighlightBlock>
             </tbody>
           </table>
         </div>
@@ -604,31 +604,31 @@ export default function RetryLogicAndExponentialBackoffConciseArticle() {
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-4 text-lg font-semibold">Real-World Benchmarks</h3>
           <ul className="space-y-2">
-            <li>
+            <HighlightBlock as="li" tier="important">
               <strong>Stripe:</strong> Retry success rate ~85% for transient failures.
-            </li>
-            <li>
+            </HighlightBlock>
+            <HighlightBlock as="li" tier="important">
               <strong>AWS SDK:</strong> Default: 3 retries with exponential backoff.
-            </li>
+            </HighlightBlock>
           </ul>
         </div>
       </section>
 
       <section>
         <h2>Cost Analysis</h2>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Retry logic has infrastructure and development costs.
-        </p>
+        </HighlightBlock>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-4 text-lg font-semibold">Infrastructure Costs</h3>
           <ul className="space-y-2">
-            <li>
+            <HighlightBlock as="li" tier="important">
               <strong>Increased Request Volume:</strong> Retries add 5-15% to total volume.
-            </li>
-            <li>
+            </HighlightBlock>
+            <HighlightBlock as="li" tier="important">
               <strong>Server Load:</strong> Retries during issues amplify load.
-            </li>
+            </HighlightBlock>
           </ul>
         </div>
 
@@ -646,43 +646,43 @@ export default function RetryLogicAndExponentialBackoffConciseArticle() {
 
         <div className="my-6 rounded-lg border border-accent/30 bg-accent/10 p-6">
           <h3 className="mb-3 font-semibold">ROI Decision Framework</h3>
-          <p>
+          <HighlightBlock as="p" tier="crucial">
             Use aggressive retries when: transient failures are common, user experience depends
             on success. Use conservative retries when: failures are usually permanent.
-          </p>
+          </HighlightBlock>
         </div>
       </section>
 
       <section>
         <h2>Decision Framework: When to Use Retry Logic</h2>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Use this decision framework to evaluate whether retries are appropriate.
-        </p>
+        </HighlightBlock>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-4 text-lg font-semibold">Decision Tree</h3>
           <ul className="space-y-2">
-            <li>
+            <HighlightBlock as="li" tier="crucial">
               <strong>Is the failure transient (5xx, timeout)?</strong>
               <ul>
                 <li>Yes → Retry is appropriate</li>
                 <li>No → Don't retry (4xx errors)</li>
               </ul>
-            </li>
-            <li>
+            </HighlightBlock>
+            <HighlightBlock as="li" tier="important">
               <strong>Is the operation idempotent?</strong>
               <ul>
                 <li>Yes → Safe to retry</li>
                 <li>No → Use idempotency keys</li>
               </ul>
-            </li>
-            <li>
+            </HighlightBlock>
+            <HighlightBlock as="li" tier="important">
               <strong>Is latency critical?</strong>
               <ul>
                 <li>Yes → Minimal retries with short backoff</li>
                 <li>No → Aggressive retries with exponential backoff</li>
               </ul>
-            </li>
+            </HighlightBlock>
           </ul>
         </div>
 
@@ -712,11 +712,11 @@ export default function RetryLogicAndExponentialBackoffConciseArticle() {
                 <td className="p-2">High</td>
                 <td className="p-2">Medium</td>
               </tr>
-              <tr>
+              <HighlightBlock as="tr" tier="crucial">
                 <td className="p-2">Exponential + Jitter</td>
                 <td className="p-2">High</td>
                 <td className="p-2">Low</td>
-              </tr>
+              </HighlightBlock>
             </tbody>
           </table>
         </div>
@@ -764,7 +764,7 @@ export default function RetryLogicAndExponentialBackoffConciseArticle() {
             <p className="font-semibold">
               Q: How do retry budgets prevent cascading failures?
             </p>
-            <p className="mt-2 text-sm">
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               A: Without budgets, a 50% failure rate doubles traffic (every
               failed request generates a retry), which increases server load,
               causing more failures, causing more retries -- a death spiral. A
@@ -774,14 +774,14 @@ export default function RetryLogicAndExponentialBackoffConciseArticle() {
               system-level protection that per-request max retries cannot
               provide because they do not account for aggregate behavior across
               all clients.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
             <p className="font-semibold">
               Q: How do you handle retry for non-idempotent operations like POST?
             </p>
-            <p className="mt-2 text-sm">
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               A: For non-idempotent operations, use idempotency keys. Generate a
               unique UUID per user action (not per request attempt) and include
               it in an Idempotency-Key header. The server stores this key with
@@ -793,7 +793,7 @@ export default function RetryLogicAndExponentialBackoffConciseArticle() {
               all retry attempts share the same key. For operations where
               idempotency keys are not supported, limit retries to 1-2 attempts
               and alert on repeated failures for manual investigation.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">

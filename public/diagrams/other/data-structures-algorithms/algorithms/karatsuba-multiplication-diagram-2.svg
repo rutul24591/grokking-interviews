@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="system-ui, sans-serif">
+  <rect width="900" height="500" fill="#f3f1f8"/>
+  <text x="450" y="32" text-anchor="middle" font-size="19" font-weight="700" fill="#1a1822">Worked Example — 1234 × 5678</text>
+
+  <rect x="40" y="60" width="820" height="200" fill="#fff" stroke="#6d5bd0" stroke-width="2" rx="6"/>
+  <text x="60" y="85" font-size="13" font-weight="700" fill="#6d5bd0">Split each 4-digit number into two halves (B=10, n=4)</text>
+  <text x="60" y="115" font-size="12" font-family="monospace">x = 1234  →  x₁ = 12,  x₀ = 34</text>
+  <text x="60" y="135" font-size="12" font-family="monospace">y = 5678  →  y₁ = 56,  y₀ = 78</text>
+  <text x="60" y="170" font-size="12" font-weight="700">Recursive sub-multiplications</text>
+  <text x="60" y="195" font-size="12" font-family="monospace">z₂ = 12 × 56 = 672</text>
+  <text x="60" y="213" font-size="12" font-family="monospace">z₀ = 34 × 78 = 2652</text>
+  <text x="60" y="231" font-size="12" font-family="monospace">z₁ = (12+34)(56+78) − 672 − 2652 = 46·134 − 3324 = 6164 − 3324 = 2840</text>
+
+  <rect x="40" y="280" width="820" height="100" fill="#fff" stroke="#4caf50" stroke-width="2" rx="6"/>
+  <text x="60" y="305" font-size="13" font-weight="700" fill="#4caf50">Combine</text>
+  <text x="60" y="332" font-size="12" font-family="monospace">x·y = 672 · 10⁴ + 2840 · 10² + 2652</text>
+  <text x="60" y="352" font-size="12" font-family="monospace">    = 6 720 000 + 284 000 + 2 652</text>
+  <text x="60" y="372" font-size="12" font-family="monospace">    = 7 006 652   ✓  (matches 1234 × 5678)</text>
+
+  <rect x="40" y="400" width="820" height="75" fill="#fff" stroke="#6d5bd0" stroke-width="2" rx="6"/>
+  <text x="60" y="425" font-size="11" fill="#1a1822">3 sub-multiplications instead of 4. The middle term reuses z₂ and z₀, paying only one</text>
+  <text x="60" y="445" font-size="11" fill="#1a1822">extra multiply (46×134) and a few additions/subtractions to recover x₁y₀ + x₀y₁.</text>
+  <text x="60" y="465" font-size="11" font-weight="700" fill="#4caf50">Savings compound exponentially through recursion → sub-quadratic.</text>
+</svg>

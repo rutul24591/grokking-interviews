@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -34,47 +35,47 @@ export default function ColorContrastArticle() {
       {/* ─── Section 1: Definition & Context ─── */}
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Color contrast</strong> in web accessibility refers to the difference in perceived
           luminance between foreground content (text, icons, UI controls) and its background. The
           Web Content Accessibility Guidelines (WCAG) define specific contrast ratio thresholds that
           ensure content remains readable for users with low vision, color vision deficiencies, and
           those viewing screens in challenging lighting conditions.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Approximately 1 in 12 men and 1 in 200 women have some form of color vision deficiency
           (commonly called &quot;color blindness&quot;). Low vision conditions affect millions more.
           Beyond permanent conditions, situational impairments — bright sunlight on a screen, aging
           eyes, screen glare — affect all users. Insufficient contrast is consistently among the
           top 5 accessibility failures found in web audits, with the WebAIM Million study reporting
           that 83.6% of home pages have at least one low-contrast text instance.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           WCAG addresses color contrast through three success criteria:
           <strong> 1.4.3 Contrast (Minimum)</strong> (Level AA) requires a 4.5:1 ratio for normal
           text and 3:1 for large text; <strong>1.4.6 Contrast (Enhanced)</strong> (Level AAA)
           requires 7:1 for normal text and 4.5:1 for large text; <strong>1.4.11 Non-text
           Contrast</strong> (Level AA, added in WCAG 2.1) requires 3:1 for UI components and
           graphical objects essential to understanding content.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Why color contrast matters for staff/principal engineers:</strong> Contrast isn&apos;t
           just a design concern — it&apos;s an architectural one. Design system token definitions,
           theme switching (light/dark mode), dynamic theming, and user-generated content all
           require systematic approaches to contrast compliance. Technical leaders must build contrast
           checking into the design system pipeline, establish automated testing, and ensure that
           brand colors can achieve required ratios without compromising design intent.
-        </p>
+        </HighlightBlock>
 
         <div className="my-6 rounded-lg border border-accent/30 bg-accent/10 p-6">
           <h3 className="mb-3 font-semibold">Key Insight: Contrast Is About Luminance, Not Color Difference</h3>
-          <p>
+          <HighlightBlock as="p" tier="crucial">
             A common misconception is that &quot;different colors&quot; means &quot;good
             contrast.&quot; Red text on green background has poor contrast despite being visually
             distinct colors. Contrast ratio measures the difference in <em>relative luminance</em>
             (perceived brightness), not hue or saturation. Two colors can look completely different
             yet have nearly identical luminance, resulting in unreadable text.
-          </p>
+          </HighlightBlock>
         </div>
       </section>
 
@@ -82,42 +83,42 @@ export default function ColorContrastArticle() {
       <section>
         <h2>Core Concepts</h2>
         <ul className="space-y-2">
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Contrast Ratio:</strong> A value between 1:1 (identical colors) and 21:1
             (black on white). Calculated as <code>(L1 + 0.05) / (L2 + 0.05)</code> where L1 is the
             relative luminance of the lighter color and L2 of the darker. WCAG AA requires 4.5:1
             for normal text, 3:1 for large text (18pt/24px regular or 14pt/18.66px bold).
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Relative Luminance:</strong> A measure of perceived brightness on a 0 (darkest
             black) to 1 (lightest white) scale. Computed by linearizing each sRGB channel and
             applying the luminance formula: <code>L = 0.2126 * R + 0.7152 * G + 0.0722 * B</code>.
             The coefficients reflect the human eye&apos;s greater sensitivity to green light.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Large Text:</strong> Defined by WCAG as at least 18pt (24px) regular weight or
             14pt (approximately 18.66px) bold weight. Large text requires only a 3:1 contrast ratio
             (AA) because larger characters are inherently more legible at lower contrast levels.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Non-text Contrast (WCAG 1.4.11):</strong> UI components (buttons, form field
             borders, toggle switches) and graphical objects (icons, chart elements) require at least
             3:1 contrast against adjacent colors. This criterion, added in WCAG 2.1, catches issues
             like light gray form field borders on white backgrounds.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Color Vision Deficiency Types:</strong> Protanopia (red-blind, ~1% of males),
             deuteranopia (green-blind, ~1% of males), and tritanopia (blue-yellow blind, very rare).
             Protanomaly and deuteranomaly (reduced sensitivity) are more common (~6% of males
             combined). Design must never rely on color alone to convey information (WCAG 1.4.1).
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>APCA (Advanced Perceptual Contrast Algorithm):</strong> A modern alternative to
             WCAG&apos;s contrast ratio formula, being considered for WCAG 3.0. APCA accounts for
             font weight, polarity (light-on-dark vs. dark-on-light), and spatial frequency, providing
             more perceptually accurate contrast measurements. It uses a lookup table of minimum
             contrast values indexed by font size and weight.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Color Independence:</strong> WCAG 1.4.1 (Use of Color) requires that color is
             not the sole means of conveying information. Error states should use text labels and
@@ -132,15 +133,16 @@ export default function ColorContrastArticle() {
         <h2>Architecture &amp; Flow</h2>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">WCAG Contrast Ratio Thresholds</h3>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           WCAG defines two conformance levels for text contrast and a separate threshold for
           non-text elements. Understanding these thresholds is essential for audit compliance
           and design system token definitions.
-        </p>
+        </HighlightBlock>
         <ArticleImage
           src="/diagrams/system-design-concepts/frontend/accessibility-a11y/color-contrast-diagram-1.svg"
           alt="WCAG contrast ratio thresholds showing AA and AAA requirements for normal text, large text, and UI components"
           caption="WCAG contrast thresholds: AA requires 4.5:1 for normal text and 3:1 for large text; AAA requires 7:1 and 4.5:1 respectively. Non-text contrast requires 3:1 at AA level."
+          captionTier="important"
         />
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">WCAG Contrast Ratio Calculation</h3>
@@ -149,34 +151,36 @@ export default function ColorContrastArticle() {
         </p>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Color Blindness Simulation</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Color vision deficiency affects how users perceive color combinations. Protanopia and
           deuteranopia (the most common types) make red-green distinctions difficult, while
           tritanopia affects blue-yellow perception. Designing for color independence means never
           relying on color alone.
-        </p>
+        </HighlightBlock>
         <ArticleImage
           src="/diagrams/system-design-concepts/frontend/accessibility-a11y/color-contrast-diagram-2.svg"
           alt="Color blindness simulation showing how UI colors appear under protanopia, deuteranopia, and tritanopia"
           caption="The same UI palette as perceived by users with different types of color vision deficiency. Red-green confusions are most common."
+          captionTier="important"
         />
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Accessible Color Palette Generation</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Building an accessible design system requires generating color scales where every
           foreground/background combination in your palette meets contrast requirements. This is
           a systematic process, not a one-off audit.
-        </p>
+        </HighlightBlock>
         <ArticleImage
           src="/diagrams/system-design-concepts/frontend/accessibility-a11y/color-contrast-diagram-3.svg"
           alt="Accessible color palette generation workflow showing base colors, contrast checking, adjustment, and final palette"
           caption="Accessible palette workflow: Start with brand colors, generate scales, check every combination against WCAG thresholds, adjust failing pairs, and document compliant pairings."
+          captionTier="important"
         />
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Design System Contrast Validation</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           For design system contrast validation, create a tokens object with text-primary, text-secondary, text-on-accent, bg-default, bg-surface, bg-accent, and border-default color values. Define requiredPairs array with foreground, background, and type for each combination to test (normal-text or ui-component). Create validatePalette function that maps over pairs, converts hex to RGB, calculates contrast ratio, determines minimum ratio (3:1 for ui-component, 4.5:1 for normal-text), and returns results with pair name, ratio, passes boolean, and required ratio. Filter failures and log any contrast failures for remediation.
-        </p>
+        </HighlightBlock>
       </section>
 
       {/* ─── Section 4: Trade-offs & Comparisons ─── */}
@@ -192,31 +196,47 @@ export default function ColorContrastArticle() {
               </tr>
             </thead>
             <tbody>
-              <tr className="border-b border-accent/10">
+              <HighlightBlock
+                as="tr"
+                tier="crucial"
+                className="border-b border-accent/10"
+              >
                 <td className="p-3 font-medium">WCAG 2.x Contrast Ratio</td>
                 <td className="p-3">Well-established standard, legally referenced, simple pass/fail thresholds, broad tool support</td>
                 <td className="p-3">Doesn&apos;t account for font weight, polarity, or spatial frequency; can over/under-flag depending on context</td>
-              </tr>
-              <tr className="border-b border-accent/10">
+              </HighlightBlock>
+              <HighlightBlock
+                as="tr"
+                tier="important"
+                className="border-b border-accent/10"
+              >
                 <td className="p-3 font-medium">APCA (WCAG 3.0 draft)</td>
                 <td className="p-3">More perceptually accurate, accounts for font size/weight, better dark mode handling</td>
                 <td className="p-3">Not yet a standard, limited legal precedent, fewer tools support it, more complex to implement</td>
-              </tr>
-              <tr className="border-b border-accent/10">
+              </HighlightBlock>
+              <HighlightBlock
+                as="tr"
+                tier="important"
+                className="border-b border-accent/10"
+              >
                 <td className="p-3 font-medium">AA Compliance (4.5:1)</td>
                 <td className="p-3">Legal minimum in most jurisdictions, achievable with most brand colors, good baseline</td>
                 <td className="p-3">May be insufficient for users with moderate low vision, doesn&apos;t guarantee readability in all conditions</td>
-              </tr>
+              </HighlightBlock>
               <tr className="border-b border-accent/10">
                 <td className="p-3 font-medium">AAA Compliance (7:1)</td>
                 <td className="p-3">Readable by users with moderate low vision, robust under poor viewing conditions</td>
                 <td className="p-3">Severely limits color palette, many brand colors can&apos;t achieve 7:1, dark mode designs become very high contrast</td>
               </tr>
-              <tr className="border-b border-accent/10">
+              <HighlightBlock
+                as="tr"
+                tier="important"
+                className="border-b border-accent/10"
+              >
                 <td className="p-3 font-medium">High Contrast Mode</td>
                 <td className="p-3">User-controlled, system-level support (Windows High Contrast), extreme readability</td>
                 <td className="p-3">Limited design control, CSS must use forced-colors media query, can break visual hierarchy</td>
-              </tr>
+              </HighlightBlock>
             </tbody>
           </table>
         </div>
@@ -226,26 +246,26 @@ export default function ColorContrastArticle() {
       <section>
         <h2>Best Practices</h2>
         <ol className="space-y-2">
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Build contrast checking into your design system tokens:</strong> Define
             foreground/background pairs in your token system and validate them automatically.
             Don&apos;t rely on individual developers checking contrast manually.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Never rely on color alone to convey information:</strong> Error states should
             combine red color with an icon and text label. Links should be underlined or otherwise
             distinguishable. Chart data series should use patterns or labels alongside colors.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Test both light and dark mode palettes:</strong> A color that passes contrast in
             light mode may fail in dark mode (and vice versa). Generate separate token scales for
             each theme and validate all pairs in both contexts.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Account for non-text contrast (WCAG 1.4.11):</strong> Form field borders, button
             boundaries, icon-only buttons, focus indicators, and chart elements all need 3:1 contrast.
             This is frequently overlooked and catches many teams during audits.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Use tools in your CI pipeline:</strong> axe-core, Lighthouse, and pa11y can catch
             contrast failures automatically. Run these in CI to prevent regressions. For design tools,
@@ -270,12 +290,12 @@ export default function ColorContrastArticle() {
       <section>
         <h2>Common Pitfalls</h2>
         <ul className="space-y-2">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Placeholder text with insufficient contrast:</strong> Placeholder text in form
             fields is often light gray (#aaa or lighter) which fails contrast requirements.
             Placeholders are not labels — they should not contain essential information, but if
             visible, they should still meet 4.5:1 contrast.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Disabled state ambiguity:</strong> WCAG exempts disabled controls from contrast
             requirements, but making them too faint means users can&apos;t tell they exist. Use a
@@ -287,22 +307,22 @@ export default function ColorContrastArticle() {
             gradients may pass contrast in some areas but fail in others as the background varies.
             Use semi-transparent overlays or text shadows to ensure consistent contrast.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Ignoring non-text contrast:</strong> Light gray borders on white input fields,
             subtle toggle switches, low-contrast icons — these all fail WCAG 1.4.11. Teams often
             focus on text contrast and miss UI component contrast entirely.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Using brand colors that can&apos;t achieve 4.5:1:</strong> Some brand colors
             (particularly yellows, light greens, oranges) cannot achieve 4.5:1 contrast against white.
             Use them for decorative purposes but not for text. Provide accessible alternatives in
             the design system.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Focus indicators that fail contrast:</strong> Focus rings must have 3:1 contrast
             against adjacent colors (WCAG 2.4.11). A thin blue outline on a blue button or on a
             dark background may be invisible. Double-ring patterns solve this.
-          </li>
+          </HighlightBlock>
         </ul>
       </section>
 
@@ -310,32 +330,32 @@ export default function ColorContrastArticle() {
       <section>
         <h2>Real-World Use Cases</h2>
         <ul className="space-y-2">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Material Design (Google):</strong> Material Design&apos;s color system generates
             tonal palettes with 13 tones per color, specifically designed so that text/background
             combinations at specific tone distances meet WCAG AA. The Material Color Utilities
             library automates compliant palette generation.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Apple Human Interface Guidelines:</strong> Apple&apos;s dynamic system colors
             automatically adjust contrast across light mode, dark mode, and increased contrast
             settings. Developers using system colors get contrast compliance for free.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>GOV.UK Design System:</strong> The UK government design system limits its palette
             to colors that achieve 4.5:1 on white and provides explicit guidance on which color
             combinations are approved for text use.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Stripe:</strong> Stripe&apos;s documentation and dashboard use high-contrast
             text with careful attention to code block contrast, error message visibility, and form
             field border contrast. Their checkout flow meets contrast requirements across all themes.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Figma (Design Tool):</strong> Figma&apos;s color contrast checking plugins
             (Stark, A11y - Color Contrast Checker) allow designers to validate contrast during the
             design phase, preventing contrast failures before code is written.
-          </li>
+          </HighlightBlock>
         </ul>
       </section>
 
@@ -345,19 +365,19 @@ export default function ColorContrastArticle() {
 
         <div className="my-4 rounded-lg border border-accent/20 bg-accent/5 p-4">
           <h3 className="mb-2 font-semibold">Q: What are the WCAG contrast ratio requirements for text?</h3>
-          <p>
+          <HighlightBlock as="p" tier="important">
             WCAG AA requires a minimum 4.5:1 contrast ratio for normal text (under 18pt/24px regular
             or under 14pt/18.66px bold) and 3:1 for large text. WCAG AAA increases these to 7:1 and
             4.5:1 respectively. Additionally, WCAG 1.4.11 requires 3:1 contrast for non-text UI
             components (form field borders, button boundaries, icons) and graphical objects. The
             contrast ratio is calculated using relative luminance: <code>(L1 + 0.05) / (L2 + 0.05)</code>
             where L1 is the lighter color&apos;s luminance.
-          </p>
+          </HighlightBlock>
         </div>
 
         <div className="my-4 rounded-lg border border-accent/20 bg-accent/5 p-4">
           <h3 className="mb-2 font-semibold">Q: How do you handle color contrast in dark mode?</h3>
-          <p>
+          <HighlightBlock as="p" tier="important">
             Dark mode requires its own contrast validation because the polarity is reversed — light
             text on dark backgrounds behaves differently perceptually than dark text on light
             backgrounds. Key considerations: (1) Generate separate token scales for dark mode with
@@ -366,12 +386,12 @@ export default function ColorContrastArticle() {
             in both modes with automated tools. (5) Avoid pure white (#fff) text on pure black
             (#000) backgrounds — the extreme contrast causes halation (glowing effect) for users
             with astigmatism. Use slightly off-white (#e0e0e0) on dark gray (#1a1a1a).
-          </p>
+          </HighlightBlock>
         </div>
 
         <div className="my-4 rounded-lg border border-accent/20 bg-accent/5 p-4">
           <h3 className="mb-2 font-semibold">Q: What is WCAG 1.4.1 (Use of Color) and how does it differ from contrast?</h3>
-          <p>
+          <HighlightBlock as="p" tier="important">
             WCAG 1.4.1 states that color must not be the <em>only</em> visual means of conveying
             information, indicating an action, prompting a response, or distinguishing a visual
             element. This is separate from contrast ratios. Examples: form errors shown only in red
@@ -379,12 +399,12 @@ export default function ColorContrastArticle() {
             required fields indicated only by red asterisks without text labels, and chart data
             series differentiated only by color without patterns. The fix is always to provide
             a second visual channel: text labels, icons, underlines, patterns, or shape differences.
-          </p>
+          </HighlightBlock>
         </div>
 
         <div className="my-4 rounded-lg border border-accent/20 bg-accent/5 p-4">
           <h3 className="mb-2 font-semibold">Q: How would you build contrast checking into a design system?</h3>
-          <p>
+          <HighlightBlock as="p" tier="crucial">
             Systematic approach: (1) Define all foreground/background token pairs in the design
             system specification. (2) Write automated tests that calculate contrast for every
             defined pair and assert WCAG AA compliance. (3) Run these tests in CI so contrast
@@ -393,7 +413,7 @@ export default function ColorContrastArticle() {
             (6) For dynamic content (user-selected colors, themes), provide runtime contrast
             checking utilities and fallback mechanisms. (7) Generate contrast matrices showing
             which token combinations pass/fail at each level.
-          </p>
+          </HighlightBlock>
         </div>
 
         <div className="my-4 rounded-lg border border-accent/20 bg-accent/5 p-4">
@@ -416,36 +436,36 @@ export default function ColorContrastArticle() {
       <section>
         <h2>References &amp; Further Reading</h2>
         <ul className="space-y-2">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <a href="https://www.w3.org/WAI/WCAG22/Understanding/contrast-minimum.html" target="_blank" rel="noopener noreferrer" className="text-accent hover:underline">
               Understanding WCAG 1.4.3: Contrast (Minimum)
             </a>{" "}
             — Official guidance on text contrast requirements.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="crucial">
             <a href="https://www.w3.org/WAI/WCAG22/Understanding/non-text-contrast.html" target="_blank" rel="noopener noreferrer" className="text-accent hover:underline">
               Understanding WCAG 1.4.11: Non-text Contrast
             </a>{" "}
             — Requirements for UI component and graphical object contrast.
-          </li>
+          </HighlightBlock>
           <li>
             <a href="https://git.apcacontrast.com/" target="_blank" rel="noopener noreferrer" className="text-accent hover:underline">
               APCA Contrast Calculator
             </a>{" "}
             — Advanced Perceptual Contrast Algorithm, the proposed WCAG 3.0 method.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <a href="https://webaim.org/resources/contrastchecker/" target="_blank" rel="noopener noreferrer" className="text-accent hover:underline">
               WebAIM Contrast Checker
             </a>{" "}
             — Simple tool for checking WCAG contrast compliance.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/@media/forced-colors" target="_blank" rel="noopener noreferrer" className="text-accent hover:underline">
               MDN: forced-colors Media Query
             </a>{" "}
             — CSS support for Windows High Contrast Mode.
-          </li>
+          </HighlightBlock>
         </ul>
       </section>
     </ArticleLayout>

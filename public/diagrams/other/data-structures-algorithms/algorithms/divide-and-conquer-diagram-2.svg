@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="system-ui, sans-serif">
+  <rect width="900" height="500" fill="#f3f1f8"/>
+  <text x="450" y="32" text-anchor="middle" font-size="19" font-weight="700" fill="#1a1822">Master Theorem — Three Cases</text>
+
+  <rect x="40" y="60" width="820" height="80" fill="#fff" stroke="#6d5bd0" stroke-width="2" rx="6"/>
+  <text x="60" y="88" font-size="13" font-weight="700" fill="#6d5bd0">T(n) = a·T(n/b) + f(n), a ≥ 1, b &gt; 1</text>
+  <text x="60" y="112" font-size="12">Compare f(n) to n^(log_b a) — the work at the leaves.</text>
+  <text x="60" y="130" font-size="12">The dominant level (top, bottom, or balanced) determines the closed form.</text>
+
+  <rect x="40" y="155" width="260" height="180" fill="#fff" stroke="#4caf50" stroke-width="2" rx="6"/>
+  <text x="60" y="180" font-size="13" font-weight="700" fill="#4caf50">Case 1 — leaves dominate</text>
+  <text x="60" y="208" font-size="11">f(n) = O(n^(log_b a − ε))</text>
+  <text x="60" y="228" font-size="11">T(n) = Θ(n^(log_b a))</text>
+  <text x="60" y="258" font-size="11" font-weight="700">Example:</text>
+  <text x="60" y="278" font-size="11">T(n) = 8T(n/2) + n² → Θ(n³)</text>
+  <text x="60" y="305" font-size="11" fill="#1a1822">Karatsuba: 3T(n/2)+n → n^1.585</text>
+
+  <rect x="320" y="155" width="260" height="180" fill="#fff" stroke="#6d5bd0" stroke-width="2" rx="6"/>
+  <text x="340" y="180" font-size="13" font-weight="700" fill="#6d5bd0">Case 2 — balanced</text>
+  <text x="340" y="208" font-size="11">f(n) = Θ(n^(log_b a))</text>
+  <text x="340" y="228" font-size="11">T(n) = Θ(n^(log_b a) · log n)</text>
+  <text x="340" y="258" font-size="11" font-weight="700">Example:</text>
+  <text x="340" y="278" font-size="11">T(n) = 2T(n/2) + n → Θ(n log n)</text>
+  <text x="340" y="305" font-size="11">Merge sort, FFT, closest pair</text>
+
+  <rect x="600" y="155" width="260" height="180" fill="#fff" stroke="#cc4444" stroke-width="2" rx="6"/>
+  <text x="620" y="180" font-size="13" font-weight="700" fill="#cc4444">Case 3 — root dominates</text>
+  <text x="620" y="208" font-size="11">f(n) = Ω(n^(log_b a + ε))</text>
+  <text x="620" y="228" font-size="11">+ regularity: a·f(n/b) ≤ c·f(n)</text>
+  <text x="620" y="248" font-size="11">T(n) = Θ(f(n))</text>
+  <text x="620" y="278" font-size="11" font-weight="700">Example:</text>
+  <text x="620" y="298" font-size="11">T(n) = 2T(n/2) + n² → Θ(n²)</text>
+
+  <rect x="40" y="350" width="820" height="125" fill="#fff" stroke="#6d5bd0" stroke-width="2" rx="6"/>
+  <text x="60" y="375" font-size="13" font-weight="700" fill="#6d5bd0">Gotchas &amp; Akra–Bazzi</text>
+  <text x="60" y="400" font-size="11">• Regularity condition in Case 3 matters — skip it and you'll overestimate.</text>
+  <text x="60" y="420" font-size="11">• Non-polynomial gaps (n·log n vs n) fall outside the three cases — use the extended (Case 2) form.</text>
+  <text x="60" y="440" font-size="11">• Unequal split sizes (e.g., T(n) = T(n/3) + T(2n/3) + n) need Akra–Bazzi generalization.</text>
+  <text x="60" y="460" font-size="11">• Subtractive recurrences T(n)=T(n−1)+f(n) are NOT Master; solve directly or by summation.</text>
+</svg>

@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -34,7 +35,7 @@ export default function MicroFrontendsArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           <strong>Micro-Frontends</strong> extend the microservices philosophy
           to the frontend: instead of building a monolithic frontend
           application, the UI is decomposed into smaller, independently
@@ -42,8 +43,8 @@ export default function MicroFrontendsArticle() {
           together to form a cohesive user experience. Each micro-frontend is
           owned by an autonomous team that has end-to-end responsibility for a
           business domain — from database to UI.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The concept was introduced in the ThoughtWorks Technology Radar in
           2016 and gained traction as organizations struggled with frontend
           monoliths that had grown too large for single teams to maintain.
@@ -51,8 +52,8 @@ export default function MicroFrontendsArticle() {
           micro-frontends to solve organizational scaling challenges — enabling
           dozens of teams to ship independently without coordinating
           deployments.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Micro-frontends are fundamentally an organizational architecture
           pattern, not a technical one. The technical implementation (Module
           Federation, iframes, Web Components, server-side includes) is
@@ -62,13 +63,13 @@ export default function MicroFrontendsArticle() {
           deployment needs, not by technical curiosity. For organizations with
           fewer than 3-4 frontend teams, the coordination overhead of
           micro-frontends typically exceeds the benefits.
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
         <h2>Core Concepts</h2>
         <ul>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Composition:</strong> The mechanism by which independently
             built micro-frontends are assembled into a single user-facing
             application. Composition can happen at build time (npm packages),
@@ -76,14 +77,14 @@ export default function MicroFrontendsArticle() {
             side (JavaScript loading, iframes, Web Components). The composition
             strategy determines the integration architecture and constrains
             available technologies.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>App Shell:</strong> The lightweight container application
             that provides the global chrome (navigation, header, footer),
             routing, authentication, and the composition mechanism for loading
             micro-frontends. The app shell is the only truly shared code — it
             must be extremely stable because every team depends on it.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Vertical Slice Ownership:</strong> Each team owns a complete
             vertical slice of the product — the UI, the API/BFF (Backend for
@@ -92,13 +93,13 @@ export default function MicroFrontendsArticle() {
             &quot;checkout team&quot; owns everything from the checkout button
             UI to the payment processing backend.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Independent Deployment:</strong> Each micro-frontend can be
             deployed independently without coordinating with other teams. This
             is the primary operational benefit — teams ship on their own
             cadence, reducing the blast radius of each deployment and enabling
             continuous delivery at the team level.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Technology Agnosticism:</strong> Each micro-frontend can use
             a different technology stack — one team might use React while
@@ -107,24 +108,24 @@ export default function MicroFrontendsArticle() {
             code, inconsistent UX, and difficulty sharing components. Most
             organizations standardize on one or two frameworks.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Shared Nothing Architecture:</strong> Micro-frontends should
             minimize shared state and shared code. Each micro-frontend includes
             its own dependencies (potentially deduplicated via Module
             Federation). Communication between micro-frontends uses event-based
             mechanisms rather than shared state, maintaining the loose coupling
             that enables independent deployment.
-          </li>
+          </HighlightBlock>
         </ul>
       </section>
 
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           Micro-frontend architecture involves multiple composition strategies,
           each with different trade-offs in isolation, performance, and
           complexity.
-        </p>
+        </HighlightBlock>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-4 text-lg font-semibold">Composition Patterns</h3>
@@ -283,6 +284,7 @@ export default function MicroFrontendsArticle() {
           src="/diagrams/system-design-concepts/frontend/scalability-architecture-patterns/micro-frontends-diagram-3.svg"
           alt="Strangler Fig migration pattern showing five stages from monolith to micro-frontends with monolith size decreasing over stages"
           caption="Strangler Fig migration — gradual extraction of features from monolith to micro-frontends across five stages"
+          captionTier="important"
         />
       </section>
 
@@ -325,10 +327,12 @@ export default function MicroFrontendsArticle() {
                 <br />• Smaller bundles per micro-app
               </td>
               <td className="p-3">
-                • Duplicated dependencies increase total bundle
-                <br />
-                • Waterfall loading for nested micro-frontends
-                <br />• Global performance budget harder to enforce
+                <HighlightBlock tier="important">
+                  • Duplicated dependencies increase total bundle
+                  <br />
+                  • Waterfall loading for nested micro-frontends
+                  <br />• Global performance budget harder to enforce
+                </HighlightBlock>
               </td>
             </tr>
             <tr>
@@ -359,10 +363,12 @@ export default function MicroFrontendsArticle() {
                 <br />• Technology migration possible per micro-frontend
               </td>
               <td className="p-3">
-                • Distributed systems complexity at the frontend
-                <br />
-                • Shared state management across MFEs is hard
-                <br />• Consistent user experience requires governance
+                <HighlightBlock tier="crucial">
+                  • Distributed systems complexity at the frontend
+                  <br />
+                  • Shared state management across MFEs is hard
+                  <br />• Consistent user experience requires governance
+                </HighlightBlock>
               </td>
             </tr>
           </tbody>
@@ -372,27 +378,27 @@ export default function MicroFrontendsArticle() {
       <section>
         <h2>Best Practices</h2>
         <ol className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Align MFE Boundaries with Team Boundaries:</strong> Each
             micro-frontend should be owned by exactly one team. If a feature
             spans multiple teams, the MFE boundaries are wrong. Reorganize MFE
             boundaries to match team ownership, not the other way around.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Keep the App Shell Thin and Stable:</strong> The app shell
             should contain only routing, authentication, global chrome, and the
             composition mechanism. No business logic. The shell is the most
             coupled component — it affects every team — so it must change as
             rarely as possible.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Standardize the Shared Design System:</strong> While
             micro-frontends can use different frameworks, they should share a
             common design system for visual consistency. Provide the design
             system as a shared package (or federated module) that all MFEs
             consume. This is the one piece of shared code that is worth the
             coupling.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Use Contract Testing:</strong> When micro-frontends
             communicate via events or shared APIs, write contract tests that
@@ -414,34 +420,34 @@ export default function MicroFrontendsArticle() {
             authentication. Use token injection via the shell&apos;s composition
             API or shared cookies.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Avoid Shared State — Prefer Events:</strong> Minimize shared
             state between micro-frontends. Use event-based communication (custom
             events, event bus) where each MFE maintains its own state and reacts
             to events from other MFEs. This preserves deployment independence.
-          </li>
+          </HighlightBlock>
         </ol>
       </section>
 
       <section>
         <h2>Decision Framework: When to Use Micro-Frontends</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           Micro-frontends are not a universal solution. The decision to adopt this architecture should be driven by
           organizational needs, not technical curiosity. Use this decision framework to evaluate whether micro-frontends
           are appropriate for your context.
-        </p>
+        </HighlightBlock>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-4 text-lg font-semibold">Organizational Readiness Checklist</h3>
           <ul className="space-y-2">
-            <li>
+            <HighlightBlock as="li" tier="important">
               <strong>Team Structure:</strong> Do you have 3+ autonomous frontend teams that need to ship
               independently? If you have 1-2 teams, a monolith is likely more efficient.
-            </li>
-            <li>
+            </HighlightBlock>
+            <HighlightBlock as="li" tier="important">
               <strong>Deployment Independence:</strong> Is deployment coordination between teams a bottleneck?
               Micro-frontends excel when teams are blocked waiting for other teams&apos; deployment windows.
-            </li>
+            </HighlightBlock>
             <li>
               <strong>Domain Boundaries:</strong> Are your product domains clearly defined with minimal cross-cutting
               concerns? Unclear boundaries lead to tightly coupled micro-frontends that defeat the purpose.
@@ -512,32 +518,32 @@ export default function MicroFrontendsArticle() {
 
       <section>
         <h2>Security Considerations</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           Micro-frontends introduce unique security challenges that must be addressed at the architectural level.
           Unlike monoliths where security is centralized, micro-frontends distribute attack surface across multiple
           independently deployed applications.
-        </p>
+        </HighlightBlock>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-4 text-lg font-semibold">Cross-MFE Attack Vectors</h3>
           <ul className="space-y-2">
-            <li>
+            <HighlightBlock as="li" tier="important">
               <strong>XSS Propagation:</strong> A single compromised micro-frontend can inject malicious scripts that
               affect all other MFEs sharing the same origin. Mitigation: implement strict Content Security Policy (CSP)
               with nonces or hashes for each MFE. Use subresource integrity (SRI) for shared dependencies loaded from
               CDNs.
-            </li>
-            <li>
+            </HighlightBlock>
+            <HighlightBlock as="li" tier="important">
               <strong>Event Injection:</strong> Malicious MFEs can dispatch fake events on shared event buses,
               tricking other MFEs into taking unwanted actions. Mitigation: namespace all events with MFE identifier,
               validate event payloads with schema validation (Zod, Yup), implement event authentication for sensitive
               actions.
-            </li>
-            <li>
+            </HighlightBlock>
+            <HighlightBlock as="li" tier="important">
               <strong>Shared State Manipulation:</strong> MFEs sharing a Redux/Zustand store can manipulate state
               belonging to other MFEs. Mitigation: use state segmentation (each MFE owns a slice), implement access
               control at the store middleware level, prefer event-based communication over shared state.
-            </li>
+            </HighlightBlock>
             <li>
               <strong>Dependency Confusion:</strong> If MFEs load shared dependencies from different sources, attackers
               can inject malicious packages. Mitigation: use private registries with strict access control, pin exact
@@ -594,10 +600,10 @@ export default function MicroFrontendsArticle() {
 
       <section>
         <h2>Testing Strategies</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           Testing micro-frontends requires a multi-layered approach that validates individual MFEs in isolation and the
           composed application as a whole. The testing pyramid expands to include integration tests between MFEs.
-        </p>
+        </HighlightBlock>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-4 text-lg font-semibold">Testing Pyramid for Micro-Frontends</h3>
@@ -606,20 +612,20 @@ export default function MicroFrontendsArticle() {
               <strong>Unit Tests (Base):</strong> Each MFE maintains its own unit test suite. Test components,
               utilities, and business logic in isolation. Aim for 70%+ coverage on critical paths.
             </li>
-            <li>
+            <HighlightBlock as="li" tier="important">
               <strong>Contract Tests (Middle):</strong> Use consumer-driven contract testing (Pact) to verify MFE
               interfaces. When MFE A emits events that MFE B consumes, contract tests ensure the event schema is
               honored. Run contract tests in CI for both producer and consumer.
-            </li>
-            <li>
+            </HighlightBlock>
+            <HighlightBlock as="li" tier="important">
               <strong>Integration Tests (Middle):</strong> Test MFE composition in a staging environment. Validate that
               MFEs mount correctly, events flow between MFEs, and shared state is managed correctly. Use Playwright or
               Cypress for browser-based integration tests.
-            </li>
-            <li>
+            </HighlightBlock>
+            <HighlightBlock as="li" tier="important">
               <strong>E2E Tests (Top):</strong> Full application E2E tests covering critical user journeys. Run against
               the composed application with all MFEs deployed. Focus on high-value user flows, not exhaustive coverage.
-            </li>
+            </HighlightBlock>
           </ul>
         </div>
 
@@ -678,10 +684,10 @@ export default function MicroFrontendsArticle() {
 
       <section>
         <h2>Performance Benchmarks</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           Micro-frontends introduce performance overhead that must be measured and managed. Without proper governance,
           the cumulative effect of multiple MFEs can severely degrade user experience.
-        </p>
+        </HighlightBlock>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-4 text-lg font-semibold">Performance Metrics to Track</h3>
@@ -725,14 +731,14 @@ export default function MicroFrontendsArticle() {
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-4 text-lg font-semibold">Dependency Duplication Impact</h3>
-          <p>
+          <HighlightBlock as="p" tier="important">
             When multiple MFEs bundle the same dependencies, bundle size grows linearly. Example impact analysis:
-          </p>
+          </HighlightBlock>
           <ul className="mt-3 space-y-2">
-            <li>
+            <HighlightBlock as="li" tier="important">
               <strong>Scenario:</strong> 5 MFEs, each using React + React DOM (42KB compressed). Without sharing:
               5 × 42KB = 210KB of React alone.
-            </li>
+            </HighlightBlock>
             <li>
               <strong>With Module Federation:</strong> React is loaded once as a shared dependency. Total: 42KB.
               Savings: 168KB (80% reduction).
@@ -742,10 +748,10 @@ export default function MicroFrontendsArticle() {
               to Module Federation, but less flexible for version management.
             </li>
           </ul>
-          <p className="mt-3">
+          <HighlightBlock as="p" tier="important" className="mt-3">
             Recommendation: implement shared dependency strategy from day one. The cost of retrofitting sharing after
             multiple MFEs are in production is significantly higher.
-          </p>
+          </HighlightBlock>
         </div>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
@@ -772,28 +778,28 @@ export default function MicroFrontendsArticle() {
 
       <section>
         <h2>Cost Analysis</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           Micro-frontends have significant cost implications beyond development effort. Understanding the total cost of
           ownership is essential for making an informed decision.
-        </p>
+        </HighlightBlock>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-4 text-lg font-semibold">Infrastructure Costs</h3>
           <ul className="space-y-2">
-            <li>
+            <HighlightBlock as="li" tier="important">
               <strong>CI/CD Pipelines:</strong> Each MFE requires its own pipeline. If you have 10 MFEs, you&apos;re
               running 10x the CI/CD infrastructure. Estimate: $50-200/month per pipeline depending on provider and
               usage. Total: $500-2,000/month for 10 MFEs.
-            </li>
+            </HighlightBlock>
             <li>
               <strong>Hosting:</strong> Each MFE may be hosted separately (S3 + CloudFront, Vercel, Netlify). Estimate:
               $10-50/month per MFE for small-to-medium traffic. Total: $100-500/month for 10 MFEs.
             </li>
-            <li>
+            <HighlightBlock as="li" tier="important">
               <strong>Monitoring &amp; Observability:</strong> Each MFE needs error tracking, performance monitoring,
               and logging. Estimate: $100-300/month per MFE for comprehensive monitoring. Total: $1,000-3,000/month for
               10 MFEs.
-            </li>
+            </HighlightBlock>
           </ul>
         </div>
 
@@ -950,7 +956,10 @@ export default function MicroFrontendsArticle() {
       <section>
         <h2>Common Interview Questions</h2>
         <div className="space-y-4">
-          <div className="rounded-lg border border-theme bg-panel-soft p-4">
+          <HighlightBlock
+            className="rounded-lg border border-theme bg-panel-soft p-4"
+            tier="crucial"
+          >
             <p className="font-semibold">
               Q: What are the different composition strategies for
               micro-frontends?
@@ -969,9 +978,12 @@ export default function MicroFrontendsArticle() {
               own iframe. Complete isolation but worst performance and limited
               cross-frame interaction.
             </p>
-          </div>
+          </HighlightBlock>
 
-          <div className="rounded-lg border border-theme bg-panel-soft p-4">
+          <HighlightBlock
+            className="rounded-lg border border-theme bg-panel-soft p-4"
+            tier="important"
+          >
             <p className="font-semibold">
               Q: How do micro-frontends communicate with each other?
             </p>
@@ -986,9 +998,12 @@ export default function MicroFrontendsArticle() {
               cross-MFE communication should be event-based. Reserve shared
               state for genuinely global concerns (auth, user profile).
             </p>
-          </div>
+          </HighlightBlock>
 
-          <div className="rounded-lg border border-theme bg-panel-soft p-4">
+          <HighlightBlock
+            className="rounded-lg border border-theme bg-panel-soft p-4"
+            tier="important"
+          >
             <p className="font-semibold">
               Q: How would you migrate a frontend monolith to micro-frontends?
             </p>
@@ -1004,7 +1019,7 @@ export default function MicroFrontendsArticle() {
               do a big-bang migration. Each step should be shippable,
               reversible, and independently valuable.
             </p>
-          </div>
+          </HighlightBlock>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
             <p className="font-semibold">

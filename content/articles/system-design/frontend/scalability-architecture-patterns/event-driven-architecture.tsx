@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -24,29 +25,29 @@ export default function EventDrivenArchitectureArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           <strong>Event-Driven Architecture (EDA)</strong> is a software design paradigm where the flow of
           the program is determined by events — significant changes in state that are produced, detected,
           consumed, and reacted to by different parts of the system. In frontend development, EDA is not
           just a pattern but the fundamental execution model: user interactions generate DOM events,
           frameworks respond by updating state and re-rendering components, and the browser&apos;s event
           loop orchestrates it all.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Beyond the basic event loop, modern frontend architectures apply EDA principles at higher levels
           of abstraction. Event sourcing captures every state change as an immutable event log, enabling
           undo/redo, time-travel debugging, and collaborative editing. CQRS (Command Query Responsibility
           Segregation) separates read and write paths for optimal performance. Saga patterns coordinate
           multi-step workflows through event sequences. These patterns, originally from backend distributed
           systems, have found powerful applications in complex frontend applications.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The rise of real-time applications — collaborative editors (Notion, Figma), live dashboards,
           multiplayer games, and social feeds — has made EDA skills essential for staff-level frontend
           engineers. Understanding how to design event topologies, manage event ordering, handle eventual
           consistency in the UI, and debug asynchronous event flows separates senior practitioners from
           those who only work with synchronous request-response patterns.
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
@@ -70,60 +71,62 @@ export default function EventDrivenArchitectureArticle() {
             in-process (event bus), or cross-process (BroadcastChannel, WebSocket). Channel design
             determines delivery guarantees, ordering, and performance characteristics.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Event Sourcing:</strong> Instead of storing current state, store the sequence of events
             that led to the current state. The current state is derived by replaying events. In frontend,
             this enables undo/redo (replay events minus the last one), collaborative editing (merge event
             streams from multiple users), and time-travel debugging (replay to any point).
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>CQRS (Command Query Responsibility Segregation):</strong> Separating the model for
             writing (commands that produce events) from the model for reading (queries against materialized
             views). In frontend, this manifests as separating mutation logic (API calls, optimistic updates)
             from display logic (derived state, selectors, computed values).
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Saga / Process Manager:</strong> A pattern for coordinating multi-step event-driven
             workflows. A saga listens for events and produces commands, managing the lifecycle of a complex
             process (multi-step form submission, payment flow, onboarding wizard). Redux-Saga and XState
             are popular frontend implementations.
-          </li>
+          </HighlightBlock>
         </ul>
       </section>
 
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           EDA in frontend applications operates at multiple levels — from low-level DOM events to
           high-level application event flows.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/frontend/scalability-architecture-patterns/event-driven-architecture-diagram-1.svg"
           alt="Event Topology showing Producers and Consumers"
           caption="Event topology — event producers emit to channels, which route events to registered consumers based on topic subscriptions"
+          captionTier="crucial"
         />
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           The event topology defines how events flow through the system. In a simple topology, all events
           flow through a single bus. In a more sophisticated topology, events are partitioned by domain
           (auth events, commerce events, UI events) with dedicated channels, and cross-domain events are
           bridged explicitly.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/frontend/scalability-architecture-patterns/event-driven-architecture-diagram-2.svg"
           alt="Frontend Event Flow Cycle"
           caption="Frontend event flow — user interaction → DOM event → handler → state update → re-render → UI update cycle"
+          captionTier="important"
         />
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           The browser&apos;s DOM event system follows a three-phase model: capture (events propagate from
           window down to the target), target (event fires on the target element), and bubble (events
           propagate from target back up to window). Understanding this propagation model is essential for
           implementing event delegation, preventing unwanted event handling, and optimizing event listener
           placement.
-        </p>
+        </HighlightBlock>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-4 text-lg font-semibold">Event Sourcing vs Event Notification vs Event-Carried State Transfer</h3>
@@ -153,6 +156,7 @@ export default function EventDrivenArchitectureArticle() {
           src="/diagrams/system-design-concepts/frontend/scalability-architecture-patterns/event-driven-architecture-diagram-3.svg"
           alt="Event patterns comparison showing Event Notification (minimal payload), Event-Carried State Transfer (full payload), and Event Sourcing (append-only stream) with their trade-offs"
           caption="Event patterns — trade-offs between payload size, coupling, and use cases for notification, state transfer, and sourcing"
+          captionTier="important"
         />
       </section>
 
@@ -175,9 +179,11 @@ export default function EventDrivenArchitectureArticle() {
                 • Natural fit for real-time UI updates
               </td>
               <td className="p-3">
-                • Eventual consistency requires careful UI design<br />
-                • Event ordering issues create race conditions<br />
-                • Hard to reason about system state at any point
+                <HighlightBlock tier="crucial">
+                  • Eventual consistency requires careful UI design<br />
+                  • Event ordering issues create race conditions<br />
+                  • Hard to reason about system state at any point
+                </HighlightBlock>
               </td>
             </tr>
             <tr>
@@ -188,9 +194,11 @@ export default function EventDrivenArchitectureArticle() {
                 • Clean separation of concerns
               </td>
               <td className="p-3">
-                • Control flow is implicit and non-linear<br />
-                • Debugging requires tracing through event chains<br />
-                • Stack traces do not capture event causation
+                <HighlightBlock tier="important">
+                  • Control flow is implicit and non-linear<br />
+                  • Debugging requires tracing through event chains<br />
+                  • Stack traces do not capture event causation
+                </HighlightBlock>
               </td>
             </tr>
             <tr>
@@ -201,9 +209,11 @@ export default function EventDrivenArchitectureArticle() {
                 • Natural parallelism in consumer processing
               </td>
               <td className="p-3">
-                • Event storms from cascading producers<br />
-                • Duplicate events require idempotent consumers<br />
-                • Event schema evolution is complex
+                <HighlightBlock tier="important">
+                  • Event storms from cascading producers<br />
+                  • Duplicate events require idempotent consumers<br />
+                  • Event schema evolution is complex
+                </HighlightBlock>
               </td>
             </tr>
             <tr>
@@ -226,63 +236,63 @@ export default function EventDrivenArchitectureArticle() {
       <section>
         <h2>Best Practices</h2>
         <ol className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Design Events as Facts, Not Commands:</strong> Events should describe what happened
             (&quot;OrderPlaced&quot;), not what should happen (&quot;PlaceOrder&quot;). Commands are
             requests that may be rejected; events are facts that have already occurred. This distinction
             is fundamental to correct event-driven design.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Use Event Delegation for DOM Events:</strong> Instead of attaching event listeners to
             every interactive element, attach a single listener to a common ancestor and use event.target
             to determine which element was clicked. This reduces memory usage and handles dynamically
             added elements automatically.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Make Event Consumers Idempotent:</strong> Design consumers to handle duplicate events
             safely. Network retries, message broker redelivery, and React Strict Mode double-rendering can
             all cause events to be processed multiple times. Use correlation IDs or last-processed
             timestamps to detect and skip duplicates.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Implement Event Replay for Debugging:</strong> Log events in development and provide
             a replay mechanism that re-dispatches recorded events. This enables reproducing bugs from
             event logs without requiring the user to repeat their interaction sequence.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Version Event Schemas:</strong> When evolving event payloads, add a version field and
             support upcasting (transforming older event versions to the current schema). This prevents
             breaking consumers when the event format changes and enables gradual migration.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Separate Side Effects from State Updates:</strong> Handle state updates synchronously
             and trigger side effects (API calls, analytics, notifications) asynchronously in response to
             state change events. This keeps state updates predictable and side effects manageable.
-          </li>
+          </HighlightBlock>
         </ol>
       </section>
 
       <section>
         <h2>Common Pitfalls</h2>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Cascading Event Storms:</strong> Consumer A handles event X and produces event Y.
             Consumer B handles event Y and produces event Z. Consumer C handles event Z and produces event
             X. This creates an infinite loop. Prevent by: prohibiting event production within event
             handlers (use a queue), implementing cycle detection, or imposing maximum event depth.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Lost Events:</strong> Events published before subscribers register are silently lost
             in most in-process event bus implementations. This is particularly problematic during
             application startup when initialization order matters. Solutions include: late-subscriber
             replay, event buffering, or guaranteed initialization ordering.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Debugging Difficulty:</strong> Asynchronous event flows do not produce linear stack
             traces. When a bug manifests in a consumer, the stack trace shows the event dispatch path,
             not the original user action that caused the event. Use correlation IDs that trace from the
             originating user action through all consequent events.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Over-Eventifying:</strong> Making every function call an event adds latency,
             complexity, and debugging difficulty without providing the benefits of decoupling. Reserve
@@ -301,22 +311,22 @@ export default function EventDrivenArchitectureArticle() {
       <section>
         <h2>Real-World Use Cases</h2>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Figma&apos;s Collaborative Editing:</strong> Figma uses event sourcing to capture every
             design change as an event. These events are broadcast to all connected clients via WebSocket,
             enabling real-time collaboration. Conflict resolution merges concurrent event streams using
             operational transformation.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Redux DevTools Time Travel:</strong> Redux DevTools records every dispatched action
             (event). The time-travel feature replays actions from the beginning to any point, showing the
             state at that moment. This is event sourcing applied to application state debugging.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Google Docs Real-Time Sync:</strong> Operational Transformation (OT) in Google Docs is
             an event-driven architecture where every keystroke produces an event. Events are sent to the
             server, transformed against concurrent events from other users, and broadcast to all clients.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>React Error Boundaries:</strong> React&apos;s error handling uses event propagation
             semantics — errors bubble up through the component tree until an Error Boundary catches them,
@@ -333,19 +343,19 @@ export default function EventDrivenArchitectureArticle() {
 
       <section>
         <h2>Security Considerations</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           Event-Driven Architecture introduces unique security considerations because events often carry sensitive data and can trigger side effects across system boundaries. Proper security controls must be implemented at both the event production and consumption layers.
-        </p>
+        </HighlightBlock>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-4 text-lg font-semibold">Event Injection Attacks</h3>
           <ul className="space-y-2">
-            <li>
+            <HighlightBlock as="li" tier="important">
               <strong>Event Spoofing:</strong> Attackers can craft malicious events that mimic legitimate system events. Mitigation: implement event authentication (HMAC signatures), validate event schemas rigorously, use allowlists for event types, implement rate limiting per event source.
-            </li>
-            <li>
+            </HighlightBlock>
+            <HighlightBlock as="li" tier="important">
               <strong>Event Replay Attacks:</strong> Captured legitimate events can be replayed to trigger unauthorized actions. Mitigation: include timestamps and nonces in events, implement event idempotency checks, maintain event logs to detect duplicates, use short expiration windows for time-sensitive events.
-            </li>
+            </HighlightBlock>
             <li>
               <strong>Privilege Escalation via Events:</strong> Events that trigger state changes may be exploited to escalate privileges. Mitigation: validate user permissions at event consumption time (not just production), implement principle of least privilege for event handlers, audit all event-triggered actions.
             </li>
@@ -358,9 +368,9 @@ export default function EventDrivenArchitectureArticle() {
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-4 text-lg font-semibold">Data Protection in Events</h3>
           <ul className="space-y-2">
-            <li>
+            <HighlightBlock as="li" tier="important">
               <strong>PII in Events:</strong> Events often contain personally identifiable information. Mitigation: encrypt sensitive fields, implement data minimization (only include necessary data), use tokenization for sensitive identifiers, implement data retention policies for event logs.
-            </li>
+            </HighlightBlock>
             <li>
               <strong>Event Schema Evolution:</strong> Changing event schemas can break consumers or leak data. Mitigation: use schema registry with versioning, implement backward compatibility checks, deprecate fields gradually, audit schema changes for security implications.
             </li>
@@ -388,9 +398,9 @@ export default function EventDrivenArchitectureArticle() {
 
       <section>
         <h2>Testing Strategies</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           Testing event-driven systems requires validating both individual event handlers and the emergent behavior of the entire event flow. The asynchronous, decoupled nature of EDA presents unique testing challenges.
-        </p>
+        </HighlightBlock>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-4 text-lg font-semibold">Testing Pyramid for EDA</h3>
@@ -398,12 +408,12 @@ export default function EventDrivenArchitectureArticle() {
             <li>
               <strong>Unit Tests (Base):</strong> Test individual event producers and consumers in isolation. Mock the event bus to avoid integration dependencies. Test event schema validation, business logic in handlers, and error handling.
             </li>
-            <li>
+            <HighlightBlock as="li" tier="important">
               <strong>Contract Tests (Middle):</strong> Verify event schemas match between producers and consumers. Use schema registry with compatibility checks. Run contract tests in CI for all event-producing and event-consuming services.
-            </li>
-            <li>
+            </HighlightBlock>
+            <HighlightBlock as="li" tier="important">
               <strong>Integration Tests (Middle):</strong> Test event flow through the actual event bus. Validate that events are routed correctly, consumers receive expected events, and side effects are triggered. Use testcontainers for realistic event bus infrastructure.
-            </li>
+            </HighlightBlock>
             <li>
               <strong>End-to-End Tests (Top):</strong> Test complete user journeys that span multiple event-driven components. Focus on critical business flows. Use tools like Cypress or Playwright for frontend E2E, combined with backend event tracing.
             </li>
@@ -437,9 +447,9 @@ export default function EventDrivenArchitectureArticle() {
             <li>
               <strong>Event Bus Failures:</strong> Simulate event bus outages. Verify that producers handle failures gracefully (retry queues, dead letter queues) and consumers handle gaps in event streams.
             </li>
-            <li>
+            <HighlightBlock as="li" tier="important">
               <strong>Consumer Failures:</strong> Simulate consumer crashes during event processing. Verify that events are reprocessed correctly and idempotency prevents duplicate side effects.
-            </li>
+            </HighlightBlock>
             <li>
               <strong>Network Partitions:</strong> Simulate network partitions between event producers and consumers. Verify that the system handles partitions gracefully and recovers when connectivity is restored.
             </li>
@@ -449,9 +459,9 @@ export default function EventDrivenArchitectureArticle() {
 
       <section>
         <h2>Performance Benchmarks</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           Event-Driven Architecture performance depends on event throughput, latency, and the efficiency of event routing. Understanding performance characteristics is essential for production systems.
-        </p>
+        </HighlightBlock>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-4 text-lg font-semibold">Performance Metrics to Track</h3>
@@ -499,15 +509,15 @@ export default function EventDrivenArchitectureArticle() {
             Different event bus implementations have different performance characteristics:
           </p>
           <ul className="mt-3 space-y-2">
-            <li>
+            <HighlightBlock as="li" tier="important">
               <strong>In-Process Event Bus (EventEmitter, RxJS Subject):</strong> Latency: &lt;1ms. Throughput: 10,000+ events/sec. Best for: single-application event routing. Limitation: no cross-process communication.
-            </li>
+            </HighlightBlock>
             <li>
               <strong>Browser BroadcastChannel:</strong> Latency: 5-20ms. Throughput: 100-500 events/sec. Best for: cross-tab communication. Limitation: same-origin only, limited browser support.
             </li>
-            <li>
+            <HighlightBlock as="li" tier="important">
               <strong>WebSocket Event Stream:</strong> Latency: 10-50ms. Throughput: 1,000+ events/sec. Best for: real-time server-to-client events. Limitation: requires persistent connection, server infrastructure.
-            </li>
+            </HighlightBlock>
             <li>
               <strong>Message Queue (Kafka, RabbitMQ):</strong> Latency: 10-100ms. Throughput: 10,000+ events/sec. Best for: durable event sourcing, cross-service communication. Limitation: infrastructure complexity, operational overhead.
             </li>
@@ -535,16 +545,16 @@ export default function EventDrivenArchitectureArticle() {
 
       <section>
         <h2>Cost Analysis</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           Event-Driven Architecture has significant cost implications for infrastructure, development, and operations. Understanding the total cost of ownership is essential for justifying the architecture.
-        </p>
+        </HighlightBlock>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-4 text-lg font-semibold">Infrastructure Costs</h3>
           <ul className="space-y-2">
-            <li>
+            <HighlightBlock as="li" tier="important">
               <strong>Event Bus/Queue:</strong> Managed services (AWS EventBridge, Kafka): $0.50-2.00 per million events. For 100M events/month: $50-200/month. Self-hosted Kafka: $500-2,000/month (infrastructure + operations).
-            </li>
+            </HighlightBlock>
             <li>
               <strong>Event Storage:</strong> Event logs require durable storage. S3 for event archives: $0.023/GB. For 1TB/month of events: ~$23/month. Database for event sourcing: $100-500/month depending on throughput.
             </li>
@@ -572,18 +582,24 @@ export default function EventDrivenArchitectureArticle() {
           </ul>
         </div>
 
-        <div className="my-6 rounded-lg border border-accent/30 bg-accent/10 p-6">
+        <HighlightBlock
+          className="my-6 rounded-lg border border-accent/30 bg-accent/10 p-6"
+          tier="important"
+        >
           <h3 className="mb-3 font-semibold">ROI Calculation Framework</h3>
           <p>
             To calculate ROI: (1) Estimate development velocity improvement (features/month × value per feature). (2) Estimate infrastructure costs (event bus, storage, monitoring). (3) Estimate reduced debugging time (hours saved × hourly rate). (4) Calculate net: (velocity gains + debugging savings) - (infrastructure costs). For high-velocity teams with complex integrations, EDA typically shows positive ROI within 6-12 months.
           </p>
-        </div>
+        </HighlightBlock>
       </section>
 
       <section>
         <h2>Common Interview Questions</h2>
         <div className="space-y-4">
-          <div className="rounded-lg border border-theme bg-panel-soft p-4">
+          <HighlightBlock
+            className="rounded-lg border border-theme bg-panel-soft p-4"
+            tier="important"
+          >
             <p className="font-semibold">Q: How does the DOM event model work (capture, target, bubble phases)?</p>
             <p className="mt-2 text-sm">
               A: When an event fires on an element, it goes through three phases: (1) Capture phase —
@@ -594,9 +610,12 @@ export default function EventDrivenArchitectureArticle() {
               prevents further propagation in any direction. Event delegation exploits bubbling by placing
               one listener on a parent to handle events from many children.
             </p>
-          </div>
+          </HighlightBlock>
 
-          <div className="rounded-lg border border-theme bg-panel-soft p-4">
+          <HighlightBlock
+            className="rounded-lg border border-theme bg-panel-soft p-4"
+            tier="crucial"
+          >
             <p className="font-semibold">Q: What is event sourcing, and how would you implement undo/redo with it?</p>
             <p className="mt-2 text-sm">
               A: Event sourcing stores state as a sequence of events rather than as a snapshot. Current
@@ -607,9 +626,12 @@ export default function EventDrivenArchitectureArticle() {
               beginning every time. This is how collaborative tools like Figma and Notion implement
               undo/redo across concurrent users.
             </p>
-          </div>
+          </HighlightBlock>
 
-          <div className="rounded-lg border border-theme bg-panel-soft p-4">
+          <HighlightBlock
+            className="rounded-lg border border-theme bg-panel-soft p-4"
+            tier="important"
+          >
             <p className="font-semibold">Q: What is the difference between a command and an event in EDA?</p>
             <p className="mt-2 text-sm">
               A: A command is a request to do something — it is imperative, directed at a specific handler,
@@ -620,7 +642,7 @@ export default function EventDrivenArchitectureArticle() {
               events are asynchronous (publisher does not wait for subscriber processing). Well-designed
               systems use commands for input and events for output.
             </p>
-          </div>
+          </HighlightBlock>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
             <p className="font-semibold">Q: How would you debug an event-driven system with non-linear control flow?</p>

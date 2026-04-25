@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -34,7 +35,7 @@ export default function ModuleFederationArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           <strong>Module Federation</strong> is a webpack 5 architecture that
           allows JavaScript applications to dynamically load code from other
           independently built and deployed applications at runtime. Unlike
@@ -42,8 +43,8 @@ export default function ModuleFederationArticle() {
           time, Module Federation enables multiple builds to form a single
           application, sharing dependencies and code without the overhead of npm
           publishing, version coordination, or monorepo infrastructure.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Invented by Zack Jackson and introduced in webpack 5 (2020), Module
           Federation solved a fundamental problem in micro-frontend
           architectures: how to share code between independently deployed
@@ -52,8 +53,8 @@ export default function ModuleFederationArticle() {
           (duplicating React, lodash, etc.) or used complex external dependency
           management (SystemJS, import maps). Module Federation provided a
           built-in, bundle-level solution for runtime code sharing.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The technology has evolved beyond webpack — Rspack supports Module
           Federation natively, Vite has community plugins
           (vite-plugin-federation), and Module Federation 2.0 introduces runtime
@@ -61,34 +62,34 @@ export default function ModuleFederationArticle() {
           For staff engineers, understanding Module Federation is essential for
           designing distributed frontend architectures that balance team
           autonomy with shared infrastructure efficiency.
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
         <h2>Core Concepts</h2>
         <ul>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Host (Consumer):</strong> The application that loads remote
             modules at runtime. The host defines which remotes it wants to
             consume and what modules it expects from each remote. A host
             initializes the shared scope and coordinates dependency version
             negotiation.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Remote (Provider):</strong> The application that exposes
             modules for consumption by hosts. A remote defines which of its
             modules are available for remote consumption and which dependencies
             it is willing to share. Each remote is independently built and
             deployed.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Shared Scope:</strong> A runtime container where shared
             dependencies (React, React DOM, lodash) are negotiated between host
             and remotes. When multiple applications declare React as shared, the
             shared scope ensures only one copy is loaded. Version negotiation
             determines which version wins (highest compatible version, or
             singleton enforcement).
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Container:</strong> Each federated application produces a
             container entry point (remoteEntry.js) that exposes a get() and
@@ -96,13 +97,13 @@ export default function ModuleFederationArticle() {
             receives the shared scope, and get() returns requested modules.
             Containers are the runtime manifestation of federated builds.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Singleton Enforcement:</strong> For libraries that must have
             exactly one instance (React, React DOM — because multiple instances
             cause hooks to break), the shared configuration can enforce
             singleton: true. If a remote provides an incompatible version, a
             warning is logged and the host&apos;s version is used.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Bidirectional Federation:</strong> An application can be
             both a host and a remote simultaneously. App A consumes modules from
@@ -115,18 +116,18 @@ export default function ModuleFederationArticle() {
 
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           Module Federation&apos;s architecture operates at two levels:
           build-time configuration that defines the federation topology, and
           runtime execution that loads and negotiates modules.
-        </p>
+        </HighlightBlock>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-4 text-lg font-semibold">Runtime Architecture</h3>
-          <p>
+          <HighlightBlock as="p" tier="important">
             The Module Federation runtime flow when a host loads a remote
             module:
-          </p>
+          </HighlightBlock>
           <ol className="mt-3 space-y-2">
             <li>
               <strong>1. Host Bootstrap:</strong> Host application loads and
@@ -136,11 +137,11 @@ export default function ModuleFederationArticle() {
               <strong>2. Remote Discovery:</strong> Host fetches remoteEntry.js
               from configured remote URLs (CDN, separate deployment).
             </li>
-            <li>
+            <HighlightBlock as="li" tier="important">
               <strong>3. Shared Scope Negotiation:</strong> Remote&apos;s init()
               receives the host&apos;s shared scope. Version negotiation
               determines which copy of each shared dependency to use.
-            </li>
+            </HighlightBlock>
             <li>
               <strong>4. Module Resolution:</strong> Host calls
               remote.get(&quot;./Component&quot;) to request a specific module
@@ -163,6 +164,7 @@ export default function ModuleFederationArticle() {
           src="/diagrams/system-design-concepts/frontend/scalability-architecture-patterns/module-federation-diagram-1.svg"
           alt="Module Federation architecture showing Host Application consuming Remote Applications through Shared Scope with React and shared libraries"
           caption="Module Federation architecture — host application dynamically loads remote modules while sharing dependencies through shared scope"
+          captionTier="crucial"
         />
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
@@ -175,13 +177,13 @@ export default function ModuleFederationArticle() {
               at build time. A single bundle contains everything. Changes to a
               shared library require rebuilding and redeploying all consumers.
             </li>
-            <li>
+            <HighlightBlock as="li" tier="important">
               <strong>Module Federation:</strong> Shared dependencies resolved
               at runtime. Each application builds independently. The shared
               scope negotiates at load time which version to use. Changes to a
               remote require only redeploying the remote — hosts automatically
               pick up changes.
-            </li>
+            </HighlightBlock>
           </ul>
         </div>
 
@@ -189,23 +191,26 @@ export default function ModuleFederationArticle() {
           src="/diagrams/system-design-concepts/frontend/scalability-architecture-patterns/module-federation-diagram-3.svg"
           alt="Build-time vs Runtime composition comparison showing npm packages bundled at build versus Module Federation runtime loading"
           caption="Build-time vs Runtime — trade-offs between single bundle performance and independent deployment flexibility"
+          captionTier="important"
         />
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-4 text-lg font-semibold">
             Version Negotiation Example
           </h3>
-          <p>When Host uses React 18.2.0 and Remote uses React 18.3.0:</p>
+          <HighlightBlock as="p" tier="important">
+            When Host uses React 18.2.0 and Remote uses React 18.3.0:
+          </HighlightBlock>
           <ul className="mt-3 space-y-2">
             <li>
               If both declare React as shared with requiredVersion:
               &quot;^18.0.0&quot;, the highest compatible version (18.3.0) is
               used by both.
             </li>
-            <li>
+            <HighlightBlock as="li" tier="important">
               If singleton: true is set, only one copy loads. If versions are
               incompatible, a runtime warning is logged.
-            </li>
+            </HighlightBlock>
             <li>
               If strictVersion: true is set, an incompatible version throws an
               error instead of a warning.
@@ -222,6 +227,7 @@ export default function ModuleFederationArticle() {
           src="/diagrams/system-design-concepts/frontend/scalability-architecture-patterns/module-federation-diagram-2.svg"
           alt="Module Federation shared dependency version negotiation flow showing Host, Shared Scope, and Remote applications with version resolution logic"
           caption="Version negotiation — shared scope resolves dependency versions between host and remotes with conflict handling"
+          captionTier="important"
         />
       </section>
 
@@ -247,10 +253,12 @@ export default function ModuleFederationArticle() {
                 <br />• No coordination needed for most changes
               </td>
               <td className="p-3">
-                • Shared dependency version conflicts at runtime
-                <br />
-                • Remote failures require error boundary handling
-                <br />• Debugging crosses application boundaries
+                <HighlightBlock tier="crucial">
+                  • Shared dependency version conflicts at runtime
+                  <br />
+                  • Remote failures require error boundary handling
+                  <br />• Debugging crosses application boundaries
+                </HighlightBlock>
               </td>
             </tr>
             <tr>
@@ -264,10 +272,12 @@ export default function ModuleFederationArticle() {
                 <br />• CDN caching per remote entry point
               </td>
               <td className="p-3">
-                • Waterfall loading (host → remoteEntry → chunks)
-                <br />
-                • Cold start latency for first remote load
-                <br />• No tree-shaking across federation boundaries
+                <HighlightBlock tier="important">
+                  • Waterfall loading (host → remoteEntry → chunks)
+                  <br />
+                  • Cold start latency for first remote load
+                  <br />• No tree-shaking across federation boundaries
+                </HighlightBlock>
               </td>
             </tr>
             <tr>
@@ -311,20 +321,20 @@ export default function ModuleFederationArticle() {
       <section>
         <h2>Best Practices</h2>
         <ol className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Use Error Boundaries Around Remote Components:</strong>{" "}
             Remote modules can fail to load (CDN down, version incompatible,
             network error). Wrap every remote component in a React Error
             Boundary with a fallback UI. This prevents a single remote failure
             from crashing the entire host application.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Enforce Singleton for Framework Libraries:</strong> React
             and React DOM must be singletons — multiple copies cause hooks to
             break with &quot;Invalid hook call&quot; errors. Always set
             singleton: true for React, React DOM, and router libraries in the
             shared configuration.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Version-Lock Critical Shared Dependencies:</strong> Use
             requiredVersion with a tight range for shared dependencies that have
@@ -337,48 +347,48 @@ export default function ModuleFederationArticle() {
             reachable. If not, skip the remote and render fallback UI. This
             prevents the host from hanging on unresolvable remote requests.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Use Dynamic Remotes for Flexibility:</strong> Instead of
             hardcoding remote URLs in webpack config, load remote configuration
             from a service at runtime. This enables A/B testing different remote
             versions, environment-specific remote URLs, and gradual rollouts
             without rebuilding the host.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Share TypeScript Types Across Boundaries:</strong> Use a
             shared types package or Module Federation 2.0&apos;s type generation
             to ensure type safety across host-remote boundaries. Without shared
             types, remote modules are typed as any, losing all type safety.
-          </li>
+          </HighlightBlock>
         </ol>
       </section>
 
       <section>
         <h2>Common Pitfalls</h2>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Multiple React Instances:</strong> The most common Module
             Federation bug. If React is not configured as a singleton shared
             dependency, the host and remotes may each load their own copy. This
             causes &quot;Invalid hook call&quot; errors because hooks rely on
             React&apos;s internal state, which is per-instance. Always configure
             React and ReactDOM as singleton: true.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Waterfall Loading:</strong> Loading a remote follows a
             waterfall: host bundle → remote entry → remote chunks. Each step is
             a network request. For deeply nested remote dependencies, this
             waterfall can add seconds to initial load. Mitigate with preloading
             (link rel=&quot;preload&quot; for remote entries) and prefetching.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>No Build-Time Validation:</strong> Module Federation
             resolves modules at runtime, so there is no build-time check that a
             remote exposes the expected modules or that shared dependency
             versions are compatible. Issues manifest as runtime errors in
             production. Use contract testing and type generation to catch issues
             before deployment.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>CSS Conflicts:</strong> Remote modules may bring their own
             CSS that conflicts with the host&apos;s styles. Global styles, class
@@ -399,13 +409,13 @@ export default function ModuleFederationArticle() {
       <section>
         <h2>Real-World Use Cases</h2>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>E-Commerce Platforms:</strong> Large e-commerce sites use
             Module Federation to independently deploy the product catalog,
             shopping cart, checkout, and account management as separate
             federated applications. Teams own their domains end-to-end with
             shared UI components loaded from a design system remote.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Enterprise Dashboards:</strong> Business intelligence
             dashboards compose widgets from different teams — each widget is a
@@ -419,41 +429,41 @@ export default function ModuleFederationArticle() {
             compose these areas into a unified application while maintaining
             deployment independence.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Gradual Framework Migrations:</strong> Organizations
             migrating from Angular to React use Module Federation to run both
             frameworks simultaneously — the Angular host loads React remotes (or
             vice versa), enabling incremental migration without big-bang
             rewrites.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Plugin Marketplaces:</strong> Applications with
             user-installable plugins use Module Federation to load plugin code
             at runtime from a CDN. The host exposes shared dependencies (React,
             the application&apos;s component library) and plugins consume them
             through the shared scope.
-          </li>
+          </HighlightBlock>
         </ul>
       </section>
 
       <section>
         <h2>Security Considerations</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           Module Federation introduces unique security considerations because it loads and executes code from remote sources at runtime. Unlike traditional bundling where all code is audited at build time, federated code can change between deployments without the host&apos;s knowledge.
-        </p>
+        </HighlightBlock>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-4 text-lg font-semibold">Supply Chain Attack Vectors</h3>
           <ul className="space-y-2">
-            <li>
+            <HighlightBlock as="li" tier="important">
               <strong>Remote Code Injection:</strong> A compromised remote can serve malicious JavaScript to all consuming hosts. Mitigation: use HTTPS exclusively, implement Subresource Integrity (SRI) hashes for remoteEntry.js files, monitor remote deployments with automated security scanning.
-            </li>
+            </HighlightBlock>
             <li>
               <strong>Dependency Confusion:</strong> If remotes load shared dependencies from public registries, attackers can publish malicious packages with names matching internal shared dependencies. Mitigation: use private registries with strict access control, pin exact versions, implement SRI for all external scripts.
             </li>
-            <li>
+            <HighlightBlock as="li" tier="important">
               <strong>Version Downgrade Attacks:</strong> An attacker who compromises a remote could downgrade shared dependencies to vulnerable versions. Mitigation: enforce minimum version requirements in shared config, use singleton for security-critical dependencies, implement runtime version checks.
-            </li>
+            </HighlightBlock>
             <li>
               <strong>Cross-Site Scripting via Shared State:</strong> If hosts and remotes share state objects, malicious remotes could inject XSS payloads into shared state. Mitigation: sanitize all data crossing federation boundaries, implement strict Content Security Policy, avoid sharing mutable state between remotes.
             </li>
@@ -466,9 +476,9 @@ export default function ModuleFederationArticle() {
             CSP is critical for Module Federation security but requires careful configuration:
           </p>
           <ol className="mt-3 space-y-2">
-            <li>
+            <HighlightBlock as="li" tier="important">
               <strong>script-src Directive:</strong> Include all remote domains in script-src. Use nonces or hashes for inline scripts. Example: <code>{`script-src 'self' https://remote1.example.com https://remote2.example.com 'nonce-{...}'`}</code>
-            </li>
+            </HighlightBlock>
             <li>
               <strong>connect-src Directive:</strong> Allow connections to remote domains for dynamic loading. Example: <code>{`connect-src 'self' https://remote1.example.com https://remote2.example.com`}</code>
             </li>
@@ -499,9 +509,9 @@ export default function ModuleFederationArticle() {
 
       <section>
         <h2>Testing Strategies</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           Testing federated applications requires validating both individual remotes and the composed application. The testing strategy must account for runtime dependencies and version compatibility.
-        </p>
+        </HighlightBlock>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-4 text-lg font-semibold">Testing Pyramid for Module Federation</h3>
@@ -509,15 +519,15 @@ export default function ModuleFederationArticle() {
             <li>
               <strong>Unit Tests (Base):</strong> Each remote maintains its own unit test suite. Test exposed modules in isolation. Mock shared dependencies to avoid version coupling in tests.
             </li>
-            <li>
+            <HighlightBlock as="li" tier="important">
               <strong>Contract Tests (Middle):</strong> Verify that exposed modules match the expected interface. Use TypeScript for type-level contracts. Run contract tests in CI for both hosts and remotes.
-            </li>
-            <li>
+            </HighlightBlock>
+            <HighlightBlock as="li" tier="important">
               <strong>Integration Tests (Middle):</strong> Test host-remote integration in a staging environment. Validate that remotes load correctly, shared dependencies are deduplicated, and cross-remote communication works.
-            </li>
-            <li>
+            </HighlightBlock>
+            <HighlightBlock as="li" tier="important">
               <strong>E2E Tests (Top):</strong> Full application E2E tests with all remotes deployed. Focus on critical user journeys that span multiple remotes. Use Playwright or Cypress for browser-based tests.
-            </li>
+            </HighlightBlock>
           </ul>
         </div>
 
@@ -691,7 +701,10 @@ export default function ModuleFederationArticle() {
       <section>
         <h2>Common Interview Questions</h2>
         <div className="space-y-4">
-          <div className="rounded-lg border border-theme bg-panel-soft p-4">
+          <HighlightBlock
+            className="rounded-lg border border-theme bg-panel-soft p-4"
+            tier="crucial"
+          >
             <p className="font-semibold">
               Q: How does Module Federation differ from npm packages for code
               sharing?
@@ -708,9 +721,12 @@ export default function ModuleFederationArticle() {
               deployment independence but defers compatibility checking to
               runtime.
             </p>
-          </div>
+          </HighlightBlock>
 
-          <div className="rounded-lg border border-theme bg-panel-soft p-4">
+          <HighlightBlock
+            className="rounded-lg border border-theme bg-panel-soft p-4"
+            tier="important"
+          >
             <p className="font-semibold">
               Q: How does shared dependency version negotiation work?
             </p>
@@ -725,9 +741,12 @@ export default function ModuleFederationArticle() {
               The negotiation happens during the init() phase when remotes join
               the shared scope.
             </p>
-          </div>
+          </HighlightBlock>
 
-          <div className="rounded-lg border border-theme bg-panel-soft p-4">
+          <HighlightBlock
+            className="rounded-lg border border-theme bg-panel-soft p-4"
+            tier="important"
+          >
             <p className="font-semibold">
               Q: What happens when a remote fails to load?
             </p>
@@ -742,7 +761,7 @@ export default function ModuleFederationArticle() {
               configure retry logic with exponential backoff for transient
               failures.
             </p>
-          </div>
+          </HighlightBlock>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
             <p className="font-semibold">

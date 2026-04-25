@@ -1,0 +1,53 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="system-ui, sans-serif">
+  <rect width="900" height="500" fill="#f3f1f8"/>
+  <text x="450" y="32" text-anchor="middle" font-size="19" font-weight="700" fill="#1a1822">Pruning Strategies &amp; Problem Patterns</text>
+
+  <rect x="40" y="60" width="400" height="200" fill="#fff" stroke="#6d5bd0" stroke-width="2" rx="6"/>
+  <text x="60" y="85" font-size="13" font-weight="700" fill="#6d5bd0">Pruning techniques</text>
+  <text x="60" y="110" font-size="11">• Constraint propagation: deduce forced values (Sudoku naked singles).</text>
+  <text x="60" y="135" font-size="11">• Bound pruning (B&amp;B): kill branch when upper bound &lt; best.</text>
+  <text x="60" y="160" font-size="11">• Symmetry breaking: pick canonical orderings to avoid duplicates.</text>
+  <text x="60" y="185" font-size="11">• Look-ahead: try most-constrained variable first (MRV heuristic).</text>
+  <text x="60" y="210" font-size="11">• Memoization: cache infeasible sub-states as DP.</text>
+  <text x="60" y="235" font-size="11">• Forward checking: tentatively assign and propagate.</text>
+
+  <rect x="460" y="60" width="400" height="200" fill="#fff" stroke="#4caf50" stroke-width="2" rx="6"/>
+  <text x="480" y="85" font-size="13" font-weight="700" fill="#4caf50">Pattern catalog</text>
+  <text x="480" y="110" font-size="11">• Subsets / power set</text>
+  <text x="480" y="130" font-size="11">• Permutations</text>
+  <text x="480" y="150" font-size="11">• Combinations of fixed size k</text>
+  <text x="480" y="170" font-size="11">• Constraint satisfaction (N-Queens, Sudoku)</text>
+  <text x="480" y="190" font-size="11">• Path finding (rat in maze, word search)</text>
+  <text x="480" y="210" font-size="11">• Partitioning (palindrome partition)</text>
+  <text x="480" y="230" font-size="11">• Combinatorial optimization (TSP, knapsack)</text>
+
+  <rect x="40" y="280" width="820" height="195" fill="#fff" stroke="#6d5bd0" stroke-width="2" rx="6"/>
+  <text x="60" y="305" font-size="13" font-weight="700" fill="#6d5bd0">Complexity table (no pruning, worst case)</text>
+  <g font-size="11">
+    <text x="60" y="335" font-weight="700">Problem</text>
+    <text x="350" y="335" font-weight="700">Branches</text>
+    <text x="600" y="335" font-weight="700">Time</text>
+
+    <text x="60" y="358">All subsets of n</text>
+    <text x="350" y="358">2 (in/out)</text>
+    <text x="600" y="358">O(n · 2ⁿ)</text>
+
+    <text x="60" y="378">All permutations of n</text>
+    <text x="350" y="378">n then n−1 …</text>
+    <text x="600" y="378">O(n · n!)</text>
+
+    <text x="60" y="398">Combinations C(n,k)</text>
+    <text x="350" y="398">2 (pick/skip)</text>
+    <text x="600" y="398">O(k · C(n,k))</text>
+
+    <text x="60" y="418">N-Queens</text>
+    <text x="350" y="418">n per row</text>
+    <text x="600" y="418">≤ O(n!) (heavily pruned)</text>
+
+    <text x="60" y="438">Sudoku</text>
+    <text x="350" y="438">9 per cell</text>
+    <text x="600" y="438">≤ O(9^81) (massively pruned)</text>
+
+    <text x="60" y="465" fill="#4caf50" font-weight="700">Pruning often turns these from cosmic to milliseconds in practice.</text>
+  </g>
+</svg>

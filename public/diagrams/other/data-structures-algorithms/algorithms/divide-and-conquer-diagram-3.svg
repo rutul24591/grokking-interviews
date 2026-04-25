@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="system-ui, sans-serif">
+  <rect width="900" height="500" fill="#f3f1f8"/>
+  <text x="450" y="32" text-anchor="middle" font-size="19" font-weight="700" fill="#1a1822">D&amp;C in Production Systems</text>
+
+  <rect x="40" y="60" width="820" height="200" fill="#fff" stroke="#6d5bd0" stroke-width="2" rx="6"/>
+  <text x="60" y="85" font-size="13" font-weight="700" fill="#6d5bd0">Where divide &amp; conquer shows up</text>
+  <text x="60" y="112" font-size="11">• MapReduce / Spark: map splits input, reduce combines partial results — D&amp;C at scale.</text>
+  <text x="60" y="132" font-size="11">• Parallel prefix sums (scan): tree reduction followed by downsweep, both D&amp;C phases.</text>
+  <text x="60" y="152" font-size="11">• External merge sort on disk/S3: split runs fitting in RAM, k-way merge with heap.</text>
+  <text x="60" y="172" font-size="11">• CDN/edge cache hierarchy: query splits across shards, coordinator combines top-k.</text>
+  <text x="60" y="192" font-size="11">• FFT-based convolution in audio/video codecs (DCT in JPEG, MDCT in AAC).</text>
+  <text x="60" y="212" font-size="11">• Database query planners split range scans, merge-join partitioned tables.</text>
+  <text x="60" y="232" font-size="11">• Computational geometry: closest-pair, convex hull, range trees — all D&amp;C.</text>
+
+  <rect x="40" y="280" width="820" height="195" fill="#fff" stroke="#4caf50" stroke-width="2" rx="6"/>
+  <text x="60" y="305" font-size="13" font-weight="700" fill="#4caf50">When D&amp;C is the wrong tool</text>
+  <text x="60" y="330" font-size="11">• Problem has overlapping subproblems → use DP (memoize), not pure D&amp;C.</text>
+  <text x="60" y="350" font-size="11">• Combine step is as expensive as brute force → no speedup (e.g., O(n²) combine on n/2 halves).</text>
+  <text x="60" y="370" font-size="11">• Data doesn't partition cleanly (graph BFS/DFS, sparse recursive state).</text>
+  <text x="60" y="390" font-size="11">• Recursion overhead dominates for small n — most production impls switch to insertion sort at n≤16.</text>
+  <text x="60" y="415" font-size="11" font-weight="700" fill="#4caf50">Rule of thumb:</text>
+  <text x="60" y="435" font-size="11">D&amp;C wins when the combine step is asymptotically cheaper than the divided work, and subproblems</text>
+  <text x="60" y="453" font-size="11">are independent. Otherwise, prefer DP, greedy, or iterative approaches.</text>
+</svg>

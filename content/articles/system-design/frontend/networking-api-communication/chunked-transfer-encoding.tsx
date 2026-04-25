@@ -160,12 +160,12 @@ export default function ChunkedTransferEncodingArticle() {
 
       <section>
         <h2>Architecture & Flow</h2>
-      <p>
+        <HighlightBlock as="p" tier="important">
           The chunked transfer encoding flow involves the server sending data
           progressively and the client processing chunks as they arrive.
           Understanding this flow is essential for debugging streaming issues
           and building responsive applications.
-        </p>
+        </HighlightBlock>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-4 text-lg font-semibold">
@@ -207,7 +207,7 @@ export default function ChunkedTransferEncodingArticle() {
           caption="Chunked Transfer Flow: Server sends chunks progressively, client processes each chunk as it arrives without waiting for complete response"
         />
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           The fetch API provides native support for reading chunked responses
           via the ReadableStream interface. The pattern is: fetch the resource,
           access response.body (a ReadableStream), get a reader via
@@ -217,9 +217,9 @@ export default function ChunkedTransferEncodingArticle() {
           application can decode each chunk from Uint8Array to string, parse
           incrementally (for example, newline-delimited JSON), and update the UI
           progressively.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           For JSON streaming, a common pattern is newline-delimited JSON
           (NDJSON), where each line is a complete JSON object. The server sends
           each JSON object on a separate line, for example an object with id and
@@ -230,7 +230,7 @@ export default function ChunkedTransferEncodingArticle() {
           json-streaming-parser automate this, but the core logic is
           straightforward: buffer chunks, split by delimiter, parse complete
           objects.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/frontend/networking-api-communication/streaming-json-parse.svg"
@@ -238,7 +238,7 @@ export default function ChunkedTransferEncodingArticle() {
           caption="Streaming JSON Parse: Chunks are accumulated, split by newline delimiter, and each complete JSON object is parsed and processed incrementally"
         />
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           For Server-Sent Events (SSE), chunked encoding is the transport
           mechanism. The server sends text/event-stream content with chunks
           formatted as SSE events with data fields followed by newlines. The
@@ -247,9 +247,9 @@ export default function ChunkedTransferEncodingArticle() {
           encoding to receive progressive updates. This is why SSE requires
           HTTP/1.1 plus (which supports chunked encoding) and cannot work with
           HTTP/1.0.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           A critical architectural consideration is connection management. On
           HTTP/1.1, each chunked response consumes one of the browser's 6
           connections per origin. A long-running stream (e.g., real-time
@@ -259,7 +259,7 @@ export default function ChunkedTransferEncodingArticle() {
           connection pool, using HTTP/2 which multiplexes streams on one
           connection, or using Server-Sent Events with Connection: keep-alive
           which is optimized for long-lived streams.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/frontend/networking-api-communication/http-streaming-architecture.svg"
@@ -295,7 +295,7 @@ export default function ChunkedTransferEncodingArticle() {
                 • First chunk may be small (overhead per chunk)
               </td>
             </tr>
-            <tr>
+            <HighlightBlock as="tr" tier="crucial">
               <td className="p-3">
                 <strong>Memory</strong>
               </td>
@@ -310,7 +310,7 @@ export default function ChunkedTransferEncodingArticle() {
                 <br />
                 • Incomplete chunks require buffering until complete
               </td>
-            </tr>
+            </HighlightBlock>
             <tr>
               <td className="p-3">
                 <strong>Caching</strong>
@@ -328,7 +328,7 @@ export default function ChunkedTransferEncodingArticle() {
                 <br />• No browser cache benefit
               </td>
             </tr>
-            <tr>
+            <HighlightBlock as="tr" tier="important">
               <td className="p-3">
                 <strong>Complexity</strong>
               </td>
@@ -344,7 +344,7 @@ export default function ChunkedTransferEncodingArticle() {
                 • Must handle partial data, reconnection, errors
                 <br />• Debugging is harder (streaming vs complete)
               </td>
-            </tr>
+            </HighlightBlock>
           </tbody>
         </table>
 
@@ -352,7 +352,7 @@ export default function ChunkedTransferEncodingArticle() {
           <h3 className="mb-3 font-semibold">
             Chunked Encoding in HTTP/2 and HTTP/3
           </h3>
-          <p>
+          <HighlightBlock as="p" tier="important">
             HTTP/2 and HTTP/3 do not use explicit chunked transfer encoding.
             Instead, they have native streaming via frames (HTTP/2) or streams
             (HTTP/3). The conceptual model is the same -- responses can be sent
@@ -362,18 +362,18 @@ export default function ChunkedTransferEncodingArticle() {
             final frame. From the application perspective, the API is identical:
             response.body is a ReadableStream regardless of HTTP version. The
             browser's networking layer abstracts away the protocol differences.
-          </p>
+          </HighlightBlock>
         </div>
       </section>
 
       <section>
         <h2>Best Practices</h2>
-        <p>
+        <HighlightBlock as="p" tier="important">
           These practices represent hard-won lessons from operating streaming
           frontend applications at scale:
-        </p>
+        </HighlightBlock>
         <ol className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Use ReadableStream for Large Responses:</strong> For
             responses over 1MB, use response.body.getReader() to process
             incrementally rather than response.json() which buffers entirely.
@@ -381,16 +381,16 @@ export default function ChunkedTransferEncodingArticle() {
             in a loop, check if done is true to break, and process each chunk
             value. This reduces memory pressure and enables progressive
             rendering.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Implement Incremental JSON Parsing:</strong> For streaming
             JSON, use newline-delimited JSON (NDJSON) where each line is a
             complete object. Accumulate chunks into a buffer, split by newline,
             parse complete lines, and keep incomplete data in the buffer for the
             next chunk. This allows processing gigabytes of JSON with constant
             memory.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Handle Backpressure Explicitly:</strong> When processing
             chunks, await each read() before processing to apply backpressure.
             Do not read all chunks into an array before processing since this
@@ -398,7 +398,7 @@ export default function ChunkedTransferEncodingArticle() {
             in a loop, await the read, then await the process function before
             reading the next chunk. This ensures the server throttles if the
             client is slow.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Implement Reconnection Logic:</strong> For long-running
             streams, handle connection drops gracefully. Track the last
@@ -406,14 +406,14 @@ export default function ChunkedTransferEncodingArticle() {
             items since the last processed point. This is the pattern used by
             Server-Sent Events with Last-Event-ID header.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Set Appropriate Timeouts:</strong> Streaming responses can
             hang indefinitely if the server crashes or the network fails.
             Implement client-side timeouts: use AbortSignal.timeout to abort the
             request if no data arrives within the timeout. The pattern is to
             pass an AbortSignal with a timeout to the fetch options. This
             prevents streams from hanging forever.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Use HTTP/2 for Multiple Streams:</strong> If your
             application maintains multiple concurrent streams (e.g., separate
@@ -446,13 +446,13 @@ export default function ChunkedTransferEncodingArticle() {
           well-funded companies:
         </p>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Buffering Entire Response:</strong> Using response.json() or
             response.text() on streaming endpoints, which buffers the entire
             response before resolving. This defeats the purpose of chunked
             encoding. Always use response.body.getReader() for streaming
             endpoints.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Not Handling Incomplete Chunks:</strong> Assuming each
             read() returns a complete JSON object or SSE event. In reality,
@@ -466,12 +466,12 @@ export default function ChunkedTransferEncodingArticle() {
             defeating streaming benefits. Process each chunk before reading the
             next.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>No Reconnection Logic:</strong> Assuming streams never fail.
             Network interruptions, server restarts, and load balancer timeouts
             all cause disconnections. Implement reconnection with exponential
             backoff and resume from the last processed point.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Blocking Other Requests:</strong> On HTTP/1.1, maintaining
             multiple long-running streams that consume all 6 connections per
@@ -502,11 +502,11 @@ export default function ChunkedTransferEncodingArticle() {
 
       <section>
         <h2>Real-World Use Cases</h2>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Chunked transfer encoding is essential in these production scenarios:
-        </p>
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>LLM Token Streaming (ChatGPT, Claude):</strong> AI
             assistants stream generated tokens to the browser in real time. The
             server sends each token (or small batch) as a chunk, and the
@@ -515,7 +515,7 @@ export default function ChunkedTransferEncodingArticle() {
             format, frontend reads chunks via ReadableStream, parses each token,
             and appends to the message display. Without chunked encoding, users
             would wait seconds for the entire response before seeing any output.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Real-Time Dashboards:</strong> Financial trading dashboards,
             monitoring systems, and live scoreboards stream updates via chunked
@@ -567,7 +567,7 @@ export default function ChunkedTransferEncodingArticle() {
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
             <p className="font-semibold">Q1: How do you read a chunked HTTP response in JavaScript?</p>
-            <p className="mt-2 text-sm">
+            <HighlightBlock as="p" tier="crucial" className="mt-2 text-sm">
               <strong>Answer:</strong> I use the ReadableStream API via
               response.body.getReader(). The pattern is: fetch the resource,
               access response.body, get a reader, and read chunks in a loop.
@@ -576,7 +576,7 @@ export default function ChunkedTransferEncodingArticle() {
               TextDecoder, accumulate into a buffer, and parse complete messages
               (for example, split by newline for NDJSON). I continue reading
               until done is true.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
@@ -608,14 +608,14 @@ export default function ChunkedTransferEncodingArticle() {
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
             <p className="font-semibold">Q4: How do you implement reconnection for streaming endpoints?</p>
-            <p className="mt-2 text-sm">
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               <strong>Answer:</strong> I track the last processed item (via ID
               or timestamp). On connection drop, I wait with exponential
               backoff (1s, 2s, 4s), then reconnect with a query parameter
               indicating the last processed point (e.g., ?since=lastEventId).
               The server sends items after that point. This is the pattern used
               by Server-Sent Events with the Last-Event-ID header.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
@@ -634,14 +634,14 @@ export default function ChunkedTransferEncodingArticle() {
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
             <p className="font-semibold">Q6: How do you handle backpressure when reading streaming
               responses?</p>
-            <p className="mt-2 text-sm">
+            <HighlightBlock as="p" tier="crucial" className="mt-2 text-sm">
               <strong>Answer:</strong> I await each read() before processing the
               chunk. This applies backpressure naturally: if processing is slow,
               read() calls are delayed, the TCP receive buffer fills, and the
               server's TCP stack throttles sending. I do not read all chunks
               into an array before processing -- that would buffer the entire
               response and defeat streaming benefits.
-            </p>
+            </HighlightBlock>
           </div>
         </div>
       </section>

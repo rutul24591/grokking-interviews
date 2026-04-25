@@ -4678,9 +4678,24 @@ export const subcategoryArticles: Record<string, Array<{slug: string; title: str
   ],
   "other/data-structures-algorithms/algorithms": [
     {
+      "slug": "activity-selection",
+      "title": "Activity Selection",
+      "description": "Activity selection — the canonical greedy: earliest-finish-first for max non-overlapping activities, exchange-argument proof, and variants (min rooms, weighted intervals)."
+    },
+    {
+      "slug": "backtracking-fundamentals",
+      "title": "Backtracking Fundamentals",
+      "description": "Backtracking — choose-explore-unchoose template, state-space tree, pruning strategies (constraint propagation, bound, symmetry, MRV), and patterns for combinatorial search."
+    },
+    {
       "slug": "binary-search",
       "title": "Binary Search",
       "description": "Binary Search — O(log n) divide-and-conquer search over sorted data. The lower_bound / upper_bound / parametric-search template behind databases, compilers, and rate limiters."
+    },
+    {
+      "slug": "bitmask-dp",
+      "title": "Bitmask DP (TSP and Beyond)",
+      "description": "Bitmask DP — subset-indexed DP with 2ⁿ states. Held-Karp TSP in O(n²·2ⁿ), assignment, profile DP, and sum-over-subsets transforms."
     },
     {
       "slug": "bubble-sort",
@@ -4693,9 +4708,19 @@ export const subcategoryArticles: Record<string, Array<{slug: string; title: str
       "description": "Bucket Sort — distribute into k buckets, sort each, concatenate. Linear expected time on uniformly distributed data; the sort behind histogram equalization and range partitioning."
     },
     {
+      "slug": "coin-change",
+      "title": "Coin Change",
+      "description": "Coin change — the canonical unbounded-knapsack problem. Min-coins DP, count-of-ways, why greedy fails, canonical systems, and BFS/Dijkstra alternatives for huge amounts."
+    },
+    {
       "slug": "counting-sort",
       "title": "Counting Sort",
       "description": "Counting Sort — non-comparative linear-time sorting for small integer ranges. The stable workhorse inside radix sort and histogram-based sorts."
+    },
+    {
+      "slug": "divide-and-conquer",
+      "title": "Divide & Conquer + Master Theorem",
+      "description": "Divide & conquer paradigm — recurrence relations, Master Theorem cases, Akra–Bazzi generalization, and production applications from merge sort to MapReduce."
     },
     {
       "slug": "dp-fundamentals",
@@ -4703,14 +4728,34 @@ export const subcategoryArticles: Record<string, Array<{slug: string; title: str
       "description": "DP Fundamentals — optimal substructure, overlapping subproblems, memoization vs tabulation, state design, and the principled path from recursion to O(n²) wins."
     },
     {
+      "slug": "dp-on-trees",
+      "title": "Dynamic Programming on Trees",
+      "description": "DP on trees — subtree DP in a single DFS, rerooting for all-root answers in linear time, and pattern variants for MIS, diameter, and tree knapsack."
+    },
+    {
+      "slug": "edit-distance",
+      "title": "Edit Distance (Levenshtein)",
+      "description": "Levenshtein edit distance — O(mn) DP, the three-operation recurrence, Hirschberg's space-optimal variant, banded Ukkonen, and applications from spell check to DNA alignment."
+    },
+    {
       "slug": "exponential-search",
       "title": "Exponential Search",
       "description": "Exponential Search — doubling-bracket then binary search. O(log i) for unbounded sorted streams and arrays where the target is near the start."
     },
     {
+      "slug": "greedy-fundamentals",
+      "title": "Greedy Algorithm Fundamentals",
+      "description": "Greedy algorithms — greedy-choice property, optimal substructure, exchange arguments, matroids, fractional knapsack, and when to reach for DP instead."
+    },
+    {
       "slug": "heap-sort",
       "title": "Heap Sort",
       "description": "Heap Sort — guaranteed O(n log n) in-place sorting via binary-heap extraction. Introsort's safety net and the Linux kernel's sort of choice."
+    },
+    {
+      "slug": "huffman-coding",
+      "title": "Huffman Coding",
+      "description": "Huffman coding — optimal prefix codes via greedy merge, canonical Huffman, length-limited variants, and its role in DEFLATE and JPEG."
     },
     {
       "slug": "insertion-sort",
@@ -4723,9 +4768,19 @@ export const subcategoryArticles: Record<string, Array<{slug: string; title: str
       "description": "Interpolation Search — O(log log n) on uniformly distributed sorted data by guessing position from value, O(n) worst case on skewed data."
     },
     {
+      "slug": "job-sequencing",
+      "title": "Job Sequencing with Deadlines",
+      "description": "Job sequencing — max-profit selection under deadlines via greedy + DSU or min-heap, exchange-argument proof, and scheduling-family comparisons."
+    },
+    {
       "slug": "jump-search",
       "title": "Jump Search",
       "description": "Jump Search — O(√n) block-skipping search on sorted arrays. A middle ground between linear and binary when random access is expensive."
+    },
+    {
+      "slug": "karatsuba-multiplication",
+      "title": "Karatsuba Multiplication",
+      "description": "Karatsuba multiplication — the first sub-quadratic integer multiplication, divide-and-conquer with three sub-multiplications, Toom–Cook and Schönhage–Strassen successors."
     },
     {
       "slug": "knapsack-01",
@@ -4743,14 +4798,34 @@ export const subcategoryArticles: Record<string, Array<{slug: string; title: str
       "description": "LCS — the O(mn) DP underlying diff, git merge, bioinformatics alignment, and version control. State design and Hunt-Szymanski optimization."
     },
     {
+      "slug": "longest-increasing-subsequence",
+      "title": "Longest Increasing Subsequence (LIS)",
+      "description": "LIS — from O(n²) DP to O(n log n) patience-sort. Patience piles, tail arrays, binary search, and the Erdős-Szekeres connection."
+    },
+    {
       "slug": "merge-sort",
       "title": "Merge Sort",
       "description": "Staff-level deep dive into merge sort — divide-and-conquer mechanics, stable merge, top-down vs bottom-up, in-place and natural variants, Tim Sort and external merge sort as production descendants."
     },
     {
+      "slug": "n-queens",
+      "title": "N-Queens",
+      "description": "N-Queens — the canonical backtracking benchmark. Place n queens on n×n board with no two attacking via row-by-row DFS, bitmask state, and symmetry pruning."
+    },
+    {
+      "slug": "permutations-and-combinations",
+      "title": "Permutations & Combinations",
+      "description": "Permutations, combinations, and subsets via backtracking — three skeletons (subsets, permute, combine), bitmask iteration, lexicographic next_permutation, Heap's Algorithm, and duplicate handling."
+    },
+    {
       "slug": "quick-sort",
       "title": "Quick Sort",
       "description": "Quick Sort — partition-based in-place sorting with expected O(n log n), the workhorse behind introsort, Pdqsort, and most production sort() implementations."
+    },
+    {
+      "slug": "quickselect",
+      "title": "Quickselect",
+      "description": "Quickselect — linear-time k-th smallest via partition-and-recurse, randomized pivoting, median-of-medians worst-case, and production top-k patterns."
     },
     {
       "slug": "radix-sort",
@@ -4768,9 +4843,19 @@ export const subcategoryArticles: Record<string, Array<{slug: string; title: str
       "description": "Staff-level deep dive into Shell sort — gap sequences, h-sortedness, theoretical complexity bounds for Shell, Hibbard, Sedgewick, Ciura sequences, and Shellsort's niche between insertion sort and O(n log n) algorithms."
     },
     {
+      "slug": "sudoku-solver",
+      "title": "Sudoku Solver",
+      "description": "Sudoku solver — backtracking with row/column/box bitmasks, MRV branching, naked/hidden singles, Dancing Links exact-cover, and Norvig-style propagation."
+    },
+    {
       "slug": "ternary-search",
       "title": "Ternary Search",
       "description": "Ternary Search — divide the range into thirds to find the extremum of a unimodal function. O(log n) with larger constants than binary search."
+    },
+    {
+      "slug": "word-search",
+      "title": "Word Search",
+      "description": "Word Search — backtracking DFS on a 2D grid for word existence, Word Search II with trie-pruned multi-word search, and the broader grid-search pattern family."
     }
   ],
   "other/data-structures-algorithms/data-structures": [

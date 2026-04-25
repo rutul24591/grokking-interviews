@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="system-ui, sans-serif">
+  <rect width="900" height="500" fill="#f3f1f8"/>
+  <text x="450" y="32" text-anchor="middle" font-size="19" font-weight="700" fill="#1a1822">Constraint Propagation Techniques</text>
+
+  <rect x="40" y="60" width="820" height="200" fill="#fff" stroke="#6d5bd0" stroke-width="2" rx="6"/>
+  <text x="60" y="85" font-size="13" font-weight="700" fill="#6d5bd0">Deductions before branching</text>
+  <text x="60" y="112" font-size="11"><tspan font-weight="700">Naked single:</tspan> a cell has only one candidate digit → place it.</text>
+  <text x="60" y="135" font-size="11"><tspan font-weight="700">Hidden single:</tspan> within a row/col/box, a digit appears as candidate in only one cell → place it.</text>
+  <text x="60" y="158" font-size="11"><tspan font-weight="700">Naked pair:</tspan> two cells in a unit share the same 2 candidates → eliminate those digits from the unit's other cells.</text>
+  <text x="60" y="181" font-size="11"><tspan font-weight="700">Hidden pair / triple:</tspan> 2 (or 3) digits restricted to 2 (or 3) cells in a unit.</text>
+  <text x="60" y="204" font-size="11"><tspan font-weight="700">Pointing pair:</tspan> a digit's candidates within a box are confined to one row/column → eliminate from rest of that line.</text>
+  <text x="60" y="227" font-size="11"><tspan font-weight="700">X-Wing / Swordfish:</tspan> rectangular candidate patterns rule out digits in crossing rows and columns.</text>
+
+  <rect x="40" y="280" width="820" height="195" fill="#fff" stroke="#4caf50" stroke-width="2" rx="6"/>
+  <text x="60" y="305" font-size="13" font-weight="700" fill="#4caf50">MRV branching + AC-3 propagation</text>
+  <text x="60" y="330" font-size="11">• <tspan font-weight="700">MRV:</tspan> branch on the cell with fewest candidates. Failing earlier = smaller search tree.</text>
+  <text x="60" y="350" font-size="11">• <tspan font-weight="700">LCV:</tspan> within a cell, try the value that least constrains other cells.</text>
+  <text x="60" y="370" font-size="11">• <tspan font-weight="700">AC-3 / Forward Checking:</tspan> after placing a digit, propagate eliminations through neighbours.</text>
+  <text x="60" y="390" font-size="11">• <tspan font-weight="700">Dancing Links (Knuth):</tspan> represent Sudoku as exact-cover; DLX backtracking with O(1) cover/uncover.</text>
+  <text x="60" y="410" font-size="11">• <tspan font-weight="700">Norvig's solver</tspan> (2006): combines constraint propagation + DFS, ~50 lines of Python, solves all 50</text>
+  <text x="60" y="428" font-size="11">  Project Euler #96 puzzles in &lt;1s and most "world's hardest" Sudokus.</text>
+  <text x="60" y="455" font-size="11" fill="#4caf50" font-weight="700">Pure DFS without propagation: 9^81 ≈ 10^77 states. With propagation: nearly always &lt;10⁴ nodes visited.</text>
+</svg>

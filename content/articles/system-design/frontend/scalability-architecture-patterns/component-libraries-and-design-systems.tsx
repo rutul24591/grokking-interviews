@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -34,7 +35,7 @@ export default function ComponentLibrariesDesignSystemsArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           A <strong>Design System</strong> is the single source of truth for a
           product&apos;s visual language, interaction patterns, and component
           implementations. It encompasses design tokens (color, typography,
@@ -44,8 +45,8 @@ export default function ComponentLibrariesDesignSystemsArticle() {
           teams. A <strong>Component Library</strong> is the code implementation
           layer of a design system — the React/Vue/Angular packages that teams
           import and use in their applications.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The distinction matters: a component library without a design system
           is just a collection of reusable components with no governing
           principles. A design system without a component library is a Figma
@@ -54,8 +55,8 @@ export default function ComponentLibrariesDesignSystemsArticle() {
           Design System), GitHub (Primer) — invest heavily in both, treating the
           design system as a product with its own team, roadmap, and versioning
           strategy.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           For staff-level engineers, design system architecture is a critical
           skill. Decisions about token taxonomy, component API design,
           versioning strategy, contribution models, and multi-brand theming have
@@ -63,13 +64,13 @@ export default function ComponentLibrariesDesignSystemsArticle() {
           visual inconsistency; a rigid component API stifles adoption; a
           monolithic package structure prevents tree-shaking; an opaque
           contribution process creates bottlenecks.
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
         <h2>Core Concepts</h2>
         <ul>
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Design Tokens:</strong> The atomic values that define the
             visual language — colors, spacing scales, typography (font family,
             size, weight, line height), border radii, shadows, breakpoints, and
@@ -78,7 +79,7 @@ export default function ComponentLibrariesDesignSystemsArticle() {
             color.blue.500), and component tokens (button.color.background →
             color.primary). This hierarchy enables theming by swapping alias
             mappings.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Primitive Components:</strong> The lowest-level building
             blocks — Button, Input, Text, Icon, Badge, Avatar. These implement
@@ -95,15 +96,15 @@ export default function ComponentLibrariesDesignSystemsArticle() {
             patterns and business logic patterns that should be consistent
             across products.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Headless Components:</strong> Components that provide
             behavior (state management, keyboard interactions, ARIA) without
             rendering any UI. Libraries like Radix, React Aria, and Headless UI
             provide headless primitives that design systems wrap with their own
             visual styles. This separates behavior (hard to implement correctly)
             from appearance (varies by brand).
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Contribution Model:</strong> How consuming teams can add or
             modify components. Centralized models (a dedicated team owns all
             components) ensure consistency but create bottlenecks. Federated
@@ -111,41 +112,42 @@ export default function ComponentLibrariesDesignSystemsArticle() {
             inconsistency. Most mature systems use a hybrid: a core team
             maintains primitives and reviews contributions, while product teams
             build domain-specific patterns.
-          </li>
+          </HighlightBlock>
         </ul>
       </section>
 
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           Design systems are layered architectures where each layer builds on
           the one below, creating a stack from raw values to complete UI
           patterns.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/frontend/scalability-architecture-patterns/component-libraries-and-design-systems-diagram-1.svg"
           alt="Layered Design System Architecture"
           caption="Layered architecture — design tokens → primitive components → composite patterns → page templates, each layer building on the one below"
+          captionTier="crucial"
         />
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           The layered architecture ensures that changes propagate consistently.
           Updating a global color token automatically flows through alias tokens
           to component tokens to every component that references them. This
           propagation is the primary value proposition of a design system — a
           single change to the primary color updates every button, link, and
           icon across all products.
-        </p>
+        </HighlightBlock>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-4 text-lg font-semibold">
             Compound vs Configuration Prop Patterns
           </h3>
-          <p>
+          <HighlightBlock as="p" tier="important">
             Two dominant approaches to component API design present different
             trade-offs:
-          </p>
+          </HighlightBlock>
           <ul className="mt-3 space-y-2">
             <li>
               <strong>Compound Components:</strong> Composition-based API where
@@ -166,11 +168,11 @@ export default function ComponentLibrariesDesignSystemsArticle() {
               prop bloat for complex use cases.
             </li>
           </ul>
-          <p className="mt-3">
+          <HighlightBlock as="p" tier="important" className="mt-3">
             Best practice: provide both — compound components for full control
             and a preconfigured wrapper for the common case. Many mature design
             systems (Radix, Chakra) take this approach.
-          </p>
+          </HighlightBlock>
         </div>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
@@ -196,17 +198,18 @@ export default function ComponentLibrariesDesignSystemsArticle() {
               JavaScript constants, iOS/Android values, Figma plugin sync
             </li>
           </ol>
-          <p className="mt-3">
+          <HighlightBlock as="p" tier="important" className="mt-3">
             This pipeline ensures tokens are the single source of truth across
             platforms — web, iOS, Android, and design tools all consume the same
             values in their native formats.
-          </p>
+          </HighlightBlock>
         </div>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/frontend/scalability-architecture-patterns/component-libraries-and-design-systems-diagram-2.svg"
           alt="Design token hierarchy showing three tiers: global tokens (raw values), alias tokens (semantic meaning), and component tokens with multi-brand theming flow"
           caption="Design token hierarchy — three-tier system enabling multi-brand theming through alias layer swapping"
+          captionTier="important"
         />
       </section>
 
@@ -249,10 +252,12 @@ export default function ComponentLibrariesDesignSystemsArticle() {
                 <br />• Copy-paste reduction eliminates inconsistency bugs
               </td>
               <td className="p-3">
-                • Initial investment is significant (6-12 months)
-                <br />
-                • Blocked on design system team for new components
-                <br />• Migration cost for existing products
+                <HighlightBlock tier="crucial">
+                  • Initial investment is significant (6-12 months)
+                  <br />
+                  • Blocked on design system team for new components
+                  <br />• Migration cost for existing products
+                </HighlightBlock>
               </td>
             </tr>
             <tr>
@@ -266,10 +271,12 @@ export default function ComponentLibrariesDesignSystemsArticle() {
                 <br />• Shared testing reduces duplicate effort
               </td>
               <td className="p-3">
-                • Breaking changes affect all consumers simultaneously
-                <br />
-                • Version fragmentation across consuming teams
-                <br />• Documentation must be comprehensive and current
+                <HighlightBlock tier="important">
+                  • Breaking changes affect all consumers simultaneously
+                  <br />
+                  • Version fragmentation across consuming teams
+                  <br />• Documentation must be comprehensive and current
+                </HighlightBlock>
               </td>
             </tr>
             <tr>
@@ -283,10 +290,12 @@ export default function ComponentLibrariesDesignSystemsArticle() {
                 <br />• Headless base enables framework portability
               </td>
               <td className="p-3">
-                • Token hierarchy complexity grows with brand count
-                <br />
-                • Performance cost of abstraction layers
-                <br />• Coordination cost across teams and time zones
+                <HighlightBlock tier="important">
+                  • Token hierarchy complexity grows with brand count
+                  <br />
+                  • Performance cost of abstraction layers
+                  <br />• Coordination cost across teams and time zones
+                </HighlightBlock>
               </td>
             </tr>
           </tbody>
@@ -296,21 +305,21 @@ export default function ComponentLibrariesDesignSystemsArticle() {
       <section>
         <h2>Best Practices</h2>
         <ol className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Build on Headless Foundations:</strong> Use a headless
             component library (Radix, React Aria, Headless UI) as the behavioral
             foundation. These libraries handle accessibility, keyboard
             navigation, and state management correctly — things that are
             notoriously difficult to implement from scratch. Your design system
             wraps these with your visual styles and tokens.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Design Tokens Before Components:</strong> Establish the
             token hierarchy before building components. Tokens are the API
             contract between design and engineering. If tokens are an
             afterthought, components will hard-code values, defeating the
             purpose of a design system.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Ship with Storybook:</strong> Every component should have
             Storybook stories that demonstrate all variants, states (default,
@@ -318,20 +327,20 @@ export default function ComponentLibrariesDesignSystemsArticle() {
             serves as interactive documentation, a visual regression testing
             target (Chromatic), and a development environment.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Adopt Semantic Versioning Strictly:</strong> Breaking
             changes (prop removals, visual changes, behavior changes) must
             increment the major version. Consuming teams need confidence that
             minor and patch updates will not break their applications. Automate
             version enforcement with tools like changesets or semantic-release.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Provide Codemods for Breaking Changes:</strong> When making
             breaking changes, provide automated codemods (jscodeshift scripts)
             that migrate consuming code. This dramatically reduces the cost of
             upgrades and increases adoption of new versions. Include codemods in
             the release notes.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Measure Adoption:</strong> Track which components are used,
             how often, and by which teams. Low-adoption components may need
@@ -352,62 +361,62 @@ export default function ComponentLibrariesDesignSystemsArticle() {
             effort on visual design and brand expression, not interaction
             mechanics.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Premature Abstraction:</strong> Adding components to the
             design system before they have been validated in multiple products.
             The &quot;rule of three&quot; applies — a pattern should appear in
             at least three products before being promoted to the design system.
             Otherwise, you are encoding one product&apos;s assumptions into the
             shared library.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Monolithic Package:</strong> Shipping all components in a
             single package forces consumers to import (and potentially bundle)
             everything. Use a multi-package architecture where each component or
             component group is its own package with independent versioning.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Ignoring Performance:</strong> Design system components that
             are used everywhere must be optimized for rendering performance.
             Avoid unnecessary re-renders, keep component trees shallow, memoize
             expensive computations, and measure bundle size impact of each
             component.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Documentation Rot:</strong> Documentation that falls out of
             sync with the code is worse than no documentation — it creates false
             confidence. Use tools that generate documentation from code (TypeDoc
             for props, Storybook for visual examples) to keep docs automatically
             synchronized.
-          </li>
+          </HighlightBlock>
         </ul>
       </section>
 
       <section>
         <h2>Real-World Use Cases</h2>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Shopify Polaris:</strong> Shopify&apos;s design system
             serves thousands of third-party app developers building Shopify
             admin extensions. Polaris provides React components, design tokens,
             icons, and extensive documentation. Its adoption challenge is unique
             — external developers must find the system intuitive without
             internal context.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Google Material Design:</strong> Material Design is a
             cross-platform design system with implementations for Web (MUI),
             Android (Material Components), iOS, and Flutter. It demonstrates the
             token-based multi-platform approach, where design tokens defined
             centrally are consumed by platform-specific implementations.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>GitHub Primer:</strong> Primer is GitHub&apos;s design
             system with React components (Primer React), CSS framework (Primer
             CSS), and design tokens. It is open-source, enabling the community
             to contribute and the design system to serve as a recruiting
             showcase.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Atlassian Design System:</strong> Atlassian&apos;s design
             system powers products from Jira to Confluence to Bitbucket. It
@@ -415,46 +424,46 @@ export default function ComponentLibrariesDesignSystemsArticle() {
             products with very different use cases — project management,
             document editing, and code hosting.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Uber Base Web:</strong> Base Web is Uber&apos;s design
             system with a focus on customization through an overrides API. Every
             component accepts an overrides prop that allows fine-grained control
             over sub-components, styles, and behavior — addressing the tension
             between consistency and flexibility.
-          </li>
+          </HighlightBlock>
         </ul>
       </section>
 
       <section>
         <h2>Security Considerations</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           Design systems and component libraries introduce unique security considerations because they are deployed across multiple applications and can become a single point of failure for security vulnerabilities.
-        </p>
+        </HighlightBlock>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-4 text-lg font-semibold">Supply Chain Security</h3>
           <ul className="space-y-2">
-            <li>
+            <HighlightBlock as="li" tier="important">
               <strong>Dependency Vulnerabilities:</strong> A vulnerability in the design system propagates to all consuming applications. Mitigation: implement automated dependency scanning (Snyk, Dependabot), pin exact versions, maintain a security patch SLA, communicate vulnerabilities to consuming teams immediately.
-            </li>
-            <li>
+            </HighlightBlock>
+            <HighlightBlock as="li" tier="important">
               <strong>Malicious Package Injection:</strong> Compromised build pipelines could inject malicious code. Mitigation: use private registries with strict access control, implement build pipeline security (OIDC authentication, signed commits), use package signing and verification.
-            </li>
+            </HighlightBlock>
             <li>
               <strong>CDN Compromise:</strong> If components are served from CDN, a compromised CDN affects all applications. Mitigation: use Subresource Integrity (SRI) hashes, implement CDN failover, use multiple CDN providers, monitor for unexpected content changes.
             </li>
-            <li>
+            <HighlightBlock as="li" tier="important">
               <strong>Third-Party Component Risk:</strong> Components wrapping third-party services (analytics, chat widgets) can leak data. Mitigation: audit all third-party integrations, implement data minimization, use sandboxed iframes for untrusted third-party code.
-            </li>
+            </HighlightBlock>
           </ul>
         </div>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-4 text-lg font-semibold">XSS Prevention in Components</h3>
           <ul className="space-y-2">
-            <li>
+            <HighlightBlock as="li" tier="important">
               <strong>Props Sanitization:</strong> Components accepting user-generated content (tooltips, modals, notifications) must sanitize props. Mitigation: use DOMPurify or similar libraries, avoid dangerouslySetInnerHTML, implement strict Content Security Policy.
-            </li>
+            </HighlightBlock>
             <li>
               <strong>Event Handler Security:</strong> Components passing event handlers as props can be exploited. Mitigation: validate handler props, avoid passing untrusted callbacks, implement event handler allowlists.
             </li>
@@ -479,9 +488,9 @@ export default function ComponentLibrariesDesignSystemsArticle() {
 
       <section>
         <h2>Testing Strategies</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           Design systems require comprehensive testing to ensure consistency, accessibility, and correctness across all consuming applications.
-        </p>
+        </HighlightBlock>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-4 text-lg font-semibold">Testing Pyramid for Design Systems</h3>
@@ -489,18 +498,18 @@ export default function ComponentLibrariesDesignSystemsArticle() {
             <li>
               <strong>Unit Tests (Base):</strong> Test individual components in isolation. Test props, events, slots, and business logic. Aim for 90%+ coverage on core components. Use Jest, Vitest, or similar.
             </li>
-            <li>
+            <HighlightBlock as="li" tier="important">
               <strong>Visual Regression Tests (Middle):</strong> Capture screenshots of all component states. Compare against baselines to detect visual regressions. Use Percy, Chromatic, or Loki. Run on every PR.
-            </li>
-            <li>
+            </HighlightBlock>
+            <HighlightBlock as="li" tier="important">
               <strong>Accessibility Tests (Middle):</strong> Automated a11y testing with axe-core, pa11y, or jest-axe. Test all interactive components. Aim for zero violations. Include in CI/CD pipeline.
-            </li>
+            </HighlightBlock>
             <li>
               <strong>Integration Tests (Middle):</strong> Test component composition and interaction. Verify that components work correctly when nested or combined. Test with different themes and configurations.
             </li>
-            <li>
+            <HighlightBlock as="li" tier="important">
               <strong>Consumer Integration Tests (Top):</strong> Test the design system in real consuming applications. Catch issues that only appear in production-like environments. Use canary releases for major versions.
-            </li>
+            </HighlightBlock>
           </ul>
         </div>
 
@@ -540,9 +549,9 @@ export default function ComponentLibrariesDesignSystemsArticle() {
 
       <section>
         <h2>Performance Benchmarks</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           Design system performance directly impacts all consuming applications. Understanding and optimizing performance characteristics is essential.
-        </p>
+        </HighlightBlock>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-4 text-lg font-semibold">Performance Metrics to Track</h3>
@@ -590,15 +599,15 @@ export default function ComponentLibrariesDesignSystemsArticle() {
             Design system bundle size is critical for consumer applications:
           </p>
           <ul className="mt-3 space-y-2">
-            <li>
+            <HighlightBlock as="li" tier="important">
               <strong>Tree-Shaking:</strong> Use ES modules with sideEffects: false in package.json. Avoid side effects in component files. Test tree-shaking effectiveness with webpack bundle analyzer.
-            </li>
+            </HighlightBlock>
             <li>
               <strong>Code Splitting:</strong> Split large components (data tables, rich text editors) into separate chunks. Load on demand. Use dynamic imports for heavy components.
             </li>
-            <li>
+            <HighlightBlock as="li" tier="important">
               <strong>Dependency Management:</strong> Keep peer dependencies minimal. Avoid bundling React, lodash, etc. Use tree-shakeable alternatives (lodash-es).
-            </li>
+            </HighlightBlock>
             <li>
               <strong>CSS Optimization:</strong> Use CSS-in-JS with critical CSS extraction. Purge unused CSS. Minify and compress CSS output.
             </li>
@@ -614,28 +623,28 @@ export default function ComponentLibrariesDesignSystemsArticle() {
             <li>
               <strong>Material-UI (MUI):</strong> Core bundle: ~12KB gzipped. Full library: ~150KB gzipped. Tree-shaking efficiency: ~85%.
             </li>
-            <li>
+            <HighlightBlock as="li" tier="important">
               <strong>Chakra UI:</strong> Core bundle: ~10KB gzipped. Uses emotion for CSS-in-JS. Tree-shaking via barrel exports.
-            </li>
-            <li>
+            </HighlightBlock>
+            <HighlightBlock as="li" tier="important">
               <strong>Radix UI:</strong> Headless primitives: ~5KB per component. Zero runtime CSS. Maximum tree-shaking efficiency.
-            </li>
+            </HighlightBlock>
           </ul>
         </div>
       </section>
 
       <section>
         <h2>Cost Analysis</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           Building and maintaining a design system requires significant investment. Understanding the total cost of ownership is essential for justifying the investment.
-        </p>
+        </HighlightBlock>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-4 text-lg font-semibold">Development Costs</h3>
           <ul className="space-y-2">
-            <li>
+            <HighlightBlock as="li" tier="important">
               <strong>Initial Development:</strong> Building a comprehensive design system (50+ components, tokens, documentation) requires 3-5 engineers for 6-12 months. Estimate: $500K-1.5M (fully-loaded costs).
-            </li>
+            </HighlightBlock>
             <li>
               <strong>Ongoing Maintenance:</strong> Dedicated team of 2-4 engineers for updates, bug fixes, new components. Estimate: $300K-600K/year.
             </li>
@@ -666,33 +675,39 @@ export default function ComponentLibrariesDesignSystemsArticle() {
             Design system ROI comes from developer productivity gains:
           </p>
           <ul className="mt-3 space-y-2">
-            <li>
+            <HighlightBlock as="li" tier="important">
               <strong>Development Velocity:</strong> Teams build features 30-50% faster with pre-built components. For a team of 20 engineers at $200K/year, 30% velocity gain = $1.2M/year savings.
-            </li>
+            </HighlightBlock>
             <li>
               <strong>Consistency:</strong> Reduced design debt, fewer UX bugs, faster design reviews. Hard to quantify but significant.
             </li>
-            <li>
+            <HighlightBlock as="li" tier="important">
               <strong>Accessibility Compliance:</strong> Built-in a11y reduces legal risk and remediation costs. Accessibility lawsuits average $50K-150K in legal fees alone.
-            </li>
+            </HighlightBlock>
             <li>
               <strong>Net ROI:</strong> Typical design systems show positive ROI within 12-18 months for organizations with 5+ product teams.
             </li>
           </ul>
         </div>
 
-        <div className="my-6 rounded-lg border border-accent/30 bg-accent/10 p-6">
+        <HighlightBlock
+          className="my-6 rounded-lg border border-accent/30 bg-accent/10 p-6"
+          tier="crucial"
+        >
           <h3 className="mb-3 font-semibold">Make vs Buy Decision Framework</h3>
           <p>
             Consider buying (MUI, Chakra, Ant Design) when: (1) you have &lt;5 product teams, (2) no unique branding requirements, (3) limited engineering resources. Consider building custom when: (1) you have 5+ teams, (2) strong brand differentiation needs, (3) unique interaction patterns, (4) dedicated platform team available.
           </p>
-        </div>
+        </HighlightBlock>
       </section>
 
       <section>
         <h2>Common Interview Questions</h2>
         <div className="space-y-4">
-          <div className="rounded-lg border border-theme bg-panel-soft p-4">
+          <HighlightBlock
+            className="rounded-lg border border-theme bg-panel-soft p-4"
+            tier="important"
+          >
             <p className="font-semibold">
               Q: What is the difference between a component library and a design
               system?
@@ -708,9 +723,12 @@ export default function ComponentLibrariesDesignSystemsArticle() {
               system (just reusable code), but a design system without a
               component library is just documentation.
             </p>
-          </div>
+          </HighlightBlock>
 
-          <div className="rounded-lg border border-theme bg-panel-soft p-4">
+          <HighlightBlock
+            className="rounded-lg border border-theme bg-panel-soft p-4"
+            tier="crucial"
+          >
             <p className="font-semibold">
               Q: How would you architect a design token system for multi-brand
               theming?
@@ -727,9 +745,12 @@ export default function ComponentLibrariesDesignSystemsArticle() {
               runtime theming or a build pipeline (Style Dictionary) for static
               theme generation.
             </p>
-          </div>
+          </HighlightBlock>
 
-          <div className="rounded-lg border border-theme bg-panel-soft p-4">
+          <HighlightBlock
+            className="rounded-lg border border-theme bg-panel-soft p-4"
+            tier="important"
+          >
             <p className="font-semibold">
               Q: How do you handle breaking changes in a widely-used component
               library?
@@ -745,9 +766,12 @@ export default function ComponentLibrariesDesignSystemsArticle() {
               Track migration progress across consuming teams with automated
               tooling.
             </p>
-          </div>
+          </HighlightBlock>
 
-          <div className="rounded-lg border border-theme bg-panel-soft p-4">
+          <HighlightBlock
+            className="rounded-lg border border-theme bg-panel-soft p-4"
+            tier="important"
+          >
             <p className="font-semibold">
               Q: What are headless components, and why would a design system use
               them?
@@ -766,9 +790,12 @@ export default function ComponentLibrariesDesignSystemsArticle() {
               and appearance also enables multiple design systems to share the
               same behavioral base.
             </p>
-          </div>
+          </HighlightBlock>
 
-          <div className="rounded-lg border border-theme bg-panel-soft p-4">
+          <HighlightBlock
+            className="rounded-lg border border-theme bg-panel-soft p-4"
+            tier="important"
+          >
             <p className="font-semibold">
               Q: How do you measure the success of a design system?
             </p>
@@ -784,7 +811,7 @@ export default function ComponentLibrariesDesignSystemsArticle() {
               vanity metrics like component count — fewer, well-designed
               components are better than many rarely-used ones.
             </p>
-          </div>
+          </HighlightBlock>
         </div>
       </section>
 

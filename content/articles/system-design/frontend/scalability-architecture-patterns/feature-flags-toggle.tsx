@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -24,28 +25,28 @@ export default function FeatureFlagsToggleArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           <strong>Feature Flags</strong> (also called feature toggles, feature switches, or feature gates)
           are a technique that allows teams to modify system behavior without deploying new code. A feature
           flag wraps a conditional around a piece of functionality, and the flag&apos;s value — determined
           at runtime by configuration — controls whether that functionality is active for a given user,
           environment, or context.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Feature flags emerged from the continuous delivery movement as a solution to the tension between
           frequent deployments and controlled releases. Martin Fowler and Pete Hodgson formalized the
           taxonomy in their influential 2017 article, distinguishing release toggles, experiment toggles,
           ops toggles, and permission toggles — each with different lifespans, ownership models, and
           management requirements.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           In modern frontend organizations, feature flags are infrastructure-level concerns on par with
           CI/CD pipelines and monitoring. Companies like Meta, Netflix, and Uber deploy code continuously
           behind flags, enabling practices like trunk-based development (no long-lived branches), canary
           releases (gradual rollout to percentages of users), A/B testing (experiment toggles), and kill
           switches (instant feature disablement without deployment). Understanding flag architecture is
           essential for staff engineers who design deployment strategies and operational safety nets.
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
@@ -62,51 +63,52 @@ export default function FeatureFlagsToggleArticle() {
             active for the duration of the experiment (days to weeks). Owned by the product or growth team.
             Must be statistically rigorous with consistent bucketing (same user always sees the same variant).
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Ops Toggle:</strong> Controls operational aspects of system behavior — circuit breakers,
             graceful degradation, maintenance modes. Long-lived and permanent. Owned by the operations or
             SRE team. Must be instantly togglable without deployment.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Permission Toggle:</strong> Controls feature access based on user roles, subscription
             tiers, or entitlements. Long-lived and tied to the business model. Owned by the product team.
             Often the boundary between feature flagging and authorization systems.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Flag Evaluation Pipeline:</strong> The process of determining a flag&apos;s value for
             a specific user context. The pipeline typically includes: user context collection (ID, attributes,
             device), rule matching (targeting rules, percentage allocation), fallback evaluation (default
             values), and caching (avoid re-evaluating on every render).
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Sticky Bucketing:</strong> Ensuring that a user consistently sees the same flag variant
             across sessions and devices. Implemented by hashing the user ID + flag key to produce a
             deterministic bucket assignment. Without sticky bucketing, users may experience flickering
             between variants, corrupting experiment results and creating a jarring UX.
-          </li>
+          </HighlightBlock>
         </ul>
       </section>
 
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           Feature flag systems have distinct architectural concerns: flag definition, storage, evaluation,
           and delivery to the client.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/frontend/scalability-architecture-patterns/feature-flags-toggle-diagram-1.svg"
           alt="Flag Evaluation Pipeline"
           caption="Flag evaluation pipeline — user context flows through targeting rules, percentage allocation, and overrides to produce a flag value"
+          captionTier="crucial"
         />
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           The evaluation pipeline is the critical path of a feature flag system. It must be fast (evaluated
           on every render path), deterministic (same inputs always produce the same output), and resilient
           (fallback to defaults if the flag service is unavailable). Client-side evaluation caches the full
           rule set locally, enabling sub-millisecond evaluation without network roundtrips. Server-side
           evaluation keeps rules confidential but adds latency.
-        </p>
+        </HighlightBlock>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-4 text-lg font-semibold">Flag Types Matrix</h3>
@@ -152,15 +154,20 @@ export default function FeatureFlagsToggleArticle() {
           src="/diagrams/system-design-concepts/frontend/scalability-architecture-patterns/feature-flags-toggle-diagram-2.svg"
           alt="Feature flag evaluation flow comparing client-side (local SDK evaluation) versus server-side (flag service evaluation) with their security and performance trade-offs"
           caption="Evaluation strategies — client-side offers instant evaluation but exposes rules; server-side keeps rules confidential but adds latency"
+          captionTier="important"
         />
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-4 text-lg font-semibold">Canary Progressive Rollout</h3>
-          <p>Progressive rollout stages with monitoring gates between each:</p>
+          <HighlightBlock as="p" tier="important">
+            Progressive rollout stages with monitoring gates between each:
+          </HighlightBlock>
           <ol className="mt-3 space-y-2">
             <li><strong>Stage 1 (1%):</strong> Internal employees only. Monitor for crashes, error rates, and performance regressions.</li>
             <li><strong>Stage 2 (5%):</strong> Opt-in beta users. Monitor business metrics (conversion, engagement) alongside technical metrics.</li>
-            <li><strong>Stage 3 (25%):</strong> Random user sample. Statistically significant for detecting regressions. Automated rollback triggers.</li>
+            <HighlightBlock as="li" tier="important">
+              <strong>Stage 3 (25%):</strong> Random user sample. Statistically significant for detecting regressions. Automated rollback triggers.
+            </HighlightBlock>
             <li><strong>Stage 4 (50%):</strong> Half of users. Final validation before full rollout. A/B comparison against control group.</li>
             <li><strong>Stage 5 (100%):</strong> Full rollout. Remove flag after bake period (1-2 weeks with no issues).</li>
           </ol>
@@ -170,6 +177,7 @@ export default function FeatureFlagsToggleArticle() {
           src="/diagrams/system-design-concepts/frontend/scalability-architecture-patterns/feature-flags-toggle-diagram-3.svg"
           alt="Progressive rollout stages from 1% to 100% with monitoring gates between stages and automated rollback path on threshold breach"
           caption="Progressive rollout — gradual percentage increase with monitoring gates and automated rollback on metric threshold breaches"
+          captionTier="important"
         />
       </section>
 
@@ -192,9 +200,11 @@ export default function FeatureFlagsToggleArticle() {
                 • Kill switches for emergency feature disablement
               </td>
               <td className="p-3">
-                • False sense of security if flags are not monitored<br />
-                • Stale flags become invisible tech debt<br />
-                • Flag interactions create combinatorial complexity
+                <HighlightBlock tier="important">
+                  • False sense of security if flags are not monitored<br />
+                  • Stale flags become invisible tech debt<br />
+                  • Flag interactions create combinatorial complexity
+                </HighlightBlock>
               </td>
             </tr>
             <tr>
@@ -231,9 +241,11 @@ export default function FeatureFlagsToggleArticle() {
                 • Maintenance windows without deployments
               </td>
               <td className="p-3">
-                • Flag service becomes a critical dependency<br />
-                • Misconfigured flags cause production incidents<br />
-                • Audit trail needed for flag changes
+                <HighlightBlock tier="crucial">
+                  • Flag service becomes a critical dependency<br />
+                  • Misconfigured flags cause production incidents<br />
+                  • Audit trail needed for flag changes
+                </HighlightBlock>
               </td>
             </tr>
           </tbody>
@@ -243,18 +255,18 @@ export default function FeatureFlagsToggleArticle() {
       <section>
         <h2>Best Practices</h2>
         <ol className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Set Expiration Dates on Release Flags:</strong> Every release flag should have a planned
             removal date. After the feature is fully rolled out and stable for a bake period (1-2 weeks),
             remove the flag and its conditional code. Use automated reminders or CI checks that flag stale
             toggles.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Use Server-Side Evaluation for Security-Sensitive Flags:</strong> Flags that control
             access to premium features or sensitive data should be evaluated server-side so that the flag
             rules are not exposed to the client. Client-side flags can be inspected and manipulated by
             users.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Implement Fallback Defaults:</strong> When the flag service is unavailable, the
             application must still function. Define sensible default values for every flag, and cache
@@ -266,46 +278,46 @@ export default function FeatureFlagsToggleArticle() {
             A flag that controls an entire page component is hard to remove; a flag that controls one specific
             behavior within a component is easier to clean up. Prefer many narrow flags over few broad flags.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Monitor Flag-Gated Features:</strong> Every flag rollout should be accompanied by
             monitoring dashboards that compare flagged-on versus flagged-off user groups across key
             metrics (error rate, latency, conversion). Set automated rollback triggers when metrics
             deviate beyond thresholds.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Track Flag Inventory:</strong> Maintain a dashboard showing all active flags, their
             types, owners, creation dates, and current rollout percentages. Review flag inventory in
             sprint retrospectives. Treat stale flags as tech debt and prioritize their removal.
-          </li>
+          </HighlightBlock>
         </ol>
       </section>
 
       <section>
         <h2>Common Pitfalls</h2>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Flag Debt:</strong> The most pervasive issue — release flags that are never removed
             after full rollout. Over months, these accumulate into hundreds of dead conditionals that
             obscure the code, confuse new developers, and interact in unexpected ways. Establish a
             flag removal process with ownership and deadlines.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Combinatorial Explosion:</strong> N boolean flags create 2^N possible configurations.
             Testing all combinations is infeasible beyond a handful of flags. Mitigate by testing critical
             flag combinations explicitly, using feature groups (flags that are always enabled/disabled
             together), and keeping the active flag count low.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Flag Service as Single Point of Failure:</strong> If the flag service goes down and
             the application does not have robust fallback behavior, all flag-gated features may break.
             Cache flag values locally, provide offline defaults, and test the degraded mode regularly.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>UI Flicker on Flag Resolution:</strong> When flags are evaluated asynchronously
             (fetched from a server), the UI may render with default values and then re-render with the
             resolved values, causing a visible flicker. Use loading states, render nothing until flags
             resolve, or bootstrap flags inline in the HTML response to avoid this.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Experiment Contamination:</strong> Running multiple overlapping experiments without
             proper isolation can corrupt statistical results. If experiment A changes the checkout flow
@@ -318,43 +330,43 @@ export default function FeatureFlagsToggleArticle() {
       <section>
         <h2>Real-World Use Cases</h2>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Meta&apos;s Gatekeeper:</strong> Meta uses an internal feature flag system called
             Gatekeeper that manages thousands of flags across billions of users. Every feature ships behind
             a gate, enabling per-country rollouts, employee dogfooding, and instant kill switches. Flag
             evaluation is client-side for performance.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Netflix&apos;s A/B Testing Platform:</strong> Netflix runs hundreds of concurrent A/B
             tests across its UI, recommendation algorithms, and streaming parameters. Feature flags
             determine which variant each member sees, with consistent bucketing across devices.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>LaunchDarkly:</strong> A leading feature flag SaaS that provides SDKs for frontend
             and backend, streaming flag updates via SSE, targeting rules based on user attributes,
             percentage rollouts with sticky bucketing, and integration with monitoring tools for
             automated rollback.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>GitHub&apos;s Feature Flags:</strong> GitHub uses feature flags extensively to ship
             features like Copilot, Actions, and Codespaces progressively. Staff-shipped features are
             enabled for GitHub employees first, then beta users, then gradually to all users with
             monitoring at each stage.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Circuit Breakers in E-Commerce:</strong> E-commerce sites use ops flags as circuit
             breakers during high-traffic events (Black Friday). If the recommendation service is
             overloaded, an ops flag disables personalized recommendations and shows static best-sellers,
             preventing cascade failures.
-          </li>
+          </HighlightBlock>
         </ul>
       </section>
 
       <section>
         <h2>Security Considerations</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           Feature Flags introduce security considerations around access control, flag exposure, and the potential for feature flags to bypass security controls.
-        </p>
+        </HighlightBlock>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-4 text-lg font-semibold">Feature Flag Security Patterns</h3>
@@ -362,12 +374,12 @@ export default function FeatureFlagsToggleArticle() {
             <li>
               <strong>Flag Access Control:</strong> Not all users should have access to all flags. Mitigation: implement role-based flag access, validate flag permissions server-side, audit flag changes.
             </li>
-            <li>
+            <HighlightBlock as="li" tier="important">
               <strong>Client-Side Flag Security:</strong> Client-side flags are exposed to users. Mitigation: never use client-side flags for security features, validate all flag-based behavior server-side, use server-side evaluation for sensitive features.
-            </li>
-            <li>
+            </HighlightBlock>
+            <HighlightBlock as="li" tier="important">
               <strong>Flag Injection Prevention:</strong> Attackers may try to manipulate flag values. Mitigation: sign flag configurations, validate flag values, use secure flag delivery mechanisms.
-            </li>
+            </HighlightBlock>
           </ul>
         </div>
 
@@ -377,18 +389,18 @@ export default function FeatureFlagsToggleArticle() {
             <li>
               <strong>Access Control Testing:</strong> Test that flag access control is enforced. Verify unauthorized flag access is rejected. Test with different user roles.
             </li>
-            <li>
+            <HighlightBlock as="li" tier="important">
               <strong>Server-Side Validation:</strong> Test that server-side validation cannot be bypassed by client-side flag manipulation. Verify security features work regardless of client flags.
-            </li>
+            </HighlightBlock>
           </ul>
         </div>
       </section>
 
       <section>
         <h2>Performance Benchmarks</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           Feature Flag performance depends on evaluation strategy, flag delivery mechanism, and caching effectiveness.
-        </p>
+        </HighlightBlock>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-4 text-lg font-semibold">Performance Metrics to Track</h3>
@@ -431,12 +443,12 @@ export default function FeatureFlagsToggleArticle() {
             Different flag evaluation strategies have different performance characteristics:
           </p>
           <ul className="mt-3 space-y-2">
-            <li>
+            <HighlightBlock as="li" tier="important">
               <strong>Client-Side Evaluation:</strong> Latency: ~0.01ms. Best for: UI flags, fast rendering. Limitation: flags exposed to users.
-            </li>
-            <li>
+            </HighlightBlock>
+            <HighlightBlock as="li" tier="important">
               <strong>Server-Side Evaluation:</strong> Latency: ~1-10ms. Best for: security features, access control. Limitation: network round trip.
-            </li>
+            </HighlightBlock>
             <li>
               <strong>Hybrid Evaluation:</strong> Latency: ~0.01ms (cached). Best for: production systems. Limitation: implementation complexity.
             </li>
@@ -446,9 +458,9 @@ export default function FeatureFlagsToggleArticle() {
 
       <section>
         <h2>Cost Analysis</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           Feature Flag systems have infrastructure costs but provide significant value through risk reduction and deployment velocity.
-        </p>
+        </HighlightBlock>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-4 text-lg font-semibold">Infrastructure Costs</h3>
@@ -465,30 +477,36 @@ export default function FeatureFlagsToggleArticle() {
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-4 text-lg font-semibold">ROI from Feature Flags</h3>
           <ul className="space-y-2">
-            <li>
+            <HighlightBlock as="li" tier="important">
               <strong>Risk Reduction:</strong> Gradual rollouts reduce production incidents. Estimate: 30-50% reduction in deployment-related incidents.
-            </li>
+            </HighlightBlock>
             <li>
               <strong>Faster Deployments:</strong> Deploy behind flags, enable gradually. Estimate: 2-3x faster deployment cycles.
             </li>
-            <li>
+            <HighlightBlock as="li" tier="important">
               <strong>A/B Testing:</strong> Built-in experimentation capability. Estimate: $100K-500K/year value from data-driven decisions.
-            </li>
+            </HighlightBlock>
           </ul>
         </div>
 
-        <div className="my-6 rounded-lg border border-accent/30 bg-accent/10 p-6">
+        <HighlightBlock
+          className="my-6 rounded-lg border border-accent/30 bg-accent/10 p-6"
+          tier="important"
+        >
           <h3 className="mb-3 font-semibold">When to Use Feature Flags</h3>
           <p>
             Use feature flags when: (1) you need gradual rollouts, (2) you want to decouple deployment from release, (3) you need A/B testing capability. Avoid when: (1) you have very simple deployment needs, (2) you lack flag management discipline (flag debt accumulates quickly).
           </p>
-        </div>
+        </HighlightBlock>
       </section>
 
       <section>
         <h2>Common Interview Questions</h2>
         <div className="space-y-4">
-          <div className="rounded-lg border border-theme bg-panel-soft p-4">
+          <HighlightBlock
+            className="rounded-lg border border-theme bg-panel-soft p-4"
+            tier="important"
+          >
             <p className="font-semibold">Q: What are the four types of feature flags, and how do they differ?</p>
             <p className="mt-2 text-sm">
               A: (1) Release toggles — short-lived, gate incomplete features during development, removed
@@ -499,9 +517,12 @@ export default function FeatureFlagsToggleArticle() {
               managed by product. The key differences are lifespan, dynamism (static vs per-user vs
               real-time), and ownership team.
             </p>
-          </div>
+          </HighlightBlock>
 
-          <div className="rounded-lg border border-theme bg-panel-soft p-4">
+          <HighlightBlock
+            className="rounded-lg border border-theme bg-panel-soft p-4"
+            tier="crucial"
+          >
             <p className="font-semibold">Q: How does client-side flag evaluation differ from server-side?</p>
             <p className="mt-2 text-sm">
               A: Client-side evaluation downloads the complete flag rule set to the browser and evaluates
@@ -511,9 +532,12 @@ export default function FeatureFlagsToggleArticle() {
               dependency. Most production systems use a hybrid: client-side for UI flags (fast rendering)
               and server-side for security-sensitive flags (access control, pricing).
             </p>
-          </div>
+          </HighlightBlock>
 
-          <div className="rounded-lg border border-theme bg-panel-soft p-4">
+          <HighlightBlock
+            className="rounded-lg border border-theme bg-panel-soft p-4"
+            tier="important"
+          >
             <p className="font-semibold">Q: What is sticky bucketing, and why is it important for experiments?</p>
             <p className="mt-2 text-sm">
               A: Sticky bucketing ensures a user always sees the same experiment variant across sessions,
@@ -524,7 +548,7 @@ export default function FeatureFlagsToggleArticle() {
               server-side assignment), devices (require authentication), and flag key changes (maintain
               a mapping table).
             </p>
-          </div>
+          </HighlightBlock>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
             <p className="font-semibold">Q: How do you manage feature flag technical debt?</p>

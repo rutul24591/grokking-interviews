@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -30,15 +31,15 @@ export default function PluginArchitectureArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           <strong>Plugin Architecture</strong> is a software design approach
           where a host application defines extension points that third-party or
           first-party plugins can hook into to extend functionality without
           modifying the host&apos;s core code. The host provides a stable API
           surface (the plugin contract), and plugins implement that contract to
           add features, modify behavior, or integrate with external systems.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Plugin architecture is foundational to some of the most successful
           software products in history. VS Code owes its dominance to its
           extension marketplace. Webpack&apos;s entire compilation pipeline is a
@@ -46,8 +47,8 @@ export default function PluginArchitectureArticle() {
           design tool into a design platform. WordPress powers 40% of the web
           through its plugin architecture. Chrome&apos;s extension system
           transforms a browser into a customizable productivity tool.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           For staff-level engineers, plugin architecture is relevant in two
           contexts: designing extensible systems (building the host) and
           understanding the constraints of building within them (writing
@@ -55,13 +56,13 @@ export default function PluginArchitectureArticle() {
           break plugins across versions, providing sufficient extension points
           without exposing internals, sandboxing untrusted plugins for security,
           and managing the lifecycle of dynamically loaded code.
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
         <h2>Core Concepts</h2>
         <ul>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Extension Points (Hooks):</strong> Predefined locations in
             the host application where plugins can inject behavior. These can be
             lifecycle hooks (onInit, onActivate, onDeactivate), content slots
@@ -69,15 +70,15 @@ export default function PluginArchitectureArticle() {
             (pre-process, transform, post-process), or event subscriptions
             (onFileOpen, onSave, onChange). The set of extension points defines
             the plugin system&apos;s capability surface.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Plugin API / Contract:</strong> The stable interface that
             the host exposes to plugins. This includes: available methods (read
             data, modify state, render UI), event subscriptions, contribution
             types (commands, views, configuration), and capability constraints.
             The API must be versioned and backward-compatible — breaking the API
             breaks the ecosystem.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Plugin Manifest:</strong> A declarative description of what
             a plugin provides and requires. Typically a JSON file (package.json
@@ -93,24 +94,24 @@ export default function PluginArchitectureArticle() {
             execution (plugin responding to hooks), deactivation (cleanup), and
             uninstallation (removing plugin artifacts).
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Sandboxing:</strong> Isolating plugins from the host and
             from each other to prevent security vulnerabilities and stability
             issues. Sandboxing mechanisms include: iframes (DOM isolation), Web
             Workers (thread isolation), ShadowRealm proposal (scope isolation),
             and capability-based security (limiting what APIs a plugin can
             access).
-          </li>
+          </HighlightBlock>
         </ul>
       </section>
 
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           Plugin architecture involves a host application, a plugin API layer,
           and one or more plugins that extend the host through defined extension
           points.
-        </p>
+        </HighlightBlock>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-4 text-lg font-semibold">
@@ -220,6 +221,7 @@ export default function PluginArchitectureArticle() {
           src="/diagrams/system-design-concepts/frontend/scalability-architecture-patterns/plugin-architecture-diagram-3.svg"
           alt="Plugin sandboxing strategies comparison showing Iframe, Web Worker, and Same-Context approaches with their isolation levels and performance characteristics"
           caption="Sandboxing strategies — trade-offs between isolation (iframe), non-blocking execution (worker), and performance (same-context)"
+          captionTier="important"
         />
       </section>
 
@@ -245,10 +247,12 @@ export default function PluginArchitectureArticle() {
                 <br />• Ecosystem creates network effects
               </td>
               <td className="p-3">
-                • Extension points limit what plugins can do
-                <br />
-                • Plugin API design is irreversible at scale
-                <br />• Plugins may circumvent intended limitations
+                <HighlightBlock tier="crucial">
+                  • Extension points limit what plugins can do
+                  <br />
+                  • Plugin API design is irreversible at scale
+                  <br />• Plugins may circumvent intended limitations
+                </HighlightBlock>
               </td>
             </tr>
             <tr>
@@ -262,10 +266,12 @@ export default function PluginArchitectureArticle() {
                 <br />• Sandboxing prevents plugin crashes from affecting host
               </td>
               <td className="p-3">
-                • Plugin bugs appear as host bugs to users
-                <br />
-                • Plugin interactions create emergent issues
-                <br />• Performance degradation from many plugins
+                <HighlightBlock tier="important">
+                  • Plugin bugs appear as host bugs to users
+                  <br />
+                  • Plugin interactions create emergent issues
+                  <br />• Performance degradation from many plugins
+                </HighlightBlock>
               </td>
             </tr>
             <tr>
@@ -309,21 +315,21 @@ export default function PluginArchitectureArticle() {
       <section>
         <h2>Best Practices</h2>
         <ol className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Design the API Before the Implementation:</strong> Define
             the plugin API contract through use case analysis and developer
             feedback before building the plugin system. The API is the product —
             its design determines what plugins can do and how pleasant they are
             to build. Prototype with 3-5 real plugins to validate the API before
             publishing it.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Use Lazy Activation:</strong> Do not activate all plugins at
             application startup. Define activation events (VS Code model) that
             trigger plugin activation only when needed — opening a specific file
             type, running a command, or navigating to a specific view. This
             keeps startup fast regardless of installed plugin count.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Version the Plugin API:</strong> Use semantic versioning for
             the plugin API. Plugins declare the minimum API version they
@@ -331,20 +337,20 @@ export default function PluginArchitectureArticle() {
             through compatibility shims. Breaking changes require a major
             version bump and a migration guide.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Provide a Plugin Development Kit (PDK):</strong> Give plugin
             developers a CLI for scaffolding, a local development server with
             hot reload, TypeScript types for the API, a testing framework for
             plugin logic, and a publishing pipeline. The quality of the PDK
             determines the health of the plugin ecosystem.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Implement Graceful Degradation:</strong> When a plugin
             throws an error, catch it at the extension point boundary, log the
             error, disable the failing plugin, and show a user-friendly
             notification. Never let a plugin crash bring down the host
             application.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Monitor Plugin Performance:</strong> Track each
             plugin&apos;s activation time, memory usage, and API call frequency.
@@ -366,21 +372,21 @@ export default function PluginArchitectureArticle() {
             Analyze the most common plugin use cases and provide extension
             points for each. Better to have unused hooks than to force hacks.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Leaking Host Internals:</strong> Exposing internal data
             structures or implementation details through the plugin API creates
             implicit contracts. When internals change, plugins break. Maintain a
             clear boundary between the public API and internal implementation.
             Use interface objects that copy or proxy internal state rather than
             exposing it directly.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>No Plugin Isolation:</strong> Running plugins in the same
             JavaScript context as the host means a plugin can access and modify
             any global state, monkey-patch host functions, or cause memory leaks
             that affect the host. Implement at least basic sandboxing for
             untrusted plugins.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Plugin Ordering Issues:</strong> When multiple plugins hook
             into the same extension point, their execution order may matter.
@@ -388,26 +394,26 @@ export default function PluginArchitectureArticle() {
             declarations), the order is non-deterministic and plugins may
             conflict.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Marketplace Without Curation:</strong> An unreviewed
             marketplace quickly fills with low-quality, abandoned, or malicious
             plugins. Implement automated security scanning, quality checks
             (documentation, test coverage), and community review processes.
-          </li>
+          </HighlightBlock>
         </ul>
       </section>
 
       <section>
         <h2>Real-World Use Cases</h2>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>VS Code Extensions:</strong> VS Code&apos;s extension system
             is the gold standard for plugin architecture. Extensions run in a
             separate process (Extension Host), communicate via IPC, declare
             activation events and contributions in package.json, and access a
             rich API for editor manipulation, language services, debugging, and
             UI customization.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Webpack Plugin System (Tapable):</strong> Webpack&apos;s
             entire compilation pipeline is built on Tapable hooks. Plugins tap
@@ -416,21 +422,21 @@ export default function PluginArchitectureArticle() {
             hook-based plugin system where plugins are first-party or
             community-maintained.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Figma Plugins:</strong> Figma plugins run in a sandboxed
             iframe with access to the Figma Plugin API. They can read and modify
             the design document, create custom UI in the plugin window, and
             integrate with external services. The iframe sandbox provides
             security while the API provides controlled access to document state.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Chrome Extensions:</strong> Chrome extensions use a
             manifest-driven architecture with content scripts (injected into web
             pages), background scripts (service workers), and popup/options UIs.
             The extension API provides controlled access to tabs, storage,
             network requests, and browser chrome. Manifest V3 introduced
             stricter sandboxing and capability restrictions.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Storybook Addons:</strong> Storybook&apos;s addon system
             allows extending the component development environment with panels
@@ -444,19 +450,19 @@ export default function PluginArchitectureArticle() {
 
       <section>
         <h2>Security Considerations</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           Plugin Architecture introduces significant security considerations around code execution, sandboxing, and privilege escalation. Third-party plugins can introduce vulnerabilities if not properly isolated.
-        </p>
+        </HighlightBlock>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-4 text-lg font-semibold">Plugin Security Patterns</h3>
           <ul className="space-y-2">
-            <li>
+            <HighlightBlock as="li" tier="important">
               <strong>Sandboxing:</strong> Untrusted plugins must run in isolated environments. Mitigation: use iframes for UI plugins, Web Workers for computation, separate processes for Node.js plugins, implement strict CSP policies.
-            </li>
-            <li>
+            </HighlightBlock>
+            <HighlightBlock as="li" tier="important">
               <strong>Capability-Based Security:</strong> Plugins should only have access to explicitly granted capabilities. Mitigation: implement capability manifest, validate plugin permissions, use principle of least privilege.
-            </li>
+            </HighlightBlock>
             <li>
               <strong>Code Signing:</strong> Verify plugin integrity before loading. Mitigation: sign plugins with cryptographic signatures, verify signatures before loading, use trusted plugin registries.
             </li>
@@ -484,9 +490,9 @@ export default function PluginArchitectureArticle() {
 
       <section>
         <h2>Performance Benchmarks</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           Plugin Architecture performance depends on sandboxing overhead, plugin loading time, and inter-process communication costs.
-        </p>
+        </HighlightBlock>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-4 text-lg font-semibold">Performance Metrics to Track</h3>
@@ -525,9 +531,9 @@ export default function PluginArchitectureArticle() {
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-4 text-lg font-semibold">Sandboxing Strategy Comparison</h3>
-          <p>
+          <HighlightBlock as="p" tier="important">
             Different sandboxing strategies have different performance characteristics:
-          </p>
+          </HighlightBlock>
           <ul className="mt-3 space-y-2">
             <li>
               <strong>Iframe Sandboxing:</strong> Overhead: ~10-50ms load time. Best for: UI plugins, untrusted code. Limitation: cross-origin communication overhead.
@@ -586,7 +592,10 @@ export default function PluginArchitectureArticle() {
       <section>
         <h2>Common Interview Questions</h2>
         <div className="space-y-4">
-          <div className="rounded-lg border border-theme bg-panel-soft p-4">
+          <HighlightBlock
+            className="rounded-lg border border-theme bg-panel-soft p-4"
+            tier="crucial"
+          >
             <p className="font-semibold">
               Q: How would you design a plugin system for a web application?
             </p>
@@ -603,9 +612,12 @@ export default function PluginArchitectureArticle() {
               plugins, same-context for first-party. (6) Build a PDK with
               scaffolding, types, testing tools, and documentation.
             </p>
-          </div>
+          </HighlightBlock>
 
-          <div className="rounded-lg border border-theme bg-panel-soft p-4">
+          <HighlightBlock
+            className="rounded-lg border border-theme bg-panel-soft p-4"
+            tier="important"
+          >
             <p className="font-semibold">
               Q: How does VS Code&apos;s extension architecture work?
             </p>
@@ -620,9 +632,12 @@ export default function PluginArchitectureArticle() {
               tree views). This architecture ensures that slow or crashing
               extensions do not affect editor responsiveness.
             </p>
-          </div>
+          </HighlightBlock>
 
-          <div className="rounded-lg border border-theme bg-panel-soft p-4">
+          <HighlightBlock
+            className="rounded-lg border border-theme bg-panel-soft p-4"
+            tier="important"
+          >
             <p className="font-semibold">
               Q: What sandboxing strategies exist for frontend plugins?
             </p>
@@ -638,7 +653,7 @@ export default function PluginArchitectureArticle() {
               permissions. Used by Chrome extensions (Manifest V3). Cost: relies
               on permission correctness, less isolated.
             </p>
-          </div>
+          </HighlightBlock>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
             <p className="font-semibold">

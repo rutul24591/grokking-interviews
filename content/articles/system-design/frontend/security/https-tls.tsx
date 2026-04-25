@@ -35,18 +35,18 @@ export default function HTTPSTLSArticle() {
           HTTPS provides three critical security guarantees:
         </p>
         <ul className="space-y-2">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Encryption:</strong> Data exchanged between client and server is encrypted, preventing
             eavesdroppers from reading sensitive information (credentials, personal data, payment details).
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Integrity:</strong> Data cannot be modified or corrupted during transit without detection.
             TLS uses message authentication codes (MACs) to detect tampering.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Authentication:</strong> TLS certificates verify the server&apos;s identity, ensuring users
             are communicating with the legitimate website and not an imposter (preventing man-in-the-middle attacks).
-          </li>
+          </HighlightBlock>
         </ul>
         <HighlightBlock as="p" tier="important">
           HTTPS has evolved from a best practice to a mandatory requirement. Modern browsers mark non-HTTPS sites
@@ -102,14 +102,14 @@ export default function HTTPSTLSArticle() {
             <strong>Server Hello:</strong> Server selects TLS version and cipher suite, sends its key share and
             certificate.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Certificate Verification:</strong> Client verifies server certificate against trusted Certificate
             Authorities (CAs).
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Key Derivation:</strong> Both parties derive shared session keys from the key exchange (using
             Diffie-Hellman or ECDHE).
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Finished:</strong> Both parties send encrypted &quot;Finished&quot; messages to verify the
             handshake wasn&apos;t tampered with.
@@ -127,12 +127,12 @@ export default function HTTPSTLSArticle() {
           <li>
             <strong>Faster handshake:</strong> 1-RTT instead of 2-RTT (or 0-RTT for resumed connections)
           </li>
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Removed weak algorithms:</strong> No more RSA key exchange, SHA-1, RC4, DES, 3DES, MD5
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Perfect Forward Secrecy:</strong> Ephemeral key exchange is mandatory, not optional
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Encrypted handshake:</strong> More of the handshake is encrypted, improving privacy
           </li>
@@ -162,21 +162,21 @@ export default function HTTPSTLSArticle() {
 
         <div className="my-6 rounded-lg border border-accent/30 bg-accent/10 p-6">
           <h3 className="mb-3 font-semibold">Key Insight: TLS 1.3 Is Mandatory for Modern Security</h3>
-          <p>
+          <HighlightBlock as="p" tier="crucial">
             TLS 1.2 is still widely supported but TLS 1.3 should be the default. It&apos;s faster, more secure,
             and supported by all modern browsers and servers. Disable TLS 1.0 and 1.1—they&apos;re deprecated
             and vulnerable.
-          </p>
+          </HighlightBlock>
         </div>
       </section>
 
       <section>
         <h2>TLS Certificates</h2>
-        <p>
+        <HighlightBlock as="p" tier="important">
           TLS certificates bind a domain name to a public key and are signed by trusted Certificate Authorities
           (CAs). Understanding certificate types, validation levels, and the trust chain is essential for proper
           implementation.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Certificate Components</h3>
         <ul className="space-y-2">
@@ -251,18 +251,18 @@ export default function HTTPSTLSArticle() {
         </ul>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Certificate Trust Chain</h3>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           Certificates form a chain of trust from the server certificate to a trusted root CA. The server certificate is signed by an Intermediate CA Certificate, which is in turn signed by a Root CA Certificate that is trusted by the browser/OS.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Why intermediates exist:</strong> Root CAs keep their private keys offline for security.
           Intermediate CAs sign end-entity certificates, and if compromised, can be revoked without affecting
           the root.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Certificate pinning:</strong> Some apps pin to specific certificates or public keys to detect
           MITM attacks, but this can cause issues if certificates change unexpectedly.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/frontend/security/tls-certificate-chain.svg"
@@ -297,20 +297,20 @@ export default function HTTPSTLSArticle() {
 
         <div className="my-6 rounded-lg border border-accent/30 bg-accent/10 p-6">
           <h3 className="mb-3 font-semibold">Key Insight: Automate Certificate Management</h3>
-          <p>
+          <HighlightBlock as="p" tier="crucial">
             Manual certificate renewal is a common cause of outages. Use ACME protocol (Let&apos;s Encrypt,
             ZeroSSL) with automatic renewal. Tools like certbot, acme.sh, or CDN-managed certificates eliminate
             human error. Set up monitoring alerts as a backup.
-          </p>
+          </HighlightBlock>
         </div>
       </section>
 
       <section>
         <h2>Cipher Suites and Security Configuration</h2>
-        <p>
+        <HighlightBlock as="p" tier="important">
           A cipher suite defines the algorithms used for key exchange, authentication, encryption, and integrity.
           Choosing secure cipher suites is critical for protecting data.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Cipher Suite Components</h3>
         <p>
@@ -345,9 +345,9 @@ export default function HTTPSTLSArticle() {
 
         <h4 className="mt-4 mb-2 font-semibold">Encryption</h4>
         <ul className="space-y-2">
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>AES-GCM:</strong> Fast, secure, hardware-accelerated (recommended)
-          </li>
+          </HighlightBlock>
           <li>
             <strong>ChaCha20-Poly1305:</strong> Fast on mobile/low-power devices, no hardware AES
           </li>
@@ -375,24 +375,24 @@ export default function HTTPSTLSArticle() {
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Security Headers for HTTPS</h3>
         <ul className="space-y-2">
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Strict-Transport-Security (HSTS):</strong> Forces browsers to use HTTPS for future requests. Set with a max-age of 31536000 seconds (1 year), include <code className="text-sm">includeSubDomains</code> for all subdomains, and <code className="text-sm">preload</code> to submit to browser preload lists.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Expect-CT:</strong> Enforces Certificate Transparency monitoring. Set with a max-age of 86400 seconds (1 day), <code className="text-sm">enforce</code> mode, and a <code className="text-sm">report-uri</code> for violation reports.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Upgrade-Insecure-Requests:</strong> Upgrades HTTP resources to HTTPS automatically via CSP directive.
-          </li>
+          </HighlightBlock>
         </ul>
       </section>
 
       <section>
         <h2>Performance Optimization</h2>
-        <p>
+        <HighlightBlock as="p" tier="important">
           TLS adds latency and CPU overhead, but modern optimizations minimize the impact. Understanding these
           techniques is essential for balancing security and performance.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">TLS Handshake Optimization</h3>
 
@@ -404,22 +404,22 @@ export default function HTTPSTLSArticle() {
           <li>
             <strong>Session IDs:</strong> Server stores session state, client sends session ID on reconnect
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Session Tickets (RFC 5077):</strong> Server encrypts session state, client stores and sends
             it back (stateless for server)
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="crucial">
             <strong>0-RTT (TLS 1.3):</strong> Client sends data in first flight for resumed connections
             (warning: no replay protection for 0-RTT data)
-          </li>
+          </HighlightBlock>
         </ul>
 
         <h4 className="mt-4 mb-2 font-semibold">OCSP Stapling</h4>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Server periodically fetches OCSP (Online Certificate Status Protocol) response from CA and &quot;staples&quot;
           it to the TLS handshake. This avoids clients making separate OCSP requests, reducing latency and improving
           privacy.
-        </p>
+        </HighlightBlock>
 
         <h4 className="mt-4 mb-2 font-semibold">TLS False Start</h4>
         <p>
@@ -436,30 +436,31 @@ export default function HTTPSTLSArticle() {
             <strong>HTTP/2:</strong> Requires TLS 1.2+ in practice (all major browsers require it). Provides
             multiplexing, header compression, server push.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>HTTP/3:</strong> Built on QUIC (UDP-based), includes TLS 1.3 by design. Eliminates head-of-line
             blocking, faster connection establishment.
-          </li>
+          </HighlightBlock>
         </ul>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/frontend/security/https-performance-comparison.svg"
           alt="HTTPS Performance Comparison showing HTTP/1.1 vs HTTP/2 vs HTTP/3 latency and connection patterns"
           caption="HTTP Performance: HTTP/2 and HTTP/3 significantly reduce latency through multiplexing and improved connection handling."
+          captionTier="important"
         />
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Hardware Acceleration</h3>
         <ul className="space-y-2">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>AES-NI:</strong> CPU instructions for AES encryption (10-20x speedup)
-          </li>
+          </HighlightBlock>
           <li>
             <strong>ECC Acceleration:</strong> ARM NEON, Intel PCLMULQDQ for elliptic curve operations
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>SSL/TLS Offloading:</strong> Load balancers or dedicated hardware handle TLS, backend servers
             handle application logic
-          </li>
+          </HighlightBlock>
         </ul>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">CDN and Edge TLS</h3>
@@ -467,33 +468,33 @@ export default function HTTPSTLSArticle() {
           CDNs terminate TLS at edge locations, reducing latency:
         </p>
         <ul className="space-y-2">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Edge certificates:</strong> CDN manages certificates, renews automatically
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Origin shielding:</strong> CDN uses separate TLS connection to origin, can use different
             cipher suites
           </li>
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>mTLS:</strong> Mutual TLS between CDN and origin for additional authentication
-          </li>
+          </HighlightBlock>
         </ul>
 
         <div className="my-6 rounded-lg border border-accent/30 bg-accent/10 p-6">
           <h3 className="mb-3 font-semibold">Key Insight: TLS Performance Is Good Enough</h3>
-          <p>
+          <HighlightBlock as="p" tier="important">
             With TLS 1.3, HTTP/2, session resumption, and modern hardware, TLS overhead is typically &lt;1% of
             page load time. Focus on application-level optimizations (caching, compression, CDN) before worrying
             about TLS performance.
-          </p>
+          </HighlightBlock>
         </div>
       </section>
 
       <section>
         <h2>Common Vulnerabilities and Mitigations</h2>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Understanding TLS vulnerabilities helps you configure servers securely and avoid known pitfalls.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Protocol-Level Vulnerabilities</h3>
 
@@ -520,54 +521,54 @@ export default function HTTPSTLSArticle() {
         </p>
 
         <h4 className="mt-4 mb-2 font-semibold">Heartbleed</h4>
-        <p>
+        <HighlightBlock as="p" tier="important">
           OpenSSL vulnerability allowing memory disclosure. Mitigation: Use patched OpenSSL versions, rotate
           certificates and keys after patching.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Implementation Vulnerabilities</h3>
 
         <h4 className="mt-4 mb-2 font-semibold">Weak Cipher Suites</h4>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           Allowing weak ciphers (RC4, DES, 3DES, export ciphers) enables attacks. Mitigation: Configure servers
           to only allow strong ciphers (AES-GCM, ChaCha20).
-        </p>
+        </HighlightBlock>
 
         <h4 className="mt-4 mb-2 font-semibold">Certificate Validation Bypass</h4>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Some apps incorrectly validate certificates (accepting self-signed, ignoring hostname mismatch).
           Mitigation: Use platform TLS libraries, never implement custom certificate validation.
-        </p>
+        </HighlightBlock>
 
         <h4 className="mt-4 mb-2 font-semibold">Mixed Content</h4>
-        <p>
+        <HighlightBlock as="p" tier="important">
           HTTPS pages loading HTTP resources (images, scripts, styles). Mitigation: Use CSP
           <code className="text-sm">upgrade-insecure-requests</code>, fix all resource URLs to use HTTPS.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Security Testing</h3>
         <ul className="space-y-2">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>SSL Labs Test:</strong> Comprehensive server configuration analysis
             (ssllabs.com/ssltest)
-          </li>
+          </HighlightBlock>
           <li>
             <strong>testssl.sh:</strong> Command-line TLS testing tool
           </li>
           <li>
             <strong>nmap --script ssl-enum-ciphers:</strong> Enumerate supported cipher suites
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Mozilla Observatory:</strong> Web security scanning including TLS
-          </li>
+          </HighlightBlock>
         </ul>
 
         <div className="my-6 rounded-lg border border-accent/30 bg-accent/10 p-6">
           <h3 className="mb-3 font-semibold">Key Insight: Disable Legacy Protocols</h3>
-          <p>
+          <HighlightBlock as="p" tier="crucial">
             Disable SSL 2.0, SSL 3.0, TLS 1.0, and TLS 1.1. They&apos;re all deprecated and vulnerable. Use only
             TLS 1.2 and TLS 1.3. Most compliance frameworks (PCI-DSS 3.2.1) require this.
-          </p>
+          </HighlightBlock>
         </div>
       </section>
 
@@ -581,9 +582,9 @@ export default function HTTPSTLSArticle() {
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Server Configuration</h3>
         <ul className="space-y-2">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Enable TLS 1.2 and 1.3 only:</strong> Disable all older protocols
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Use strong cipher suites:</strong> Prioritize AES-GCM and ChaCha20-Poly1305
           </li>
@@ -596,9 +597,9 @@ export default function HTTPSTLSArticle() {
           <li>
             <strong>Enable HTTP/2:</strong> Better performance, requires TLS 1.2+
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Set HSTS header:</strong> Enforce HTTPS for future requests
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Use secure certificate:</strong> 2048+ bit RSA or 256+ bit ECDSA
           </li>
@@ -606,12 +607,12 @@ export default function HTTPSTLSArticle() {
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Certificate Management</h3>
         <ul className="space-y-2">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Automate renewal:</strong> Use ACME protocol (Let&apos;s Encrypt, ZeroSSL)
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Monitor expiration:</strong> Set up alerts at 30, 14, and 7 days before expiry
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Use appropriate validity:</strong> Shorter validity periods (90 days) reduce exposure if
             compromised
@@ -626,19 +627,19 @@ export default function HTTPSTLSArticle() {
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Frontend Considerations</h3>
         <ul className="space-y-2">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Use HTTPS for all resources:</strong> No mixed content
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Enable HSTS preload:</strong> Submit domain to HSTS preload list for maximum protection
           </li>
           <li>
             <strong>Use Subresource Integrity:</strong> Verify integrity of third-party scripts
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Implement Certificate Transparency monitoring:</strong> Detect unauthorized certificates
             for your domain
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Consider HPKP alternatives:</strong> HPKP is deprecated; use Expect-CT and CT monitoring
             instead
@@ -670,20 +671,20 @@ export default function HTTPSTLSArticle() {
           silent downgrade risk.
         </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Allowing legacy protocols:</strong> SSL 3.0, TLS 1.0, TLS 1.1 are all vulnerable. Disable them.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Weak cipher suites:</strong> RC4, DES, 3DES, and export ciphers are broken. Configure servers
             to only allow strong ciphers.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Certificate expiration:</strong> Manual renewal leads to outages. Automate with ACME.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Mixed content warnings:</strong> HTTPS pages with HTTP resources break security. Fix all
             resource URLs.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Not enabling HSTS:</strong> Without HSTS, first request can be downgraded to HTTP. Enable
             HSTS with preload.
@@ -715,31 +716,39 @@ export default function HTTPSTLSArticle() {
         <h2>Real-World Use Cases</h2>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">E-Commerce Platform</h3>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           <strong>Challenge:</strong> Process payments securely, comply with PCI-DSS, protect customer data.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Solution:</strong>
         </p>
         <ul className="space-y-2">
-          <li>TLS 1.3 with AES-256-GCM cipher suites</li>
-          <li>HSTS with preload enabled</li>
+          <HighlightBlock as="li" tier="important">
+            TLS 1.3 with AES-256-GCM cipher suites
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
+            HSTS with preload enabled
+          </HighlightBlock>
           <li>EV certificates for maximum trust</li>
           <li>Regular PCI-DSS compliance scans including TLS testing</li>
-          <li>mTLS between load balancer and payment processing backend</li>
+          <HighlightBlock as="li" tier="important">
+            mTLS between load balancer and payment processing backend
+          </HighlightBlock>
           <li>Certificate Transparency monitoring for all domains</li>
         </ul>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Healthcare Application</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Challenge:</strong> HIPAA compliance, protect PHI in transit, secure mobile app communication.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Solution:</strong>
         </p>
         <ul className="space-y-2">
           <li>TLS 1.3 mandatory (TLS 1.2 for legacy device compatibility)</li>
-          <li>Certificate pinning in mobile apps (with backup pins)</li>
+          <HighlightBlock as="li" tier="important">
+            Certificate pinning in mobile apps (with backup pins)
+          </HighlightBlock>
           <li>OV certificates with organization validation</li>
           <li>mTLS for API communication between services</li>
           <li>Automated certificate renewal with 90-day validity</li>
@@ -782,15 +791,15 @@ export default function HTTPSTLSArticle() {
 
       <section>
         <h2>Architecture at Scale: TLS in Enterprise Systems</h2>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Enterprise-scale TLS implementation requires coordinated certificate management, protocol standardization, and security monitoring across hundreds or thousands of services. In microservices architectures, each service may have different TLS requirements based on its exposure (public-facing vs. internal) and compliance needs.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="crucial">
           <strong>Centralized Certificate Management:</strong> Implement a certificate authority (CA) hierarchy with automated issuance and renewal. Use tools like HashiCorp Vault, AWS ACM, or Let&apos;s Encrypt with certbot for automated certificate lifecycle management. Store certificates in centralized secret management (Vault, AWS Secrets Manager) with automatic rotation. Track certificate expiration with alerts at 30, 14, and 7 days before expiry.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>TLS Termination Strategy:</strong> For high-traffic applications, terminate TLS at load balancers or CDN edge (Cloudflare, AWS CloudFront, Fastly) to offload cryptographic overhead from application servers. Use mutual TLS (mTLS) for service-to-service communication within the cluster. Implement TLS passthrough for applications requiring end-to-end encryption (healthcare, financial). Document TLS termination points in architecture diagrams.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Protocol Standardization:</strong> Enforce TLS 1.3 as minimum for public-facing services. For internal services, TLS 1.2 with strong cipher suites is acceptable. Disable legacy protocols (SSL 2.0, SSL 3.0, TLS 1.0, TLS 1.1) at load balancer level. Use infrastructure-as-code (Terraform, CloudFormation) to enforce TLS configuration consistently across environments. Document protocol requirements in security standards.
         </p>
@@ -801,15 +810,15 @@ export default function HTTPSTLSArticle() {
 
       <section>
         <h2>Testing Strategies: TLS Validation and Monitoring</h2>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Comprehensive TLS testing requires automated scanning, continuous monitoring, and periodic third-party audits integrated into security operations.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="crucial">
           <strong>Automated TLS Scanning:</strong> Use SSL Labs API, testssl.sh, or TLS-Scanner to verify TLS configuration. Configure CI/CD pipelines to scan staging environments after each deployment. Set up automated alerts for: weak cipher suites detected, protocol downgrades, certificate expiration within 30 days, Certificate Transparency log anomalies. Integrate scanning results with ticketing systems for automatic remediation workflows.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Certificate Transparency Monitoring:</strong> Monitor Certificate Transparency logs for unauthorized certificate issuance. Use services like Facebook Certificate Transparency, Google CT, or commercial CT monitoring (CertSpotter, SSLMate). Set up alerts for certificates issued for your domains that you didn&apos;t request. Investigate unexpected certificates as potential security incidents.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>OCSP Stapling Validation:</strong> Verify OCSP stapling is enabled and functioning correctly. Use OpenSSL commands or SSL Labs to check stapling status. Monitor OCSP responder availability and response times. Configure fallback to CRL checking if OCSP fails. Test OCSP stapling across different client implementations (browsers, mobile apps, API clients).
         </p>
@@ -823,15 +832,15 @@ export default function HTTPSTLSArticle() {
 
       <section>
         <h2>Compliance and Legal Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="important">
           TLS implementation has significant compliance implications, particularly for applications handling financial transactions, healthcare data, or government services.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="crucial">
           <strong>PCI-DSS Requirements:</strong> PCI-DSS v4.0 Requirement 4.1 requires strong cryptography for transmission of cardholder data. TLS 1.2 minimum (TLS 1.3 recommended) with strong cipher suites. Annual penetration testing must verify TLS configuration. Document TLS implementation in ROC (Report on Compliance) for annual assessments. Non-compliance can result in fines up to $500,000 per incident.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>HIPAA Requirements:</strong> HIPAA Security Rule 45 CFR 164.312(e)(1) requires encryption for ePHI transmission. TLS 1.2+ with strong cipher suites satisfies encryption requirement. Document TLS configuration in security policies. Implement audit logging for TLS connections involving ePHI. Business Associate Agreements (BAAs) should specify TLS requirements for third-party vendors.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>GDPR Implications:</strong> GDPR Article 32 requires &quot;appropriate technical measures&quot; for data protection. TLS encryption satisfies transmission security requirement. TLS configuration documentation serves as evidence of security measures. However, TLS alone doesn&apos;t fulfill all GDPR requirements—combine with access controls, data minimization, and breach notification procedures.
         </p>
@@ -845,15 +854,15 @@ export default function HTTPSTLSArticle() {
 
       <section>
         <h2>Performance Trade-offs: Security vs. Latency</h2>
-        <p>
+        <HighlightBlock as="p" tier="important">
           TLS implementation introduces measurable performance overhead that must be balanced against security requirements.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="crucial">
           <strong>Handshake Latency:</strong> TLS 1.3 handshake completes in 1-RTT (round-trip time) vs. TLS 1.2&apos;s 2-RTT. For global applications, this 50-200ms difference significantly impacts user experience. Enable TLS 1.3 for all public-facing services. Use 0-RTT session resumption for returning users (with replay attack mitigation). Deploy edge TLS termination to reduce round-trip distance.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Cryptographic Overhead:</strong> TLS encryption/decryption adds 5-15% CPU overhead. Modern CPUs with AES-NI instructions minimize this impact. For high-traffic services (&gt;10K RPS), consider hardware acceleration (HSM, crypto cards). Use session resumption to amortize handshake costs across multiple requests. Monitor CPU utilization and scale horizontally if cryptographic overhead becomes bottleneck.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Certificate Validation:</strong> OCSP stapling adds &lt;1ms to handshake vs. 100-500ms for OCSP lookup. Always enable OCSP stapling. CRL checking adds minimal overhead but requires periodic CRL downloads. Certificate pinning eliminates CA validation overhead but complicates certificate rotation. Test certificate validation latency across different client implementations.
         </p>
@@ -867,12 +876,12 @@ export default function HTTPSTLSArticle() {
 
       <section>
         <h2>Browser and Platform Compatibility</h2>
-        <p>
+        <HighlightBlock as="p" tier="important">
           TLS support varies across browsers, operating systems, and platforms, requiring careful compatibility planning.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="crucial">
           <strong>TLS Version Support:</strong> TLS 1.3 supported in Chrome 70+, Firefox 63+, Safari 12.1+, Edge 79+, iOS 12.2+, Android 10+. TLS 1.2 supported in all modern browsers (Chrome 30+, Firefox 27+, Safari 9+, IE 11). For legacy browser support (IE 11, old Android), maintain TLS 1.2 fallback. Document minimum TLS version in browser support policy.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Cipher Suite Compatibility:</strong> AES-GCM ciphers supported in all modern browsers. ChaCha20-Poly1305 preferred for mobile (better performance on ARM). 3DES and RC4 blocked by modern browsers. Test cipher suite compatibility using SSL Labs. Configure server preference to prioritize strong ciphers. Monitor cipher suite distribution in access logs.
         </p>
@@ -882,9 +891,9 @@ export default function HTTPSTLSArticle() {
         <p>
           <strong>API Client Compatibility:</strong> Server-to-server API clients may use older TLS versions (Java 7, old Python). Document minimum TLS requirements in API documentation. Provide migration guidance for clients using deprecated protocols. Implement gradual TLS version deprecation with advance notice. Monitor API client TLS versions and proactively contact operators of legacy clients.
         </p>
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Enterprise Environment:</strong> Corporate proxies may intercept TLS (man-in-the-middle for security scanning). Some enterprises block TLS 1.3. Government environments may require specific cipher suites (FIPS 140-2 validated). Document enterprise compatibility requirements. Consider separate TLS configuration for enterprise users if needed.
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
@@ -897,26 +906,26 @@ export default function HTTPSTLSArticle() {
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
             <p className="font-semibold">Q1: What&apos;s the difference between SSL, TLS, and HTTPS?</p>
-            <p className="mt-2 text-sm">
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               A: <strong>SSL (Secure Sockets Layer)</strong> is the original protocol for secure communication,
               now deprecated due to vulnerabilities. <strong>TLS (Transport Layer Security)</strong> is the
               successor to SSL—TLS 1.0 was essentially SSL 3.1. Modern implementations use TLS 1.2 or 1.3.
               <strong>HTTPS</strong> is HTTP over TLS/SSL—the &quot;S&quot; stands for Secure. When people say
               &quot;SSL certificate,&quot; they technically mean TLS certificate, but the term persists
               historically.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
             <p className="font-semibold">Q2: Explain the TLS handshake process.</p>
-            <p className="mt-2 text-sm">
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               A: In TLS 1.3: (1) Client sends Client Hello with supported versions, cipher suites, and key share.
               (2) Server responds with Server Hello selecting version/cipher, sends certificate and key share.
               (3) Client verifies certificate against trusted CAs. (4) Both derive shared session keys from key
               exchange (ECDHE). (5) Both send encrypted &quot;Finished&quot; messages. (6) Application data flows
               encrypted. TLS 1.3 completes in 1-RTT (or 0-RTT for resumed connections), faster than TLS 1.2&apos;s
               2-RTT.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
@@ -932,13 +941,13 @@ export default function HTTPSTLSArticle() {
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
             <p className="font-semibold">Q4: How would you configure a secure TLS server?</p>
-            <p className="mt-2 text-sm">
+            <HighlightBlock as="p" tier="crucial" className="mt-2 text-sm">
               A: Enable only TLS 1.2 and 1.3 (disable SSL 2/3, TLS 1.0/1.1). Use strong cipher suites
               (AES-128/256-GCM, ChaCha20-Poly1305) with ECDHE key exchange for PFS. Enable OCSP stapling for
               certificate revocation checking. Set HSTS header with long max-age and preload. Use 2048+ bit RSA
               or 256+ bit ECDSA certificates. Enable HTTP/2. Implement automated certificate renewal (ACME).
               Regularly test configuration with SSL Labs.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
@@ -954,13 +963,13 @@ export default function HTTPSTLSArticle() {
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
             <p className="font-semibold">Q6: How do you prevent certificate-related outages?</p>
-            <p className="mt-2 text-sm">
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               A: Automate certificate renewal using ACME protocol (Let&apos;s Encrypt, ZeroSSL) with tools like
               certbot or acme.sh. Use short validity periods (90 days) with automatic renewal at day 60. Set up
               monitoring alerts at 30, 14, and 7 days before expiration as backup. Use CDN-managed certificates
               where possible. Implement certificate transparency monitoring to detect unauthorized certificates.
               Never rely on manual renewal—it will fail eventually.
-            </p>
+            </HighlightBlock>
           </div>
         </div>
       </section>

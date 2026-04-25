@@ -291,16 +291,16 @@ export default function SecureStorageSensitiveDataArticle() {
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Data Minimization</h3>
         <ul className="space-y-2">
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Question every field:</strong> Does this data need to be stored client-side?
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Fetch on-demand:</strong> Retrieve sensitive data only when needed, don&apos;t cache
             indefinitely
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Tokenize:</strong> Store references (tokens) instead of actual data
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Aggregate:</strong> Store summaries instead of detailed records
           </li>
@@ -324,15 +324,15 @@ export default function SecureStorageSensitiveDataArticle() {
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Access Control</h3>
         <ul className="space-y-2">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Principle of least privilege:</strong> Only store what&apos;s needed for current session
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Time-limited storage:</strong> Auto-clear after timeout
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Clear on logout:</strong> Remove all stored data, not just tokens
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Per-session isolation:</strong> Don&apos;t share sensitive data across sessions
           </li>
@@ -340,12 +340,12 @@ export default function SecureStorageSensitiveDataArticle() {
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Compliance Considerations</h3>
         <ul className="space-y-2">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>GDPR:</strong> Right to erasure includes client-side data
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="crucial">
             <strong>PCI-DSS:</strong> Never store card data client-side (use tokenization)
-          </li>
+          </HighlightBlock>
           <li>
             <strong>HIPAA:</strong> Encrypt PHI at rest, even client-side
           </li>
@@ -371,15 +371,15 @@ export default function SecureStorageSensitiveDataArticle() {
             <strong>Storing tokens in localStorage:</strong> Most common mistake. XSS = instant account
             takeover.
           </HighlightBlock>
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Storing passwords anywhere:</strong> Never store passwords client-side, even encrypted.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Hardcoded encryption keys:</strong> Keys in JavaScript source are easily extracted.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Not clearing on logout:</strong> Sensitive data persists after user logs out.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Storing more than needed:</strong> Cached PII, full user objects when IDs suffice.
           </li>
@@ -401,18 +401,18 @@ export default function SecureStorageSensitiveDataArticle() {
         <HighlightBlock as="p" tier="crucial">
           Enterprise-scale secure storage requires coordinated encryption key management, consistent storage policies, and centralized monitoring across multiple applications, services, and geographic regions. In microservices architectures, each service must handle sensitive data consistently while supporting different storage requirements.
         </HighlightBlock>
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Centralized Key Management:</strong> Implement a centralized key management service (AWS KMS, HashiCorp Vault, Azure Key Vault) that manages encryption keys centrally. Services request keys on-demand for encryption/decryption operations. Implement key rotation policies with automatic key versioning. Document key management architecture in system design documentation.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Multi-Tenant Data Isolation:</strong> For SaaS applications, implement tenant isolation at the storage layer. Use tenant-specific encryption keys for data isolation. Implement tenant-aware storage quotas. Support custom data retention policies per tenant. Document multi-tenant storage architecture in security documentation.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Edge Storage Considerations:</strong> For edge-computed applications (Cloudflare Workers, Lambda@Edge), implement secure storage at the edge. Use edge key management for encryption. Implement edge-side token validation. Document edge storage security in infrastructure documentation.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Cross-Device Synchronization:</strong> For applications requiring cross-device data sync, implement secure synchronization protocols. Use end-to-end encryption for synced data. Implement conflict resolution for concurrent modifications. Document sync security in API documentation.
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
@@ -420,37 +420,37 @@ export default function SecureStorageSensitiveDataArticle() {
         <HighlightBlock as="p" tier="crucial">
           Comprehensive secure storage testing requires automated scanning, manual verification, and penetration testing integrated into security operations.
         </HighlightBlock>
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Automated Storage Scanning:</strong> Use browser DevTools, OWASP ZAP, or custom scripts to verify storage attributes. Configure CI/CD pipelines to scan storage usage after each deployment. Set up automated alerts for: sensitive data in localStorage, missing encryption for PII, excessive data retention, insecure cookie attributes.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>XSS Exfiltration Testing:</strong> Test for data exfiltration via XSS: (1) Inject XSS payload, (2) Attempt to read stored data, (3) Verify HttpOnly cookies are inaccessible, (4) Verify encrypted data cannot be decrypted without keys. Use tools like XSS Hunter for automated exfiltration testing. Document XSS test results.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Encryption Validation:</strong> Test encryption implementation: (1) Verify data at rest is encrypted, (2) Verify encryption keys are not stored with data, (3) Test key derivation strength, (4) Verify encryption algorithm is industry-standard (AES-GCM, ChaCha20). Use cryptographic validation tools. Document encryption test results.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Data Retention Testing:</strong> Test data retention policies: (1) Verify data is cleared on logout, (2) Verify session storage clears on tab close, (3) Verify expired data is purged, (4) Test auto-lock functionality. Implement automated retention testing in CI/CD. Document retention test results.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Penetration Testing:</strong> Include storage security in quarterly penetration tests. Specific test cases: (1) localStorage data extraction, (2) Cookie theft via XSS, (3) Encryption key extraction, (4) IndexedDB injection attacks, (5) Cache poisoning. Require remediation of all storage-related findings before production deployment.
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
         <h2>Compliance and Legal Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Secure storage implementation has significant compliance implications, particularly for applications handling financial transactions, healthcare data, or operating in regulated industries.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="crucial">
           <strong>GDPR Requirements:</strong> GDPR Article 5 requires data minimization—only store necessary data client-side. Article 17 (Right to Erasure) requires clearing client-side data on user request. Article 32 requires appropriate encryption for personal data. Document storage practices in privacy policy. Implement data export functionality for Article 20 (Data Portability).
-        </p>
+        </HighlightBlock>
         <p>
           <strong>CCPA/CPRA Requirements:</strong> California Consumer Privacy Act requires disclosure of data storage practices. Implement &quot;Do Not Sell My Personal Information&quot; mechanism. Disclose what data is stored client-side and why. Provide client-side data deletion mechanism for California residents.
         </p>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           <strong>PCI-DSS Requirements:</strong> PCI-DSS Requirement 3.4 requires rendering PAN unreadable anywhere it is stored. Never store card data client-side—use payment processor tokens (Stripe, Braintree). Document tokenization approach in ROC (Report on Compliance). Annual penetration testing must include storage security testing.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>HIPAA Requirements:</strong> HIPAA Security Rule 45 CFR 164.312(a)(2)(iv) requires encryption for ePHI at rest. Implement encryption for any PHI stored client-side. Document encryption procedures in security policies. Audit access to encrypted PHI. Implement automatic logoff for apps storing PHI.
         </p>
@@ -461,18 +461,18 @@ export default function SecureStorageSensitiveDataArticle() {
 
       <section>
         <h2>Performance Trade-offs: Security vs. User Experience</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           Secure storage measures introduce measurable performance overhead that must be balanced against security requirements and user experience.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Encryption Overhead:</strong> AES-GCM encryption adds 5-50ms per operation depending on data size. Use Web Workers for encryption to avoid blocking main thread. Cache encrypted data to reduce repeated encryption. For large datasets (&gt;1MB), consider chunked encryption. Monitor encryption latency and adjust algorithms accordingly.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Key Derivation Latency:</strong> PBKDF2 key derivation takes 100-500ms depending on iteration count. This is intentional (slows brute force). Use appropriate iteration count (100,000+ for PBKDF2, 4+ for Argon2). Show loading indicator during key derivation. Cache derived keys in memory (not storage).
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Storage Access Latency:</strong> localStorage access is synchronous and blocks main thread (&lt;1ms). IndexedDB access is asynchronous (5-20ms). Use IndexedDB for large datasets to avoid blocking. Implement storage access queuing for concurrent operations. Monitor storage access patterns.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Cookie Size Impact:</strong> Cookies are sent with every HTTP request. Large cookies (greater than 4KB) increase bandwidth and latency. Keep session cookies minimal (token only). Use localStorage for non-sensitive data that doesn&apos;t need server access. Monitor cookie size in performance budgets.
         </p>
@@ -483,12 +483,12 @@ export default function SecureStorageSensitiveDataArticle() {
 
       <section>
         <h2>Browser and Platform Compatibility</h2>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Secure storage support varies across browsers, operating systems, and platforms, requiring careful compatibility planning.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="crucial">
           <strong>Web Crypto API Support:</strong> Supported in Chrome 37+, Firefox 34+, Safari 10.1+, Edge 79+. Not supported in IE11. For legacy browser support, use polyfills (webcrypto-liner) or server-side encryption fallback. Document Web Crypto support in browser compatibility matrix.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>IndexedDB Support:</strong> Supported in all modern browsers (IE10+, all current versions). Safari has had bugs with IndexedDB in private browsing. Test IndexedDB across target browsers. Implement localStorage fallback for very old browsers. Monitor IndexedDB quota across browsers.
         </p>
@@ -506,15 +506,15 @@ export default function SecureStorageSensitiveDataArticle() {
       <section>
         <h2>Real-World Use Cases</h2>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Healthcare Patient Portal:</strong> Store encrypted patient records in IndexedDB for offline access. Encryption key derived from user password. Auto-lock after 5 minutes of inactivity. Clear all data on logout. HIPAA-compliant audit logging for all data access.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Financial Trading Platform:</strong> Session tokens in HttpOnly cookies. Trading preferences in encrypted localStorage. Real-time portfolio data fetched on-demand, not cached. Auto-logout after 15 minutes of inactivity. PCI-DSS compliant—no card data stored client-side.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Offline-First Field Service App:</strong> Customer PII encrypted with AES-GCM before storing in IndexedDB. Encryption key derived from user credentials, kept in memory only. Sync encrypted data to server when online. Auto-clear data after job completion. GDPR-compliant data retention policies.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>E-Commerce Shopping Cart:</strong> Cart contents in localStorage (non-sensitive). Session cookie with HttpOnly + Secure + SameSite for authentication. Payment data never stored—use Stripe/Braintree tokens. Clear cart on purchase completion. CCPA-compliant data disclosure.
           </li>
@@ -548,47 +548,47 @@ export default function SecureStorageSensitiveDataArticle() {
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
             <p className="font-semibold">Q3: How would you securely store user PII for an offline-first app?</p>
-            <p className="mt-2 text-sm">
+            <HighlightBlock as="p" tier="crucial" className="mt-2 text-sm">
               A: Layered approach: (1) Encrypt PII using Web Crypto API (AES-GCM) before storing. (2) Store
               encrypted data in IndexedDB (not localStorage). (3) Derive encryption key from user password
               using PBKDF2 with high iterations. (4) Store salt in localStorage (not secret). (5) Keep
               encryption key in memory only, clear on logout. (6) Implement auto-lock after inactivity.
               This protects against cache inspection but not determined XSS attacks.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
             <p className="font-semibold">Q4: What&apos;s the difference between localStorage and sessionStorage?</p>
-            <p className="mt-2 text-sm">
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               A: Both are key-value stores accessible via JavaScript. <strong>localStorage</strong> persists
               until explicitly cleared and is shared across all tabs/windows of the same origin.
               <strong>sessionStorage</strong> is cleared when the tab/window closes and is isolated per-tab.
               Neither is secure for sensitive data (both accessible via XSS). sessionStorage is slightly
               better for temporary data since it auto-clears, but neither should store tokens or PII.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
             <p className="font-semibold">Q5: How do you handle token refresh securely?</p>
-            <p className="mt-2 text-sm">
+            <HighlightBlock as="p" tier="crucial" className="mt-2 text-sm">
               A: Use rotating refresh tokens in HttpOnly cookies. Access token (short-lived, 15 min) and
               refresh token (long-lived, 7 days) both in HttpOnly cookies. On refresh: verify refresh
               token, invalidate old refresh token (prevent reuse), generate new access and refresh tokens,
               set new cookies. This way tokens are never exposed to JavaScript, and stolen refresh tokens
               can&apos;t be reused. Implement refresh token rotation detection to detect and respond to
               token theft.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
             <p className="font-semibold">Q6: What data should never be stored client-side?</p>
-            <p className="mt-2 text-sm">
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               A: <strong>Passwords</strong> (never, even encrypted). <strong>Full credit card numbers</strong>
               (use payment processor tokens). <strong>Government IDs</strong> (SSN, passport numbers).
               <strong>Raw encryption keys</strong> (derive on-demand). <strong>Other users&apos; data</strong>
               (only store what&apos;s needed for current user). General rule: if it would cause significant
               harm if exposed, don&apos;t store it client-side. Fetch on-demand, tokenize, or keep server-side.
-            </p>
+            </HighlightBlock>
           </div>
         </div>
       </section>

@@ -1,0 +1,56 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="system-ui, sans-serif">
+  <rect width="900" height="500" fill="#f3f1f8"/>
+  <text x="450" y="32" text-anchor="middle" font-size="19" font-weight="700" fill="#1a1822">Scheduling Family — Which Algorithm Fits Which Problem</text>
+
+  <rect x="40" y="60" width="820" height="270" fill="#fff" stroke="#6d5bd0" stroke-width="2" rx="6"/>
+  <text x="60" y="85" font-size="14" font-weight="700" fill="#6d5bd0">Variant → tool table</text>
+  <g font-size="11">
+    <text x="60" y="115" font-weight="700">Problem</text>
+    <text x="420" y="115" font-weight="700">Objective</text>
+    <text x="620" y="115" font-weight="700">Algorithm</text>
+
+    <text x="60" y="138">Job sequencing (unit time + deadlines)</text>
+    <text x="420" y="138">max profit</text>
+    <text x="620" y="138">greedy + heap</text>
+
+    <text x="60" y="160">Activity selection</text>
+    <text x="420" y="160">max count</text>
+    <text x="620" y="160">earliest-finish greedy</text>
+
+    <text x="60" y="182">Weighted interval scheduling</text>
+    <text x="420" y="182">max profit (variable length)</text>
+    <text x="620" y="182">DP + binary search</text>
+
+    <text x="60" y="204">Min rooms (interval partitioning)</text>
+    <text x="420" y="204">min resources</text>
+    <text x="620" y="204">heap of end times</text>
+
+    <text x="60" y="226">Shortest job first (no preempt)</text>
+    <text x="420" y="226">min avg turnaround</text>
+    <text x="620" y="226">sort by duration</text>
+
+    <text x="60" y="248">Earliest deadline first (EDF)</text>
+    <text x="420" y="248">feasibility under deadlines</text>
+    <text x="620" y="248">sort by deadline</text>
+
+    <text x="60" y="270">Parallel machine scheduling (Pm||Cmax)</text>
+    <text x="420" y="270">min makespan</text>
+    <text x="620" y="270">LPT greedy (4/3 approx)</text>
+
+    <text x="60" y="292">Precedence-constrained scheduling</text>
+    <text x="420" y="292">min makespan + DAG</text>
+    <text x="620" y="292">list scheduling</text>
+
+    <text x="60" y="314">Preemptive with release &amp; deadline</text>
+    <text x="420" y="314">feasibility</text>
+    <text x="620" y="314">EDF preemptive</text>
+  </g>
+
+  <rect x="40" y="345" width="820" height="130" fill="#fff" stroke="#4caf50" stroke-width="2" rx="6"/>
+  <text x="60" y="370" font-size="13" font-weight="700" fill="#4caf50">Where job sequencing appears in production</text>
+  <text x="60" y="395" font-size="11" fill="#1a1822">• Ad-auction slot allocation: pick the n ads that maximize revenue under per-ad display caps.</text>
+  <text x="60" y="413" font-size="11" fill="#1a1822">• Batch-compute reservations: each job has a profit (revenue), a slot budget, and a deadline.</text>
+  <text x="60" y="431" font-size="11" fill="#1a1822">• Cron/workflow prioritization: drop least-profitable when slots are over-subscribed.</text>
+  <text x="60" y="449" font-size="11" fill="#1a1822">• Offline course scheduling: limited classrooms, profit weighted by enrollment.</text>
+  <text x="60" y="467" font-size="11" fill="#1a1822">• Stock-trading ticker slots: pick orders under exchange throttles weighted by expected edge.</text>
+</svg>

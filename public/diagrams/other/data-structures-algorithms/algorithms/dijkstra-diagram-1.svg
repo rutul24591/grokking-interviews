@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="system-ui, sans-serif">
+  <rect width="900" height="500" fill="#f3f1f8"/>
+  <text x="450" y="32" text-anchor="middle" font-size="19" font-weight="700" fill="#1a1822">Dijkstra — Greedy Relaxation From a Min-Heap Frontier</text>
+
+  <rect x="40" y="60" width="820" height="200" fill="#fff" stroke="#6d5bd0" stroke-width="2" rx="6"/>
+  <text x="60" y="85" font-size="13" font-weight="700" fill="#6d5bd0">Algorithm sketch</text>
+  <text x="60" y="112" font-size="11">1. dist[s] = 0; dist[v] = ∞ for v ≠ s. Push (0, s) on min-heap.</text>
+  <text x="60" y="132" font-size="11">2. Pop (d, u). If d &gt; dist[u] continue (stale entry).</text>
+  <text x="60" y="152" font-size="11">3. For each edge (u, v, w): if dist[u] + w &lt; dist[v], relax: dist[v] = dist[u] + w; push (dist[v], v).</text>
+  <text x="60" y="172" font-size="11">4. Repeat until heap empty (or pop target t for early exit).</text>
+  <text x="60" y="200" font-size="11">Invariant on pop: the popped node's distance is final because all shorter paths would have</text>
+  <text x="60" y="218" font-size="11">already been popped first — this requires non-negative edge weights.</text>
+  <text x="60" y="240" font-size="11" fill="#cc4444" font-weight="700">Negative edges break the invariant. Use Bellman-Ford or Johnson's reweighting.</text>
+
+  <rect x="40" y="280" width="820" height="195" fill="#fff" stroke="#4caf50" stroke-width="2" rx="6"/>
+  <text x="60" y="305" font-size="13" font-weight="700" fill="#4caf50">Complexity by priority queue</text>
+  <text x="60" y="330" font-size="11">• Binary heap: O((V + E) log V). Default in std libraries; lazy-deletion of stale entries.</text>
+  <text x="60" y="352" font-size="11">• Fibonacci heap: O(E + V log V). Decrease-key in O(1) amortized — theoretically optimal,</text>
+  <text x="60" y="370" font-size="11">  practically slower than binary due to constants. Rarely used in production.</text>
+  <text x="60" y="392" font-size="11">• Array / linear scan: O(V² + E). Wins on dense graphs (E ≈ V²) where log V overhead loses.</text>
+  <text x="60" y="414" font-size="11">• Indexed/d-ary heaps: O((V + E) log_d V) — d=4 often beats binary on dense graphs.</text>
+  <text x="60" y="436" font-size="11">• Dial's algorithm (bucket queue): O(V + E + maxWeight) for small integer weights.</text>
+  <text x="60" y="465" font-size="11" fill="#4caf50" font-weight="700">Pick the structure to match graph density and edge-weight distribution.</text>
+</svg>

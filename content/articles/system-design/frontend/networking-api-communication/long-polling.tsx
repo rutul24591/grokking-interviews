@@ -144,7 +144,7 @@ export default function LongPollingConciseArticle() {
             request so the server can deliver any events that occurred during
             the gap.
           </HighlightBlock>
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Message Ordering and Sequence IDs:</strong> In a
             long-polling system, messages can potentially arrive out of order or
             be duplicated if the reconnection gap coincides with multiple server
@@ -156,8 +156,8 @@ export default function LongPollingConciseArticle() {
             applied to real-time events. Without this mechanism, the client may
             miss events during reconnection or replay events it already
             processed.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Browser Connection Limits:</strong> Browsers enforce a
             maximum number of simultaneous HTTP/1.1 connections per domain,
             typically 6. Each long-poll request consumes one of these slots for
@@ -170,8 +170,8 @@ export default function LongPollingConciseArticle() {
             long-polling to get a separate connection pool, or migrating to
             HTTP/2 which has a much higher concurrent stream limit (typically
             100+).
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="crucial">
             <strong>
               Server-Side Architecture (Async/Non-Blocking Required):
             </strong>{" "}
@@ -186,38 +186,40 @@ export default function LongPollingConciseArticle() {
             pending connections. This architecture is fundamentally different
             from traditional request-response servers and is a common source of
             implementation errors when teams first adopt long polling.
-          </li>
+          </HighlightBlock>
         </ul>
       </section>
 
       <section>
         <h2>Architecture & Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           The long polling lifecycle creates a continuous series of held
           connections that approximate a persistent channel. Understanding the
           precise timing and state transitions is critical for debugging issues
           in production:
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/frontend/networking-api-communication/long-polling-flow.svg"
           alt="Long Polling Flow Timeline"
           caption="Long polling timeline showing held connections. The server holds each request open until data is available, then responds immediately. The client reconnects instantly, creating a near-continuous channel. Compare with short polling's fixed intervals and wasted requests."
+          captionTier="important"
         />
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           The flow diagram illustrates the key difference from short polling:
           there is minimal time when the client does not have an open connection
           to the server. Data delivery latency is determined by server-side
           processing time plus one network round trip, rather than the average
           half-interval latency of short polling. When an event occurs while the
           connection is held, the response is essentially instant.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/frontend/networking-api-communication/long-polling-timeline.svg"
           alt="Long Polling Sequence Diagram"
           caption="Detailed sequence showing: request held, event triggers response, immediate re-request, held again, timeout with empty response, and re-request. Note the sequence IDs that ensure no messages are lost during reconnection gaps."
+          captionTier="important"
         />
 
         <p>
@@ -261,11 +263,11 @@ export default function LongPollingConciseArticle() {
 
       <section>
         <h2>Trade-offs & Comparisons</h2>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Long polling occupies a unique middle ground between short polling's
           simplicity and WebSocket's full-duplex capability. Here is an honest
           assessment:
-        </p>
+        </HighlightBlock>
         <table className="w-full border-collapse">
           <thead>
             <tr className="border-b border-theme">
@@ -275,7 +277,7 @@ export default function LongPollingConciseArticle() {
             </tr>
           </thead>
           <tbody className="divide-y divide-theme">
-            <tr>
+            <HighlightBlock as="tr" tier="crucial">
               <td className="p-3">
                 <strong>Latency</strong>
               </td>
@@ -287,7 +289,7 @@ export default function LongPollingConciseArticle() {
                 Brief gap during reconnection (50-200ms); events during this
                 window require sequence ID recovery
               </td>
-            </tr>
+            </HighlightBlock>
             <tr>
               <td className="p-3">
                 <strong>Server Resources</strong>
@@ -315,7 +317,7 @@ export default function LongPollingConciseArticle() {
                 load balancers need careful timeout configuration
               </td>
             </tr>
-            <tr>
+            <HighlightBlock as="tr" tier="important">
               <td className="p-3">
                 <strong>Scalability</strong>
               </td>
@@ -327,7 +329,7 @@ export default function LongPollingConciseArticle() {
                 Each client holds one connection; 100K users = 100K concurrent
                 connections held open; requires connection-aware infrastructure
               </td>
-            </tr>
+            </HighlightBlock>
             <tr>
               <td className="p-3">
                 <strong>Directionality</strong>
@@ -349,33 +351,34 @@ export default function LongPollingConciseArticle() {
           src="/diagrams/system-design-concepts/frontend/networking-api-communication/polling-comparison.svg"
           alt="Real-Time Communication Pattern Comparison"
           caption="Comparison of short polling, long polling, Server-Sent Events, and WebSockets across key dimensions for selecting the right pattern."
+          captionTier="important"
         />
       </section>
 
       <section>
         <h2>Best Practices</h2>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Production long polling implementations require careful attention to
           edge cases that do not exist in simpler patterns:
-        </p>
+        </HighlightBlock>
         <ol className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Always Use Sequence IDs:</strong> Every message from the
             server should include a monotonically increasing sequence ID. The
             client sends the last received ID with each poll request. The server
             uses this to ensure no messages are lost during the reconnection
             gap. Without this, events that occur in the 50-200ms between
             response and re-request are silently dropped.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Set Server Timeout Below Intermediary Timeouts:</strong> If
             your load balancer or CDN has a 60-second idle timeout, set your
             long-poll server timeout to 30-45 seconds. This ensures the server
             responds before any intermediary forcibly closes the connection,
             which would appear as a network error to the client rather than a
             clean timeout response.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Implement Connection Draining for Deployments:</strong>{" "}
             Before shutting down a server instance, respond to all held
             connections with a signal (e.g., a "reconnect" flag) so clients
@@ -383,8 +386,8 @@ export default function LongPollingConciseArticle() {
             balancer to handle this; abrupt connection termination causes
             client-side errors and the reconnection gap extends to the client's
             error retry timeout.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Use a Single Multiplexed Connection:</strong> Instead of
             opening separate long-poll connections for different data streams
             (messages, notifications, presence), multiplex all subscriptions
@@ -392,16 +395,16 @@ export default function LongPollingConciseArticle() {
             sends its subscription interests in the request, and the server
             responds with events from any subscribed topic. This preserves the
             browser's limited connection pool for regular requests.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Handle Client Disconnection Gracefully:</strong> The server
             must detect when a client has disconnected without closing the
             connection (network failure, browser crash). Use the response
             object's close/end event to clean up the connection registry entry.
             Set a maximum hold time and periodically check for dead connections
             to prevent memory leaks.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Implement Backoff for Rapid Reconnection Loops:</strong> If
             the server consistently returns data immediately (high-frequency
             events), the client may enter a tight request-response loop with no
@@ -409,15 +412,15 @@ export default function LongPollingConciseArticle() {
             hold time on the server (e.g., batch events for at least 100ms) or a
             client-side minimum delay between requests to prevent this
             degenerate case.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Use HTTP/2 When Available:</strong> HTTP/2 multiplexes all
             requests over a single TCP connection, eliminating the browser
             connection limit problem entirely. Long-poll requests become streams
             within the shared connection, leaving other streams available for
             regular API calls. This also reduces the TCP and TLS handshake
             overhead of reconnection.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Monitor Connection Pool Health:</strong> Track the number of
             held connections per server instance, the average hold duration, the
@@ -431,12 +434,12 @@ export default function LongPollingConciseArticle() {
 
       <section>
         <h2>Common Pitfalls</h2>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Long polling introduces failure modes that do not exist in stateless
           request-response patterns:
-        </p>
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Thread-Per-Connection Server Architecture:</strong> Using a
             synchronous, thread-per-request server (Apache with mod_php,
             traditional Java servlets) for long polling. Each held connection
@@ -445,8 +448,8 @@ export default function LongPollingConciseArticle() {
             of stack memory. The server runs out of threads or memory long
             before hitting CPU limits. Always use an async runtime (Node.js,
             Netty, asyncio, Go).
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Missing Sequence IDs Leading to Lost Events:</strong> Not
             implementing a sequencing mechanism and assuming the reconnection is
             instantaneous. During the 50-200ms reconnection gap, if the server
@@ -454,8 +457,8 @@ export default function LongPollingConciseArticle() {
             without a sequence ID, the client has no way to request events it
             missed. Over time, this causes data drift between the server and
             client state.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Load Balancer Timeout Mismatch:</strong> Setting the server
             hold time to 60 seconds when the load balancer times out idle
             connections at 30 seconds. The load balancer closes the connection,
@@ -463,15 +466,15 @@ export default function LongPollingConciseArticle() {
             response, and the error handling path (with exponential backoff)
             kicks in instead of immediate reconnection. Always set server
             timeout well below the lowest intermediary timeout.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Exhausting Browser Connection Pool:</strong> Opening
             multiple long-poll connections to the same domain. With the
             browser's 6-connection limit for HTTP/1.1, two long-poll connections
             leave only 4 slots for all other requests (API calls, images, CSS,
             JS). Under load, regular requests queue behind the held long-poll
             connections, causing the entire application to feel slow.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Memory Leaks from Uncleared Connection References:</strong>{" "}
             Failing to remove connection references from the server-side
@@ -503,18 +506,18 @@ export default function LongPollingConciseArticle() {
 
       <section>
         <h2>Real-World Use Cases</h2>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Long polling has proven itself in demanding production environments:
-        </p>
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Chat and Messaging Systems:</strong> Facebook Messenger used
             long polling for years as its primary real-time transport. The
             pattern delivered messages with sub-second latency to millions of
             concurrent users. Modern chat systems may use WebSockets but often
             retain long polling as a fallback for environments where WebSocket
             connections are blocked.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Notification Systems:</strong> Gmail and other Google
             services have historically used long polling (via the Channel API
@@ -586,19 +589,19 @@ export default function LongPollingConciseArticle() {
 
       <section>
         <h2>Security Considerations</h2>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Long polling has unique security considerations due to held connections.
-        </p>
+        </HighlightBlock>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-4 text-lg font-semibold">Connection Exhaustion</h3>
           <ul className="space-y-2">
-            <li>
+            <HighlightBlock as="li" tier="crucial">
               <strong>The Risk:</strong> Attackers can open many connections to exhaust server limits.
-            </li>
-            <li>
+            </HighlightBlock>
+            <HighlightBlock as="li" tier="important">
               <strong>Mitigation:</strong> Implement per-IP connection limits.
-            </li>
+            </HighlightBlock>
           </ul>
         </div>
 
@@ -617,9 +620,9 @@ export default function LongPollingConciseArticle() {
 
       <section>
         <h2>Performance Benchmarks</h2>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Understanding long polling performance characteristics.
-        </p>
+        </HighlightBlock>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-4 text-lg font-semibold">Industry Performance Data</h3>
@@ -642,11 +645,11 @@ export default function LongPollingConciseArticle() {
                 <td className="p-2">10,000+</td>
                 <td className="p-2">5,000-50,000</td>
               </tr>
-              <tr>
+              <HighlightBlock as="tr" tier="crucial">
                 <td className="p-2">Reconnection Rate</td>
                 <td className="p-2">&lt;10%</td>
                 <td className="p-2">5-15%</td>
-              </tr>
+              </HighlightBlock>
             </tbody>
           </table>
         </div>
@@ -666,16 +669,16 @@ export default function LongPollingConciseArticle() {
 
       <section>
         <h2>Cost Analysis</h2>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Long polling has moderate infrastructure costs.
-        </p>
+        </HighlightBlock>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-4 text-lg font-semibold">Infrastructure Costs</h3>
           <ul className="space-y-2">
-            <li>
+            <HighlightBlock as="li" tier="crucial">
               <strong>Server Resources:</strong> For 100K connections: ~2-5GB RAM.
-            </li>
+            </HighlightBlock>
             <li>
               <strong>Pub/Sub Backbone:</strong> Redis Pub/Sub: $200-1,000/month.
             </li>
@@ -696,29 +699,29 @@ export default function LongPollingConciseArticle() {
 
         <div className="my-6 rounded-lg border border-accent/30 bg-accent/10 p-6">
           <h3 className="mb-3 font-semibold">ROI Decision Framework</h3>
-          <p>
+          <HighlightBlock as="p" tier="crucial">
             Use long polling when: low-latency updates needed, SSE infrastructure too complex.
             Use SSE when: you need same push semantics with cleaner API.
-          </p>
+          </HighlightBlock>
         </div>
       </section>
 
       <section>
         <h2>Decision Framework: When to Use Long Polling</h2>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Use this decision framework to evaluate whether long polling is appropriate.
-        </p>
+        </HighlightBlock>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-4 text-lg font-semibold">Decision Tree</h3>
           <ul className="space-y-2">
-            <li>
+            <HighlightBlock as="li" tier="crucial">
               <strong>Do you need server-to-client push?</strong>
               <ul>
                 <li>Yes → Long polling, SSE, or WebSocket</li>
                 <li>No → Short polling or REST</li>
               </ul>
-            </li>
+            </HighlightBlock>
             <li>
               <strong>Is SSE supported in target browsers?</strong>
               <ul>
@@ -773,7 +776,7 @@ export default function LongPollingConciseArticle() {
               Q: How does long polling differ from short polling, and when would
               you choose one over the other?
             </p>
-            <p className="mt-2 text-sm">
+            <HighlightBlock as="p" tier="crucial" className="mt-2 text-sm">
               A: In short polling, the client sends requests at fixed intervals
               and the server responds immediately, even if there is no new data.
               In long polling, the server holds the request open until data is
@@ -789,7 +792,7 @@ export default function LongPollingConciseArticle() {
               is paramount. Choose long polling when low-latency delivery is
               important, data changes are irregular, and the server can handle
               concurrent held connections.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
@@ -797,7 +800,7 @@ export default function LongPollingConciseArticle() {
               Q: A user reports that they occasionally miss chat messages. The
               system uses long polling. What would you investigate?
             </p>
-            <p className="mt-2 text-sm">
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               A: The most likely cause is the reconnection gap: events occurring
               in the 50-200ms between the server sending a response and the
               client establishing a new held connection. Investigation path:
@@ -812,7 +815,7 @@ export default function LongPollingConciseArticle() {
               server-side connection registry for memory leaks that might cause
               events to be dispatched to stale references instead of current
               connections.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">

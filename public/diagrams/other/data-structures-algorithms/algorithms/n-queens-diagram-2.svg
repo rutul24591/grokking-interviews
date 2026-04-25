@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="system-ui, sans-serif">
+  <rect width="900" height="500" fill="#f3f1f8"/>
+  <text x="450" y="32" text-anchor="middle" font-size="19" font-weight="700" fill="#1a1822">Bitmask N-Queens — Place One Queen per Row</text>
+
+  <rect x="40" y="60" width="820" height="220" fill="#fff" stroke="#6d5bd0" stroke-width="2" rx="6"/>
+  <text x="60" y="85" font-size="13" font-weight="700" fill="#6d5bd0">Three masks track forbidden columns at the current row</text>
+  <text x="60" y="112" font-size="11" font-family="monospace">solve(row, cols, diag1, diag2):</text>
+  <text x="60" y="130" font-size="11" font-family="monospace">  if row == n: count += 1; return</text>
+  <text x="60" y="148" font-size="11" font-family="monospace">  available = ~(cols | diag1 | diag2) &amp; ((1 &lt;&lt; n) − 1)</text>
+  <text x="60" y="166" font-size="11" font-family="monospace">  while available:</text>
+  <text x="60" y="184" font-size="11" font-family="monospace">    bit = available &amp; −available     # lowest set bit (= candidate column)</text>
+  <text x="60" y="202" font-size="11" font-family="monospace">    available ^= bit</text>
+  <text x="60" y="220" font-size="11" font-family="monospace">    solve(row+1, cols|bit, (diag1|bit) &lt;&lt; 1, (diag2|bit) &gt;&gt; 1)</text>
+  <text x="60" y="248" font-size="11" fill="#4caf50" font-weight="700">Each row's diag1 shifts left by 1; diag2 shifts right by 1.</text>
+  <text x="60" y="268" font-size="11">No undo needed — masks are passed by value, restored automatically.</text>
+
+  <rect x="40" y="300" width="820" height="175" fill="#fff" stroke="#4caf50" stroke-width="2" rx="6"/>
+  <text x="60" y="325" font-size="13" font-weight="700" fill="#4caf50">Pruning &amp; symmetry</text>
+  <text x="60" y="350" font-size="11">• Symmetry: solutions come in groups of 8 (4 rotations × 2 reflections), or 4 if symmetric.</text>
+  <text x="60" y="370" font-size="11">  Solve only the first half of column 0 in row 0, then double-count (with care for symmetric ones).</text>
+  <text x="60" y="390" font-size="11">• Bitmask: low-bit tricks (x &amp; −x) iterate set bits in O(popcount) instead of O(n).</text>
+  <text x="60" y="410" font-size="11">• Branch ordering: most-constrained row first ≈ MRV (rare for n-queens; rows are interchangeable).</text>
+  <text x="60" y="430" font-size="11">• Distributed: Knuth's "Estimating the efficiency of backtrack programs" gives sampling-based</text>
+  <text x="60" y="448" font-size="11">  predictions of search-tree size — useful for sharding the work across machines.</text>
+</svg>

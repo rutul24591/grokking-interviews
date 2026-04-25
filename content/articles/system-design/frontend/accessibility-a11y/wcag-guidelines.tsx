@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -42,7 +43,7 @@ export default function WCAGGuidelinesArticle() {
       {/* ─── Section 1: Definition & Context ─── */}
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>The Web Content Accessibility Guidelines (WCAG)</strong> are a set of technical
           recommendations published by the World Wide Web Consortium&apos;s (W3C) Web Accessibility
           Initiative (WAI) that define how to make web content more accessible to people with
@@ -51,7 +52,7 @@ export default function WCAGGuidelinesArticle() {
           Disabilities Act (ADA), Section 508 of the Rehabilitation Act, the European Accessibility
           Act (EAA), and accessibility legislation in Canada, Australia, and dozens of other
           jurisdictions.
-        </p>
+        </HighlightBlock>
         <p>
           WCAG has evolved through several major versions. <strong>WCAG 1.0</strong> (1999) introduced
           14 guidelines with checkpoint priorities, but its technology-specific language became
@@ -65,7 +66,7 @@ export default function WCAGGuidelinesArticle() {
           authentication. WCAG 2.2 is the current normative recommendation and the version most
           actively adopted by governments and organizations.
         </p>
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Why WCAG matters for staff and principal engineers:</strong> At the technical
           leadership level, accessibility is not an afterthought — it&apos;s an architectural
           concern. You are responsible for embedding WCAG compliance into design systems, component
@@ -75,20 +76,20 @@ export default function WCAGGuidelinesArticle() {
           establish manual testing protocols that cover the 60-70% of issues automated tools cannot
           detect. Understanding WCAG deeply means you can advocate for accessibility with concrete
           success criteria references rather than vague appeals to &quot;do the right thing.&quot;
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Legal risk is a tangible business concern. Web accessibility lawsuits in the United States
           exceeded 4,600 in 2023. The European Accessibility Act (EAA) came into full enforcement in
           June 2025, imposing conformance requirements on any digital product sold in the EU. Staff
           engineers who can articulate the overlap between WCAG conformance and legal exposure earn
           trust from product, legal, and executive stakeholders.
-        </p>
+        </HighlightBlock>
 
         <div className="my-6 rounded-lg border border-accent/30 bg-accent/10 p-6">
           <h3 className="mb-3 font-semibold">
             Key Insight: WCAG Is a Specification, Not a Checklist
           </h3>
-          <p>
+          <HighlightBlock as="p" tier="crucial">
             A common misconception is treating WCAG as a simple pass/fail checklist. In reality,
             WCAG is a layered specification: <strong>Principles</strong> define broad goals,{" "}
             <strong>Guidelines</strong> organize the goals into actionable themes,{" "}
@@ -97,7 +98,7 @@ export default function WCAGGuidelinesArticle() {
             patterns. Understanding this layered structure is essential for making informed
             trade-off decisions about which criteria to prioritize when you cannot address every
             issue simultaneously.
-          </p>
+          </HighlightBlock>
         </div>
       </section>
 
@@ -106,19 +107,19 @@ export default function WCAGGuidelinesArticle() {
         <h2>Core Concepts</h2>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">The POUR Principles</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Every WCAG success criterion maps back to one of four foundational principles, commonly
           referred to by the acronym POUR:
-        </p>
+        </HighlightBlock>
         <ul className="space-y-2">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Perceivable:</strong> Information and user interface components must be
             presentable to users in ways they can perceive. This covers text alternatives for
             non-text content, captions and audio descriptions for multimedia, adaptable layouts that
             work across assistive technologies, and sufficient color contrast. A user who is blind
             must be able to perceive an image through its alt text; a user who is deaf must perceive
             audio content through captions.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Operable:</strong> User interface components and navigation must be operable.
             All functionality must be available via keyboard, users must have enough time to read and
@@ -157,13 +158,13 @@ export default function WCAGGuidelinesArticle() {
             text alternatives (1.1.1), all functionality is available from a keyboard (2.1.1), page
             titles are descriptive (2.4.2).
           </li>
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Level AA (Standard):</strong> 33 additional success criteria (cumulative with
             Level A = 62 total). This is the legally mandated target in most jurisdictions and the
             level referenced by the ADA, Section 508, EAA, and EN 301 549. Examples: color contrast
             ratio of at least 4.5:1 for normal text (1.4.3), content reflows at 320px without
             horizontal scrolling (1.4.10), consistent navigation across pages (3.2.3).
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Level AAA (Enhanced):</strong> 24 additional success criteria (cumulative total
             = 86). AAA represents the highest level of accessibility but is generally not required by
@@ -203,16 +204,16 @@ export default function WCAGGuidelinesArticle() {
         </ol>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">WCAG 2.2 New Success Criteria</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           WCAG 2.2 introduced 9 new success criteria that are particularly relevant for modern web
           applications:
-        </p>
+        </HighlightBlock>
         <ul className="space-y-2">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>2.4.11 Focus Not Obscured (Minimum) [AA]:</strong> When a component receives
             keyboard focus, it is not entirely hidden by author-created content (sticky headers,
             modals, cookie banners).
-          </li>
+          </HighlightBlock>
           <li>
             <strong>2.4.12 Focus Not Obscured (Enhanced) [AAA]:</strong> No part of the focused
             component is hidden.
@@ -225,23 +226,23 @@ export default function WCAGGuidelinesArticle() {
             <strong>2.5.7 Dragging Movements [AA]:</strong> Any functionality that uses a dragging
             movement can be achieved with a single pointer without dragging.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>2.5.8 Target Size (Minimum) [AA]:</strong> Interactive targets are at least
             24x24 CSS pixels, or have sufficient spacing.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>3.2.6 Consistent Help [A]:</strong> If help mechanisms exist, they appear in a
             consistent location across pages.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>3.3.7 Redundant Entry [A]:</strong> Information already provided in a process is
             auto-populated or selectable.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>3.3.8 Accessible Authentication (Minimum) [AA]:</strong> Cognitive function
             tests (like transcribing text CAPTCHAs) are not required for login, unless alternatives
             are provided.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>3.3.9 Accessible Authentication (Enhanced) [AAA]:</strong> No cognitive function
             test is required at all for authentication.
@@ -254,38 +255,40 @@ export default function WCAGGuidelinesArticle() {
         <h2>Architecture &amp; Flow</h2>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">WCAG 2.2 Principle Hierarchy</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           The diagram below illustrates the hierarchical structure of WCAG 2.2. The four POUR
           principles sit at the top level. Each principle contains guidelines (13 total across all
           four principles), and each guideline contains specific success criteria. This hierarchy is
           not arbitrary — it reflects a deliberate design where principles express broad goals,
           guidelines organize related requirements, and success criteria provide testable checkpoints.
-        </p>
+        </HighlightBlock>
         <ArticleImage
           src="/diagrams/system-design-concepts/frontend/accessibility-a11y/wcag-guidelines-diagram-1.svg"
           alt="WCAG 2.2 principle hierarchy showing the four POUR principles (Perceivable, Operable, Understandable, Robust) with their guidelines underneath"
           caption="Figure 1: WCAG 2.2 Principle Hierarchy — 4 Principles, 13 Guidelines, 86 Success Criteria"
+          captionTier="important"
         />
-        <p>
+        <HighlightBlock as="p" tier="important">
           Understanding this hierarchy is critical for triaging accessibility issues. When you
           encounter a violation, mapping it to its principle helps you communicate the impact to
           non-technical stakeholders. &quot;This violates Perceivable 1.4.3 — users with low vision
           cannot distinguish foreground text from the background&quot; is far more compelling than
           &quot;the contrast ratio is 3.8:1 instead of 4.5:1.&quot;
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Conformance Level Pyramid</h3>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           The conformance levels form a cumulative pyramid. Level A is the foundation — without it,
           content has fundamental barriers. Level AA builds on A, adding criteria that remove
           significant barriers for most disability groups. Level AAA represents the aspirational top
           of the pyramid. Most organizations target Level AA because it balances legal compliance
           with practical achievability.
-        </p>
+        </HighlightBlock>
         <ArticleImage
           src="/diagrams/system-design-concepts/frontend/accessibility-a11y/wcag-guidelines-diagram-2.svg"
           alt="WCAG conformance levels shown as a pyramid with Level A at the base (29 criteria), Level AA in the middle (33 criteria), and Level AAA at the top (24 criteria)"
           caption="Figure 2: WCAG Conformance Levels — Cumulative pyramid from minimum (A) to enhanced (AAA)"
+          captionTier="important"
         />
         <p>
           A key architectural decision is which level to target. For most production applications,
@@ -296,24 +299,25 @@ export default function WCAGGuidelinesArticle() {
         </p>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">WCAG Audit Workflow</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           A production WCAG audit follows a structured workflow that combines automated scanning,
           manual testing, and assistive technology validation. The diagram below shows the complete
           cycle, including the continuous monitoring practices that prevent regressions after the
           initial audit.
-        </p>
+        </HighlightBlock>
         <ArticleImage
           src="/diagrams/system-design-concepts/frontend/accessibility-a11y/wcag-guidelines-diagram-3.svg"
           alt="WCAG audit workflow showing 8 steps from scope definition through automated scanning, manual testing, assistive technology testing, documentation, prioritization, remediation, and retesting, plus continuous monitoring"
           caption="Figure 3: WCAG Audit Workflow — 8-step cycle with continuous monitoring"
+          captionTier="important"
         />
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           The workflow emphasizes that automated tools (axe-core, Lighthouse, Pa11y) typically catch
           only 30-40% of WCAG issues. The remaining 60-70% require manual testing: keyboard
           navigation testing, screen reader evaluation, cognitive walkthrough, and visual inspection
           of focus indicators, reading order, and motion preferences. Staff engineers must build
           processes that account for both automated and manual testing layers.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">
           Integrating WCAG into Component Architecture
@@ -338,10 +342,10 @@ export default function WCAGGuidelinesArticle() {
       {/* ─── Section 4: Trade-offs & Comparisons ─── */}
       <section>
         <h2>Trade-offs &amp; Comparisons</h2>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Adopting WCAG involves architectural and organizational trade-offs. The table below
           summarizes the key considerations at each conformance level:
-        </p>
+        </HighlightBlock>
         <table className="w-full border-collapse">
           <thead>
             <tr className="border-b-2 border-theme">
@@ -362,7 +366,7 @@ export default function WCAGGuidelinesArticle() {
                 for low-vision, cognitive, and motor-impaired users
               </td>
             </tr>
-            <tr>
+            <HighlightBlock as="tr" tier="crucial">
               <td className="p-3 font-medium">Level AA Conformance</td>
               <td className="p-3">
                 Meets legal requirements globally; covers the widest range of disabilities; well-
@@ -372,7 +376,7 @@ export default function WCAGGuidelinesArticle() {
                 Requires investment in manual testing processes; some criteria (1.4.10 reflow,
                 1.3.4 orientation) may require responsive design rework; ongoing maintenance cost
               </td>
-            </tr>
+            </HighlightBlock>
             <tr>
               <td className="p-3 font-medium">Level AAA Conformance</td>
               <td className="p-3">
@@ -385,7 +389,7 @@ export default function WCAGGuidelinesArticle() {
                 extremely expensive; W3C itself states full AAA may not be achievable
               </td>
             </tr>
-            <tr>
+            <HighlightBlock as="tr" tier="important">
               <td className="p-3 font-medium">Automated Testing Only</td>
               <td className="p-3">
                 Fast feedback loop; integrates into CI/CD; catches 30-40% of issues; no specialized
@@ -395,7 +399,7 @@ export default function WCAGGuidelinesArticle() {
                 Misses most cognitive, navigation, and context-dependent issues; false positives
                 require manual triage; cannot test screen reader experience
               </td>
-            </tr>
+            </HighlightBlock>
             <tr>
               <td className="p-3 font-medium">Manual + Automated Testing</td>
               <td className="p-3">
@@ -407,7 +411,7 @@ export default function WCAGGuidelinesArticle() {
                 behavior varies across platforms
               </td>
             </tr>
-            <tr>
+            <HighlightBlock as="tr" tier="crucial">
               <td className="p-3 font-medium">Retrofit vs. Accessible-by-Default</td>
               <td className="p-3">
                 Accessible-by-default (embedding in design system) is 5-10x cheaper than
@@ -417,7 +421,7 @@ export default function WCAGGuidelinesArticle() {
                 Upfront investment in component library; requires accessibility expertise during
                 design phase; may slow initial feature velocity
               </td>
-            </tr>
+            </HighlightBlock>
           </tbody>
         </table>
       </section>
@@ -426,35 +430,35 @@ export default function WCAGGuidelinesArticle() {
       <section>
         <h2>Best Practices</h2>
         <ol className="space-y-2">
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>1. Embed accessibility in the design system.</strong> Build WCAG-compliant
             primitives (buttons, inputs, modals, tooltips, dropdowns) once and enforce their use via
             linting rules. Every component should ship with proper ARIA attributes, focus management,
             and keyboard interaction patterns. This is the highest-leverage investment.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>2. Declare target conformance level early.</strong> Document that your product
             targets WCAG 2.2 Level AA in your architecture decision records (ADRs). This gives
             engineers a clear, testable requirement and prevents scope creep debates.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>3. Integrate axe-core into CI/CD.</strong> Use{" "}
             <code>@axe-core/playwright</code>, <code>cypress-axe</code>, or{" "}
             <code>jest-axe</code> to run automated accessibility checks on every pull request. Fail
             the build on Level A and AA violations. This catches approximately 30-40% of issues
             automatically.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>4. Use eslint-plugin-jsx-a11y in development.</strong> This ESLint plugin catches
             common JSX accessibility mistakes at author time — missing alt attributes, improper ARIA
             usage, non-interactive elements with click handlers, and missing form labels.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>5. Test with real assistive technologies.</strong> Automated tools cannot
             replicate the screen reader experience. Test with VoiceOver (macOS/iOS), NVDA (Windows),
             and TalkBack (Android) regularly. Document expected screen reader announcements for
             critical user flows.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>6. Implement a keyboard navigation test matrix.</strong> For every interactive
             component, document the expected keyboard behavior: Tab to focus, Enter/Space to
@@ -497,26 +501,26 @@ export default function WCAGGuidelinesArticle() {
       <section>
         <h2>Common Pitfalls</h2>
         <ul className="space-y-2">
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Relying solely on automated tools.</strong> Teams often run Lighthouse or axe and
             declare &quot;we&apos;re accessible&quot; based on a 100 score. Automated tools catch
             only 30-40% of WCAG violations. They cannot verify reading order, screen reader
             announcements, keyboard trap avoidance, or whether content is genuinely understandable.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Using ARIA as a first resort instead of a last resort.</strong> The first rule
             of ARIA is &quot;don&apos;t use ARIA.&quot; Native HTML elements ({" "}
             <code>&lt;button&gt;</code>, <code>&lt;input&gt;</code>,{" "}
             <code>&lt;select&gt;</code>, <code>&lt;nav&gt;</code>) already communicate role, state,
             and value to assistive technologies. Incorrect ARIA is worse than no ARIA — it actively
             misleads screen reader users.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Removing focus outlines without providing alternatives.</strong> Setting{" "}
             <code>outline: none</code> globally violates WCAG 2.4.7 (Focus Visible). Instead, use{" "}
             <code>:focus-visible</code> to show focus indicators only for keyboard users while
             suppressing them for mouse clicks.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Treating accessibility as a retrofit project.</strong> &quot;We&apos;ll add
             accessibility later&quot; is the most expensive approach. Retrofitting accessibility into
@@ -569,7 +573,7 @@ export default function WCAGGuidelinesArticle() {
         <h3 className="mt-8 mb-4 text-xl font-semibold">
           1. GOV.UK Design System (UK Government Digital Service)
         </h3>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           The GOV.UK Design System is one of the most rigorously WCAG-tested component libraries in
           production. Every component is tested against WCAG 2.2 AA with multiple screen readers
           (JAWS, NVDA, VoiceOver), across browsers, and documented with expected assistive
@@ -577,7 +581,7 @@ export default function WCAGGuidelinesArticle() {
           expected screen reader announcements per component — has become a model for enterprise
           design systems. They mandate that all UK government digital services use these components,
           ensuring baseline accessibility across thousands of services.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">
           2. Microsoft&apos;s Fluent UI and Accessibility Insights
@@ -607,26 +611,26 @@ export default function WCAGGuidelinesArticle() {
         <h3 className="mt-8 mb-4 text-xl font-semibold">
           4. Target Corporation Lawsuit (2006-2008)
         </h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           The National Federation of the Blind v. Target Corporation case was a landmark ADA web
           accessibility lawsuit. Target.com lacked alt text for images, had inaccessible checkout
           flows, and could not be navigated by keyboard. Target settled for $6 million and agreed to
           make target.com conform to WCAG 2.0 Level AA. This case established the precedent that
           websites of physical businesses are subject to ADA Title III, and it accelerated the
           adoption of WCAG as the de facto compliance standard.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">
           5. Shopify&apos;s Polaris Design System
         </h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Shopify embeds WCAG 2.1 AA compliance into their Polaris design system, used by thousands
           of merchant-facing applications. Their approach includes automated axe-core tests in
           Storybook, documented keyboard interaction patterns for every component, color contrast
           validation built into design tokens, and a custom ESLint plugin that enforces Polaris
           component usage over raw HTML elements. This prevents merchants from building inaccessible
           storefronts, which protects Shopify from downstream accessibility complaints.
-        </p>
+        </HighlightBlock>
       </section>
 
       {/* ─── Section 8: Common Interview Questions ─── */}
@@ -637,7 +641,7 @@ export default function WCAGGuidelinesArticle() {
           <h3 className="mb-2 font-semibold">
             Q: What are the four WCAG principles, and how do they map to user needs?
           </h3>
-          <p>
+          <HighlightBlock as="p" tier="important">
             <strong>A:</strong> The four POUR principles are Perceivable (users can sense the
             content — covers vision, hearing, and cognitive perception), Operable (users can interact
             with the UI — covers keyboard, timing, seizures, and navigation), Understandable (users
@@ -649,7 +653,7 @@ export default function WCAGGuidelinesArticle() {
             can see it but not use it; if it&apos;s operable but not understandable, users can
             interact but can&apos;t complete tasks; if it&apos;s not robust, it works in some
             environments but breaks in others.
-          </p>
+          </HighlightBlock>
         </div>
 
         <div className="my-4 rounded-lg border border-accent/20 bg-accent/5 p-4">
@@ -719,7 +723,7 @@ export default function WCAGGuidelinesArticle() {
           <h3 className="mb-2 font-semibold">
             Q: How does WCAG 2.2 change the approach to authentication flows?
           </h3>
-          <p>
+          <HighlightBlock as="p" tier="crucial">
             <strong>A:</strong> WCAG 2.2 introduced two critical success criteria for authentication:
             3.3.8 Accessible Authentication (Minimum) at Level AA, and 3.3.9 Accessible
             Authentication (Enhanced) at Level AAA. SC 3.3.8 requires that if authentication
@@ -734,14 +738,14 @@ export default function WCAGGuidelinesArticle() {
             paste saved passwords from password managers). If bot protection is needed, invisible
             reCAPTCHA v3 or Turnstile (which require no user interaction) satisfy 3.3.8 because they
             do not present a cognitive test.
-          </p>
+          </HighlightBlock>
         </div>
 
         <div className="my-4 rounded-lg border border-accent/20 bg-accent/5 p-4">
           <h3 className="mb-2 font-semibold">
             Q: How would you handle WCAG compliance in a micro-frontend or federated architecture?
           </h3>
-          <p>
+          <HighlightBlock as="p" tier="important">
             <strong>A:</strong> In a micro-frontend architecture, WCAG compliance is especially
             challenging because conformance is assessed at the full page level — you can&apos;t
             claim partial conformance for your micro-frontend if another team&apos;s widget on the
@@ -757,7 +761,7 @@ export default function WCAGGuidelinesArticle() {
             accessibility owner at the platform level who reviews cross-cutting concerns like skip
             navigation, page title updates on route changes, and landmark structure across the
             composed page.
-          </p>
+          </HighlightBlock>
         </div>
       </section>
 
@@ -765,7 +769,7 @@ export default function WCAGGuidelinesArticle() {
       <section>
         <h2>References &amp; Further Reading</h2>
         <ul className="space-y-2">
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <a
               href="https://www.w3.org/TR/WCAG22/"
               target="_blank"
@@ -775,8 +779,8 @@ export default function WCAGGuidelinesArticle() {
               WCAG 2.2 — W3C Recommendation (October 2023)
             </a>{" "}
             — The full normative specification with all 86 success criteria.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <a
               href="https://www.w3.org/WAI/WCAG22/Understanding/"
               target="_blank"
@@ -787,8 +791,8 @@ export default function WCAGGuidelinesArticle() {
             </a>{" "}
             — W3C&apos;s non-normative companion that explains the intent, benefits, and examples
             for each success criterion.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <a
               href="https://www.w3.org/WAI/WCAG22/Techniques/"
               target="_blank"
@@ -799,7 +803,7 @@ export default function WCAGGuidelinesArticle() {
             </a>{" "}
             — Sufficient and advisory techniques (HTML, CSS, ARIA, scripting) for meeting each
             success criterion.
-          </li>
+          </HighlightBlock>
           <li>
             <a
               href="https://www.w3.org/WAI/ARIA/apg/"

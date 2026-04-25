@@ -1,0 +1,47 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="system-ui, sans-serif">
+  <rect width="900" height="500" fill="#f3f1f8"/>
+  <text x="450" y="32" text-anchor="middle" font-size="19" font-weight="700" fill="#1a1822">Beyond TSP — Bitmask DP Problem Patterns</text>
+
+  <rect x="40" y="60" width="400" height="190" fill="#fff" stroke="#6d5bd0" stroke-width="2" rx="6"/>
+  <text x="60" y="85" font-size="13" font-weight="700" fill="#6d5bd0">1. Assignment (workers ↔ tasks)</text>
+  <text x="60" y="108" font-size="11" fill="#1a1822">n workers, n tasks, cost[i][j].</text>
+  <text x="60" y="124" font-size="11" fill="#1a1822">Each worker takes exactly one task.</text>
+  <text x="60" y="148" font-size="11" fill="#1a1822" font-family="monospace">dp[mask] = min cost to assign the</text>
+  <text x="60" y="164" font-size="11" fill="#1a1822" font-family="monospace">  first popcount(mask) workers to</text>
+  <text x="60" y="180" font-size="11" fill="#1a1822" font-family="monospace">  the tasks in `mask`.</text>
+  <text x="60" y="204" font-size="11" fill="#1a1822">Hungarian runs O(n³), bitmask O(n·2ⁿ)</text>
+  <text x="60" y="220" font-size="11" fill="#4caf50" font-weight="700">— bitmask wins for small n with extras.</text>
+
+  <rect x="460" y="60" width="400" height="190" fill="#fff" stroke="#6d5bd0" stroke-width="2" rx="6"/>
+  <text x="480" y="85" font-size="13" font-weight="700" fill="#6d5bd0">2. Set-cover / partition</text>
+  <text x="480" y="108" font-size="11" fill="#1a1822">Partition {0..n−1} into groups satisfying</text>
+  <text x="480" y="124" font-size="11" fill="#1a1822">per-group constraints.</text>
+  <text x="480" y="148" font-size="11" fill="#1a1822" font-family="monospace">dp[mask] = min partitions covering mask</text>
+  <text x="480" y="166" font-size="11" fill="#1a1822" font-family="monospace">for sub of mask:</text>
+  <text x="480" y="182" font-size="11" fill="#1a1822" font-family="monospace">  if valid(sub):</text>
+  <text x="480" y="198" font-size="11" fill="#1a1822" font-family="monospace">    dp[mask] = min(dp[mask],</text>
+  <text x="480" y="214" font-size="11" fill="#1a1822" font-family="monospace">                   dp[mask ^ sub] + 1)</text>
+  <text x="480" y="240" font-size="11" fill="#4caf50" font-weight="700">Θ(3ⁿ) by submask enumeration.</text>
+
+  <rect x="40" y="270" width="400" height="205" fill="#fff" stroke="#6d5bd0" stroke-width="2" rx="6"/>
+  <text x="60" y="295" font-size="13" font-weight="700" fill="#6d5bd0">3. Profile DP (tiling, broken profile)</text>
+  <text x="60" y="318" font-size="11" fill="#1a1822">Count tilings of m×n board with 1×2</text>
+  <text x="60" y="334" font-size="11" fill="#1a1822">dominoes. Bitmask = profile of column.</text>
+  <text x="60" y="358" font-size="11" fill="#1a1822" font-family="monospace">dp[col][mask] = # ways to fill up to</text>
+  <text x="60" y="374" font-size="11" fill="#1a1822" font-family="monospace">  column col with current mask state.</text>
+  <text x="60" y="400" font-size="11" fill="#1a1822">Transitions: enumerate valid next-column</text>
+  <text x="60" y="416" font-size="11" fill="#1a1822">patterns.  O(n · 2^m · 2^m).</text>
+  <text x="60" y="442" font-size="11" fill="#4caf50" font-weight="700">Feasible: m ≤ 15, n up to 1000s.</text>
+
+  <!-- SOS DP -->
+  <rect x="460" y="270" width="400" height="205" fill="#fff" stroke="#4caf50" stroke-width="2" rx="6"/>
+  <text x="480" y="295" font-size="13" font-weight="700" fill="#4caf50">4. Sum-over-Subsets (SOS) DP</text>
+  <text x="480" y="318" font-size="11" fill="#1a1822">Compute f[mask] = sum over all</text>
+  <text x="480" y="334" font-size="11" fill="#1a1822">submasks sub ⊆ mask of g[sub].</text>
+  <text x="480" y="358" font-size="11" fill="#1a1822" font-family="monospace">for i in 0..n:</text>
+  <text x="480" y="374" font-size="11" fill="#1a1822" font-family="monospace">  for mask in 0..2ⁿ:</text>
+  <text x="480" y="390" font-size="11" fill="#1a1822" font-family="monospace">    if mask &amp; (1&lt;&lt;i):</text>
+  <text x="480" y="406" font-size="11" fill="#1a1822" font-family="monospace">      f[mask] += f[mask ^ (1&lt;&lt;i)]</text>
+  <text x="480" y="432" font-size="11" fill="#1a1822">Reduces naive Θ(3ⁿ) or Θ(4ⁿ) to Θ(n·2ⁿ).</text>
+  <text x="480" y="452" font-size="11" fill="#6d5bd0" font-weight="700">Subset zeta/Möbius transform on 2^{0..n-1}.</text>
+</svg>

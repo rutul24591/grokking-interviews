@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="system-ui, sans-serif">
+  <rect width="900" height="500" fill="#f3f1f8"/>
+  <text x="450" y="32" text-anchor="middle" font-size="19" font-weight="700" fill="#1a1822">Wrong Greedy Rules — And Why They Fail</text>
+
+  <rect x="40" y="60" width="400" height="200" fill="#fff" stroke="#cc4444" stroke-width="2" rx="6"/>
+  <text x="60" y="85" font-size="13" font-weight="700" fill="#cc4444">&ldquo;Shortest duration first&rdquo;</text>
+  <text x="60" y="112" font-size="11" fill="#1a1822">Counter-example:</text>
+  <text x="60" y="132" font-size="11" fill="#1a1822" font-family="monospace">  X = (1, 9)   (duration 8)</text>
+  <text x="60" y="150" font-size="11" fill="#1a1822" font-family="monospace">  Y = (0, 4)   (duration 4)</text>
+  <text x="60" y="168" font-size="11" fill="#1a1822" font-family="monospace">  Z = (5, 10)  (duration 5)</text>
+  <text x="60" y="192" font-size="11" fill="#1a1822">Shortest picks X → blocks both Y and Z.</text>
+  <text x="60" y="210" font-size="11" fill="#1a1822">Earliest-finish picks Y, Z — gets 2.</text>
+  <text x="60" y="240" font-size="11" fill="#cc4444" font-weight="700">Picks 1 instead of 2.</text>
+
+  <rect x="460" y="60" width="400" height="200" fill="#fff" stroke="#cc4444" stroke-width="2" rx="6"/>
+  <text x="480" y="85" font-size="13" font-weight="700" fill="#cc4444">&ldquo;Earliest start first&rdquo;</text>
+  <text x="480" y="112" font-size="11" fill="#1a1822">Counter-example:</text>
+  <text x="480" y="132" font-size="11" fill="#1a1822" font-family="monospace">  P = (0, 100)  (long)</text>
+  <text x="480" y="150" font-size="11" fill="#1a1822" font-family="monospace">  Q = (1, 2)</text>
+  <text x="480" y="168" font-size="11" fill="#1a1822" font-family="monospace">  R = (3, 4)</text>
+  <text x="480" y="192" font-size="11" fill="#1a1822">Picks P, blocking everything else.</text>
+  <text x="480" y="212" font-size="11" fill="#1a1822">Optimal: Q, R — 2 activities.</text>
+  <text x="480" y="240" font-size="11" fill="#cc4444" font-weight="700">Picks 1 instead of 2.</text>
+
+  <rect x="40" y="285" width="820" height="190" fill="#fff" stroke="#4caf50" stroke-width="2" rx="6"/>
+  <text x="60" y="310" font-size="13" font-weight="700" fill="#4caf50">Why earliest-finish is correct — exchange argument</text>
+  <text x="60" y="335" font-size="11" fill="#1a1822">Claim: any optimal solution O can be transformed into one that picks activity a₁ (earliest</text>
+  <text x="60" y="353" font-size="11" fill="#1a1822">finishing time) first, without losing size.</text>
+  <text x="60" y="378" font-size="11" fill="#1a1822">Proof: let o₁ be O&rsquo;s first activity. Replace o₁ by a₁. Since finish(a₁) ≤ finish(o₁),</text>
+  <text x="60" y="396" font-size="11" fill="#1a1822">and O was valid, the rest of O still starts after a₁&rsquo;s finish — so the replacement is</text>
+  <text x="60" y="414" font-size="11" fill="#1a1822">feasible and has the same size. Induct on the remaining subproblem.</text>
+  <text x="60" y="445" font-size="11" fill="#4caf50" font-weight="700">a₁ &ldquo;leaves the most room&rdquo; — the invariant that makes the greedy safe.</text>
+</svg>

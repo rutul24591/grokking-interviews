@@ -241,7 +241,7 @@ export default function CircuitBreakerPatternConciseArticle() {
             </tr>
           </thead>
           <tbody className="divide-y divide-theme">
-            <tr>
+            <HighlightBlock as="tr" tier="crucial">
               <td className="p-3">
                 <strong>Fail-Fast Behavior</strong>
               </td>
@@ -257,8 +257,8 @@ export default function CircuitBreakerPatternConciseArticle() {
                 <br />
                 {"•"} Over-aggressive thresholds cause unnecessary fallbacks
               </td>
-            </tr>
-            <tr>
+            </HighlightBlock>
+            <HighlightBlock as="tr" tier="important">
               <td className="p-3">
                 <strong>Fallback Quality</strong>
               </td>
@@ -276,8 +276,8 @@ export default function CircuitBreakerPatternConciseArticle() {
                 <br />
                 {"•"} Fallbacks must be tested and maintained separately
               </td>
-            </tr>
-            <tr>
+            </HighlightBlock>
+            <HighlightBlock as="tr" tier="important">
               <td className="p-3">
                 <strong>Recovery Detection</strong>
               </td>
@@ -295,7 +295,7 @@ export default function CircuitBreakerPatternConciseArticle() {
                 <br />
                 {"•"} Half-open probe may succeed then service fails again
               </td>
-            </tr>
+            </HighlightBlock>
             <tr>
               <td className="p-3">
                 <strong>Complexity</strong>
@@ -322,13 +322,14 @@ export default function CircuitBreakerPatternConciseArticle() {
           src="/diagrams/system-design-concepts/frontend/networking-api-communication/circuit-breaker-timeline.svg"
           alt="Circuit Breaker Behavior Timeline"
           caption="Timeline showing circuit breaker behavior: normal operation, failure accumulation, circuit opens (fail-fast), recovery timeout, half-open probe, and circuit closes"
+          captionTier="important"
         />
 
         <div className="mt-6 rounded-lg border border-theme bg-panel-soft p-6">
           <h3 className="mb-3 font-semibold">
             Circuit Breaker vs. Retry Logic
           </h3>
-          <p>
+          <HighlightBlock as="p" tier="crucial">
             These patterns are complementary, not competing. Retry logic handles{" "}
             <strong>transient failures</strong>
             (a single dropped packet, a momentary 503 during deployment).
@@ -340,18 +341,18 @@ export default function CircuitBreakerPatternConciseArticle() {
             inside. Retries resolve most issues silently; when retries
             consistently fail, the circuit breaker activates to protect the
             system.
-          </p>
+          </HighlightBlock>
         </div>
       </section>
 
       <section>
         <h2>Best Practices</h2>
-        <p>
+        <HighlightBlock as="p" tier="important">
           These practices are essential for production-grade circuit breaker
           implementations:
-        </p>
+        </HighlightBlock>
         <ol className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>
               Use per-endpoint breakers with appropriate thresholds:
             </strong>{" "}
@@ -361,8 +362,8 @@ export default function CircuitBreakerPatternConciseArticle() {
             rate, traffic volume, and criticality. A search endpoint might trip
             after 3 failures (user-facing, latency-sensitive), while a logging
             endpoint might tolerate 20 failures (background, non-critical).
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="crucial">
             <strong>
               Design meaningful fallbacks for every protected endpoint:
             </strong>{" "}
@@ -371,7 +372,7 @@ export default function CircuitBreakerPatternConciseArticle() {
             makes sense: cached data, default values, simplified UI, or an
             honest "temporarily unavailable" message. The fallback is where the
             user experience value of circuit breakers lives.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>
               Use time-based sliding windows for failure tracking:
@@ -382,14 +383,14 @@ export default function CircuitBreakerPatternConciseArticle() {
             traffic volume, making thresholds more predictable and portable
             across endpoints with different request rates.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Implement circuit breaker events for observability:</strong>{" "}
             Emit events when the breaker state changes (closed-to-open,
             open-to-half-open, half-open-to-closed). Log these events with
             endpoint, failure count, and timestamp. These events are critical
             for debugging production issues and understanding system behavior
             during incidents.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Consider multi-tab state sharing:</strong> In a browser
             environment, each tab has its own circuit breaker instances. If one
@@ -408,7 +409,7 @@ export default function CircuitBreakerPatternConciseArticle() {
             threshold" in half-open state (e.g., 3 consecutive successes before
             fully closing).
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Avoid circuit breaker thrashing:</strong> If the failure
             threshold is too low and the recovery timeout too short, the breaker
             will rapidly cycle between states
@@ -416,40 +417,40 @@ export default function CircuitBreakerPatternConciseArticle() {
             behavior. Ensure thresholds and timeouts create stable state
             transitions. Monitor state change frequency and alert if a breaker
             is thrashing.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Layer correctly with retry logic:</strong> The circuit
             breaker must wrap the retry layer, not the other way around. Check
             circuit state first, then retry within a closed circuit. When
             retries are exhausted, report the failure to the breaker. This
             prevents wasting retry budget on endpoints the breaker already knows
             are down.
-          </li>
+          </HighlightBlock>
         </ol>
       </section>
 
       <section>
         <h2>Common Pitfalls</h2>
-        <p>
+        <HighlightBlock as="p" tier="important">
           These mistakes undermine circuit breaker effectiveness or create new
           problems:
-        </p>
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Using a single global circuit breaker:</strong> When one
             endpoint fails, all API communication stops. This is like tripping
             the main breaker in your house because one outlet failed. Always use
             per-endpoint or per-service breakers so that a failing
             recommendations API does not prevent loading user profiles.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>No fallback strategy (just throwing errors):</strong> An
             open circuit breaker that throws an error is marginally better than
             no breaker at all (it saves network time), but the real value is in
             the fallback. If every open circuit results in an error screen,
             users experience the same disruption regardless of the breaker --
             you have just traded latency for correctness without improving UX.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Setting thresholds without data:</strong> Arbitrary
             thresholds (5 failures, 30-second timeout) may not match actual
@@ -500,12 +501,12 @@ export default function CircuitBreakerPatternConciseArticle() {
 
       <section>
         <h2>Real-World Use Cases</h2>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Circuit breakers are deployed extensively in frontend applications at
           scale:
-        </p>
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Netflix (Content Recommendations):</strong> When the
             recommendation service is slow or down, the circuit breaker trips
             and the frontend falls back to showing popular titles for the user's
@@ -513,22 +514,22 @@ export default function CircuitBreakerPatternConciseArticle() {
             personalized but still functional browse experience. Netflix's
             client-side resilience layer manages dozens of circuit breakers for
             different microservices powering the UI.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Amazon (Product Pages):</strong> Each section of a product
             page (reviews, recommendations, pricing, availability) has
             independent circuit breakers. If the reviews service is down, the
             product page still loads with pricing and description. The reviews
             section shows "Reviews temporarily unavailable" rather than blocking
             the entire page load.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Slack (Real-Time Messaging):</strong> When the WebSocket
             connection fails repeatedly, a circuit breaker prevents reconnection
             storms. The client switches to a polling fallback and displays a
             "Connecting..." banner. Once the breaker enters half-open state and
             a reconnection succeeds, it seamlessly switches back to WebSocket.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Google Maps (Tile Loading):</strong> When the tile server
             for a specific region fails, the circuit breaker for that region
@@ -584,40 +585,41 @@ export default function CircuitBreakerPatternConciseArticle() {
 
       <section>
         <h2>Security Considerations</h2>
-        <p>
-          Circuit breakers introduce security considerations around fallback validation.
-        </p>
+        <HighlightBlock as="p" tier="important">
+          Circuit breakers introduce security considerations around fallback
+          validation.
+        </HighlightBlock>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-4 text-lg font-semibold">Fallback Security</h3>
           <ul className="space-y-2">
-            <li>
+            <HighlightBlock as="li" tier="crucial">
               <strong>The Risk:</strong> Fallback data may be stale or incomplete.
-            </li>
-            <li>
+            </HighlightBlock>
+            <HighlightBlock as="li" tier="important">
               <strong>Mitigation:</strong> Label fallback data as "cached" or "unavailable".
-            </li>
+            </HighlightBlock>
           </ul>
         </div>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-4 text-lg font-semibold">State Management</h3>
           <ul className="space-y-2">
-            <li>
+            <HighlightBlock as="li" tier="important">
               <strong>Circuit State Exposure:</strong> Don't expose detailed circuit state to users.
-            </li>
-            <li>
+            </HighlightBlock>
+            <HighlightBlock as="li" tier="important">
               <strong>State Tampering:</strong> Validate state on load if storing in localStorage.
-            </li>
+            </HighlightBlock>
           </ul>
         </div>
       </section>
 
       <section>
         <h2>Performance Benchmarks</h2>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Understanding circuit breaker performance characteristics.
-        </p>
+        </HighlightBlock>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-4 text-lg font-semibold">Industry Performance Data</h3>
@@ -630,16 +632,16 @@ export default function CircuitBreakerPatternConciseArticle() {
               </tr>
             </thead>
             <tbody className="divide-y divide-theme">
-              <tr>
+              <HighlightBlock as="tr" tier="crucial">
                 <td className="p-2">Failure Detection Time</td>
                 <td className="p-2">&lt;30 seconds</td>
                 <td className="p-2">20-60 seconds</td>
-              </tr>
-              <tr>
+              </HighlightBlock>
+              <HighlightBlock as="tr" tier="important">
                 <td className="p-2">Recovery Time</td>
                 <td className="p-2">&lt;60 seconds</td>
                 <td className="p-2">30-120 seconds</td>
-              </tr>
+              </HighlightBlock>
               <tr>
                 <td className="p-2">False Positive Rate</td>
                 <td className="p-2">&lt;5%</td>
@@ -652,85 +654,86 @@ export default function CircuitBreakerPatternConciseArticle() {
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-4 text-lg font-semibold">Real-World Benchmarks</h3>
           <ul className="space-y-2">
-            <li>
+            <HighlightBlock as="li" tier="important">
               <strong>Netflix Hystrix:</strong> Trip time: 30 seconds. Recovery: 60 seconds.
-            </li>
-            <li>
+            </HighlightBlock>
+            <HighlightBlock as="li" tier="important">
               <strong>AWS SDK:</strong> Default: 5 failures in 30 seconds triggers open.
-            </li>
+            </HighlightBlock>
           </ul>
         </div>
       </section>
 
       <section>
         <h2>Cost Analysis</h2>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Circuit breakers have development and infrastructure costs.
-        </p>
+        </HighlightBlock>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-4 text-lg font-semibold">Infrastructure Costs</h3>
           <ul className="space-y-2">
-            <li>
+            <HighlightBlock as="li" tier="important">
               <strong>Monitoring:</strong> $100-500/month for monitoring at scale.
-            </li>
-            <li>
+            </HighlightBlock>
+            <HighlightBlock as="li" tier="important">
               <strong>Fallback Infrastructure:</strong> Cache servers or backup APIs.
-            </li>
+            </HighlightBlock>
           </ul>
         </div>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-4 text-lg font-semibold">Development Costs</h3>
           <ul className="space-y-2">
-            <li>
+            <HighlightBlock as="li" tier="important">
               <strong>Initial Implementation:</strong> 1-2 weeks for production-ready circuit breaker.
-            </li>
-            <li>
+            </HighlightBlock>
+            <HighlightBlock as="li" tier="important">
               <strong>Fallback Development:</strong> 1-2 days per endpoint.
-            </li>
+            </HighlightBlock>
           </ul>
         </div>
 
         <div className="my-6 rounded-lg border border-accent/30 bg-accent/10 p-6">
           <h3 className="mb-3 font-semibold">ROI Decision Framework</h3>
-          <p>
+          <HighlightBlock as="p" tier="crucial">
             Use circuit breakers when: multiple service dependencies, cascading failures would be
             catastrophic. Use simple retry when: failures are transient, single dependency.
-          </p>
+          </HighlightBlock>
         </div>
       </section>
 
       <section>
         <h2>Decision Framework: When to Use Circuit Breakers</h2>
-        <p>
-          Use this decision framework to evaluate whether circuit breakers are appropriate.
-        </p>
+        <HighlightBlock as="p" tier="important">
+          Use this decision framework to evaluate whether circuit breakers are
+          appropriate.
+        </HighlightBlock>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-4 text-lg font-semibold">Decision Tree</h3>
           <ul className="space-y-2">
-            <li>
+            <HighlightBlock as="li" tier="crucial">
               <strong>Do you have multiple service dependencies?</strong>
               <ul>
                 <li>Yes → Circuit breaker is valuable</li>
                 <li>No → Consider simple retry</li>
               </ul>
-            </li>
-            <li>
+            </HighlightBlock>
+            <HighlightBlock as="li" tier="important">
               <strong>Can you provide meaningful fallbacks?</strong>
               <ul>
                 <li>Yes → Circuit breaker with fallback</li>
                 <li>No → Circuit breaker with fail-fast</li>
               </ul>
-            </li>
-            <li>
+            </HighlightBlock>
+            <HighlightBlock as="li" tier="important">
               <strong>Would cascading failures be catastrophic?</strong>
               <ul>
                 <li>Yes → Circuit breaker is critical</li>
                 <li>No → Retry may be sufficient</li>
               </ul>
-            </li>
+            </HighlightBlock>
           </ul>
         </div>
 
@@ -816,7 +819,7 @@ export default function CircuitBreakerPatternConciseArticle() {
               Q: What is the relationship between circuit breakers and retry
               logic?
             </p>
-            <p className="mt-2 text-sm">
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               A: They are complementary patterns that handle different failure
               modes. Retry logic handles transient failures (single timeout,
               brief 503) by re-attempting with exponential backoff. Circuit
@@ -827,7 +830,7 @@ export default function CircuitBreakerPatternConciseArticle() {
               fail, report to the circuit breaker. When the circuit opens, skip
               retries entirely. This prevents retry amplification during outages
               while still recovering from transient glitches silently.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
@@ -835,7 +838,7 @@ export default function CircuitBreakerPatternConciseArticle() {
               Q: How do you handle circuit breaker state synchronization across
               browser tabs?
             </p>
-            <p className="mt-2 text-sm">
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               A: Use the BroadcastChannel API to share circuit breaker state
               across tabs. When a breaker trips in one tab, broadcast the state
               change (endpoint, state, timestamp) to all other tabs. Each tab
@@ -846,7 +849,7 @@ export default function CircuitBreakerPatternConciseArticle() {
               BroadcastChannel approach is lightweight and requires no
               server-side changes. For more complex scenarios, use a
               SharedWorker to centralize breaker state management.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">

@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -34,15 +35,15 @@ export default function ObserverPatternArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           The <strong>Observer Pattern</strong> defines a one-to-many dependency
           between objects so that when one object (the subject) changes state,
           all its dependents (observers) are notified and updated automatically.
           It is the backbone of event-driven programming in frontend development
           — every addEventListener call, every React state update, and every
           RxJS subscription is an implementation of this pattern.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The pattern was formalized in the Gang of Four book (1994) but its
           roots in frontend development trace to the earliest browser event
           models. Netscape&apos;s event capturing and Internet Explorer&apos;s
@@ -50,8 +51,8 @@ export default function ObserverPatternArticle() {
           Events specification standardized
           addEventListener/removeEventListener, creating the most widely used
           observer system in computing history.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Modern frontend frameworks have elevated the Observer Pattern from an
           implementation detail to an architectural cornerstone. React&apos;s
           state management is built on observable state that triggers
@@ -61,19 +62,19 @@ export default function ObserverPatternArticle() {
           IntersectionObserver, ResizeObserver, and PerformanceObserver — each
           purpose-built for specific observation needs that would be expensive
           to implement with polling.
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
         <h2>Core Concepts</h2>
         <ul>
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Subject (Observable):</strong> The object whose state is
             being observed. It maintains a list of observers and provides
             methods to subscribe (add), unsubscribe (remove), and notify all
             observers. In React, a Zustand store is the subject — it holds state
             and notifies subscribed components when that state changes.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Observer (Subscriber):</strong> An object or function that
             registers interest in the subject&apos;s state changes. When
@@ -81,7 +82,7 @@ export default function ObserverPatternArticle() {
             typically a re-render, a side effect, or a state synchronization
             operation.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Push vs Pull Models:</strong> In push mode, the subject
             sends the changed data to observers with the notification (DOM
             events push the Event object). In pull mode, observers are notified
@@ -89,7 +90,7 @@ export default function ObserverPatternArticle() {
             state (React components re-render and pull new state from the
             store). Push is simpler but may send unnecessary data; pull gives
             observers control but requires additional queries.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Subscription Lifecycle:</strong> The complete lifecycle
             includes subscribing (attaching the observer), receiving
@@ -97,7 +98,7 @@ export default function ObserverPatternArticle() {
             to unsubscribe — particularly when components unmount — is the
             single most common source of memory leaks in frontend applications.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Browser Observer APIs:</strong> The web platform provides
             built-in observers for specific use cases: MutationObserver for DOM
             changes, IntersectionObserver for viewport visibility,
@@ -105,17 +106,17 @@ export default function ObserverPatternArticle() {
             performance entries. These are more efficient than polling because
             the browser can batch and optimize notifications using its internal
             rendering pipeline.
-          </li>
+          </HighlightBlock>
         </ul>
       </section>
 
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="important">
           The Observer Pattern&apos;s architecture centers on the subject
           maintaining an observer registry and broadcasting state changes to all
           registered observers.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/frontend/scalability-architecture-patterns/observer-pattern-diagram-1.svg"
@@ -123,14 +124,14 @@ export default function ObserverPatternArticle() {
           caption="Subject-Observer notification flow — the subject maintains an observer list and notifies all observers when state changes"
         />
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           The notification flow is synchronous in most JavaScript
           implementations — when the subject&apos;s state changes, each
           observer&apos;s callback is invoked in registration order before
           control returns to the caller. This is important for understanding
           performance implications: a subject with 100 observers will invoke 100
           callbacks synchronously, potentially blocking the main thread.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/frontend/scalability-architecture-patterns/observer-pattern-diagram-2.svg"
@@ -138,7 +139,7 @@ export default function ObserverPatternArticle() {
           caption="State propagation in React — state changes in stores propagate through Context providers and Zustand subscriptions to trigger component re-renders"
         />
 
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           React&apos;s rendering model is an observer system with optimizations.
           When state changes in a Zustand store, only components that subscribe
           to the specific slice of state that changed are re-rendered. This
@@ -146,7 +147,7 @@ export default function ObserverPatternArticle() {
           reference equality checks — is what makes fine-grained state
           management libraries more performant than React Context for frequently
           changing state.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/frontend/scalability-architecture-patterns/observer-pattern-diagram-3.svg"
@@ -154,7 +155,7 @@ export default function ObserverPatternArticle() {
           caption="Memory leak: detached observers — components that unmount without unsubscribing continue to hold references, preventing garbage collection"
         />
 
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           The memory leak diagram above illustrates the most critical pitfall of
           the Observer Pattern. When a component subscribes to a subject and
           then unmounts without unsubscribing, the subject retains a reference
@@ -163,7 +164,7 @@ export default function ObserverPatternArticle() {
           and causes the observer callback to fire for a component that no
           longer exists, potentially causing state updates on unmounted
           components.
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
@@ -211,7 +212,7 @@ export default function ObserverPatternArticle() {
                 <br />• Implicit dependencies are harder to discover
               </td>
             </tr>
-            <tr>
+            <HighlightBlock as="tr" tier="crucial">
               <td className="p-3">
                 <strong>Memory</strong>
               </td>
@@ -227,8 +228,8 @@ export default function ObserverPatternArticle() {
                 • Forgotten unsubscriptions cause memory leaks
                 <br />• Large observer lists consume memory
               </td>
-            </tr>
-            <tr>
+            </HighlightBlock>
+            <HighlightBlock as="tr" tier="important">
               <td className="p-3">
                 <strong>Scalability</strong>
               </td>
@@ -244,7 +245,7 @@ export default function ObserverPatternArticle() {
                 • Synchronous notification blocks the main thread
                 <br />• Global subjects become bottlenecks
               </td>
-            </tr>
+            </HighlightBlock>
           </tbody>
         </table>
       </section>
@@ -252,27 +253,27 @@ export default function ObserverPatternArticle() {
       <section>
         <h2>Best Practices</h2>
         <ol className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Always Unsubscribe on Cleanup:</strong> In React, return a
             cleanup function from useEffect that calls
             unsubscribe/removeEventListener/disconnect. This is non-negotiable —
             every subscription must have a corresponding cleanup. Use linting
             rules (react-hooks/exhaustive-deps) to catch missing cleanups.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Use Selector Functions for Selective Updates:</strong> When
             subscribing to a state store, use selector functions that extract
             only the needed slice. This prevents components from re-rendering on
             unrelated state changes. Zustand&apos;s useStore(store, selector)
             pattern is the gold standard for this approach.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Debounce High-Frequency Observers:</strong> Observers that
             respond to rapid events (scroll, resize, mouse move) should debounce
             or throttle their callbacks to avoid overwhelming the main thread.
             ResizeObserver and IntersectionObserver already batch notifications,
             but custom observers may not.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Prefer Browser Observer APIs Over Polling:</strong> Use
             IntersectionObserver instead of scroll-position polling for lazy
@@ -302,14 +303,14 @@ export default function ObserverPatternArticle() {
       <section>
         <h2>Common Pitfalls</h2>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Memory Leaks from Missing Unsubscriptions:</strong> The most
             prevalent bug in frontend applications using observers. Every
             addEventListener without removeEventListener, every subscribe()
             without unsubscribe(), and every .observe() without .disconnect() is
             a potential memory leak. In SPAs that run for hours, these leaks
             accumulate and degrade performance.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Notification Storms:</strong> When observer A updates state
             that triggers observer B, which updates state that triggers observer
@@ -317,13 +318,13 @@ export default function ObserverPatternArticle() {
             cycles by batching state updates (React&apos;s automatic batching)
             or using microtask scheduling to defer cascading notifications.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Stale Closure State:</strong> In React, observer callbacks
             defined in useEffect capture the state values at the time the effect
             runs. If the callback fires later, it may operate on stale data. Use
             refs to access current values within observer callbacks, or ensure
             the effect re-subscribes when relevant dependencies change.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Over-Observing:</strong> Subscribing to broad state changes
             when only a narrow slice is needed causes excessive re-renders. A
@@ -331,13 +332,13 @@ export default function ObserverPatternArticle() {
             on every action. Use selectors, memoization, and fine-grained
             subscriptions to limit the blast radius of state changes.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Synchronous Observer Bottlenecks:</strong> When a subject
             notifies many observers synchronously and some observers perform
             expensive operations (DOM manipulation, network requests), the
             entire notification chain blocks the main thread. Consider async
             notification dispatch for expensive observers.
-          </li>
+          </HighlightBlock>
         </ul>
       </section>
 
@@ -382,16 +383,16 @@ export default function ObserverPatternArticle() {
 
       <section>
         <h2>Security Considerations</h2>
-        <p>
+        <HighlightBlock as="p" tier="important">
           The Observer Pattern introduces security considerations around event injection, memory leaks that can be exploited for denial-of-service, and proper cleanup to prevent information leaks.
-        </p>
+        </HighlightBlock>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-4 text-lg font-semibold">Event Injection Attacks</h3>
           <ul className="space-y-2">
-            <li>
+            <HighlightBlock as="li" tier="crucial">
               <strong>Observer Hijacking:</strong> Attackers can register malicious observers to intercept sensitive events. Mitigation: validate observer registration sources, implement observer allowlists, use weak references for observers to prevent memory leaks.
-            </li>
+            </HighlightBlock>
             <li>
               <strong>Event Data Leakage:</strong> Observers may receive sensitive data in event payloads. Mitigation: implement data minimization (only include necessary data in events), use event filtering to restrict which observers receive sensitive events, encrypt sensitive event payloads.
             </li>
@@ -431,9 +432,9 @@ export default function ObserverPatternArticle() {
 
       <section>
         <h2>Testing Strategies</h2>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Testing observer implementations requires validating both the notification mechanism and the cleanup behavior. Memory leak testing is critical for long-running applications.
-        </p>
+        </HighlightBlock>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-4 text-lg font-semibold">Testing Pyramid for Observer Pattern</h3>
@@ -489,9 +490,9 @@ export default function ObserverPatternArticle() {
 
       <section>
         <h2>Performance Benchmarks</h2>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Observer Pattern performance depends on notification efficiency, observer count, and cleanup overhead. Understanding performance characteristics is essential for production systems.
-        </p>
+        </HighlightBlock>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-4 text-lg font-semibold">Performance Metrics to Track</h3>
@@ -575,9 +576,9 @@ export default function ObserverPatternArticle() {
 
       <section>
         <h2>Cost Analysis</h2>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Observer Pattern has minimal direct infrastructure costs but significant developer productivity and performance implications.
-        </p>
+        </HighlightBlock>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-4 text-lg font-semibold">Development Costs</h3>
@@ -625,7 +626,7 @@ export default function ObserverPatternArticle() {
               Q: What is the difference between the Observer Pattern and the
               Publish-Subscribe Pattern?
             </p>
-            <p className="mt-2 text-sm">
+            <HighlightBlock as="p" tier="crucial" className="mt-2 text-sm">
               A: In the Observer Pattern, observers register directly with the
               subject — they know about each other. The subject maintains the
               observer list and calls observers directly. In Pub-Sub, publishers
@@ -636,7 +637,7 @@ export default function ObserverPatternArticle() {
               complexity of a message broker. DOM events use observer
               (addEventListener on the element); Redux uses pub-sub (dispatch
               actions to the store, subscribers react to state changes).
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
@@ -682,7 +683,7 @@ export default function ObserverPatternArticle() {
               Q: How do you prevent memory leaks with the Observer Pattern in
               SPAs?
             </p>
-            <p className="mt-2 text-sm">
+            <HighlightBlock as="p" tier="crucial" className="mt-2 text-sm">
               A: Three layers of defense: (1) Always pair subscriptions with
               cleanup — in React, return cleanup functions from useEffect; for
               browser APIs, call disconnect() on observers. (2) Use
@@ -692,7 +693,7 @@ export default function ObserverPatternArticle() {
               unreferenced observers. Additionally, use development-mode
               warnings that detect subscriptions without cleanup and monitor
               memory usage in CI with tools like memlab.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">

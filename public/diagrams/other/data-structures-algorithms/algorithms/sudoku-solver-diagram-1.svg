@@ -1,0 +1,47 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="system-ui, sans-serif">
+  <rect width="900" height="500" fill="#f3f1f8"/>
+  <text x="450" y="32" text-anchor="middle" font-size="19" font-weight="700" fill="#1a1822">Sudoku — Constraint Satisfaction on a 9×9 Grid</text>
+
+  <rect x="40" y="60" width="380" height="380" fill="#fff" stroke="#6d5bd0" stroke-width="2" rx="6"/>
+  <text x="60" y="85" font-size="13" font-weight="700" fill="#6d5bd0">Three constraint sets</text>
+  <g transform="translate(60,100)">
+    <rect x="0" y="0" width="324" height="324" fill="none" stroke="#1a1822" stroke-width="2"/>
+    <line x1="108" y1="0" x2="108" y2="324" stroke="#1a1822" stroke-width="2"/>
+    <line x1="216" y1="0" x2="216" y2="324" stroke="#1a1822" stroke-width="2"/>
+    <line x1="0" y1="108" x2="324" y2="108" stroke="#1a1822" stroke-width="2"/>
+    <line x1="0" y1="216" x2="324" y2="216" stroke="#1a1822" stroke-width="2"/>
+    <g stroke="#a89bec" stroke-width="0.5">
+      <line x1="36" y1="0" x2="36" y2="324"/><line x1="72" y1="0" x2="72" y2="324"/>
+      <line x1="144" y1="0" x2="144" y2="324"/><line x1="180" y1="0" x2="180" y2="324"/>
+      <line x1="252" y1="0" x2="252" y2="324"/><line x1="288" y1="0" x2="288" y2="324"/>
+      <line x1="0" y1="36" x2="324" y2="36"/><line x1="0" y1="72" x2="324" y2="72"/>
+      <line x1="0" y1="144" x2="324" y2="144"/><line x1="0" y1="180" x2="324" y2="180"/>
+      <line x1="0" y1="252" x2="324" y2="252"/><line x1="0" y1="288" x2="324" y2="288"/>
+    </g>
+    <rect x="0" y="108" width="324" height="36" fill="#cc4444" fill-opacity="0.2"/>
+    <rect x="216" y="0" width="36" height="324" fill="#4caf50" fill-opacity="0.2"/>
+    <rect x="108" y="216" width="108" height="108" fill="#6d5bd0" fill-opacity="0.2"/>
+  </g>
+  <text x="60" y="455" font-size="11" fill="#cc4444">row constraint</text>
+  <text x="180" y="455" font-size="11" fill="#4caf50">column constraint</text>
+  <text x="310" y="455" font-size="11" fill="#6d5bd0">3×3 box constraint</text>
+
+  <rect x="440" y="60" width="420" height="200" fill="#fff" stroke="#4caf50" stroke-width="2" rx="6"/>
+  <text x="460" y="85" font-size="13" font-weight="700" fill="#4caf50">State representation</text>
+  <text x="460" y="112" font-size="11">• grid[9][9] of digits 1..9 or 0 for empty.</text>
+  <text x="460" y="135" font-size="11">• rowMask[9], colMask[9], boxMask[9]: each a</text>
+  <text x="460" y="155" font-size="11">  9-bit mask of digits already placed.</text>
+  <text x="460" y="180" font-size="11">• For cell (r, c) the candidate set is</text>
+  <text x="460" y="200" font-size="11" font-family="monospace">  ~(rowMask[r] | colMask[c] | boxMask[3·(r/3)+c/3])</text>
+  <text x="460" y="225" font-size="11">  &amp; 0x1FF (low 9 bits).</text>
+
+  <rect x="440" y="280" width="420" height="160" fill="#fff" stroke="#6d5bd0" stroke-width="2" rx="6"/>
+  <text x="460" y="305" font-size="13" font-weight="700" fill="#6d5bd0">Backtracking core</text>
+  <text x="460" y="330" font-size="11" font-family="monospace">solve():</text>
+  <text x="460" y="348" font-size="11" font-family="monospace">  cell = pick most constrained empty</text>
+  <text x="460" y="366" font-size="11" font-family="monospace">  if no cell: return SOLVED</text>
+  <text x="460" y="384" font-size="11" font-family="monospace">  for d in candidates(cell):</text>
+  <text x="460" y="402" font-size="11" font-family="monospace">    place(cell, d)</text>
+  <text x="460" y="420" font-size="11" font-family="monospace">    if solve(): return SOLVED</text>
+  <text x="460" y="438" font-size="11" font-family="monospace">    unplace(cell, d)</text>
+</svg>

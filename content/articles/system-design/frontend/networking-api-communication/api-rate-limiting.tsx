@@ -385,7 +385,7 @@ export default function ApiRateLimitingArticle() {
           <h3 className="mb-3 font-semibold">
             Client-Side vs Server-Side Rate Limiting
           </h3>
-          <p>
+          <HighlightBlock as="p" tier="crucial">
             Client-side rate limiting is <strong>not a security measure</strong>{" "}
             -- it is a user experience and efficiency pattern. Malicious clients
             will simply ignore client-side limits. Server-side rate limiting is
@@ -397,18 +397,18 @@ export default function ApiRateLimitingArticle() {
             across competing operations. The two layers are complementary:
             server-side limiting enforces hard boundaries, while client-side
             limiting optimizes within those boundaries.
-          </p>
+          </HighlightBlock>
         </div>
       </section>
 
       <section>
         <h2>Best Practices</h2>
-        <p>
+        <HighlightBlock as="p" tier="important">
           These practices represent hard-won lessons from operating rate-limited
           frontend applications at scale:
-        </p>
+        </HighlightBlock>
         <ol className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Always Parse Rate Limit Headers:</strong> Never rely solely
             on internal counters. Response headers provide authoritative quota
             state from the server's perspective. Parse X-RateLimit-Limit,
@@ -417,8 +417,8 @@ export default function ApiRateLimitingArticle() {
             scenarios where other clients or tabs consume quota, where the
             server dynamically adjusts limits, or where your internal counter
             drifts due to bugs or edge cases.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Implement Proactive Throttling:</strong> Do not wait until
             remaining quota reaches zero before slowing down. Begin throttling
             when remaining quota falls below a threshold (e.g., 20% of limit or
@@ -427,8 +427,8 @@ export default function ApiRateLimitingArticle() {
             that blocks critical operations. Calculate a sustainable request rate
             as: remaining quota / seconds until reset, and throttle to stay
             below this rate.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Respect Retry-After Headers:</strong> When receiving a 429
             response, always read the Retry-After header and delay retries until
             at least that time has elapsed. The header value may be a Unix
@@ -436,8 +436,8 @@ export default function ApiRateLimitingArticle() {
             Retry-After is provided, use exponential backoff starting from 1
             second. Never immediately retry a 429 response -- this is the most
             common cause of extended rate-limit outages.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Prioritize Requests by Criticality:</strong> Not all
             requests are equal when quota is scarce. Implement priority-based
             queuing: critical user actions (form submissions, authentication) get
@@ -446,8 +446,8 @@ export default function ApiRateLimitingArticle() {
             priority. When quota is exhausted, drop or defer low-priority
             requests first. This ensures the application remains functional for
             core user tasks even under severe rate limiting.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Coordinate Across Tabs with BroadcastChannel:</strong> For
             multi-tab applications, implement cross-tab quota coordination. Each
             tab should broadcast its request count via BroadcastChannel and
@@ -456,8 +456,8 @@ export default function ApiRateLimitingArticle() {
             multiple tabs collectively exhaust a shared quota while each
             believes it is within limits. Use a shared key based on the API key
             or user ID to scope the channel appropriately.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Implement Quota Predictions and Alerts:</strong> Track quota
             consumption rate over time and predict when limits will be hit. If
             consumption rate suggests quota exhaustion in 5 minutes but the
@@ -466,7 +466,7 @@ export default function ApiRateLimitingArticle() {
             rate, time to exhaustion) to your monitoring system. Set alerts for
             when quota remaining drops below thresholds or when 429 responses
             spike.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Use Exponential Backoff on 429:</strong> When retrying after
             a 429, implement exponential backoff with jitter in case the initial
@@ -477,7 +477,7 @@ export default function ApiRateLimitingArticle() {
             responses per endpoint and consider tripping a circuit breaker after
             repeated failures.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Provide User Feedback on Rate Limiting:</strong> When
             operations are delayed or blocked due to rate limiting, inform users
             appropriately. For background operations, silently queue and retry.
@@ -487,18 +487,18 @@ export default function ApiRateLimitingArticle() {
             broken -- rate limiting is expected behavior, not a failure. For
             severe limits, consider showing a countdown timer until quota
             resets.
-          </li>
+          </HighlightBlock>
         </ol>
       </section>
 
       <section>
         <h2>Common Pitfalls</h2>
-        <p>
+        <HighlightBlock as="p" tier="important">
           These mistakes appear frequently even in production applications at
           well-funded companies:
-        </p>
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Ignoring Rate Limit Headers:</strong> Relying solely on
             internal counters without parsing X-RateLimit-Remaining and
             X-RateLimit-Reset headers. This leads to quota drift where the
@@ -506,8 +506,8 @@ export default function ApiRateLimitingArticle() {
             Other tabs, API clients, or server-side adjustments can consume
             quota without the client's knowledge. Always use headers as the
             authoritative source and correct internal counters accordingly.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Immediate Retry on 429:</strong> Automatically retrying a
             rate-limited request without waiting for the Retry-After duration.
             This is the fastest way to extend a rate-limit outage from seconds
@@ -515,7 +515,7 @@ export default function ApiRateLimitingArticle() {
             limits for clients that ignore Retry-After, potentially leading to
             temporary bans. Always respect the Retry-After header and implement
             backoff for repeated 429s.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>No Cross-Tab Coordination:</strong> Each browser tab
             independently consuming from a shared quota without awareness of
@@ -524,14 +524,14 @@ export default function ApiRateLimitingArticle() {
             BroadcastChannel-based coordination to share quota state across tabs
             and centrally manage consumption.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Treating All Requests Equally:</strong> Processing requests
             in FIFO order regardless of importance when quota is scarce. This
             means a background analytics request can consume quota needed for a
             critical user action. Implement priority-based queuing that ensures
             user-facing operations are never blocked by background tasks. Drop
             or defer low-priority requests when quota is below thresholds.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Not Handling Missing Headers:</strong> Assuming all APIs
             provide standard rate limit headers. Some APIs use non-standard
@@ -572,11 +572,11 @@ export default function ApiRateLimitingArticle() {
 
       <section>
         <h2>Real-World Use Cases</h2>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Client-side rate limiting is essential in these production scenarios:
-        </p>
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>GitHub API Consumption:</strong> Applications integrating
             with GitHub's API must respect the 5,000 requests per hour limit for
             authenticated users. A CI/CD dashboard polling multiple repositories
@@ -586,8 +586,8 @@ export default function ApiRateLimitingArticle() {
             tokens/second refill rate, prioritize status updates for visible
             repositories, and queue updates for background tabs. When quota
             drops below 500, switch to polling only critical repositories.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Stripe Dashboard Operations:</strong> Payment dashboards
             making frequent API calls to list charges, customers, and
             subscriptions must respect Stripe's rate limits (varies by account
@@ -597,7 +597,7 @@ export default function ApiRateLimitingArticle() {
             precedence over analytics, and coordinate across multiple dashboard
             tabs via BroadcastChannel. On 429, respect Retry-After and show
             "Processing delayed due to high volume" message.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Social Media Management Tools:</strong> Applications like
             Hootsuite or Buffer that post to Twitter, Facebook, and LinkedIn on

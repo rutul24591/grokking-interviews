@@ -249,7 +249,7 @@ export default function Http2AndHttp3ConciseArticle() {
                 resumed connections.
               </td>
             </tr>
-            <tr>
+            <HighlightBlock as="tr" tier="crucial">
               <td className="p-3">
                 <strong>Multiplexing</strong>
               </td>
@@ -265,8 +265,8 @@ export default function Http2AndHttp3ConciseArticle() {
                 Full multiplexing with independent stream flow control. Lost
                 packets don't block other streams.
               </td>
-            </tr>
-            <tr>
+            </HighlightBlock>
+            <HighlightBlock as="tr" tier="crucial">
               <td className="p-3">
                 <strong>Head-of-Line Blocking</strong>
               </td>
@@ -282,7 +282,7 @@ export default function Http2AndHttp3ConciseArticle() {
                 Eliminated at both layers. QUIC streams are independent; packet
                 loss is isolated per-stream.
               </td>
-            </tr>
+            </HighlightBlock>
             <tr>
               <td className="p-3">
                 <strong>Header Size</strong>
@@ -340,18 +340,19 @@ export default function Http2AndHttp3ConciseArticle() {
           src="/diagrams/system-design-concepts/frontend/networking-api-communication/http3-quic-architecture.svg"
           alt="Protocol stack comparison: HTTP/1.1 vs HTTP/2 vs HTTP/3"
           caption="Protocol stack evolution: HTTP/3 replaces TCP with QUIC (which runs over UDP and integrates TLS 1.3), eliminating the transport-layer head-of-line blocking that limited HTTP/2"
+          captionTier="important"
         />
       </section>
 
       <section>
         <h2>Best Practices</h2>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Modern frontend optimization strategies must account for the protocol
           version your users negotiate. These practices assume HTTP/2+ as the
           baseline:
-        </p>
+        </HighlightBlock>
         <ol className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Stop Domain Sharding:</strong> With HTTP/2+, spreading
             assets across multiple subdomains (cdn1.example.com,
             cdn2.example.com) is actively harmful. Each domain requires a
@@ -360,8 +361,8 @@ export default function Http2AndHttp3ConciseArticle() {
             CDN on a different domain, ensure it supports connection coalescing
             (HTTP/2 feature where connections can be reused across domains
             sharing a TLS certificate and IP address).
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Rethink Bundling Strategy:</strong> HTTP/1.1 rewarded large
             bundles (fewer requests). HTTP/2 changes the calculus: many smaller
             files multiplex efficiently and enable better caching granularity.
@@ -371,8 +372,8 @@ export default function Http2AndHttp3ConciseArticle() {
             shipping hundreds of tiny modules; there's still per-stream overhead
             and compression efficiency favors some bundling. The sweet spot is
             typically 5-15 chunks per page.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Use Resource Hints Effectively:</strong> With multiplexing,
             preload and prefetch hints are more effective because they don't
             consume connection slots. Use preload for critical above-the-fold
@@ -380,7 +381,7 @@ export default function Http2AndHttp3ConciseArticle() {
             likely next-page resources. Use preconnect to warm up connections to
             third-party origins (analytics, fonts, APIs). With HTTP/3,
             preconnect is even cheaper due to faster connection establishment.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Stop Inlining Small Resources:</strong> HTTP/1.1 encouraged
             inlining small CSS and base64 encoding small images to reduce
@@ -389,7 +390,7 @@ export default function Http2AndHttp3ConciseArticle() {
             multiplexing handles small requests efficiently. Serve small
             resources as separate files with long cache lifetimes instead.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Adopt 103 Early Hints:</strong> Instead of server push
             (deprecated), use 103 Early Hints to inform the browser about
             critical resources before the final response is ready. The server
@@ -397,23 +398,23 @@ export default function Http2AndHttp3ConciseArticle() {
             response. The browser can start fetching linked resources
             immediately. This is particularly powerful for dynamic pages where
             server processing takes time.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Enable HTTP/3 on Your CDN:</strong> Major CDNs (Cloudflare,
             AWS CloudFront, Fastly, Akamai) support HTTP/3. Enable it and ensure
             your server advertises HTTP/3 availability via the Alt-Svc response
             header. Browsers will automatically upgrade to HTTP/3 on subsequent
             requests. Monitor the adoption rate in your analytics to track the
             percentage of users benefiting from QUIC.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Use Fetch Priority API:</strong> The fetchpriority attribute
             (high, low, auto) lets you signal resource importance to the
             browser's prioritization engine. Set fetchpriority="high" on hero
             images, critical scripts, and above-the-fold resources. Set
             fetchpriority="low" on below-the-fold images and analytics scripts.
             This works hand-in-hand with HTTP/2's stream prioritization.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Monitor Protocol Negotiation:</strong> Use Chrome DevTools
             Network panel (Protocol column) to verify which protocol each
@@ -428,27 +429,27 @@ export default function Http2AndHttp3ConciseArticle() {
 
       <section>
         <h2>Common Pitfalls</h2>
-        <p>
+        <HighlightBlock as="p" tier="important">
           These mistakes are frequently encountered, even in production systems
           built by experienced teams:
-        </p>
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Still Bundling Everything Into One File:</strong> Teams that
             learned HTTP/1.1 optimization often produce a single 2MB bundle.
             With HTTP/2, this defeats multiplexing, ruins cache granularity (any
             change invalidates the entire bundle), and prevents parallel
             processing. Split into logical chunks, but don't over-split; aim for
             chunks between 20KB and 150KB compressed.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Assuming Server Push Is Useful:</strong> Server push sounded
             revolutionary but failed in practice. Browsers couldn't reliably
             cancel pushes for cached resources, leading to wasted bandwidth. The
             push cache had inconsistent behavior across browsers. Chrome removed
             support entirely. If you find server push configuration in your
             infrastructure, replace it with 103 Early Hints or preload headers.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Not Testing Under Realistic Network Conditions:</strong>{" "}
             HTTP/2's advantages are most pronounced on high-latency connections
@@ -502,13 +503,13 @@ export default function Http2AndHttp3ConciseArticle() {
 
       <section>
         <h2>Real-World Use Cases</h2>
-        <p>
+        <HighlightBlock as="p" tier="important">
           The adoption of HTTP/2 and HTTP/3 has been driven by the largest
           internet companies, who stood to gain the most from protocol
           improvements at scale:
-        </p>
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Google (HTTP/3 Pioneer):</strong> Google developed QUIC
             internally starting in 2012, deploying it in Chrome and across
             Google services years before standardization. By 2020, over 30% of
@@ -518,8 +519,8 @@ export default function Http2AndHttp3ConciseArticle() {
             by 8% with QUIC on lossy mobile networks. Google Search measured a
             measurable reduction in search abandonment on high-latency
             connections after QUIC deployment.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Cloudflare (Early HTTP/3 Adopter):</strong> Cloudflare
             enabled HTTP/3 support across their entire network in 2019 (before
             standardization). Their data showed HTTP/3 reduced
@@ -530,7 +531,7 @@ export default function Http2AndHttp3ConciseArticle() {
             regions with less reliable networks (parts of Asia, Africa, South
             America), where QUIC's loss resilience provided the greatest
             benefit.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Akamai (HTTP/2 Push Experiments):</strong> Akamai conducted
             extensive experiments with HTTP/2 server push across their CDN.
@@ -559,40 +560,40 @@ export default function Http2AndHttp3ConciseArticle() {
 
       <section>
         <h2>Security Considerations</h2>
-        <p>
+        <HighlightBlock as="p" tier="important">
           HTTP/2 and HTTP/3 introduce unique security considerations.
-        </p>
+        </HighlightBlock>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-4 text-lg font-semibold">TLS Requirements</h3>
           <ul className="space-y-2">
-            <li>
+            <HighlightBlock as="li" tier="crucial">
               <strong>HTTP/2:</strong> All major browsers require TLS for HTTP/2.
-            </li>
-            <li>
+            </HighlightBlock>
+            <HighlightBlock as="li" tier="crucial">
               <strong>HTTP/3:</strong> QUIC integrates TLS 1.3 directly (mandatory).
-            </li>
+            </HighlightBlock>
           </ul>
         </div>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-4 text-lg font-semibold">DDoS Amplification</h3>
           <ul className="space-y-2">
-            <li>
+            <HighlightBlock as="li" tier="important">
               <strong>The Risk:</strong> HTTP/2 multiplexing can be abused for DDoS.
-            </li>
-            <li>
+            </HighlightBlock>
+            <HighlightBlock as="li" tier="important">
               <strong>Mitigation:</strong> Implement connection limits and rate limiting.
-            </li>
+            </HighlightBlock>
           </ul>
         </div>
       </section>
 
       <section>
         <h2>Performance Benchmarks</h2>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Understanding HTTP/2 and HTTP/3 performance characteristics.
-        </p>
+        </HighlightBlock>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-4 text-lg font-semibold">Industry Performance Data</h3>
@@ -612,12 +613,12 @@ export default function Http2AndHttp3ConciseArticle() {
                 <td className="p-2">10-30% faster</td>
                 <td className="p-2">15-40% faster</td>
               </tr>
-              <tr>
+              <HighlightBlock as="tr" tier="crucial">
                 <td className="p-2">Connection Setup</td>
                 <td className="p-2">2-3 RTTs</td>
                 <td className="p-2">1-2 RTTs</td>
                 <td className="p-2">0-1 RTTs</td>
-              </tr>
+              </HighlightBlock>
               <tr>
                 <td className="p-2">Mobile Performance</td>
                 <td className="p-2">Baseline</td>
@@ -646,16 +647,16 @@ export default function Http2AndHttp3ConciseArticle() {
 
       <section>
         <h2>Cost Analysis</h2>
-        <p>
+        <HighlightBlock as="p" tier="important">
           HTTP/2 and HTTP/3 have infrastructure implications.
-        </p>
+        </HighlightBlock>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-4 text-lg font-semibold">Infrastructure Costs</h3>
           <ul className="space-y-2">
-            <li>
+            <HighlightBlock as="li" tier="important">
               <strong>Server Resources:</strong> HTTP/2 requires 10-20% more memory.
-            </li>
+            </HighlightBlock>
             <li>
               <strong>CDN Costs:</strong> Most CDNs support HTTP/2 at no extra cost.
             </li>
@@ -676,29 +677,29 @@ export default function Http2AndHttp3ConciseArticle() {
 
         <div className="my-6 rounded-lg border border-accent/30 bg-accent/10 p-6">
           <h3 className="mb-3 font-semibold">ROI Decision Framework</h3>
-          <p>
+          <HighlightBlock as="p" tier="crucial">
             Use HTTP/2 when: you want immediate performance gains. Use HTTP/3 when:
             mobile users are significant, users experience packet loss.
-          </p>
+          </HighlightBlock>
         </div>
       </section>
 
       <section>
         <h2>Decision Framework: When to Use HTTP/2 vs HTTP/3</h2>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Use this decision framework to evaluate which protocols to enable.
-        </p>
+        </HighlightBlock>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-4 text-lg font-semibold">Decision Tree</h3>
           <ul className="space-y-2">
-            <li>
+            <HighlightBlock as="li" tier="crucial">
               <strong>Does your CDN/server support HTTP/2?</strong>
               <ul>
                 <li>Yes → Enable HTTP/2</li>
                 <li>No → Upgrade infrastructure</li>
               </ul>
-            </li>
+            </HighlightBlock>
             <li>
               <strong>Is &gt;30% of traffic mobile?</strong>
               <ul>
@@ -721,12 +722,12 @@ export default function Http2AndHttp3ConciseArticle() {
               </tr>
             </thead>
             <tbody className="divide-y divide-theme">
-              <tr>
+              <HighlightBlock as="tr" tier="crucial">
                 <td className="p-2">Multiplexing</td>
                 <td className="p-2">No</td>
                 <td className="p-2">Yes</td>
                 <td className="p-2">Yes</td>
-              </tr>
+              </HighlightBlock>
               <tr>
                 <td className="p-2">Connection Migration</td>
                 <td className="p-2">No</td>

@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="system-ui, sans-serif">
+  <rect width="900" height="500" fill="#f3f1f8"/>
+  <text x="450" y="32" text-anchor="middle" font-size="19" font-weight="700" fill="#1a1822">Fractional Knapsack — Where Greedy Wins, 0/1 Fails</text>
+
+  <!-- Items -->
+  <rect x="40" y="60" width="820" height="130" fill="#fff" stroke="#6d5bd0" stroke-width="2" rx="6"/>
+  <text x="60" y="85" font-size="13" font-weight="700" fill="#6d5bd0">Items (capacity W = 50)</text>
+  <g font-size="11">
+    <text x="60" y="110">Item A: weight=10, value=60 → ratio=6.0</text>
+    <text x="60" y="130">Item B: weight=20, value=100 → ratio=5.0</text>
+    <text x="60" y="150">Item C: weight=30, value=120 → ratio=4.0</text>
+    <text x="60" y="170" fill="#4caf50" font-weight="700">Sort by ratio desc. Greedily fill.</text>
+  </g>
+
+  <!-- Fractional -->
+  <rect x="40" y="210" width="400" height="260" fill="#fff" stroke="#4caf50" stroke-width="2" rx="6"/>
+  <text x="60" y="235" font-size="13" font-weight="700" fill="#4caf50">Fractional knapsack (greedy correct)</text>
+  <text x="60" y="262" font-size="11" fill="#1a1822">Take A fully (10 kg, value 60).</text>
+  <text x="60" y="280" font-size="11" fill="#1a1822">Take B fully (20 kg, value 100).</text>
+  <text x="60" y="298" font-size="11" fill="#1a1822">Take 20/30 of C (20 kg, value 80).</text>
+  <text x="60" y="324" font-size="11" fill="#1a1822" font-weight="700">Total: 50 kg, value 240 ✓ optimal</text>
+  <text x="60" y="358" font-size="11" fill="#1a1822">Proof by exchange: if any better</text>
+  <text x="60" y="376" font-size="11" fill="#1a1822">packing existed, swapping a less</text>
+  <text x="60" y="394" font-size="11" fill="#1a1822">efficient unit for a more efficient</text>
+  <text x="60" y="412" font-size="11" fill="#1a1822">one gives a weakly-better packing.</text>
+  <text x="60" y="445" font-size="11" fill="#4caf50" font-weight="700">Complexity: O(n log n) sort + O(n) fill.</text>
+
+  <!-- 0/1 -->
+  <rect x="460" y="210" width="400" height="260" fill="#fff" stroke="#cc4444" stroke-width="2" rx="6"/>
+  <text x="480" y="235" font-size="13" font-weight="700" fill="#cc4444">0/1 knapsack (greedy FAILS)</text>
+  <text x="480" y="262" font-size="11" fill="#1a1822">Greedy takes A (10, 60), B (20, 100),</text>
+  <text x="480" y="280" font-size="11" fill="#1a1822">skips C (can&rsquo;t fit 30 in remaining 20).</text>
+  <text x="480" y="298" font-size="11" fill="#1a1822">Total: 30 kg, value 160.</text>
+  <text x="480" y="326" font-size="11" fill="#1a1822" font-weight="700">Optimal: B + C = 50 kg, value 220.</text>
+  <text x="480" y="362" font-size="11" fill="#1a1822">Greedy is 60 worse → no exchange</text>
+  <text x="480" y="380" font-size="11" fill="#1a1822">argument works because items are</text>
+  <text x="480" y="398" font-size="11" fill="#1a1822">indivisible.</text>
+  <text x="480" y="430" font-size="11" fill="#cc4444" font-weight="700">0/1 needs DP or branch-and-bound.</text>
+  <text x="480" y="455" font-size="11" fill="#1a1822">Lesson: divisibility = exchange lives.</text>
+</svg>

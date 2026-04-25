@@ -127,7 +127,7 @@ export default function RequestQueuingConciseArticle() {
             (adaptive concurrency) represents an advanced pattern used by
             Netflix's concurrency limiter.
           </HighlightBlock>
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Offline Queue (Outbox Pattern):</strong> When the
             application detects loss of network connectivity (via
             navigator.onLine or the Network Information API), mutations and
@@ -140,8 +140,8 @@ export default function RequestQueuingConciseArticle() {
             defer actions until the device has a stable connection. The outbox
             pattern requires careful attention to conflict resolution when the
             server state has changed during the offline period.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Rate-Limited Queue:</strong> Designed to respect
             server-imposed rate limits by tracking request quotas and timing.
             When the client receives a 429 Too Many Requests response with a
@@ -152,8 +152,8 @@ export default function RequestQueuingConciseArticle() {
             limit. This is critical for applications integrating with
             third-party APIs (GitHub, Twitter, Stripe) that enforce strict rate
             limits and may temporarily ban clients that exceed them.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Cancellation-Aware Queue:</strong> Integrates with the
             AbortController API to support request cancellation at any stage of
             the queue lifecycle. Queued (not yet dispatched) requests can be
@@ -166,24 +166,25 @@ export default function RequestQueuingConciseArticle() {
             results would be discarded anyway). React Query and SWR both use
             AbortController internally for automatic cancellation of stale
             queries.
-          </li>
+          </HighlightBlock>
         </ul>
       </section>
 
       <section>
         <h2>Architecture & Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           A production request queue architecture consists of several
           interacting layers: an intake layer that accepts and classifies
           requests, a scheduling layer that manages ordering and priority, a
           dispatch layer that enforces concurrency limits, and a response
           routing layer that delivers results back to callers.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/frontend/networking-api-communication/request-queue-architecture.svg"
           alt="Request Queue Architecture Diagram"
           caption="Request Queue Architecture - Requests enter through priority lanes, pass through a concurrency limiter, and responses are routed back to callers"
+          captionTier="important"
         />
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
@@ -191,51 +192,51 @@ export default function RequestQueuingConciseArticle() {
             Queue Processing Lifecycle
           </h3>
           <ol className="space-y-3">
-            <li>
+            <HighlightBlock as="li" tier="important">
               <strong>1. Request Intake:</strong> A component calls
               queue.enqueue(request, priority). The queue assigns a unique ID,
               creates a Promise/callback pair, and classifies the request by
               priority level
-            </li>
-            <li>
+            </HighlightBlock>
+            <HighlightBlock as="li" tier="important">
               <strong>2. Priority Sorting:</strong> The request is inserted into
               the appropriate priority lane. Within the same priority level,
               FIFO ordering is maintained
-            </li>
-            <li>
+            </HighlightBlock>
+            <HighlightBlock as="li" tier="crucial">
               <strong>3. Concurrency Check:</strong> The scheduler checks
               whether the number of in-flight requests is below the concurrency
               limit. If a slot is available, the request is immediately
               dispatched
-            </li>
-            <li>
+            </HighlightBlock>
+            <HighlightBlock as="li" tier="important">
               <strong>4. Wait State:</strong> If no slot is available, the
               request remains queued. The scheduler may apply aging to prevent
               starvation of lower-priority requests
-            </li>
-            <li>
+            </HighlightBlock>
+            <HighlightBlock as="li" tier="crucial">
               <strong>5. Dispatch:</strong> When a slot opens, the
               highest-priority queued request is extracted and dispatched over
               the network with its associated AbortController signal
-            </li>
-            <li>
+            </HighlightBlock>
+            <HighlightBlock as="li" tier="important">
               <strong>6. In-Flight Monitoring:</strong> The queue tracks each
               in-flight request's duration against a timeout threshold. If
               exceeded, the request is aborted and optionally re-queued with
               retry logic
-            </li>
-            <li>
+            </HighlightBlock>
+            <HighlightBlock as="li" tier="important">
               <strong>7. Response Handling:</strong> On completion (success or
               failure), the in-flight counter is decremented, the caller's
               Promise is resolved/rejected, and the scheduler checks for the
               next queued request
-            </li>
-            <li>
+            </HighlightBlock>
+            <HighlightBlock as="li" tier="important">
               <strong>8. Drain and Cleanup:</strong> On application teardown or
               route transition, the queue cancels all pending requests and
               aborts all in-flight requests to prevent memory leaks and state
               updates on unmounted components
-            </li>
+            </HighlightBlock>
           </ol>
         </div>
 
@@ -243,9 +244,10 @@ export default function RequestQueuingConciseArticle() {
           src="/diagrams/system-design-concepts/frontend/networking-api-communication/priority-queue-flow.svg"
           alt="Priority Queue Flow Diagram"
           caption="Priority Queue Flow - High-priority requests jump ahead in the queue, concurrency limit processes 3 at a time"
+          captionTier="important"
         />
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           The interaction between the queue and the browser's built-in
           connection management requires careful consideration. If the
           application-level queue allows 4 concurrent requests, but the
@@ -255,7 +257,7 @@ export default function RequestQueuingConciseArticle() {
           limit equal to or above the browser limit negates the benefit, as the
           browser will still queue excess connections internally, where the
           application has no visibility or control over ordering.
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
@@ -269,7 +271,7 @@ export default function RequestQueuingConciseArticle() {
             </tr>
           </thead>
           <tbody className="divide-y divide-theme">
-            <tr>
+            <HighlightBlock as="tr" tier="crucial">
               <td className="p-3">
                 <strong>Resource Control</strong>
               </td>
@@ -285,8 +287,8 @@ export default function RequestQueuingConciseArticle() {
                 • Queue itself consumes memory
                 <br />• Over-conservative limits underutilize network
               </td>
-            </tr>
-            <tr>
+            </HighlightBlock>
+            <HighlightBlock as="tr" tier="important">
               <td className="p-3">
                 <strong>User Experience</strong>
               </td>
@@ -302,8 +304,8 @@ export default function RequestQueuingConciseArticle() {
                 • Complexity in communicating queue state to users
                 <br />• Priority misconfiguration can worsen UX
               </td>
-            </tr>
-            <tr>
+            </HighlightBlock>
+            <HighlightBlock as="tr" tier="important">
               <td className="p-3">
                 <strong>Reliability</strong>
               </td>
@@ -319,7 +321,7 @@ export default function RequestQueuingConciseArticle() {
                 • Stale queued requests may send outdated data
                 <br />• Complex recovery logic for partial failures
               </td>
-            </tr>
+            </HighlightBlock>
             <tr>
               <td className="p-3">
                 <strong>Maintainability</strong>
@@ -337,7 +339,7 @@ export default function RequestQueuingConciseArticle() {
                 <br />• Risk of over-engineering simple fetch patterns
               </td>
             </tr>
-            <tr>
+            <HighlightBlock as="tr" tier="important">
               <td className="p-3">
                 <strong>Scalability</strong>
               </td>
@@ -353,7 +355,7 @@ export default function RequestQueuingConciseArticle() {
                 • Memory pressure from large offline queues
                 <br />• IndexedDB storage quotas can be exceeded
               </td>
-            </tr>
+            </HighlightBlock>
           </tbody>
         </table>
 
@@ -361,33 +363,34 @@ export default function RequestQueuingConciseArticle() {
           src="/diagrams/system-design-concepts/frontend/networking-api-communication/queue-strategies.svg"
           alt="Queue Strategies Comparison"
           caption="Comparison of queue strategies: FIFO, Priority, Rate-Limited, and Offline Queue patterns with their processing characteristics"
+          captionTier="important"
         />
       </section>
 
       <section>
         <h2>Best Practices</h2>
-        <p>
+        <HighlightBlock as="p" tier="important">
           To implement robust request queuing in production frontend
           applications, follow these practices:
-        </p>
+        </HighlightBlock>
         <ol className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Set Concurrency Limits Below Browser Limits:</strong>{" "}
             Configure the application queue to allow fewer concurrent requests
             (3-4) than the browser's per-origin limit (6), leaving headroom for
             unqueued requests (images, scripts, WebSocket connections). This
             prevents the application from monopolizing the browser's connection
             pool.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Implement Priority Aging:</strong> Prevent starvation of
             low-priority requests by incrementing their effective priority over
             time. A request that has waited in the queue for more than a
             configurable threshold (e.g., 10 seconds) should be promoted to the
             next priority level. This ensures all requests are eventually
             processed, even under sustained high-priority load.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Use AbortController for Lifecycle Management:</strong>{" "}
             Create an AbortController for each queued request and wire it to
             component lifecycle events. When a component unmounts or a route
@@ -395,8 +398,8 @@ export default function RequestQueuingConciseArticle() {
             prevents wasted bandwidth, memory leaks from resolved promises
             updating unmounted state, and React "Can't perform a React state
             update on an unmounted component" warnings.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Persist Offline Queues to IndexedDB:</strong> For
             offline-capable applications, serialize queued mutations to
             IndexedDB (not localStorage, which has a 5-10MB limit and is
@@ -405,15 +408,15 @@ export default function RequestQueuingConciseArticle() {
             deduplication when replaying. Use the Background Sync API where
             available to trigger replay automatically on connectivity
             restoration.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Implement Backpressure Signaling:</strong> When the queue
             reaches a configurable depth threshold, propagate backpressure to
             the application layer. This can mean disabling prefetch triggers,
             showing a loading indicator, or returning a "queue full" error to
             non-critical callers. Without backpressure, unbounded queues consume
             memory and create increasingly stale requests.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Separate Queues by Concern:</strong> Maintain separate queue
             instances for different request categories (data fetches, mutations,
@@ -442,31 +445,33 @@ export default function RequestQueuingConciseArticle() {
 
       <section>
         <h2>Common Pitfalls</h2>
-        <p>Avoid these common mistakes when implementing request queuing:</p>
+        <HighlightBlock as="p" tier="important">
+          Avoid these common mistakes when implementing request queuing:
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Not Cancelling Queued Requests on Navigation:</strong>{" "}
             Allowing requests to remain in the queue after the user navigates to
             a different view, wasting bandwidth and potentially triggering state
             updates on unmounted components. Always bind queue lifecycle to the
             component or route that initiated the requests, using
             AbortController signals.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Setting Concurrency Too High:</strong> Using a concurrency
             limit of 10-20, which exceeds browser connection limits and pushes
             queueing into the browser's opaque internal queue where the
             application has no control. Keep application-level concurrency below
             the browser's per-origin limit for effective scheduling.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Ignoring Priority Inversion:</strong> A high-priority
             request waiting behind an in-flight low-priority request that holds
             one of the limited concurrency slots. While you cannot preempt an
             in-flight request, you can mitigate this by reserving concurrency
             slots exclusively for high-priority requests (for example, reserve 1
             of 4 slots for critical operations).
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Unbounded Queue Growth:</strong> Not setting a maximum queue
             depth, allowing the queue to accumulate thousands of entries during
@@ -502,24 +507,26 @@ export default function RequestQueuingConciseArticle() {
 
       <section>
         <h2>Real-World Use Cases</h2>
-        <p>Request queuing excels in these production scenarios:</p>
+        <HighlightBlock as="p" tier="important">
+          Request queuing excels in these production scenarios:
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>File Upload Managers:</strong> Dropbox, Google Drive, and
             WeTransfer implement upload queues that limit concurrent uploads
             (typically 3-5), display per-file progress, support pause/resume,
             and handle individual file failures without affecting other uploads
             in the queue. Priority ordering allows users to bump important files
             to the front of the queue.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Offline-First Applications:</strong> Applications like
             Google Docs, Notion, and Linear queue mutations locally when offline
             (using IndexedDB or a service worker outbox), display pending
             changes to the user, and replay them in order when connectivity
             returns. Conflict resolution strategies (last-writer-wins,
             operational transforms, CRDTs) handle concurrent edits.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Image-Heavy Galleries:</strong> Pinterest, Instagram, and
             stock photo sites use request queues to manage thumbnail loading,
@@ -558,18 +565,18 @@ export default function RequestQueuingConciseArticle() {
           </h3>
           <p>Avoid explicit queuing for:</p>
           <ul className="mt-2 space-y-2">
-            <li>
+            <HighlightBlock as="li" tier="important">
               • Simple applications with few concurrent requests (the browser's
               native handling is sufficient)
-            </li>
+            </HighlightBlock>
             <li>
               • WebSocket or Server-Sent Events connections (these are
               long-lived, not request-response)
             </li>
-            <li>
+            <HighlightBlock as="li" tier="important">
               • HTTP/2 environments where the protocol's multiplexing and stream
               prioritization already handle ordering
-            </li>
+            </HighlightBlock>
             <li>
               • Static asset loading (browsers optimize this natively with
               preload scanner and priority hints)
@@ -580,21 +587,21 @@ export default function RequestQueuingConciseArticle() {
 
       <section>
         <h2>Security Considerations</h2>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Request queuing introduces security considerations around queue management and data persistence.
-        </p>
+        </HighlightBlock>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-4 text-lg font-semibold">Queue Management Security</h3>
           <ul className="space-y-2">
-            <li>
+            <HighlightBlock as="li" tier="crucial">
               <strong>Queue Exhaustion:</strong> Attackers could flood the queue
               with requests to exhaust memory or cause denial of service.
-            </li>
-            <li>
+            </HighlightBlock>
+            <HighlightBlock as="li" tier="important">
               <strong>Mitigation:</strong> Implement queue size limits per user
               and global limits. Drop oldest requests when limit exceeded.
-            </li>
+            </HighlightBlock>
             <li>
               <strong>Implementation:</strong> Return 429 Too Many Requests when
               queue is full. Implement per-user queue quotas.
@@ -605,14 +612,14 @@ export default function RequestQueuingConciseArticle() {
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-4 text-lg font-semibold">Offline Queue Security</h3>
           <ul className="space-y-2">
-            <li>
+            <HighlightBlock as="li" tier="crucial">
               <strong>Stored Data:</strong> Queued requests in IndexedDB may
               contain sensitive data (tokens, PII).
-            </li>
-            <li>
+            </HighlightBlock>
+            <HighlightBlock as="li" tier="important">
               <strong>Mitigation:</strong> Encrypt sensitive queued data.
               Implement TTL for queued requests (auto-delete after N hours).
-            </li>
+            </HighlightBlock>
             <li>
               <strong>Implementation:</strong> Use Web Crypto API for encryption.
               Don't queue sensitive operations (password changes, payments) offline.
@@ -641,14 +648,14 @@ export default function RequestQueuingConciseArticle() {
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-4 text-lg font-semibold">Replay Attack Prevention</h3>
           <ul className="space-y-2">
-            <li>
+            <HighlightBlock as="li" tier="crucial">
               <strong>Offline Replay:</strong> Queued mutations replayed on
               reconnect could be captured and replayed by attackers.
-            </li>
-            <li>
+            </HighlightBlock>
+            <HighlightBlock as="li" tier="important">
               <strong>Mitigation:</strong> Use idempotency keys for all queued
               mutations. Include timestamps and validate server-side.
-            </li>
+            </HighlightBlock>
             <li>
               <strong>Implementation:</strong> Generate UUID-based idempotency
               keys. Server rejects requests older than N minutes.
@@ -659,9 +666,9 @@ export default function RequestQueuingConciseArticle() {
 
       <section>
         <h2>Performance Benchmarks</h2>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Understanding request queuing performance characteristics is essential for tuning queue parameters.
-        </p>
+        </HighlightBlock>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-4 text-lg font-semibold">Industry Performance Data</h3>
@@ -679,21 +686,21 @@ export default function RequestQueuingConciseArticle() {
                 <td className="p-2">&gt;100 req/sec</td>
                 <td className="p-2">50-500 req/sec</td>
               </tr>
-              <tr>
+              <HighlightBlock as="tr" tier="crucial">
                 <td className="p-2">Queue Latency (p95)</td>
                 <td className="p-2">&lt;500ms</td>
                 <td className="p-2">100-1000ms</td>
-              </tr>
+              </HighlightBlock>
               <tr>
                 <td className="p-2">Offline Queue Size</td>
                 <td className="p-2">&lt;100 requests</td>
                 <td className="p-2">10-50 requests</td>
               </tr>
-              <tr>
+              <HighlightBlock as="tr" tier="important">
                 <td className="p-2">Replay Success Rate</td>
                 <td className="p-2">&gt;90%</td>
                 <td className="p-2">80-95%</td>
-              </tr>
+              </HighlightBlock>
               <tr>
                 <td className="p-2">Queue Memory Usage</td>
                 <td className="p-2">&lt;10MB</td>
@@ -724,40 +731,40 @@ export default function RequestQueuingConciseArticle() {
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-4 text-lg font-semibold">Diagnosing Performance Issues</h3>
           <ul className="space-y-2">
-            <li>
+            <HighlightBlock as="li" tier="important">
               <strong>Queue Buildup:</strong> If queue size grows continuously,
               check dispatch rate vs enqueue rate. Increase concurrency limit.
-            </li>
-            <li>
+            </HighlightBlock>
+            <HighlightBlock as="li" tier="important">
               <strong>High Latency:</strong> If queue latency &gt;1 second,
               reduce queue depth or increase processing parallelism.
-            </li>
-            <li>
+            </HighlightBlock>
+            <HighlightBlock as="li" tier="important">
               <strong>Replay Failures:</strong> If replay success rate &lt;80%,
               check idempotency implementation and server-side handling.
-            </li>
+            </HighlightBlock>
           </ul>
         </div>
       </section>
 
       <section>
         <h2>Cost Analysis</h2>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Request queuing has infrastructure and development costs that must be weighed against reliability benefits.
-        </p>
+        </HighlightBlock>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-4 text-lg font-semibold">Infrastructure Costs</h3>
           <ul className="space-y-2">
-            <li>
+            <HighlightBlock as="li" tier="important">
               <strong>Storage Costs:</strong> IndexedDB storage for offline
               queues. Typically negligible (&lt;1MB per user). Browser quotas
               apply (usually 50MB+ per origin).
-            </li>
-            <li>
+            </HighlightBlock>
+            <HighlightBlock as="li" tier="important">
               <strong>Server Load:</strong> Queued replay can cause traffic
               spikes when users reconnect. Implement rate limiting on replay.
-            </li>
+            </HighlightBlock>
             <li>
               <strong>Idempotency Storage:</strong> Server must store idempotency
               keys for replay deduplication. Redis storage: ~$50-200/month.
@@ -803,34 +810,34 @@ export default function RequestQueuingConciseArticle() {
 
         <div className="my-6 rounded-lg border border-accent/30 bg-accent/10 p-6">
           <h3 className="mb-3 font-semibold">ROI Decision Framework</h3>
-          <p>
+          <HighlightBlock as="p" tier="crucial">
             Use request queuing when: (1) offline support is a core requirement,
             (2) users experience frequent connectivity issues (mobile, emerging
             markets), (3) mutations must be reliable (form submissions, payments).
             Use simple retry when: (1) offline is rare, (2) mutations are
             idempotent and low-stakes. Use no queuing when: (1) read-only app,
             (2) real-time connectivity required, (3) simple internal tools.
-          </p>
+          </HighlightBlock>
         </div>
       </section>
 
       <section>
         <h2>Decision Framework: When to Use Request Queuing</h2>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Request queuing is not always the right solution. Use this decision framework to evaluate whether
           queuing is appropriate for your use case.
-        </p>
+        </HighlightBlock>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-4 text-lg font-semibold">Decision Tree</h3>
           <ul className="space-y-2">
-            <li>
+            <HighlightBlock as="li" tier="crucial">
               <strong>Do you need offline support?</strong>
               <ul>
                 <li>Yes → Request queuing is essential</li>
                 <li>No → Evaluate other factors</li>
               </ul>
-            </li>
+            </HighlightBlock>
             <li>
               <strong>Do users experience connectivity issues?</strong>
               <ul>
@@ -838,13 +845,13 @@ export default function RequestQueuingConciseArticle() {
                 <li>No → May not be necessary</li>
               </ul>
             </li>
-            <li>
+            <HighlightBlock as="li" tier="important">
               <strong>Are mutations critical (payments, forms)?</strong>
               <ul>
                 <li>Yes → Queuing prevents data loss</li>
                 <li>No → Simple retry may suffice</li>
               </ul>
-            </li>
+            </HighlightBlock>
             <li>
               <strong>Do you have &gt;10 concurrent requests?</strong>
               <ul>
@@ -932,7 +939,7 @@ export default function RequestQueuingConciseArticle() {
               Q: How would you design a request queue that handles both priority
               ordering and concurrency limiting?
             </p>
-            <p className="mt-2 text-sm">
+            <HighlightBlock as="p" tier="crucial" className="mt-2 text-sm">
               A: Use a multi-lane priority queue backed by separate arrays for
               each priority level (Critical, High, Normal, Low). Maintain an
               in-flight counter and a configurable concurrency limit (e.g., 4).
@@ -947,7 +954,7 @@ export default function RequestQueuingConciseArticle() {
               longer than a threshold. Reserve at least one concurrency slot for
               Critical requests by checking that non-critical requests only use
               N-1 slots.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
@@ -955,7 +962,7 @@ export default function RequestQueuingConciseArticle() {
               Q: How do browser connection limits affect frontend request
               management?
             </p>
-            <p className="mt-2 text-sm">
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               A: HTTP/1.1 browsers limit concurrent connections to 6 per origin
               (domain + port). When more than 6 requests target the same origin,
               the browser internally queues the excess without any
@@ -970,7 +977,7 @@ export default function RequestQueuingConciseArticle() {
               resource types. Domain sharding (serving assets from multiple
               subdomains) was the HTTP/1.1 workaround but is counterproductive
               with HTTP/2.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
@@ -978,7 +985,7 @@ export default function RequestQueuingConciseArticle() {
               Q: How would you implement an offline queue that reliably replays
               mutations when connectivity returns?
             </p>
-            <p className="mt-2 text-sm">
+            <HighlightBlock as="p" tier="crucial" className="mt-2 text-sm">
               A: Detect offline state via navigator.onLine and the
               'offline'/'online' window events. When offline, serialize each
               mutation to IndexedDB (using a library like idb for Promise-based
@@ -994,14 +1001,14 @@ export default function RequestQueuingConciseArticle() {
               replayed entries from IndexedDB. Use the Background Sync API in a
               service worker for automatic replay even if the user has closed
               the tab.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
             <p className="font-semibold">
               Q: How do you handle request cancellation in a queued system?
             </p>
-            <p className="mt-2 text-sm">
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               A: Each queued request should have an associated AbortController.
               For pending (not yet dispatched) requests, cancellation simply
               removes the request from the queue and rejects its Promise with an
@@ -1013,7 +1020,7 @@ export default function RequestQueuingConciseArticle() {
               a function that cancels all requests associated with that
               component. Libraries like React Query and SWR handle this
               automatically by tying request lifecycle to component mount state.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
@@ -1021,7 +1028,7 @@ export default function RequestQueuingConciseArticle() {
               Q: What is backpressure and how do you handle it in a request
               queue?
             </p>
-            <p className="mt-2 text-sm">
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               A: Backpressure occurs when the rate of incoming requests exceeds
               the rate at which the queue can process them, causing the queue to
               grow unbounded. This consumes memory and increases latency for all
@@ -1035,14 +1042,14 @@ export default function RequestQueuingConciseArticle() {
               (5) Using adaptive concurrency — reduce the concurrency limit when
               queue depth grows, allowing the queue to drain faster. The key is
               to treat backpressure as a first-class concern, not an edge case.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
             <p className="font-semibold">
               Q: How do you test request queuing behavior?
             </p>
-            <p className="mt-2 text-sm">
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               A: Testing request queuing requires simulating timing-dependent
               scenarios. Use mocked timers (jest.useFakeTimers()) to control
               request dispatch timing. Mock the network layer to simulate slow
@@ -1058,7 +1065,7 @@ export default function RequestQueuingConciseArticle() {
               Use integration tests with real browser environments (Playwright,
               Cypress) to verify end-to-end behavior including network tab
               inspection.
-            </p>
+            </HighlightBlock>
           </div>
         </div>
       </section>

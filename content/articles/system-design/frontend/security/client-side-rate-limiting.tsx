@@ -262,17 +262,17 @@ export default function ClientSideRateLimitingArticle() {
           <HighlightBlock as="li" tier="crucial">
             <strong>Never trust client-side limits:</strong> Always enforce on server
           </HighlightBlock>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Don&apos;t reveal server limits:</strong> Client-side limits can be more restrictive
             than server
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Monitor for bypass attempts:</strong> High request rates indicate client-side bypass
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Use CAPTCHA for abuse:</strong> When rate limits are repeatedly hit, require human
             verification
-          </li>
+          </HighlightBlock>
         </ul>
 
         <div className="my-6 rounded-lg border border-accent/30 bg-accent/10 p-6">
@@ -292,34 +292,34 @@ export default function ClientSideRateLimitingArticle() {
             <strong>Relying solely on client-side limits:</strong> Attackers bypass easily. Server-side
             enforcement is mandatory.
           </HighlightBlock>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>No user feedback:</strong> Users think UI is broken when clicks don&apos;t work. Always
             show why action was limited.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Using wrong technique:</strong> Debouncing for scroll events (should throttle),
             throttling for search (should debounce).
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Not handling tab switching:</strong> Rate limit state lost when user switches tabs.
             Use localStorage for persistence.
-          </li>
+          </HighlightBlock>
           <HighlightBlock as="li" tier="important">
             <strong>Ignoring server headers:</strong> Not respecting Retry-After or rate limit headers
             leads to repeated failures.
           </HighlightBlock>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Too aggressive limits:</strong> Frustrates legitimate users. Start conservative,
             adjust based on analytics.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Not testing across tabs:</strong> Multiple tabs share rate limit. Ensure limits work
             correctly with multiple tabs open.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Memory leaks:</strong> Not clearing timeouts, intervals, or abort controllers causes
             memory leaks.
-          </li>
+          </HighlightBlock>
         </ul>
       </section>
 
@@ -430,18 +430,18 @@ export default function ClientSideRateLimitingArticle() {
       <section>
         <h2>Real-World Use Cases</h2>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>E-Commerce Search:</strong> Debouncing on search input (300ms). Request cancellation on new query. Loading state during search. Error handling for failed searches. Server-side rate limiting for search API (10 requests/second).
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Social Media Posting:</strong> Throttling on post button (1 post/5 seconds). Disable button during submission. Server-side rate limiting for posts (100 posts/hour). Exponential backoff for failed posts.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Authentication:</strong> Client-side rate limiting on login form (3 attempts/minute). Server-side rate limiting (5 failed attempts locks account). Progressive delays between attempts. Account lockout after threshold.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>API Client:</strong> Token bucket algorithm (100 tokens/hour). Token refill rate (100/hour). Request queuing when bucket empty. Retry-After header handling. Exponential backoff for 429 responses.
-          </li>
+          </HighlightBlock>
         </ul>
       </section>
 

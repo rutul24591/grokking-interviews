@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -28,7 +29,7 @@ export default function PublishSubscribePatternArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           The <strong>Publish-Subscribe (Pub-Sub) Pattern</strong> is a
           messaging pattern where senders (publishers) emit messages to topics
           or channels without knowing who will receive them, and receivers
@@ -36,8 +37,8 @@ export default function PublishSubscribePatternArticle() {
           published the messages. The critical distinction from the Observer
           Pattern is the presence of a message broker or event bus that
           decouples publishers from subscribers entirely.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           In frontend development, Pub-Sub is the architectural backbone for
           communication between loosely coupled modules, micro-frontends,
           cross-tab synchronization, and integration with real-time backend
@@ -46,8 +47,8 @@ export default function PublishSubscribePatternArticle() {
           PostMessage between iframes is Pub-Sub across origins. Server-Sent
           Events and WebSocket topic subscriptions are Pub-Sub between client
           and server.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The pattern became prominent in frontend architecture with the rise of
           single-page applications and micro-frontends, where independent
           modules need to coordinate without direct imports or shared state. It
@@ -55,7 +56,7 @@ export default function PublishSubscribePatternArticle() {
           be active at the same time if messages are queued), spatial decoupling
           (they can run in different contexts — tabs, iframes, workers), and
           platform decoupling (they can be implemented in different frameworks).
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
@@ -75,14 +76,14 @@ export default function PublishSubscribePatternArticle() {
             might be a badge component that listens for
             &quot;cart:item-added&quot; to update its count.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Message Broker / Event Bus:</strong> The intermediary that
             maintains topic-to-subscriber mappings and routes published messages
             to all matching subscribers. This is the key differentiator from the
             Observer Pattern — the broker enables full decoupling. The broker
             can be as simple as a Map of topic strings to callback arrays, or as
             sophisticated as a distributed message queue.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Topic / Channel:</strong> A named category that messages are
             published to and subscribed from. Topics provide logical grouping
@@ -90,13 +91,13 @@ export default function PublishSubscribePatternArticle() {
             have subscribed to. Topics can be hierarchical
             (user.profile.updated) with wildcard subscriptions (user.*).
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Message Envelope:</strong> The standardized format for
             messages flowing through the system. A well-designed envelope
             includes: topic, payload, timestamp, source identifier, and
             correlation ID. Standardized envelopes enable middleware (logging,
             validation, transformation) at the broker level.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Delivery Guarantees:</strong> In-process event buses
             typically provide at-most-once delivery (if a subscriber is not
@@ -110,11 +111,11 @@ export default function PublishSubscribePatternArticle() {
 
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="important">
           The Pub-Sub architecture introduces a message broker between
           publishers and subscribers, creating full decoupling at the cost of
           additional infrastructure.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/frontend/scalability-architecture-patterns/publish-subscribe-pattern-diagram-1.svg"
@@ -122,13 +123,13 @@ export default function PublishSubscribePatternArticle() {
           caption="Pub-Sub with event bus — publishers emit events to named topics on the bus, which routes them to all topic subscribers"
         />
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           The event bus is the central hub through which all messages flow.
           Publishers call bus.publish(&quot;topic&quot;, data) and subscribers
           call bus.subscribe(&quot;topic&quot;, callback). The bus maintains an
           internal Map of topic strings to callback arrays and iterates through
           subscribers when a message arrives.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/frontend/scalability-architecture-patterns/publish-subscribe-pattern-diagram-2.svg"
@@ -140,21 +141,21 @@ export default function PublishSubscribePatternArticle() {
           <h3 className="mb-4 text-lg font-semibold">
             Cross-Module Event Channels
           </h3>
-          <p>
+          <HighlightBlock as="p" tier="crucial">
             In large applications with independently developed modules, Pub-Sub
             channels serve as the communication contracts between modules. Each
             module documents the events it publishes and the events it
             subscribes to, creating an event-driven API surface. This enables
             modules to be developed, tested, and deployed independently as long
             as they adhere to the event contract.
-          </p>
-          <p className="mt-3">
+          </HighlightBlock>
+          <HighlightBlock as="p" tier="important" className="mt-3">
             Key channel design decisions include: naming conventions
             (domain:entity:action), payload schemas (TypeScript interfaces
             shared via a contract package), versioning strategy
             (v1.cart.item-added), and error handling (what happens when a
             subscriber throws).
-          </p>
+          </HighlightBlock>
         </div>
 
         <ArticleImage
@@ -175,7 +176,7 @@ export default function PublishSubscribePatternArticle() {
             </tr>
           </thead>
           <tbody className="divide-y divide-theme">
-            <tr>
+            <HighlightBlock as="tr" tier="crucial">
               <td className="p-3">
                 <strong>Decoupling</strong>
               </td>
@@ -191,8 +192,8 @@ export default function PublishSubscribePatternArticle() {
                 • No compile-time guarantee that subscribers exist
                 <br />• Debugging requires dedicated tooling
               </td>
-            </tr>
-            <tr>
+            </HighlightBlock>
+            <HighlightBlock as="tr" tier="important">
               <td className="p-3">
                 <strong>Flexibility</strong>
               </td>
@@ -208,7 +209,7 @@ export default function PublishSubscribePatternArticle() {
                 • No backpressure mechanism in simple implementations
                 <br />• Event storms can cascade through the system
               </td>
-            </tr>
+            </HighlightBlock>
             <tr>
               <td className="p-3">
                 <strong>Testability</strong>
@@ -250,27 +251,27 @@ export default function PublishSubscribePatternArticle() {
       <section>
         <h2>Best Practices</h2>
         <ol className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Define Event Contracts:</strong> Create TypeScript
             interfaces for each event topic&apos;s payload. Share these types
             via a contract package that both publishers and subscribers depend
             on. This provides compile-time safety for event payloads even though
             the Pub-Sub mechanism itself is runtime-dynamic.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Use Namespaced Topics:</strong> Adopt a hierarchical naming
             convention like domain:entity:action (e.g.,
             &quot;cart:item:added&quot;, &quot;auth:session:expired&quot;). This
             enables wildcard subscriptions (&quot;cart:*&quot;) for
             cross-cutting subscribers like analytics and makes the event catalog
             self-documenting.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Always Unsubscribe:</strong> Like the Observer Pattern,
             every subscription must have a corresponding unsubscription. Return
             an unsubscribe function from the subscribe call and invoke it in
             React useEffect cleanup or component destruction hooks.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Isolate Bus Errors:</strong> Wrap subscriber callbacks in
             try-catch within the broker so that one failing subscriber does not
@@ -297,20 +298,20 @@ export default function PublishSubscribePatternArticle() {
       <section>
         <h2>Common Pitfalls</h2>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Event Spaghetti:</strong> Without governance, the number of
             events grows uncontrollably, and the relationships between
             publishers and subscribers become opaque. This is the Pub-Sub
             equivalent of spaghetti code — impossible to trace, refactor, or
             debug. Maintain an event catalog and review new events as you would
             review new API endpoints.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Missing Subscribers:</strong> Publishing events that no one
             subscribes to is a silent failure. In development, this might mean a
             feature appears broken because a subscriber was not registered. Add
             development-mode warnings for events with zero subscribers.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Ordering Dependencies:</strong> Subscribers that depend on
             being called in a specific order create fragile systems. Pub-Sub
@@ -318,13 +319,13 @@ export default function PublishSubscribePatternArticle() {
             same topic. If ordering matters, use a saga or process manager
             pattern instead.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Payload Bloat:</strong> Including too much data in event
             payloads (entire entities instead of IDs, full state snapshots
             instead of deltas) wastes memory and serialization time, especially
             for cross-context communication. Include only the minimum data
             subscribers need to act; let them fetch additional data if required.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Global Bus as a Crutch:</strong> Using a global event bus
             for all communication — including between parent and child
@@ -353,44 +354,44 @@ export default function PublishSubscribePatternArticle() {
             published via BroadcastChannel, and all other tabs subscribe and
             respond by clearing their sessions.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Micro-Frontend Communication:</strong> Independent
             micro-frontends (different teams, different frameworks) communicate
             through a shared event bus on the window object. The cart micro-app
             publishes &quot;cart:updated&quot;, and the header micro-app
             subscribes to update the cart badge — neither knows the other
             exists.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Analytics Event Tracking:</strong> An analytics subscriber
             listens to all application events (wildcard subscription) and
             forwards them to the analytics service. This decouples analytics
             instrumentation from feature code — features publish business
             events, and analytics captures them without any feature knowing
             about analytics.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>WebSocket Topic Subscriptions:</strong> Real-time
             applications subscribe to WebSocket topics (chat rooms, notification
             channels, live feeds) using Pub-Sub semantics. The WebSocket
             connection is the broker, and messages are routed to topic-specific
             handlers on the client.
-          </li>
+          </HighlightBlock>
         </ul>
       </section>
 
       <section>
         <h2>Security Considerations</h2>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Publish-Subscribe systems introduce unique security considerations around message authentication, authorization, and the potential for denial-of-service attacks through event flooding.
-        </p>
+        </HighlightBlock>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-4 text-lg font-semibold">Message Authentication</h3>
           <ul className="space-y-2">
-            <li>
+            <HighlightBlock as="li" tier="crucial">
               <strong>Event Injection:</strong> Attackers can publish malicious events to trigger unauthorized actions. Mitigation: implement event authentication (HMAC signatures), validate event schemas rigorously, use allowlists for event types, implement publisher authentication.
-            </li>
+            </HighlightBlock>
             <li>
               <strong>Event Tampering:</strong> Events in transit can be modified. Mitigation: use signed events, implement end-to-end encryption for sensitive events, validate event integrity at subscriber level.
             </li>
@@ -403,9 +404,9 @@ export default function PublishSubscribePatternArticle() {
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-4 text-lg font-semibold">Authorization for Pub-Sub</h3>
           <ul className="space-y-2">
-            <li>
+            <HighlightBlock as="li" tier="important">
               <strong>Publish Authorization:</strong> Not all publishers should publish to all topics. Mitigation: implement topic-based access control, validate publisher permissions before accepting events, use scoped API keys for publishers.
-            </li>
+            </HighlightBlock>
             <li>
               <strong>Subscribe Authorization:</strong> Not all subscribers should receive all events. Mitigation: implement subscription-level access control, filter events based on subscriber permissions, use separate channels for different security levels.
             </li>
@@ -418,9 +419,9 @@ export default function PublishSubscribePatternArticle() {
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-4 text-lg font-semibold">Denial of Service Prevention</h3>
           <ul className="space-y-2">
-            <li>
+            <HighlightBlock as="li" tier="crucial">
               <strong>Event Flooding:</strong> Attackers can flood the broker with events to overwhelm subscribers. Mitigation: implement rate limiting per publisher, use backpressure mechanisms, implement circuit breakers for event processing.
-            </li>
+            </HighlightBlock>
             <li>
               <strong>Subscription Bombing:</strong> Creating excessive subscriptions can exhaust broker resources. Mitigation: limit subscriptions per subscriber, implement subscription quotas, monitor subscription growth patterns.
             </li>
@@ -430,9 +431,9 @@ export default function PublishSubscribePatternArticle() {
 
       <section>
         <h2>Testing Strategies</h2>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Testing Pub-Sub systems requires validating message routing, delivery guarantees, and the decoupled nature of publishers and subscribers.
-        </p>
+        </HighlightBlock>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-4 text-lg font-semibold">Testing Pyramid for Pub-Sub</h3>
@@ -443,9 +444,9 @@ export default function PublishSubscribePatternArticle() {
             <li>
               <strong>Integration Tests (Middle):</strong> Test end-to-end message flow through actual broker. Verify message routing to correct subscribers. Test delivery guarantees (at-least-once, at-most-once).
             </li>
-            <li>
+            <HighlightBlock as="li" tier="crucial">
               <strong>Contract Tests (Middle):</strong> Verify event schemas match between publishers and subscribers. Use schema registry with compatibility checks. Run contract tests in CI for all publishers and subscribers.
-            </li>
+            </HighlightBlock>
             <li>
               <strong>Load Tests (Top):</strong> Test broker performance under load. Measure message throughput, latency, and subscriber lag. Verify backpressure mechanisms work correctly.
             </li>
