@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="system-ui, sans-serif">
+  <rect width="900" height="500" fill="#f3f1f8"/>
+  <text x="450" y="32" text-anchor="middle" font-size="19" font-weight="700" fill="#1a1822">Negative Cycles &amp; Reweighting</text>
+
+  <rect x="40" y="60" width="820" height="200" fill="#fff" stroke="#6d5bd0" stroke-width="2" rx="6"/>
+  <text x="60" y="85" font-size="13" font-weight="700" fill="#6d5bd0">What "shortest path" means with negative cycles</text>
+  <text x="60" y="112" font-size="11">If a negative cycle is reachable from s and can reach v, then dist[s, v] = -∞: keep going</text>
+  <text x="60" y="132" font-size="11">around the cycle. Bellman-Ford detects this on the Vth pass — any edge still relaxing</text>
+  <text x="60" y="152" font-size="11">indicates a vertex on or downstream of a negative cycle.</text>
+  <text x="60" y="180" font-size="11">To extract the cycle: take any vertex v relaxed on the Vth pass, walk parent pointers</text>
+  <text x="60" y="200" font-size="11">V times to land on the cycle, then walk parents until you revisit a node.</text>
+  <text x="60" y="230" font-size="11" fill="#4caf50" font-weight="700">Negative cycles are useful: arbitrage detection, infeasibility proofs, LP duals.</text>
+
+  <rect x="40" y="280" width="820" height="195" fill="#fff" stroke="#4caf50" stroke-width="2" rx="6"/>
+  <text x="60" y="305" font-size="13" font-weight="700" fill="#4caf50">Johnson's algorithm — APSP via reweighting</text>
+  <text x="60" y="330" font-size="11">1. Add a fake source q with 0-weight edges to every vertex.</text>
+  <text x="60" y="352" font-size="11">2. Run Bellman-Ford from q to compute h[v] = dist(q, v). If neg cycle → fail.</text>
+  <text x="60" y="374" font-size="11">3. Reweight each edge: w'(u, v) = w(u, v) + h[u] - h[v]. Provably non-negative.</text>
+  <text x="60" y="396" font-size="11">4. Run Dijkstra from each vertex on reweighted graph.</text>
+  <text x="60" y="418" font-size="11">5. Recover original distances: d(u, v) = d'(u, v) - h[u] + h[v].</text>
+  <text x="60" y="445" font-size="11" font-weight="700">Total: O(VE + V·(V+E) log V). Beats Floyd-Warshall O(V³) on sparse graphs.</text>
+  <text x="60" y="470" font-size="11" fill="#4caf50" font-weight="700">Reweighting also explains why A* works — it's a vertex potential function.</text>
+</svg>

@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="system-ui, sans-serif">
+  <rect width="900" height="500" fill="#f3f1f8"/>
+  <text x="450" y="32" text-anchor="middle" font-size="19" font-weight="700" fill="#1a1822">Boyer-Moore in Production</text>
+
+  <rect x="40" y="60" width="820" height="200" fill="#fff" stroke="#6d5bd0" stroke-width="2" rx="6"/>
+  <text x="60" y="85" font-size="13" font-weight="700" fill="#6d5bd0">Real-world usage</text>
+  <text x="60" y="112" font-size="11">• <tspan font-weight="700">GNU grep:</tspan> historically Boyer-Moore-Horspool; now Two-Way + SIMD memchr scan.</text>
+  <text x="60" y="132" font-size="11">• <tspan font-weight="700">ripgrep:</tspan> SIMD-accelerated memchr + BM-style skip + verify; the de-facto fastest grep.</text>
+  <text x="60" y="152" font-size="11">• <tspan font-weight="700">glibc memmem / strstr:</tspan> Two-Way algorithm (BM cousin with O(1) space, O(n) worst).</text>
+  <text x="60" y="172" font-size="11">• <tspan font-weight="700">Editors (vim, VS Code "Find"):</tspan> BM-Horspool for plain literal search.</text>
+  <text x="60" y="192" font-size="11">• <tspan font-weight="700">Antivirus signature scanning:</tspan> multi-pattern Aho-Corasick, fall back to BM for long sigs.</text>
+  <text x="60" y="212" font-size="11">• <tspan font-weight="700">Database LIKE '%pattern%':</tspan> some engines use BM under the hood.</text>
+  <text x="60" y="232" font-size="11">• <tspan font-weight="700">Network IDS (Snort, Suricata):</tspan> BM for content matches in payload inspection.</text>
+
+  <rect x="40" y="280" width="820" height="195" fill="#fff" stroke="#4caf50" stroke-width="2" rx="6"/>
+  <text x="60" y="305" font-size="13" font-weight="700" fill="#4caf50">Pitfalls &amp; tuning</text>
+  <text x="60" y="330" font-size="11">• Bad-character table size scales with alphabet σ — Unicode (σ ≈ 10⁶) needs hash map, not array.</text>
+  <text x="60" y="352" font-size="11">• Worst case O(n·m) without Galil — adversarial input like "aaaaa...aaab" matching "aaaab".</text>
+  <text x="60" y="374" font-size="11">• For very short patterns (m ≤ 4), preprocessing dominates — use plain memchr / SIMD scan.</text>
+  <text x="60" y="396" font-size="11">• Cache-unfriendly random shifts: skipping forward kills sequential prefetcher on huge texts.</text>
+  <text x="60" y="418" font-size="11">• Case-insensitive search: normalize once or build BM tables on folded alphabet — don't fold per-step.</text>
+  <text x="60" y="445" font-size="11" font-weight="700">Modern reality: SIMD beats algorithmic cleverness for needle &lt; 16 bytes.</text>
+  <text x="60" y="468" font-size="11" fill="#4caf50" font-weight="700">BM matters most for long patterns over large alphabets — exactly where it was designed to win.</text>
+</svg>

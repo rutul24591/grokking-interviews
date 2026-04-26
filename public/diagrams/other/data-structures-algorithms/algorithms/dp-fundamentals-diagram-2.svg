@@ -39,7 +39,7 @@
   <text x="60" y="399" font-size="11" fill="#1a1822" font-family="monospace">    for w in W..wᵢ:   # iterate HIGH to LOW for 0/1 knapsack</text>
   <text x="60" y="415" font-size="11" fill="#1a1822" font-family="monospace">        dp[w] = max(dp[w], dp[w-wᵢ] + vᵢ)</text>
 
-  <text x="60" y="445" font-size="11" fill="#cc4444"><tspan font-weight="700">Why reversed:</tspan> dp[w-wᵢ] must still hold the previous row&rsquo;s value when read.</text>
+  <text x="60" y="445" font-size="11" fill="#cc4444"><tspan font-weight="700">Why reversed:</tspan> dp[w-wᵢ] must still hold the previous row’s value when read.</text>
   <text x="60" y="463" font-size="11" fill="#cc4444">Iterating low-to-high would reuse just-updated dp[w-wᵢ], converting 0/1 into unbounded knapsack.</text>
   <text x="60" y="480" font-size="11" fill="#4caf50" font-weight="700">Space: O(nW) → O(W). Time: O(nW) unchanged. No correctness loss if ordering is right.</text>
 </svg>

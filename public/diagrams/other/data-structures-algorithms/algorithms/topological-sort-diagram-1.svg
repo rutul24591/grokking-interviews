@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="system-ui, sans-serif">
+  <rect width="900" height="500" fill="#f3f1f8"/>
+  <text x="450" y="32" text-anchor="middle" font-size="19" font-weight="700" fill="#1a1822">Topological Sort — Linear Order Respecting Dependencies</text>
+
+  <rect x="40" y="60" width="420" height="200" fill="#fff" stroke="#6d5bd0" stroke-width="2" rx="6"/>
+  <text x="60" y="85" font-size="13" font-weight="700" fill="#6d5bd0">Kahn's algorithm (BFS / indegree)</text>
+  <text x="60" y="115" font-size="11" font-family="monospace">compute indegree[v] for all v</text>
+  <text x="60" y="133" font-size="11" font-family="monospace">queue = {"{"}v : indegree[v] == 0{"}"}</text>
+  <text x="60" y="151" font-size="11" font-family="monospace">while queue:</text>
+  <text x="60" y="169" font-size="11" font-family="monospace">  u = queue.pop(); output u</text>
+  <text x="60" y="187" font-size="11" font-family="monospace">  for v in adj[u]:</text>
+  <text x="60" y="205" font-size="11" font-family="monospace">    if --indegree[v] == 0:</text>
+  <text x="60" y="223" font-size="11" font-family="monospace">      queue.push(v)</text>
+  <text x="60" y="245" font-size="11" fill="#cc4444" font-weight="700">If output size &lt; V → cycle exists.</text>
+
+  <rect x="480" y="60" width="380" height="200" fill="#fff" stroke="#4caf50" stroke-width="2" rx="6"/>
+  <text x="500" y="85" font-size="13" font-weight="700" fill="#4caf50">DFS post-order reverse</text>
+  <text x="500" y="115" font-size="11" font-family="monospace">def dfs(u):</text>
+  <text x="500" y="133" font-size="11" font-family="monospace">  color[u] = GRAY</text>
+  <text x="500" y="151" font-size="11" font-family="monospace">  for v in adj[u]:</text>
+  <text x="500" y="169" font-size="11" font-family="monospace">    if color[v] == GRAY: CYCLE</text>
+  <text x="500" y="187" font-size="11" font-family="monospace">    if color[v] == WHITE: dfs(v)</text>
+  <text x="500" y="205" font-size="11" font-family="monospace">  color[u] = BLACK</text>
+  <text x="500" y="223" font-size="11" font-family="monospace">  output.append(u)  # post-order</text>
+  <text x="500" y="245" font-size="11" fill="#4caf50">Reverse output → topological order.</text>
+
+  <rect x="40" y="280" width="820" height="195" fill="#fff" stroke="#6d5bd0" stroke-width="2" rx="6"/>
+  <text x="60" y="305" font-size="13" font-weight="700" fill="#6d5bd0">Properties</text>
+  <text x="60" y="330" font-size="11">• Time: O(V + E).  Space: O(V) for in-degree / color arrays.</text>
+  <text x="60" y="350" font-size="11">• Topological order exists iff graph is a DAG (no directed cycles).</text>
+  <text x="60" y="370" font-size="11">• Order is generally not unique. Many valid linearizations.</text>
+  <text x="60" y="390" font-size="11">• Lexicographically smallest topo order: use a min-heap instead of FIFO queue (Kahn).</text>
+  <text x="60" y="410" font-size="11">• Parallel topological sort: process all indegree-0 nodes concurrently per "wave."</text>
+  <text x="60" y="430" font-size="11">• On a DAG, longest-path / shortest-path solvable in O(V + E) via topo + relaxation.</text>
+  <text x="60" y="465" font-size="11" fill="#4caf50" font-weight="700">Cycle detection is a free byproduct of either algorithm.</text>
+</svg>

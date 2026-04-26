@@ -55,6 +55,6 @@
   <text x="60" y="380" font-size="12" fill="#1a1822"><tspan font-weight="700">Requires:</tspan> sorted array + random access at block granularity.</text>
   <text x="60" y="410" font-size="12" fill="#4caf50" font-weight="700">When to prefer over binary: asymmetric access cost — expensive seeks, cheap sequential reads.</text>
   <text x="60" y="430" font-size="11" fill="#1a1822">Example: compressed blocks (Parquet row groups), disk pages, columnar storage indexes.</text>
-  <text x="60" y="460" font-size="11" fill="#cc4444" font-style="italic">Pitfall: using jump search on cache-resident data. Binary search wins; √n &gg; log n.</text>
+  <text x="60" y="460" font-size="11" fill="#cc4444" font-style="italic">Pitfall: using jump search on cache-resident data. Binary search wins; √n ≫ log n.</text>
   <text x="60" y="477" font-size="11" fill="#cc4444" font-style="italic">For n=10⁶: √n=1000 vs log₂n=20. Only the access-cost asymmetry justifies jump.</text>
 </svg>

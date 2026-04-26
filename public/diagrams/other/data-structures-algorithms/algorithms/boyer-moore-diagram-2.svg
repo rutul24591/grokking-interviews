@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="system-ui, sans-serif">
+  <rect width="900" height="500" fill="#f3f1f8"/>
+  <text x="450" y="32" text-anchor="middle" font-size="19" font-weight="700" fill="#1a1822">Boyer-Moore vs KMP vs Rabin-Karp</text>
+
+  <rect x="40" y="60" width="820" height="200" fill="#fff" stroke="#6d5bd0" stroke-width="2" rx="6"/>
+  <text x="60" y="85" font-size="13" font-weight="700" fill="#6d5bd0">When each wins</text>
+  <text x="60" y="112" font-size="11">• <tspan font-weight="700">Boyer-Moore:</tspan> long patterns, large alphabets (English text, source code, binaries).</text>
+  <text x="60" y="132" font-size="11">  Sublinear average — skips m characters per shift on natural text.</text>
+  <text x="60" y="152" font-size="11">• <tspan font-weight="700">KMP:</tspan> short patterns, small alphabets (DNA over {A,C,G,T}), streaming input that</text>
+  <text x="60" y="172" font-size="11">  cannot back up. Deterministic linear, no large preprocessing tables.</text>
+  <text x="60" y="192" font-size="11">• <tspan font-weight="700">Rabin-Karp:</tspan> multi-pattern same-length set membership, 2D matching, fingerprint-based.</text>
+  <text x="60" y="212" font-size="11">• <tspan font-weight="700">Aho-Corasick:</tspan> many short patterns, single text pass — multi-pattern KMP generalization.</text>
+  <text x="60" y="240" font-size="11" fill="#cc4444">Real grep/ripgrep use Two-Way (Crochemore-Perrin) or Boyer-Moore-Horspool for short needles,</text>
+  <text x="60" y="255" font-size="11" fill="#cc4444">SIMD memchr for the bad-character step, then verify with the rest.</text>
+
+  <rect x="40" y="280" width="820" height="195" fill="#fff" stroke="#4caf50" stroke-width="2" rx="6"/>
+  <text x="60" y="305" font-size="13" font-weight="700" fill="#4caf50">Practical variants</text>
+  <text x="60" y="330" font-size="11">• <tspan font-weight="700">Boyer-Moore-Horspool:</tspan> bad-character only, simpler, slightly worse worst case.</text>
+  <text x="60" y="352" font-size="11">  Used in libc memmem on many platforms.</text>
+  <text x="60" y="374" font-size="11">• <tspan font-weight="700">Sunday's algorithm:</tspan> looks one char past the alignment — often even faster.</text>
+  <text x="60" y="396" font-size="11">• <tspan font-weight="700">Two-Way (Crochemore-Perrin):</tspan> O(1) extra space, O(n) worst case, used in glibc.</text>
+  <text x="60" y="418" font-size="11">• <tspan font-weight="700">Turbo-BM:</tspan> remembers prior matched factor — guarantees 2n-1 comparisons.</text>
+  <text x="60" y="445" font-size="11" font-weight="700">Modern engines: SIMD scan for first char, then BM-Horspool style verify.</text>
+  <text x="60" y="468" font-size="11" fill="#4caf50" font-weight="700">Key insight: hardware memchr beats algorithmic skips for short patterns.</text>
+</svg>

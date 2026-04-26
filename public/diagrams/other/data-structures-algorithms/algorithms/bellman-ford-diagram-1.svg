@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="system-ui, sans-serif">
+  <rect width="900" height="500" fill="#f3f1f8"/>
+  <text x="450" y="32" text-anchor="middle" font-size="19" font-weight="700" fill="#1a1822">Bellman-Ford — Relax All Edges, V-1 Times</text>
+
+  <rect x="40" y="60" width="820" height="200" fill="#fff" stroke="#6d5bd0" stroke-width="2" rx="6"/>
+  <text x="60" y="85" font-size="13" font-weight="700" fill="#6d5bd0">Algorithm skeleton</text>
+  <text x="60" y="115" font-size="11" font-family="monospace">dist[s] = 0; dist[v] = ∞ for v ≠ s</text>
+  <text x="60" y="133" font-size="11" font-family="monospace">for i = 1..V-1:</text>
+  <text x="60" y="151" font-size="11" font-family="monospace">  for each edge (u, v, w):</text>
+  <text x="60" y="169" font-size="11" font-family="monospace">    if dist[u] + w &lt; dist[v]:</text>
+  <text x="60" y="187" font-size="11" font-family="monospace">      dist[v] = dist[u] + w; parent[v] = u</text>
+  <text x="60" y="210" font-size="11" font-family="monospace">// Negative-cycle check</text>
+  <text x="60" y="228" font-size="11" font-family="monospace">for each edge (u, v, w):</text>
+  <text x="60" y="246" font-size="11" font-family="monospace">  if dist[u] + w &lt; dist[v]: NEG_CYCLE</text>
+
+  <rect x="40" y="280" width="820" height="195" fill="#fff" stroke="#4caf50" stroke-width="2" rx="6"/>
+  <text x="60" y="305" font-size="13" font-weight="700" fill="#4caf50">Why V-1 passes?</text>
+  <text x="60" y="330" font-size="11">A simple shortest path has at most V-1 edges. After pass i, dist[v] is correct for every</text>
+  <text x="60" y="350" font-size="11">vertex whose shortest path uses ≤ i edges. After V-1 passes, all are correct.</text>
+  <text x="60" y="375" font-size="11">If a Vth pass would still relax some edge, a negative cycle is reachable from s.</text>
+  <text x="60" y="400" font-size="11" font-weight="700">Complexity: O(V · E) time, O(V) space.</text>
+  <text x="60" y="425" font-size="11">Early termination: if a full pass changes nothing, break — no further passes can improve.</text>
+  <text x="60" y="450" font-size="11">SPFA (Shortest Path Faster Algorithm): queue-based variant, O(V·E) worst-case but often O(kE).</text>
+  <text x="60" y="470" font-size="11" fill="#cc4444" font-weight="700">SPFA degrades on adversarial graphs — avoid in untrusted-input contexts.</text>
+</svg>

@@ -48,5 +48,5 @@
   <text x="80" y="405" font-size="12" fill="#1a1822"><tspan font-weight="700">Uniform distribution:</tspan> Θ(log log n) expected. For n=10⁹, ~5 probes.</text>
   <text x="80" y="425" font-size="12" fill="#cc4444"><tspan font-weight="700">Skewed distribution:</tspan> Θ(n) worst case. No guarantee without a fallback.</text>
   <text x="80" y="448" font-size="11" fill="#1a1822" font-style="italic">Defensive implementation: cap probe count at log n; fall back to binary search. Keeps Θ(log log n)</text>
-  <text x="80" y="465" font-size="11" fill="#1a1822" font-style="italic">best case while bounding worst case at Θ(log n). Standard trick from introsort&rsquo;s playbook.</text>
+  <text x="80" y="465" font-size="11" fill="#1a1822" font-style="italic">best case while bounding worst case at Θ(log n). Standard trick from introsort’s playbook.</text>
 </svg>

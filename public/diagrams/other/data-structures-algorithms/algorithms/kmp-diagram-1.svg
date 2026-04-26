@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="system-ui, sans-serif">
+  <rect width="900" height="500" fill="#f3f1f8"/>
+  <text x="450" y="32" text-anchor="middle" font-size="19" font-weight="700" fill="#1a1822">KMP — Linear-Time Pattern Matching via Failure Function</text>
+
+  <rect x="40" y="60" width="820" height="200" fill="#fff" stroke="#6d5bd0" stroke-width="2" rx="6"/>
+  <text x="60" y="85" font-size="13" font-weight="700" fill="#6d5bd0">The failure function (LPS array)</text>
+  <text x="60" y="112" font-size="11">For pattern P, lps[i] = length of the longest proper prefix of P[0..i] that is also</text>
+  <text x="60" y="132" font-size="11">a suffix of P[0..i]. ("Proper" = strictly shorter than the string itself.)</text>
+  <text x="60" y="160" font-size="11" font-family="monospace">P:    a b a b a c a</text>
+  <text x="60" y="178" font-size="11" font-family="monospace">lps:  0 0 1 2 3 0 1</text>
+  <text x="60" y="206" font-size="11">Built in O(m) by self-comparison: extend if match, else fall back to lps[k-1].</text>
+  <text x="60" y="232" font-size="11" fill="#4caf50" font-weight="700">lps[i] = "if a mismatch happens at position i+1, retry from prefix of this length."</text>
+
+  <rect x="40" y="280" width="820" height="195" fill="#fff" stroke="#4caf50" stroke-width="2" rx="6"/>
+  <text x="60" y="305" font-size="13" font-weight="700" fill="#4caf50">Search loop</text>
+  <text x="60" y="330" font-size="11" font-family="monospace">i = 0 (text pos), j = 0 (pattern pos)</text>
+  <text x="60" y="350" font-size="11" font-family="monospace">while i &lt; n:</text>
+  <text x="60" y="368" font-size="11" font-family="monospace">  if T[i] == P[j]: i++; j++</text>
+  <text x="60" y="386" font-size="11" font-family="monospace">    if j == m: report match at i - m; j = lps[j - 1]</text>
+  <text x="60" y="404" font-size="11" font-family="monospace">  else if j &gt; 0: j = lps[j - 1]   # fall back, do NOT advance i</text>
+  <text x="60" y="422" font-size="11" font-family="monospace">  else: i++</text>
+  <text x="60" y="450" font-size="11">Total: O(n + m) text scans and pattern fallbacks. Text pointer never moves backward.</text>
+  <text x="60" y="470" font-size="11" fill="#4caf50" font-weight="700">No re-comparison of text characters — that's the linearity guarantee.</text>
+</svg>

@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="system-ui, sans-serif">
+  <rect width="900" height="500" fill="#f3f1f8"/>
+  <text x="450" y="32" text-anchor="middle" font-size="19" font-weight="700" fill="#1a1822">Rabin-Karp in Production</text>
+
+  <rect x="40" y="60" width="820" height="200" fill="#fff" stroke="#6d5bd0" stroke-width="2" rx="6"/>
+  <text x="60" y="85" font-size="13" font-weight="700" fill="#6d5bd0">Real-world systems</text>
+  <text x="60" y="112" font-size="11">• <tspan font-weight="700">rsync:</tspan> rolling checksum (adler-32 family) + strong hash (MD5) for delta sync.</text>
+  <text x="60" y="132" font-size="11">• <tspan font-weight="700">Content-defined chunking:</tspan> Restic, BorgBackup, Dropbox split files at hash-boundary points.</text>
+  <text x="60" y="152" font-size="11">• <tspan font-weight="700">git diff / Myers diff:</tspan> rolling hash for fast common-substring discovery.</text>
+  <text x="60" y="172" font-size="11">• <tspan font-weight="700">MOSS / Stanford plagiarism:</tspan> winnowing of rolling hashes (Schleimer, Wilkerson, Aiken).</text>
+  <text x="60" y="192" font-size="11">• <tspan font-weight="700">Bioinformatics:</tspan> k-mer indexing, minhash sketches use polynomial hashing.</text>
+  <text x="60" y="212" font-size="11">• <tspan font-weight="700">Deduplication storage:</tspan> NetApp ASIS, Data Domain, Ceph use content-defined chunking.</text>
+  <text x="60" y="232" font-size="11">• <tspan font-weight="700">Streaming similarity:</tspan> SimHash, MinHash with rolling-hash front-ends.</text>
+
+  <rect x="40" y="280" width="820" height="195" fill="#fff" stroke="#4caf50" stroke-width="2" rx="6"/>
+  <text x="60" y="305" font-size="13" font-weight="700" fill="#4caf50">Content-defined chunking (CDC)</text>
+  <text x="60" y="330" font-size="11">Slide a rolling hash over the file. Whenever hash mod 2^k == 0, mark a chunk boundary.</text>
+  <text x="60" y="355" font-size="11">Average chunk size = 2^k bytes. Chunks are content-addressed (SHA-256) and deduped.</text>
+  <text x="60" y="380" font-size="11">Insertion of one byte shifts only one chunk; remaining chunks reuse without re-storage.</text>
+  <text x="60" y="405" font-size="11">Used in modern dedup-aware backup, container layer storage, and deduplicated CDNs.</text>
+  <text x="60" y="430" font-size="11">Variants: FastCDC, Gear hashing, Buzhash — refine boundary-selection statistics and speed.</text>
+  <text x="60" y="465" font-size="11" fill="#4caf50" font-weight="700">Rabin-Karp's quiet but pervasive impact: it's everywhere data dedup or sync happens.</text>
+</svg>

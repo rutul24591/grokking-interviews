@@ -1,6 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="system-ui, sans-serif">
   <rect width="900" height="500" fill="#f3f1f8"/>
-  <text x="450" y="32" text-anchor="middle" font-size="19" font-weight="700" fill="#1a1822">Why Greedy Fails — And When It Doesn&rsquo;t</text>
+  <text x="450" y="32" text-anchor="middle" font-size="19" font-weight="700" fill="#1a1822">Why Greedy Fails — And When It Doesn’t</text>
 
   <!-- Greedy fails -->
   <rect x="40" y="60" width="400" height="200" fill="#fff" stroke="#cc4444" stroke-width="2" rx="6"/>
@@ -14,7 +14,7 @@
 
   <!-- Greedy works -->
   <rect x="460" y="60" width="400" height="200" fill="#fff" stroke="#4caf50" stroke-width="2" rx="6"/>
-  <text x="480" y="85" font-size="13" font-weight="700" fill="#4caf50">When greedy IS optimal — &ldquo;canonical&rdquo; systems</text>
+  <text x="480" y="85" font-size="13" font-weight="700" fill="#4caf50">When greedy IS optimal — “canonical” systems</text>
   <text x="480" y="108" font-size="11" fill="#1a1822">US coin system {1, 5, 10, 25} is canonical:</text>
   <text x="480" y="128" font-size="11" fill="#1a1822">greedy always matches DP.</text>
   <text x="480" y="155" font-size="11" fill="#1a1822">Matroid theory: greedy optimal iff the</text>

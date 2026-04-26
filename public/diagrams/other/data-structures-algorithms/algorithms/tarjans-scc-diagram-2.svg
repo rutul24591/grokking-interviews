@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="system-ui, sans-serif">
+  <rect width="900" height="500" fill="#f3f1f8"/>
+  <text x="450" y="32" text-anchor="middle" font-size="19" font-weight="700" fill="#1a1822">SCC Algorithms — Tarjan vs Kosaraju vs Path-based</text>
+
+  <rect x="40" y="60" width="820" height="200" fill="#fff" stroke="#6d5bd0" stroke-width="2" rx="6"/>
+  <text x="60" y="85" font-size="13" font-weight="700" fill="#6d5bd0">Tarjan vs Kosaraju vs Gabow</text>
+  <text x="60" y="115" font-size="11">                     Tarjan (1972)             Kosaraju (1978)           Gabow / Path-based</text>
+  <text x="60" y="135" font-size="11">DFS passes           1                         2                         1</text>
+  <text x="60" y="155" font-size="11">Extra arrays         index, lowlink            order, visited            two stacks</text>
+  <text x="60" y="175" font-size="11">Reversal of graph    no                        yes (need transpose)      no</text>
+  <text x="60" y="195" font-size="11">Time complexity      O(V + E)                  O(V + E)                  O(V + E)</text>
+  <text x="60" y="215" font-size="11">Space (constants)    smaller                   larger (transpose)        smaller</text>
+  <text x="60" y="235" font-size="11">Output order         reverse topological       topological               reverse topological</text>
+
+  <rect x="40" y="280" width="820" height="195" fill="#fff" stroke="#4caf50" stroke-width="2" rx="6"/>
+  <text x="60" y="305" font-size="13" font-weight="700" fill="#4caf50">Condensation = SCC DAG</text>
+  <text x="60" y="330" font-size="11">After SCC, contract each SCC into a single super-vertex. The result is a DAG, the</text>
+  <text x="60" y="350" font-size="11">"condensation graph" or "DAG of SCCs." Inter-SCC edges connect different super-vertices.</text>
+  <text x="60" y="375" font-size="11">Tarjan emits SCCs in reverse topological order, so condensation is built incrementally.</text>
+  <text x="60" y="400" font-size="11">Use cases:</text>
+  <text x="60" y="420" font-size="11">• Reduce reachability problems on cyclic graphs to DAG problems.</text>
+  <text x="60" y="440" font-size="11">• 2-SAT solving: SCC of implication graph → satisfying assignment.</text>
+  <text x="60" y="465" font-size="11" fill="#4caf50" font-weight="700">SCC + condensation transforms general directed graphs into DAGs you can topo-sort.</text>
+</svg>

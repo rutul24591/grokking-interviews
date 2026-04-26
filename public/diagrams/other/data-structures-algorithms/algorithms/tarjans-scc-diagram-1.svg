@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="system-ui, sans-serif">
+  <rect width="900" height="500" fill="#f3f1f8"/>
+  <text x="450" y="32" text-anchor="middle" font-size="19" font-weight="700" fill="#1a1822">Tarjan's SCC — One DFS, Low-Link Values</text>
+
+  <rect x="40" y="60" width="820" height="200" fill="#fff" stroke="#6d5bd0" stroke-width="2" rx="6"/>
+  <text x="60" y="85" font-size="13" font-weight="700" fill="#6d5bd0">Algorithm sketch</text>
+  <text x="60" y="115" font-size="11" font-family="monospace">def dfs(u):</text>
+  <text x="60" y="133" font-size="11" font-family="monospace">  index[u] = lowlink[u] = clock; clock += 1</text>
+  <text x="60" y="151" font-size="11" font-family="monospace">  stack.push(u); on_stack[u] = true</text>
+  <text x="60" y="169" font-size="11" font-family="monospace">  for v in adj[u]:</text>
+  <text x="60" y="187" font-size="11" font-family="monospace">    if index[v] is None: dfs(v); lowlink[u] = min(lowlink[u], lowlink[v])</text>
+  <text x="60" y="205" font-size="11" font-family="monospace">    elif on_stack[v]: lowlink[u] = min(lowlink[u], index[v])</text>
+  <text x="60" y="223" font-size="11" font-family="monospace">  if lowlink[u] == index[u]:</text>
+  <text x="60" y="241" font-size="11" font-family="monospace">    pop stack until u → one SCC</text>
+
+  <rect x="40" y="280" width="820" height="195" fill="#fff" stroke="#4caf50" stroke-width="2" rx="6"/>
+  <text x="60" y="305" font-size="13" font-weight="700" fill="#4caf50">Properties</text>
+  <text x="60" y="330" font-size="11">• <tspan font-weight="700">Time:</tspan> O(V + E). Single DFS pass.  <tspan font-weight="700">Space:</tspan> O(V) stack and arrays.</text>
+  <text x="60" y="350" font-size="11">• Outputs SCCs in reverse topological order — the condensation is a DAG.</text>
+  <text x="60" y="370" font-size="11">• <tspan font-weight="700">index:</tspan> DFS pre-order timestamp.</text>
+  <text x="60" y="390" font-size="11">• <tspan font-weight="700">lowlink:</tspan> smallest index reachable from u via tree edges + at most one back/cross edge.</text>
+  <text x="60" y="410" font-size="11">• Root of an SCC: vertex u with lowlink[u] == index[u].</text>
+  <text x="60" y="430" font-size="11">• Pop the on-stack subgraph when an SCC root finishes.</text>
+  <text x="60" y="465" font-size="11" fill="#4caf50" font-weight="700">Two arrays + one stack — beautifully economical.</text>
+</svg>

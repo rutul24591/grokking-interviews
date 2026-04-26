@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="system-ui, sans-serif">
+  <rect width="900" height="500" fill="#f3f1f8"/>
+  <text x="450" y="32" text-anchor="middle" font-size="19" font-weight="700" fill="#1a1822">When V³ Is the Right Answer</text>
+
+  <rect x="40" y="60" width="820" height="200" fill="#fff" stroke="#6d5bd0" stroke-width="2" rx="6"/>
+  <text x="60" y="85" font-size="13" font-weight="700" fill="#6d5bd0">Floyd-Warshall vs alternatives for APSP</text>
+  <text x="60" y="115" font-size="11">                          Time           Space     Negative edges    Notes</text>
+  <text x="60" y="135" font-size="11">Floyd-Warshall            O(V³)          O(V²)     yes               tight inner loop</text>
+  <text x="60" y="155" font-size="11">V × Dijkstra              O(VE log V)    O(V²)     no                sparse winner</text>
+  <text x="60" y="175" font-size="11">V × Bellman-Ford          O(V²E)         O(V²)     yes               rare</text>
+  <text x="60" y="195" font-size="11">Johnson's                 O(VE + V² log V)  O(V²)  yes               sparse + neg edges</text>
+  <text x="60" y="215" font-size="11">Seidel's (matrix mult)    O(V^ω log V)   O(V²)     unweighted        theoretical</text>
+  <text x="60" y="240" font-size="11" fill="#4caf50" font-weight="700">For dense V ≤ ~1000, Floyd-Warshall's tight loop usually wins despite the V³.</text>
+
+  <rect x="40" y="280" width="820" height="195" fill="#fff" stroke="#4caf50" stroke-width="2" rx="6"/>
+  <text x="60" y="305" font-size="13" font-weight="700" fill="#4caf50">Path reconstruction</text>
+  <text x="60" y="330" font-size="11">Maintain a "next" matrix: next[i][j] = first vertex on shortest path from i to j.</text>
+  <text x="60" y="350" font-size="11">Update in the inner loop:</text>
+  <text x="60" y="370" font-size="11" font-family="monospace">  if d[i][k] + d[k][j] &lt; d[i][j]:</text>
+  <text x="60" y="388" font-size="11" font-family="monospace">    d[i][j] = d[i][k] + d[k][j]</text>
+  <text x="60" y="406" font-size="11" font-family="monospace">    next[i][j] = next[i][k]</text>
+  <text x="60" y="430" font-size="11">Reconstruct in O(path length) by following next[i][j] until reaching j.</text>
+  <text x="60" y="465" font-size="11" fill="#4caf50" font-weight="700">Storing predecessor instead of next is symmetric — pick whichever fits the access pattern.</text>
+</svg>

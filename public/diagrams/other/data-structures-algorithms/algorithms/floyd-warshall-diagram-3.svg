@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="system-ui, sans-serif">
+  <rect width="900" height="500" fill="#f3f1f8"/>
+  <text x="450" y="32" text-anchor="middle" font-size="19" font-weight="700" fill="#1a1822">Floyd-Warshall in Production</text>
+
+  <rect x="40" y="60" width="820" height="200" fill="#fff" stroke="#6d5bd0" stroke-width="2" rx="6"/>
+  <text x="60" y="85" font-size="13" font-weight="700" fill="#6d5bd0">Real-world applications</text>
+  <text x="60" y="112" font-size="11">• <tspan font-weight="700">Transitive closure (Warshall's algorithm):</tspan> reachability in DAGs and DBs.</text>
+  <text x="60" y="132" font-size="11">• <tspan font-weight="700">Bottleneck / widest path:</tspan> max-min over edge weights — same skeleton, swap operators.</text>
+  <text x="60" y="152" font-size="11">• <tspan font-weight="700">Regex → DFA conversion:</tspan> Kleene's algorithm uses Floyd-Warshall over regex semiring.</text>
+  <text x="60" y="172" font-size="11">• <tspan font-weight="700">Network reliability:</tspan> probability of connectivity over edge survival probabilities.</text>
+  <text x="60" y="192" font-size="11">• <tspan font-weight="700">Graph diameter / center / radius:</tspan> compute all-pairs distances then aggregate.</text>
+  <text x="60" y="212" font-size="11">• <tspan font-weight="700">Counting paths between all pairs:</tspan> matrix powers under (+, ×) semiring.</text>
+  <text x="60" y="232" font-size="11">• <tspan font-weight="700">Game pathfinding (small maps):</tspan> APSP precomputation for sub-microsecond lookup.</text>
+
+  <rect x="40" y="280" width="820" height="195" fill="#fff" stroke="#4caf50" stroke-width="2" rx="6"/>
+  <text x="60" y="305" font-size="13" font-weight="700" fill="#4caf50">When NOT to use Floyd-Warshall</text>
+  <text x="60" y="330" font-size="11">• Sparse graphs with V &gt; ~5000: Johnson's or repeated Dijkstra wins.</text>
+  <text x="60" y="350" font-size="11">• When you only need a few queries: O(V³) preprocessing wastes work; do it on demand.</text>
+  <text x="60" y="370" font-size="11">• Memory-constrained: O(V²) matrix can dominate. V = 50,000 → 20 GB at int64.</text>
+  <text x="60" y="390" font-size="11">• Dynamic graphs: any edge change costs O(V²) to repair — full rerun is O(V³).</text>
+  <text x="60" y="410" font-size="11">• Streaming / online updates: incremental APSP algorithms (Demetrescu-Italiano) are better.</text>
+  <text x="60" y="430" font-size="11">• Very large dense graphs: blocked / parallel APSP (cache-aware tile decomposition).</text>
+  <text x="60" y="465" font-size="11" fill="#4caf50" font-weight="700">V³ is the default; remember when something specific to your structure beats it.</text>
+</svg>

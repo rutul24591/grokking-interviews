@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="system-ui, sans-serif">
+  <rect width="900" height="500" fill="#f3f1f8"/>
+  <text x="450" y="32" text-anchor="middle" font-size="19" font-weight="700" fill="#1a1822">Kruskal in Production</text>
+
+  <rect x="40" y="60" width="820" height="200" fill="#fff" stroke="#6d5bd0" stroke-width="2" rx="6"/>
+  <text x="60" y="85" font-size="13" font-weight="700" fill="#6d5bd0">Real-world applications</text>
+  <text x="60" y="112" font-size="11">• <tspan font-weight="700">Network design:</tspan> minimum-cost cabling, fiber backbone, road network planning.</text>
+  <text x="60" y="132" font-size="11">• <tspan font-weight="700">Cluster analysis:</tspan> single-linkage clustering = build MST, cut at threshold.</text>
+  <text x="60" y="152" font-size="11">• <tspan font-weight="700">Image segmentation:</tspan> Felzenszwalb-Huttenlocher graph-based segmentation.</text>
+  <text x="60" y="172" font-size="11">• <tspan font-weight="700">Approximation algorithms:</tspan> 2-approx for metric TSP via MST traversal.</text>
+  <text x="60" y="192" font-size="11">• <tspan font-weight="700">VLSI / chip routing:</tspan> minimum-length signal nets, clock-tree synthesis.</text>
+  <text x="60" y="212" font-size="11">• <tspan font-weight="700">Phylogenetic trees:</tspan> initial topology for distance-based methods.</text>
+  <text x="60" y="232" font-size="11">• <tspan font-weight="700">Network reliability:</tspan> spanning trees as backbone for fault-tolerant routing.</text>
+
+  <rect x="40" y="280" width="820" height="195" fill="#fff" stroke="#4caf50" stroke-width="2" rx="6"/>
+  <text x="60" y="305" font-size="13" font-weight="700" fill="#4caf50">Variants and extensions</text>
+  <text x="60" y="330" font-size="11">• <tspan font-weight="700">Maximum spanning tree:</tspan> sort descending. Useful in correlation graphs.</text>
+  <text x="60" y="350" font-size="11">• <tspan font-weight="700">k-MST / minimum bottleneck spanning tree:</tspan> bounded-edge-count or min-max-edge variants.</text>
+  <text x="60" y="370" font-size="11">• <tspan font-weight="700">Steiner tree:</tspan> spanning subset of vertices, NP-hard in general.</text>
+  <text x="60" y="390" font-size="11">• <tspan font-weight="700">Degree-constrained MST:</tspan> NP-hard; LP relaxation + rounding gives approx.</text>
+  <text x="60" y="410" font-size="11">• <tspan font-weight="700">Online / dynamic MST:</tspan> Holm-Lichtenberg-Thorup, polylog amortized per update.</text>
+  <text x="60" y="430" font-size="11">• <tspan font-weight="700">Distributed MST:</tspan> GHS (Gallager-Humblet-Spira) algorithm, O(V log V) messages.</text>
+  <text x="60" y="465" font-size="11" fill="#4caf50" font-weight="700">MST family extends from a 5-line greedy to deep distributed and online algorithms.</text>
+</svg>

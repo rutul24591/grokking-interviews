@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="system-ui, sans-serif">
+  <rect width="900" height="500" fill="#f3f1f8"/>
+  <text x="450" y="32" text-anchor="middle" font-size="19" font-weight="700" fill="#1a1822">Boyer-Moore — Right-to-Left Scan with Two Heuristics</text>
+
+  <rect x="40" y="60" width="820" height="200" fill="#fff" stroke="#6d5bd0" stroke-width="2" rx="6"/>
+  <text x="60" y="85" font-size="13" font-weight="700" fill="#6d5bd0">Core idea</text>
+  <text x="60" y="112" font-size="11">• Align pattern P with text T at position i. Compare P right-to-left against T[i..i+m-1].</text>
+  <text x="60" y="132" font-size="11">• On mismatch (or full match), shift i forward by max(bad-character shift, good-suffix shift).</text>
+  <text x="60" y="152" font-size="11">• Right-to-left scan lets shifts skip past entire blocks of text — sublinear in practice.</text>
+  <text x="60" y="180" font-size="11" font-weight="700">Bad-character rule</text>
+  <text x="60" y="200" font-size="11">When T[i+j] = c mismatches P[j], shift so the rightmost occurrence of c in P aligns with i+j.</text>
+  <text x="60" y="220" font-size="11">If c never appears in P, shift past the entire pattern: i ← i + j + 1.</text>
+  <text x="60" y="248" font-size="11">Preprocessing: O(σ + m). Table size σ (alphabet) — for ASCII just 256 ints.</text>
+
+  <rect x="40" y="280" width="820" height="195" fill="#fff" stroke="#4caf50" stroke-width="2" rx="6"/>
+  <text x="60" y="305" font-size="13" font-weight="700" fill="#4caf50">Good-suffix rule</text>
+  <text x="60" y="330" font-size="11">After matching suffix P[j+1..m-1] but mismatching P[j], shift so the matched suffix aligns</text>
+  <text x="60" y="350" font-size="11">with its next-rightmost occurrence in P (preceded by a different character).</text>
+  <text x="60" y="370" font-size="11">If no such occurrence, shift so a prefix of P matches a suffix of the matched region.</text>
+  <text x="60" y="390" font-size="11">Preprocessing: O(m) — analogous to KMP failure function but on suffixes.</text>
+  <text x="60" y="412" font-size="11">Galil's rule: after a full match, also use good-suffix to bound re-comparisons → linear worst case.</text>
+  <text x="60" y="442" font-size="11" font-weight="700">Combined shift = max(bad-char, good-suffix). Both safe — never miss a match.</text>
+  <text x="60" y="465" font-size="11" fill="#4caf50" font-weight="700">Average O(n/m); worst O(n·m) without Galil, O(n) with Galil.</text>
+</svg>

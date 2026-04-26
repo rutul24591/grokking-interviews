@@ -54,5 +54,5 @@
   <text x="60" y="400" font-size="12" fill="#1a1822" font-family="monospace">Ternary:         2 · log₃/₂(n/ε) ≈ 3.42 · log₂(n/ε)</text>
   <text x="60" y="420" font-size="12" fill="#1a1822" font-family="monospace">Golden-section:  1 · log₁/φ(n/ε) ≈ 1.44 · log₂(n/ε)</text>
   <text x="60" y="448" font-size="12" fill="#4caf50" font-weight="700">Golden-section is ~2.4× faster. Use it for continuous optimization.</text>
-  <text x="60" y="468" font-size="11" fill="#1a1822" font-style="italic">Ternary persists in teaching for its cleaner &ldquo;trisect&rdquo; intuition, but scipy/numpy use golden or Brent&rsquo;s.</text>
+  <text x="60" y="468" font-size="11" fill="#1a1822" font-style="italic">Ternary persists in teaching for its cleaner “trisect” intuition, but scipy/numpy use golden or Brent’s.</text>
 </svg>

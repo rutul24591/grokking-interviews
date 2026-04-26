@@ -1177,292 +1177,193 @@
 
     b.  Low-Level Design
         1. Component-level / UI Pattern Questions
-        •   Design a reusable Modal component supporting multiple types (confirm, alert, custom) and global control (open/close from anywhere).
+
+        •   Design a Modal system supporting multiple types (confirm, alert, custom) and global control (open/close from anywhere).
         •   Design a Toast / Notification system (queueing, stacking, dismiss, persist, auto-dismiss).
-        •   Design a Loading Skeleton component and where to place it vs spinners.
-        •   Design a Form Builder supporting dynamic fields, validation, conditional fields, and multi-step flows.
-        •   Design a Rich Text Editor (mentions, image upload, collaborative editing hooks).
-        •   Design a Comment Thread with nested replies, lazy-loading nested comments, and optimistic UI for posting.
-        •   Design an Image Gallery / Lightbox with zoom, swipe, lazy loading and placeholders.
-        •   Design a File Upload widget with chunked uploads, resumability, progress, and drag-and-drop.
-        •   Design a Date / Time Picker component handling time zones, formats, and keyboard accessibility.
-        •   Design a Search Autocomplete component with debounce, keyboard nav, highlighted suggestions, and result caching.
-        •   Design an Infinite Scroll / Virtualized List and explain tradeoffs vs pagination.
-        •   Design a Drag & Drop list with reordering and accessibility.
-        •   Design a Data Table (sorting, filtering, pagination, column resizing, virtualization).
-        •   Design a Tree View / Folder Explorer with lazy loading nodes and move/copy operations.
-        •   Design a Multi-select / Tag Input component with async suggestions.
-        •   Design a Wizard / Multi-step Form preserving state across steps and handling validation per-step.
-        •   Design a Reusable Button system that supports variants, loading states, and accessibility.
-        •   Design a Theme / Theming System (light/dark, custom palettes, CSS variables, SSR theming).
-        •   Design an Avatar component with fallback handling, initials, and lazy image loading.
-        •   Design a Rating / Stars component with keyboard interaction and ARIA.
-        •   Design a Pagination Component and discuss API vs client-side pagination.
-        •   Design a Context Menu / Right-click Menu component accessible by keyboard.
         •   Design a Tooltip system (positioning, accessibility, delay, portal usage).
-        •   Design a Breadcrumb component for routing hierarchies.
-        •   Design a File Explorer UI (thumbnails, context menus, bulk ops, search/filter).
-        •   Design a Calendar / Scheduler (drag events, collision detection, recurring events).
-        •   Design a Payment / Checkout UI (secure card input, validation, PCI concerns).
-        •   Design a Form Validation Engine that can be reused across components (sync/async rules).
-        •   Design a Component Library (tokens, docs, theming, accessibility standards).
-        •   Design a Resizable Split Pane (drag to resize, persist size).
+        •   Design a Popover / Dropdown positioning system
+        •   Design a Context Menu / Right-click Menu component accessible by keyboard.
+        •   Design a Dropdown / Multi-select
         •   Design a Command Palette / Spotlight Search (keyboard-driven, fuzzy matching, plugin architecture like VS Code's Cmd+K).
-        •   Design a Kanban Board (drag across columns, swimlanes, real-time multi-user updates, optimistic reordering).
-        •   Design a Chat / Messaging UI (message grouping, read receipts, typing indicators, infinite scroll upward, media previews).
-        •   Design a Code Editor Component (syntax highlighting, line numbers, bracket matching, minimap — when to embed Monaco vs build custom).
-        •   Design a Dashboard Builder where users can add/remove/resize/rearrange widgets (grid layout, persistence, lazy widget loading).
-        •   Design a Notification Center / Inbox (read/unread, grouping, mark-all-read, real-time badge count).
-        •   Design a Stepper / Progress Tracker that works across async multi-page flows (not just form wizards).
+        •   Design a Pagination Component(cursor and offset) and discuss API vs client-side pagination.
+        •   Design a Breadcrumb system for routing hierarchies
+        •   Design a Tabs system
         •   Design an Accordion / Collapsible Section system that supports exclusive vs independent expand, animated height transitions, and accessibility.
-        •   Design a Carousel / Slider with touch support, autoplay, accessibility, and lazy-loaded slides.
-        •   Design a PDF Viewer component (page navigation, zoom, annotations, text search within PDF).
-        •   Design an Audio/Video Player with custom controls, keyboard shortcuts, captions, and streaming support.
-        •   Design a Spreadsheet-like Grid (cell editing, formulas, copy-paste, undo, column/row resize).
-        •   Design a WYSIWYG Email Template Builder (drag blocks, variable insertion, responsive preview).
+        •   Design a Rating component / Stars component with keyboard interaction and ARIA.
+        •   Design an Avatar system component with fallback handling, initials, and lazy image loading.
+        •   Design a Reusable Button system that supports variants, loading states, and accessibility.
+        •   Design a Theme system / Theming System (light/dark, custom palettes, CSS variables, SSR theming).
+        •   Design a Skeleton Loader system and where to place it vs spinners
+        •   Design a Global Banner / Alert system
+        •   Design a Keyboard Shortcut system
+        •   Design a Focus Management system
+        •   Design a Hovercard / Preview system
+        •   Design a Multi-select / Tag Input component with async suggestions.
+        •   Design a Comment Thread with nested replies, lazy-loading nested comments, and optimistic UI for posting.
+        •   Design an Overlay Management System
+
+        2. Forms & Input Systems (10)
+        •   Design a Form Builder supporting dynamic fields, validation, conditional fields, and multi-step flows
+        •   Design a Wizard / Multi-step Form preserving state across steps and handling validation per-step.
+        •   Design a Form Validation Engine that can be reused across components (sync/async rules).
+        •   Design a Dynamic Conditional Form Engine
+        •   Design a Draft Persistence system
+        •   Design a Large Form Performance system
+        •   Design a File Input system
+        •   Design a Date/Time Picker component handling time zones, formats, and keyboard accessibility.
         •   Design a Color Picker component with alpha support, saved palettes, and accessible contrast preview.
-        •   Design a Map-based UI (markers, clustering, geofencing, search within viewport, integration with Mapbox/Google Maps).
+        •   Design an AI-assisted Form Fill system
 
-        2. State Management & Data Architecture
-        •   When do you use local component state vs Context API vs Redux / Zustand / Jotai? Explain with examples.
-        •   Design a scalable global state model for a large SPA across multiple teams.
-        •   Design a custom state manager without Redux — what primitives would you expose?
-        •   How to structure normalized state for lists of items (entities & ids) and update patterns.
-        •   Design patterns for optimistic updates & rollback on failure.
-        •   Cache invalidation strategies on the client after mutations.
-        •   How to keep derived/computed state performant (selectors, memoization).
-        •   Compare useReducer vs useState for complex forms — when to prefer reducers?
-        •   How would you manage per-component subscriptions to avoid unnecessary re-renders?
-        •   How to implement a scoped/global event bus in React.
-        •   Strategies to share state between React and non-React parts of an app.
-        •   Cross-tab state synchronization (localStorage, BroadcastChannel).
-        •   Designing feature flags and toggles for the front-end.
-        •   How to design transient UI state vs persistent user state.
-        •   Data normalization and client schema design for GraphQL and REST.
-        •   Handling pagination cursors and merging pages in state.
-        •   Designing store boundaries in a monorepo with multiple micro frontends.
-        •   Designing contract / API versioning considerations on the frontend.
-        •   Strategies for state persistence and rehydration (localStorage, IndexedDB).
-        •   Design a mechanism for undo/redo in UI editing (command pattern).
+        3. Data-heavy UI Components (11)
+        •   Design a Data Table (sorting, filtering, pagination, column resizing, virtualization).
+        •   Design an Infinite Scroll / Virtualized List and explain tradeoffs vs pagination.
+        •   Design a Virtualized Grid (2D)
+        •   Design a Spreadsheet-like Grid (cell editing, formulas, copy-paste, undo, column/row resize)
+        •   Design a Tree View / Folder Explorer with lazy loading nodes and move/copy operations.
+        •   Design a Dashboard Builder where users can add/remove/resize/rearrange widgets (grid layout, persistence, lazy widget loading).
+        •   Design a Client-side Data Normalization system
+        •   Design a Cursor-based Pagination UI
+        •   Design a Real-time Data Dashboard
+        •   Design a Column Configuration system
+        •   Design Saved Views / Filters system
+        •   Design an Inline Editing System (cell/row editing with validation + undo)
 
-        3. Performance & Rendering Optimizations
-        •   How to optimize a view rendering thousands of dynamic components?
-        •   Explain re-render causes and how to minimize them (keys, memo, pure components).
-        •   When and how to use React.memo, useMemo, useCallback — tradeoffs.
-        •   How to profile & debug performance regressions (React Profiler, Chrome DevTools).
-        •   Design virtualized lists (react-window/react-virtualized) and handling variable row heights.
-        •   Explain Layout Thrashing, forced synchronous layouts, and how to avoid them.
-        •   Discuss code splitting and chunking strategies (dynamic import, route-based).
-        •   Explain tree-shaking and how to keep bundle size small.
-        •   Design an image optimization strategy (srcset, lazy loading, next/image-like approach).
-        •   How to reduce Cumulative Layout Shift (CLS) in component design.
-        •   How to optimize CPU-bound tasks (web workers).
-        •   Strategies for efficient animations (transform vs top/left, will-change, requestAnimationFrame).
-        •   Explain expensive reconciliation patterns and how to refactor components.
-        •   How to avoid memory leaks (cleanup effects, long-lived timers, DOM references).
-        •   How to use incremental rendering / chunked rendering for heavy pages.
-        •   Explain critical rendering path for single-page apps and how to speed first meaningful paint.
-        •   Design a lazy-loading strategy for images, components, and data.
-        •   Handling large JSON payloads on client (streaming, pagination, compression).
+        4. File, Media & Content Systems (9)
+        •   Design a File Upload system with chunked uploads, resumability, progress, and drag-and-drop.
+        •   Design a File Explorer UI (thumbnails, context menus, bulk ops, search/filter).
+        •   Design an Image Gallery / Lightbox with zoom, swipe, lazy loading and placeholders.
+        •   Design a PDF Viewer (page navigation, zoom, annotations, text search within PDF)
+        •   Design an Audio/Video Player with custom controls, keyboard shortcuts, captions, and streaming support.
+        •   Design a Rich Text Editor (mentions, image upload, collaborative editing hooks).
+        •   Design a WYSIWYG Email Builder(drag blocks, variable insertion, responsive preview)
+        •   Design a Code Editor Component (syntax highlighting, line numbers, bracket matching, minimap — when to embed Monaco vs build custom)
+        •   Design a Streaming Markdown Renderer
 
-        4. React Internals & Rendering Model
-        •   Explain reconciliation and the diffing algorithm.
-        •   Explain React Fiber — why it exists and what problems it solves.
-        •   Explain component lifecycle under hooks (useEffect ordering, cleanup).
-        •   Explain the concept of keys and common bugs when keying incorrectly.
-        •   Deep dive: how setState batching works and when updates are synchronous vs async.
-        •   Explain portals and when to use them.
-        •   Explain refs, forwardRef, and useImperativeHandle.
-        •   Explain error boundaries: when to use them and limitations.
-        •   Explain hydration and hydration mismatches in SSR.
-        •   Explain event delegation in React and synthetic events.
-        •   Implement a simple custom hook and discuss design for reusability.
-        •   Explain memoization internals and pitfalls (stale closures).
-        •   How to implement render prop vs HOC vs hook patterns and choose between them.
-        •   Explain how Suspense works for code-splitting and for data (current state of Suspense for data).
-        •   How does React schedule rendering priorities (interactive vs background)?
-        •   Explain why keys should be stable and unique and their effect on diffing.
+        5. Search & Discovery (4)
+        •   Design a Search Autocomplete system with debounce, keyboard nav, highlighted suggestions, and result caching.
+        •   Design a Full-text Search UI
+        •   Design a RAG-based Search UI
+        •   Design a Search Page (filters + facets + URL sync)
 
-        5. Concurrency & React 18+ Features
-        •   Explain concurrent rendering and the benefits of concurrency.
-        •   Explain startTransition, useDeferredValue and when to use them.
-        •   Suspense for data: how it changes data fetching patterns.
-        •   Server Components overview: where to use server components vs client components.
-        •   Streaming SSR and progressive hydration.
-        •   How to design components to be concurrent-safe (avoiding side effects during render).
-        •   Handling interruptions / aborts for long-running renders (cancellation patterns).
+        6. Communication & Collaboration (11)
+        •   Design a Chat / Messaging UI (message grouping, read receipts, typing indicators, infinite scroll upward, media previews).
+        •   Design a Notification Center / Inbox (read/unread, grouping, mark-all-read, real-time badge count).
+        •   Design a Real-time Collaborative Editor
+        •   Design a Live Cursor / Presence system
+        •   Design a Typing Indicator system
+        •   Design a Message Delivery State system
+        •   Design a Conflict Resolution UI
+        •   Design a Presence + Last Seen system
+        •   Design a Collaborative Whiteboard
+        •   Design a Multiplayer Lobby UI
+        •   Design a Threaded Conversation system
+        •   Design a Real-time Notification Delivery System (sync + UI consistency)
 
-        6. Data Fetching, Caching & Networking
-        •   Design a front-end caching layer (stale-while-revalidate, cache durations).
-        •   Design a data-fetching hook that supports caching, dedupe, retries and pagination.
-        •   Compare REST vs GraphQL for client design; pros/cons for caching & batching.
-        •   Using WebSockets or SSE for real-time UI: design message handling and reconcile with local state.
-        •   Design a polling vs push strategy for live data and backoff strategies.
-        •   Design file upload API interactions, chunking, and resumable uploads.
-        •   Handling GraphQL subscriptions and client-side cache updates.
-        •   How to implement ETag / If-Modified-Since style caching on client.
-        •   Design API error-handling and retry strategy on the client (exponential backoff, idempotency).
-        •   Designing optimistic UI updates with conflict resolution.
-        •   How to prevent overfetching and unnecessary requests (debounce, dedupe).
-        •   Using AbortController to cancel obsolete fetches in components.
-        •   Design a client-side connector for third-party APIs with rate-limit handling.
-        •   How to secure client-side tokens and manage refresh tokens in single-page apps.
+        7. Complex Interaction Systems (12)
+        •   Design a Drag & Drop system list with reordering and accessibility.
+        •   Design a Kanban Board (drag across columns, swimlanes, real-time multi-user updates, optimistic reordering).
+        •   Design a Calendar / Scheduler (drag events, collision detection, recurring events).
+        •   Design a Carousel / Slider with touch support, autoplay, accessibility, and lazy-loaded slides
+        •   Design a Stepper / Progress Tracker that works across async multi-page flows (not just form wizards)
+        •   Design a Resizable Split Pane (drag to resize, persist size).
+        •   Design a Bottom Sheet / Drawer
+        •   Design a Zoomable Canvas system
+        •   Design a Pan + Zoom + Minimap system
+        •   Design a Snap-to-grid / Alignment system
+        •   Design a Gesture system
+        •   Design a History Timeline UI
 
-        7. Routing, SSR & SEO
-        •   Design a routing strategy for a multi-tenant SPA (role-based routes, nested routes).
-        •   Explain dynamic routing vs static routing tradeoffs.
-        •   SSR vs CSR vs SSG — when to choose each and how to design components accordingly.
-        •   Handling authentication & protected routes in SSR (cookie vs token).
-        •   Dealing with meta tags & SEO in SPAs (dynamic meta, prerendering).
-        •   Handling deep linking and scroll restoration.
-        •   URL design and state in the URL (query params vs path params).
-        •   Hydration mismatches: root causes and fixes.
-        •   Designing canonical routes and redirects at the edge.
-        •   Designing internationalized routes and locale-aware SEO.
+        8. Networking & Data Systems (12)
+        •   Design a Data Fetching Hook
+        •   Design a Frontend Caching Layer
+        •   Design an Optimistic UI system
+        •   Design a Polling vs WebSocket system
+        •   Design a File Upload API layer
+        •   Design a Retry mechanism
+        •   Design a Rate-limited Autocomplete system
+        •   Design a Request Deduplication system
+        •   Design a Global API Error Handling layer
+        •   Design a Token Refresh system
+        •   Design a Race Condition Handling system
+        •   Design a Request Batching system
+        •   Design a Cache Invalidation Strategy (after mutations)
 
-        8. Accessibility (a11y), Internationalization & UX
-        •   Designing accessible components (ARIA, keyboard navigation, focus management).
-        •   Focus management in modal/dialog components.
-        •   Accessible drag & drop and alternative interactions.
-        •   Designing for screen readers (live regions, aria-live, roles).
-        •   Designing RTL (right-to-left) support and mirrored layouts.
-        •   Date/time localization and number/currency formatting.
-        •   Designing color contrast and accessible theme switching.
-        •   Handling font loading to avoid FOIT/FOUT and layout shift.
-        •   Designing for low-vision/high-contrast modes.
+        9. Auth & User Systems (9)
+        •   Design a Login/Auth flow
+        •   Design RBAC UI system
+        •   Design User Onboarding / Guided Tour
+        •   Design Admin Impersonation UI
+        •   Design Session Timeout + Auto Logout
+        •   Design Device / Session Management UI
+        •   Design Password Reset / Recovery Flow
+        •   Design Secure Token Storage UX
+        •   Design Permission Editor UI
+        •   Design a Route / Component Access Guard System
 
-        9. Testing, Reliability & Observability
-        •   Designing components for testability (props, dependency injection, small units).
-        •   Unit testing hooks & components with Jest + React Testing Library.
-        •   Integration tests for data flows; end-to-end with Cypress / Playwright.
-        •   Mocking network calls and third-party SDKs for reliable tests.
-        •   Snapshot testing pros/cons and when to use them.
-        •   Designing end-to-end flaky test mitigation strategies.
-        •   Instrumenting performance: Web Vitals, custom metrics, and tracing.
-        •   Error reporting & monitoring (Sentry, Bugsnag) and what to log.
-        •   Designing health checks for frontend (Lighthouse CI / automated audits).
-        •   Building regression detection into CI (bundle size, Lighthouse scores).
+        10. Offline & Advanced UX Systems (8)
+        •   Design an Offline-first app
+        •   Design Network failure handling
+        •   Design Push Notification UX
+        •   Design Progressive Enhancement system
+        •   Design Conflict Resolution for offline edits
+        •   Design Background Sync Queue system
+        •   Design Local-first architecture
+        •   Design Conflict Visualization UI
 
-        10. Security & Privacy (Frontend LLD)
-        •   XSS prevention in React (dangerouslySetInnerHTML risks and sanitization).
-        •   CSRF protections on frontend when using cookies.
-        •   Secure storage of tokens (cookies vs localStorage tradeoffs).
-        •   Handling OAuth flows securely in SPAs (PKCE).
-        •   Designing input validation boundaries and server-side validation assumptions.
-        •   Protecting sensitive UI against clickjacking (X-Frame-Options handling).
-        •   Rate-limiting user actions on client-side to avoid accidental DDoS.
-        •   Privacy-compliant analytics (consent, opt-out, PII handling).
+        11. State & Interaction Modeling (8)
+        •   Design Undo/Redo system
+        •   Design State Machine for workflows
+        •   Design Multi-step async workflow
+        •   Design a Global Event Bus system
+        •   Design Cross-tab State Sync system
+        •   Design Time-travel Debugging system
+        •   Design Derived State system
+        •   Design State Hydration/Rehydration system
+        •   Design a Fine-grained Subscription System (avoid unnecessary re-renders)
 
-        11. Build, Bundling, Monorepos, Infra & Deployment
-        •   How to design a bundling strategy to support multiple entry points and code splitting.
-        •   Using Module Federation for micro frontends — design considerations and versioning.
-        •   Monorepo patterns for shared UI libraries (package boundaries, releases).
-        •   CI/CD pipeline for frontend: lint/tests/build, preview environments, canary deploys.
-        •   How to design asset caching and invalidation strategy (cache-busting).
-        •   Design considerations for edge functions and CDN-based rendering.
-        •   Feature flag rollout & A/B testing integration patterns.
-        •   Designing rollback strategies for a faulty frontend release.
-        •   Designing progressive rollouts and health monitoring (SLOs for front-end).
+        12. AI / Modern Systems (6)
+        •   Design Streaming Chat UI
+        •   Design AI UI Generator
+        •   Design AI-assisted Search / Q&A UI
+        •   Design Prompt History & Versioning UI
+        •   Design AI Feedback Loop UI
+        •   Design Token Streaming Buffer system
 
-        12. UX & Practical Interaction Patterns
-        •   Design a progressive enhancement strategy (JS optional experiences fallback).
-        •   Designing skeleton screens vs spinners decisions.
-        •   Handling network loss gracefully (offline UX, queuing actions).
-        •   Push notification UI design and permission flows.
-        •   Local-first / offline-first app architecture (IndexedDB syncing strategies).
-        •   Designing auditing/tracking for user actions (privacy mindful).
-        •   Designing complex interactions like canvas drawing or image editing in React.
-        •   Handling large tables of data with filters, aggregations, and pivot-like interactions.
+        13. Web Platform / Browser APIs (9)
+        •   Design IntersectionObserver-based lazy system
+        •   Design Web Worker-based computation system
+        •   Design Background Sync system
+        •   Design Clipboard system
+        •   Design Permissions UX
+        •   Design Visibility-based rendering system
+        •   Design Idle Task Scheduling system
+        •   Design Native Drag-and-Drop File system
+        •   Design ResizeObserver-based layout system
 
-        13. Misc LLD Prompts & Scenario Questions (Frequently Asked Live)
-        •   "Draw the component tree & state shape for X feature (e.g., shopping cart checkout)."
-        •   "You have to integrate a third-party chat widget — how do you isolate and test it?"
-        •   "How would you migrate a large app from class components to hooks gradually?"
-        •   "How to split a large repo into micro frontends with minimal user disruption?"
-        •   "You need to implement offline sync for forms — design conflict resolution."
-        •   "Design an experiment to measure whether code-splitting improved perceived load time."
-        •   "Design rate-limited autocomplete so it doesn't exceed API limits."
-        •   "How would you add telemetry instrumentation for a new critical user flow?"
-        •   "You're asked to make a 3rd party payment flow accessible and testable — how?"
-        •   "Design a rollback mechanism if a new component causes too many errors in Sentry."
-        •   "Design data migration strategy when backend API changes field names."
-        •   "Design a predictable animation system across the app (consistent easings, durations)."
-        •   "Implement a debounced save in form drafts (avoid data loss)."
-        •   "Design multi-locale formatting pipeline for dates, numbers, pluralization."
-        •   "Design a frontend approach to bulk editing many items concurrently."
-        •   "How to do graceful degradation when a dependent CDN is down?"
+        14. Real-world Scenario LLD (17)
+        •   Design a Shopping Cart system
+        •   Design a Checkout flow
+        •   Design Third-party SDK integration
+        •   Design Offline Form Sync system
+        •   Design Debounced Auto-save system
+        •   Design Bulk Editing UI
+        •   Design Feature Flag system
+        •   Design Telemetry / Analytics pipeline
+        •   Design Notifications Badge system
+        •   Design Activity Feed system
+        •   Design Comments system
+        •   Design Version History system
+        •   Design Audit Log Viewer UI
+        •   Design Settings Page system
+        •   Design Multi-tenant UI
+        •   Design Export system (CSV/PDF)
+        •   Design Saved Views persistence system
+        •   Design a Payment UI system (PCI, secure inputs, third-party integration)
+        •   Design a Map-based UI system (markers, clustering, viewport queries)
+        •   Design a Feature Rollout System (gradual rollout + targeting + kill switch)
 
-        14. Real-time & Collaboration
-        •   Design a real-time collaborative editing system (CRDTs vs OT, cursor presence, conflict resolution UI).
-        •   Design a live cursor / presence system showing other users' positions in a shared workspace.
-        •   Design a real-time multiplayer game lobby UI (player list, ready state, countdown, latency display).
-        •   Design a collaborative whiteboard (drawing, shapes, sticky notes, multi-user with undo per user).
-
-        15. Auth, Roles & Permissions UI
-        •   Design a Role-Based Access Control (RBAC) UI — conditionally rendering UI elements, routes, and actions based on permissions.
-        •   Design a Login / Auth flow end-to-end (social login, MFA, session timeout, "remember me", token refresh UX).
-        •   Design a User Onboarding / Guided Tour component (step highlights, tooltips, skip/resume, progress tracking).
-        •   Design an Impersonation UI for admin users (visual indicators, safe exit, audit trail).
-
-        16. State Machines & Complex Interaction Modeling
-        •   When and how to use state machines (XState) to model complex UI flows — compare with useReducer.
-        •   Design a multi-step async workflow (e.g., order placement) using state machines with retry, cancel, and timeout states.
-        •   Design a complex form with branching logic modeled as a state machine (insurance application, tax filing).
-
-        17. Mobile, Responsive & Cross-platform
-        •   Design a responsive navigation system (hamburger menu, bottom tabs, sidebar — breakpoint-driven transitions).
-        •   Design touch gesture handling in React (swipe to delete, pull to refresh, pinch to zoom — without a library).
-        •   Design a Progressive Web App shell (service worker strategy, install prompt, offline fallback).
-        •   Design a bottom sheet / drawer component for mobile-first UIs (snap points, drag to dismiss, backdrop).
-        •   How to handle viewport and virtual keyboard issues on mobile web (input focus shifting layout).
-
-        18. Error Handling & Resilience Patterns
-        •   Design a global error handling strategy — error boundaries per route vs per feature, fallback UI hierarchy.
-        •   Design a retry UI pattern for failed operations (inline retry, toast with retry, automatic retry with backoff indicator).
-        •   Design a graceful degradation system — feature-level fallbacks when a service is down (circuit breaker on the client).
-        •   Design a dead letter queue for failed client-side mutations that should be retried later.
-
-        19. Developer Experience & Tooling
-        •   Design custom ESLint rules or codemods for enforcing patterns across a large React codebase.
-        •   Design a Storybook-based development workflow (visual regression testing, accessibility checks, interaction testing).
-        •   Design developer tools (browser extension or devtools panel) for debugging your app's state and events.
-        •   How to design backward-compatible component APIs when evolving a shared component library.
-
-        20. AI / LLM Integration (2025+)
-        •   Design a streaming chat UI for an LLM-powered feature (token-by-token rendering, stop generation, markdown rendering).
-        •   Design a prompt-based UI generator — user describes a layout, AI returns components (how to sandbox, validate, render).
-        •   Design an AI-assisted form fill — suggestions, auto-complete from context, with user override and correction UX.
-        •   Design a RAG-powered search UI (query → retrieval → generated answer with source citations and feedback).
-
-        21. Web Platform & Browser APIs
-        •   Design around the View Transitions API for smooth page-to-page animations in an SPA.
-        •   Design a component that uses the Intersection Observer API for scroll-triggered animations, analytics tracking, and lazy loading.
-        •   Design offline data sync using Background Sync API and IndexedDB.
-        •   Design a clipboard interaction system (copy rich content, paste handling, paste-as-image).
-        •   Design a feature using the Web Share API and Share Target API for native-like sharing.
-        •   How to leverage Web Workers / SharedWorkers for offloading computation in a React app.
-        •   Design around Permissions API — requesting camera, microphone, notification, and geolocation with good UX.
-
-        22. Architecture & Design Philosophy
-        •   How to design a compound component pattern (Select + Option, Tabs + TabPanel) and when it beats props-driven design.
-        •   Design a headless component library (logic-only hooks) and explain when to choose headless vs styled.
-        •   Design a plugin/extension architecture for a React application (registering features dynamically).
-        •   How to design API contracts and type-safety between frontend and backend (tRPC, OpenAPI codegen, Zod schemas).
-        •   Design a feature module architecture — how to organize a large React app by feature vs by type (folder structure, lazy boundaries, shared kernel).
-        •   Design a dependency injection pattern in React (for testability and swappable implementations).
-
-        23. Analytics, Monitoring & Experimentation
-        •   Design a client-side event tracking architecture (batching events, consent-aware, schema-validated).
-        •   Design an A/B testing framework on the client (variant assignment, flicker prevention, metrics collection).
-        •   Design a session replay integration strategy (what to capture, PII redaction, performance impact).
-        •   Design Real User Monitoring (RUM) — collecting Web Vitals, custom timing metrics, and correlating with user segments.
-
-        24. Advanced Data Patterns
-        •   Design a client-side full-text search (indexing, fuzzy matching, highlighting — using Fuse.js, MiniSearch, or custom).
-        •   Design data synchronization between multiple browser tabs with conflict resolution.
-        •   Design an event sourcing pattern on the frontend for audit trails and time-travel debugging.
-        •   Design pagination strategies in depth — offset vs cursor vs keyset, and how each affects UI state and caching.
-        •   Design a real-time data aggregation dashboard — handling high-frequency updates without UI jank (throttling, buffering, chart updates).
+        15. Architecture / System-level LLD
+        •   Design a Component Library system (tokens, theming, docs, versioning)
 
 4.  Other
     a.  Artificial-Intelligence-Concepts

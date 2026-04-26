@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="system-ui, sans-serif">
+  <rect width="900" height="500" fill="#f3f1f8"/>
+  <text x="450" y="32" text-anchor="middle" font-size="19" font-weight="700" fill="#1a1822">MST Algorithms Compared</text>
+
+  <rect x="40" y="60" width="820" height="200" fill="#fff" stroke="#6d5bd0" stroke-width="2" rx="6"/>
+  <text x="60" y="85" font-size="13" font-weight="700" fill="#6d5bd0">Kruskal vs Prim vs Borůvka</text>
+  <text x="60" y="112" font-size="11">                       Kruskal              Prim                       Borůvka</text>
+  <text x="60" y="132" font-size="11">Approach              global edges          frontier expansion         parallel components</text>
+  <text x="60" y="152" font-size="11">Data structure        sort + DSU            heap + visited             component map + DSU</text>
+  <text x="60" y="172" font-size="11">Complexity            O(E log V)            O((V+E) log V) heap        O(E log V)</text>
+  <text x="60" y="192" font-size="11">Best on               sparse graphs         dense graphs (array)       parallel / distributed</text>
+  <text x="60" y="212" font-size="11">Streaming friendly    yes (sort by weight)  no (needs frontier)        yes</text>
+  <text x="60" y="232" font-size="11">Distributed friendly  partial               difficult                  natural</text>
+
+  <rect x="40" y="280" width="820" height="195" fill="#fff" stroke="#4caf50" stroke-width="2" rx="6"/>
+  <text x="60" y="305" font-size="13" font-weight="700" fill="#4caf50">When edge weights are not unique</text>
+  <text x="60" y="330" font-size="11">MST is not unique when multiple edges share the same weight. The algorithm still finds</text>
+  <text x="60" y="350" font-size="11">A valid MST (with the same total weight), but the tree structure depends on tie-breaking.</text>
+  <text x="60" y="375" font-size="11">For determinism, break ties by edge id or endpoint pair. Consequences:</text>
+  <text x="60" y="400" font-size="11">• Reproducible network designs across re-runs.</text>
+  <text x="60" y="420" font-size="11">• Consistent visualization in MST-based clustering (single-linkage = MST).</text>
+  <text x="60" y="440" font-size="11">• Stable output for caching and incremental updates.</text>
+  <text x="60" y="465" font-size="11" fill="#4caf50" font-weight="700">Total weight is unique; structure is not. Canonicalize tie-breaking up-front.</text>
+</svg>

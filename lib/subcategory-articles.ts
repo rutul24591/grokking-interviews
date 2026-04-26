@@ -4688,6 +4688,16 @@ export const subcategoryArticles: Record<string, Array<{slug: string; title: str
       "description": "Backtracking — choose-explore-unchoose template, state-space tree, pruning strategies (constraint propagation, bound, symmetry, MRV), and patterns for combinatorial search."
     },
     {
+      "slug": "bellman-ford",
+      "title": "Bellman-Ford Algorithm",
+      "description": "Single-source shortest paths that tolerate negative edges and detect negative cycles — the V-1 relaxation passes, SPFA, Johnson's reweighting, and the routing-protocol legacy."
+    },
+    {
+      "slug": "bfs",
+      "title": "Breadth-First Search (BFS)",
+      "description": "BFS — layer-by-layer graph traversal, shortest paths in unweighted graphs, multi-source / 0-1 / bidirectional variants, and direction-optimizing scaling to billion-vertex graphs."
+    },
+    {
       "slug": "binary-search",
       "title": "Binary Search",
       "description": "Binary Search — O(log n) divide-and-conquer search over sorted data. The lower_bound / upper_bound / parametric-search template behind databases, compilers, and rate limiters."
@@ -4696,6 +4706,11 @@ export const subcategoryArticles: Record<string, Array<{slug: string; title: str
       "slug": "bitmask-dp",
       "title": "Bitmask DP (TSP and Beyond)",
       "description": "Bitmask DP — subset-indexed DP with 2ⁿ states. Held-Karp TSP in O(n²·2ⁿ), assignment, profile DP, and sum-over-subsets transforms."
+    },
+    {
+      "slug": "boyer-moore",
+      "title": "Boyer-Moore String Matching",
+      "description": "Sublinear average-case substring search using right-to-left comparison with bad-character and good-suffix heuristics — the algorithm behind grep, ripgrep, and libc's strstr."
     },
     {
       "slug": "bubble-sort",
@@ -4716,6 +4731,16 @@ export const subcategoryArticles: Record<string, Array<{slug: string; title: str
       "slug": "counting-sort",
       "title": "Counting Sort",
       "description": "Counting Sort — non-comparative linear-time sorting for small integer ranges. The stable workhorse inside radix sort and histogram-based sorts."
+    },
+    {
+      "slug": "dfs",
+      "title": "Depth-First Search (DFS)",
+      "description": "DFS — recursive and iterative graph traversal, edge classification, three-color cycle detection, and applications in topological sort, SCC, articulation points, and backtracking."
+    },
+    {
+      "slug": "dijkstra",
+      "title": "Dijkstra's Algorithm",
+      "description": "Single-source shortest paths on graphs with non-negative edge weights — the greedy relaxation skeleton, priority-queue tradeoffs, and production variants from A* to contraction hierarchies."
     },
     {
       "slug": "divide-and-conquer",
@@ -4741,6 +4766,11 @@ export const subcategoryArticles: Record<string, Array<{slug: string; title: str
       "slug": "exponential-search",
       "title": "Exponential Search",
       "description": "Exponential Search — doubling-bracket then binary search. O(log i) for unbounded sorted streams and arrays where the target is near the start."
+    },
+    {
+      "slug": "floyd-warshall",
+      "title": "Floyd-Warshall Algorithm",
+      "description": "All-pairs shortest paths in O(V³) — the three-nested-loop dynamic program, semiring generalization to transitive closure and bottleneck paths, and where it beats running Dijkstra V times."
     },
     {
       "slug": "greedy-fundamentals",
@@ -4783,9 +4813,19 @@ export const subcategoryArticles: Record<string, Array<{slug: string; title: str
       "description": "Karatsuba multiplication — the first sub-quadratic integer multiplication, divide-and-conquer with three sub-multiplications, Toom–Cook and Schönhage–Strassen successors."
     },
     {
+      "slug": "kmp",
+      "title": "Knuth-Morris-Pratt (KMP)",
+      "description": "Linear-time exact string matching via the failure function — the LPS array, the no-text-backtrack invariant, and how KMP generalizes to Z-algorithm, Aho-Corasick, and string-period analysis."
+    },
+    {
       "slug": "knapsack-01",
       "title": "0/1 Knapsack",
       "description": "0/1 Knapsack — the archetypal DP. O(nW) pseudo-polynomial, NP-hard in input size. Unbounded, subset-sum, and meet-in-the-middle variants."
+    },
+    {
+      "slug": "kruskals-mst",
+      "title": "Kruskal's Minimum Spanning Tree",
+      "description": "Greedy edge selection with union-find — sort edges, accept those that don't form a cycle, stop at V-1. The cut and cycle properties, comparison with Prim and Borůvka, and production extensions."
     },
     {
       "slug": "linear-search",
@@ -4818,6 +4858,11 @@ export const subcategoryArticles: Record<string, Array<{slug: string; title: str
       "description": "Permutations, combinations, and subsets via backtracking — three skeletons (subsets, permute, combine), bitmask iteration, lexicographic next_permutation, Heap's Algorithm, and duplicate handling."
     },
     {
+      "slug": "prims-mst",
+      "title": "Prim's Minimum Spanning Tree",
+      "description": "Frontier-based MST construction with a min-heap — grow the tree by always pulling the cheapest crossing edge. Cut-property correctness, dense-graph wins, and how it relates to Dijkstra."
+    },
+    {
       "slug": "quick-sort",
       "title": "Quick Sort",
       "description": "Quick Sort — partition-based in-place sorting with expected O(n log n), the workhorse behind introsort, Pdqsort, and most production sort() implementations."
@@ -4826,6 +4871,11 @@ export const subcategoryArticles: Record<string, Array<{slug: string; title: str
       "slug": "quickselect",
       "title": "Quickselect",
       "description": "Quickselect — linear-time k-th smallest via partition-and-recurse, randomized pivoting, median-of-medians worst-case, and production top-k patterns."
+    },
+    {
+      "slug": "rabin-karp",
+      "title": "Rabin-Karp Algorithm",
+      "description": "Rolling-hash pattern matching that wins on multi-pattern, 2D, and fingerprinting problems — polynomial hashing, collision strategy, and the rsync/dedup ecosystem built on top of it."
     },
     {
       "slug": "radix-sort",
@@ -4848,9 +4898,19 @@ export const subcategoryArticles: Record<string, Array<{slug: string; title: str
       "description": "Sudoku solver — backtracking with row/column/box bitmasks, MRV branching, naked/hidden singles, Dancing Links exact-cover, and Norvig-style propagation."
     },
     {
+      "slug": "tarjans-scc",
+      "title": "Tarjan's Strongly Connected Components",
+      "description": "Linear-time SCC decomposition via a single DFS with index and low-link timestamps — the algorithm, the condensation DAG, 2-SAT solving, and where it beats Kosaraju."
+    },
+    {
       "slug": "ternary-search",
       "title": "Ternary Search",
       "description": "Ternary Search — divide the range into thirds to find the extremum of a unimodal function. O(log n) with larger constants than binary search."
+    },
+    {
+      "slug": "topological-sort",
+      "title": "Topological Sort",
+      "description": "Linear ordering of a DAG that respects dependencies — Kahn's BFS algorithm, DFS post-order, cycle detection, and the DAG-DP patterns built on top."
     },
     {
       "slug": "word-search",

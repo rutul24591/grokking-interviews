@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="system-ui, sans-serif">
+  <rect width="900" height="500" fill="#f3f1f8"/>
+  <text x="450" y="32" text-anchor="middle" font-size="19" font-weight="700" fill="#1a1822">KMP in Production</text>
+
+  <rect x="40" y="60" width="820" height="200" fill="#fff" stroke="#6d5bd0" stroke-width="2" rx="6"/>
+  <text x="60" y="85" font-size="13" font-weight="700" fill="#6d5bd0">Real-world applications</text>
+  <text x="60" y="112" font-size="11">• <tspan font-weight="700">Text editor "find":</tspan> grep, ripgrep, vim use Boyer-Moore-style by default; KMP for short patterns.</text>
+  <text x="60" y="132" font-size="11">• <tspan font-weight="700">Network intrusion detection:</tspan> Snort, Suricata signature matching (often Aho-Corasick).</text>
+  <text x="60" y="152" font-size="11">• <tspan font-weight="700">Bioinformatics:</tspan> exact substring search in DNA / protein sequences.</text>
+  <text x="60" y="172" font-size="11">• <tspan font-weight="700">Spam filters / antivirus:</tspan> match known signatures against streams.</text>
+  <text x="60" y="192" font-size="11">• <tspan font-weight="700">Plagiarism / duplicate detection:</tspan> exact match between document fragments.</text>
+  <text x="60" y="212" font-size="11">• <tspan font-weight="700">Compiler lexers:</tspan> keyword and operator matching in tokenizers.</text>
+  <text x="60" y="232" font-size="11">• <tspan font-weight="700">Streaming logs / observability:</tspan> fixed-pattern alerting in low-memory environments.</text>
+
+  <rect x="40" y="280" width="820" height="195" fill="#fff" stroke="#4caf50" stroke-width="2" rx="6"/>
+  <text x="60" y="305" font-size="13" font-weight="700" fill="#4caf50">When to pick KMP vs alternatives</text>
+  <text x="60" y="330" font-size="11">• Worst-case linearity matters → KMP (Boyer-Moore can be O(n·m) on adversarial inputs).</text>
+  <text x="60" y="350" font-size="11">• Single short pattern, ASCII text → Boyer-Moore or memmem (libc) usually faster in practice.</text>
+  <text x="60" y="370" font-size="11">• Many patterns at once → Aho-Corasick (KMP's natural extension to a trie).</text>
+  <text x="60" y="390" font-size="11">• Streaming, no random access → KMP (text pointer never moves backward).</text>
+  <text x="60" y="410" font-size="11">• Period / borders / suffix structure of strings → KMP failure array is the data structure.</text>
+  <text x="60" y="430" font-size="11">• Very small alphabet (binary) → KMP / Z dominate; Boyer-Moore's skip heuristic is weaker.</text>
+  <text x="60" y="465" font-size="11" fill="#4caf50" font-weight="700">KMP is rarely the fastest, but it's the predictable, contention-free baseline.</text>
+</svg>

@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="system-ui, sans-serif">
+  <rect width="900" height="500" fill="#f3f1f8"/>
+  <text x="450" y="32" text-anchor="middle" font-size="19" font-weight="700" fill="#1a1822">Rabin-Karp Strengths &amp; Hash Collisions</text>
+
+  <rect x="40" y="60" width="820" height="200" fill="#fff" stroke="#6d5bd0" stroke-width="2" rx="6"/>
+  <text x="60" y="85" font-size="13" font-weight="700" fill="#6d5bd0">When Rabin-Karp wins</text>
+  <text x="60" y="112" font-size="11">• <tspan font-weight="700">Multi-pattern, same length:</tspan> hash all patterns into a set; one rolling hash over text;</text>
+  <text x="60" y="132" font-size="11">  set lookup per position. O(n + total pattern length).</text>
+  <text x="60" y="152" font-size="11">• <tspan font-weight="700">2D pattern matching:</tspan> hash rows then hash hashes — natural extension to grids.</text>
+  <text x="60" y="172" font-size="11">• <tspan font-weight="700">Plagiarism / dedup:</tspan> Karp-Rabin fingerprints over sliding windows for similarity.</text>
+  <text x="60" y="192" font-size="11">• <tspan font-weight="700">String hashing in competitive programming:</tspan> longest common substring, palindromes,</text>
+  <text x="60" y="212" font-size="11">  suffix-prefix overlaps, polynomial fingerprint problems.</text>
+  <text x="60" y="232" font-size="11">• <tspan font-weight="700">rsync / rolling-checksum:</tspan> the original adler32 + MD5 dual-hash design.</text>
+
+  <rect x="40" y="280" width="820" height="195" fill="#fff" stroke="#4caf50" stroke-width="2" rx="6"/>
+  <text x="60" y="305" font-size="13" font-weight="700" fill="#4caf50">Hash collision strategy</text>
+  <text x="60" y="330" font-size="11">• <tspan font-weight="700">Single hash:</tspan> 1 in p false-positive rate. Always verify match by direct compare.</text>
+  <text x="60" y="352" font-size="11">• <tspan font-weight="700">Double hashing:</tspan> two hashes (different primes/bases). Collision rate ~ 1/p² ≈ negligible.</text>
+  <text x="60" y="374" font-size="11">• <tspan font-weight="700">Mersenne prime modulus (2^61 - 1):</tspan> fast bit-tricks for mod, large enough domain.</text>
+  <text x="60" y="396" font-size="11">• <tspan font-weight="700">Adversarial inputs:</tspan> attacker who knows p and b can craft collisions.</text>
+  <text x="60" y="416" font-size="11">  Use random p, b at startup, or compare on collision (KMP fallback for worst case).</text>
+  <text x="60" y="445" font-size="11" font-weight="700">Production: double-hash with random parameters; collision = direct compare.</text>
+  <text x="60" y="470" font-size="11" fill="#cc4444" font-weight="700">Never use a fixed b = 31 in security-sensitive contexts — collisions trivial to construct.</text>
+</svg>

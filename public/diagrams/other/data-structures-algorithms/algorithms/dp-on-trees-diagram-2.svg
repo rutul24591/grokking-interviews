@@ -1,7 +1,7 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="system-ui, sans-serif">
   <rect width="900" height="500" fill="#f3f1f8"/>
   <text x="450" y="32" text-anchor="middle" font-size="19" font-weight="700" fill="#1a1822">Rerooting — Computing an Answer for Every Node in O(n)</text>
-  <text x="450" y="54" text-anchor="middle" font-size="12" fill="#1a1822">Pass 1: subtree DP rooted at 0. Pass 2: propagate &ldquo;outside&rdquo; info when switching root.</text>
+  <text x="450" y="54" text-anchor="middle" font-size="12" fill="#1a1822">Pass 1: subtree DP rooted at 0. Pass 2: propagate “outside” info when switching root.</text>
 
   <!-- Step 1 tree -->
   <rect x="40" y="75" width="400" height="215" fill="#fff" stroke="#6d5bd0" stroke-width="2" rx="6"/>
@@ -23,9 +23,9 @@
   <rect x="460" y="75" width="400" height="215" fill="#fff" stroke="#4caf50" stroke-width="2" rx="6"/>
   <text x="480" y="100" font-size="13" font-weight="700" fill="#4caf50">Pass 2: rerooted answer ans[u]</text>
   <text x="480" y="125" font-size="11" fill="#1a1822">When moving root from u to child v:</text>
-  <text x="480" y="148" font-size="11" fill="#1a1822" font-family="monospace">  v&rsquo;s subtree gains: all nodes outside v</text>
-  <text x="480" y="164" font-size="11" fill="#1a1822" font-family="monospace">  v&rsquo;s subtree loses: nothing</text>
-  <text x="480" y="180" font-size="11" fill="#1a1822" font-family="monospace">  u&rsquo;s subtree (seen from v) loses v&rsquo;s part</text>
+  <text x="480" y="148" font-size="11" fill="#1a1822" font-family="monospace">  v’s subtree gains: all nodes outside v</text>
+  <text x="480" y="164" font-size="11" fill="#1a1822" font-family="monospace">  v’s subtree loses: nothing</text>
+  <text x="480" y="180" font-size="11" fill="#1a1822" font-family="monospace">  u’s subtree (seen from v) loses v’s part</text>
   <text x="480" y="208" font-size="11" fill="#1a1822" font-family="monospace">outside[v] = outside[u] + subtree[u]</text>
   <text x="480" y="224" font-size="11" fill="#1a1822" font-family="monospace">            − subtree[v]</text>
   <text x="480" y="250" font-size="11" fill="#1a1822" font-family="monospace">ans[v] = f(subtree[v], outside[v])</text>
@@ -34,9 +34,9 @@
   <!-- Example bottom -->
   <rect x="40" y="310" width="820" height="165" fill="#fff" stroke="#6d5bd0" stroke-width="2" rx="6"/>
   <text x="60" y="335" font-size="13" font-weight="700" fill="#6d5bd0">Example: sum of distances from each node (Leetcode 834)</text>
-  <text x="60" y="360" font-size="11" fill="#1a1822">size[u] = nodes in u&rsquo;s subtree; distSum[0] = Σ depth[u] from pass 1.</text>
+  <text x="60" y="360" font-size="11" fill="#1a1822">size[u] = nodes in u’s subtree; distSum[0] = Σ depth[u] from pass 1.</text>
   <text x="60" y="380" font-size="11" fill="#1a1822" font-family="monospace">distSum[v] = distSum[u] − size[v] + (n − size[v])</text>
-  <text x="60" y="405" font-size="11" fill="#1a1822">Moving the root from u to v: nodes in v&rsquo;s subtree are 1 closer (size[v] fewer steps),</text>
+  <text x="60" y="405" font-size="11" fill="#1a1822">Moving the root from u to v: nodes in v’s subtree are 1 closer (size[v] fewer steps),</text>
   <text x="60" y="421" font-size="11" fill="#1a1822">nodes outside are 1 farther (n − size[v] extra steps).</text>
   <text x="60" y="450" font-size="11" fill="#4caf50" font-weight="700">Naive Θ(n²) BFS-from-each-node → rerooted Θ(n). 1000× speedup at n=1000.</text>
 </svg>

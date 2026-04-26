@@ -36,5 +36,5 @@
   </g>
 
   <rect x="40" y="455" width="820" height="30" fill="#fff" stroke="#cc4444" stroke-width="1" rx="4"/>
-  <text x="60" y="475" font-size="11" fill="#1a1822">Complexity formula: <tspan font-weight="700">time = (# states) × (work per transition)</tspan>. If this doesn&rsquo;t match your claim, recount.</text>
+  <text x="60" y="475" font-size="11" fill="#1a1822">Complexity formula: <tspan font-weight="700">time = (# states) × (work per transition)</tspan>. If this doesn’t match your claim, recount.</text>
 </svg>

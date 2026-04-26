@@ -29,7 +29,7 @@
   <rect x="460" y="210" width="400" height="260" fill="#fff" stroke="#cc4444" stroke-width="2" rx="6"/>
   <text x="480" y="235" font-size="13" font-weight="700" fill="#cc4444">0/1 knapsack (greedy FAILS)</text>
   <text x="480" y="262" font-size="11" fill="#1a1822">Greedy takes A (10, 60), B (20, 100),</text>
-  <text x="480" y="280" font-size="11" fill="#1a1822">skips C (can&rsquo;t fit 30 in remaining 20).</text>
+  <text x="480" y="280" font-size="11" fill="#1a1822">skips C (can’t fit 30 in remaining 20).</text>
   <text x="480" y="298" font-size="11" fill="#1a1822">Total: 30 kg, value 160.</text>
   <text x="480" y="326" font-size="11" fill="#1a1822" font-weight="700">Optimal: B + C = 50 kg, value 220.</text>
   <text x="480" y="362" font-size="11" fill="#1a1822">Greedy is 60 worse → no exchange</text>

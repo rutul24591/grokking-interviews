@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="system-ui, sans-serif">
+  <rect width="900" height="500" fill="#f3f1f8"/>
+  <text x="450" y="32" text-anchor="middle" font-size="19" font-weight="700" fill="#1a1822">Tarjan's SCC in Production</text>
+
+  <rect x="40" y="60" width="820" height="200" fill="#fff" stroke="#6d5bd0" stroke-width="2" rx="6"/>
+  <text x="60" y="85" font-size="13" font-weight="700" fill="#6d5bd0">Real-world applications</text>
+  <text x="60" y="112" font-size="11">• <tspan font-weight="700">2-SAT solving:</tspan> implication graph SCCs determine satisfiability + assignment.</text>
+  <text x="60" y="132" font-size="11">• <tspan font-weight="700">Compiler analysis:</tspan> mutually recursive functions, SCC of call graph for inlining order.</text>
+  <text x="60" y="152" font-size="11">• <tspan font-weight="700">Dataflow:</tspan> dominator analysis, dead-code elimination after collapse-to-DAG.</text>
+  <text x="60" y="172" font-size="11">• <tspan font-weight="700">Module loading / linking:</tspan> circular import detection and ordering.</text>
+  <text x="60" y="192" font-size="11">• <tspan font-weight="700">Deadlock detection:</tspan> SCC of resource-allocation graph identifies cycle.</text>
+  <text x="60" y="212" font-size="11">• <tspan font-weight="700">Citation networks / web graph:</tspan> mutually referencing groups, web "core."</text>
+  <text x="60" y="232" font-size="11">• <tspan font-weight="700">Static analysis:</tspan> recursion-set computation, fixed-point iteration grouping.</text>
+
+  <rect x="40" y="280" width="820" height="195" fill="#fff" stroke="#4caf50" stroke-width="2" rx="6"/>
+  <text x="60" y="305" font-size="13" font-weight="700" fill="#4caf50">2-SAT in detail (the killer application)</text>
+  <text x="60" y="330" font-size="11">For each clause (a ∨ b), add edges (¬a → b) and (¬b → a) to implication graph.</text>
+  <text x="60" y="355" font-size="11">Run Tarjan's SCC. Formula is satisfiable iff no variable x and ¬x are in the same SCC.</text>
+  <text x="60" y="380" font-size="11">Assignment: in reverse topological order of condensation, assign each variable so that</text>
+  <text x="60" y="400" font-size="11">x = true if SCC(x) appears before SCC(¬x) in reverse topo order.</text>
+  <text x="60" y="425" font-size="11">Total: O(V + E). Linear-time 2-SAT — among the fastest non-trivial logical algorithms.</text>
+  <text x="60" y="465" font-size="11" fill="#4caf50" font-weight="700">2-SAT shows up in scheduling, layout, and constraint problems — Tarjan makes it linear.</text>
+</svg>

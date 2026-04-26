@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="system-ui, sans-serif">
+  <rect width="900" height="500" fill="#f3f1f8"/>
+  <text x="450" y="32" text-anchor="middle" font-size="19" font-weight="700" fill="#1a1822">String Matching Algorithms Compared</text>
+
+  <rect x="40" y="60" width="820" height="200" fill="#fff" stroke="#6d5bd0" stroke-width="2" rx="6"/>
+  <text x="60" y="85" font-size="13" font-weight="700" fill="#6d5bd0">KMP vs Z vs Boyer-Moore vs Rabin-Karp</text>
+  <text x="60" y="115" font-size="11">                  Preprocessing    Search          Best for</text>
+  <text x="60" y="135" font-size="11">Naive             O(1)             O(n·m) worst    short patterns, simple code</text>
+  <text x="60" y="155" font-size="11">KMP               O(m)             O(n+m)          worst-case linearity, online streams</text>
+  <text x="60" y="175" font-size="11">Z-algorithm       O(m)             O(n+m)          same as KMP, simpler proofs</text>
+  <text x="60" y="195" font-size="11">Boyer-Moore       O(m + σ)         O(n/m) sublinear large alphabets, long patterns</text>
+  <text x="60" y="215" font-size="11">Rabin-Karp        O(m)             O(n+m) avg      multi-pattern (set of patterns)</text>
+  <text x="60" y="235" font-size="11">Aho-Corasick      O(Σ|P_i|)        O(n + matches)  many patterns simultaneously</text>
+
+  <rect x="40" y="280" width="820" height="195" fill="#fff" stroke="#4caf50" stroke-width="2" rx="6"/>
+  <text x="60" y="305" font-size="13" font-weight="700" fill="#4caf50">Z-algorithm — KMP's simpler cousin</text>
+  <text x="60" y="330" font-size="11">Z[i] = length of longest substring starting at i that matches a prefix of S.</text>
+  <text x="60" y="355" font-size="11">Built with a "Z-box" sliding window in O(|S|). Search by computing Z on P + "$" + T:</text>
+  <text x="60" y="375" font-size="11">any Z[i] ≥ |P| with i &gt; |P| reveals a match in T.</text>
+  <text x="60" y="400" font-size="11">Same O(n + m) bound as KMP, conceptually simpler proofs.</text>
+  <text x="60" y="425" font-size="11">KMP wins for streaming text (process one char at a time without buffering).</text>
+  <text x="60" y="445" font-size="11">Z-algorithm wins for offline pattern problems and contests.</text>
+  <text x="60" y="470" font-size="11" fill="#4caf50" font-weight="700">Aho-Corasick generalizes KMP to a trie of multiple patterns.</text>
+</svg>

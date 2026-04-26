@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="system-ui, sans-serif">
+  <rect width="900" height="500" fill="#f3f1f8"/>
+  <text x="450" y="32" text-anchor="middle" font-size="19" font-weight="700" fill="#1a1822">Prim in Production</text>
+
+  <rect x="40" y="60" width="820" height="200" fill="#fff" stroke="#6d5bd0" stroke-width="2" rx="6"/>
+  <text x="60" y="85" font-size="13" font-weight="700" fill="#6d5bd0">When Prim wins</text>
+  <text x="60" y="112" font-size="11">• Dense graphs with adjacency-matrix input — O(V²) array Prim beats sort-based Kruskal.</text>
+  <text x="60" y="132" font-size="11">• When you only need the MST starting from a specific root (e.g., broadcast tree).</text>
+  <text x="60" y="152" font-size="11">• Embedded / memory-constrained: O(V) state vs Kruskal's O(V + E) sort buffer.</text>
+  <text x="60" y="172" font-size="11">• Implicit graphs where adjacency is computed on demand (geometric MST, k-NN graphs).</text>
+  <text x="60" y="192" font-size="11">• When edges have variable cost models — recompute on access without sort restart.</text>
+  <text x="60" y="212" font-size="11">• Heap-based pipeline already in place (e.g., Dijkstra infrastructure).</text>
+  <text x="60" y="232" font-size="11">• Animated visualization — frontier growth is intuitive to display.</text>
+
+  <rect x="40" y="280" width="820" height="195" fill="#fff" stroke="#4caf50" stroke-width="2" rx="6"/>
+  <text x="60" y="305" font-size="13" font-weight="700" fill="#4caf50">Real-world systems</text>
+  <text x="60" y="330" font-size="11">• <tspan font-weight="700">Broadcast trees:</tspan> minimum-cost dissemination from a root in mesh networks.</text>
+  <text x="60" y="350" font-size="11">• <tspan font-weight="700">Computer graphics:</tspan> mesh simplification, point-cloud connectivity, depth-image surfacing.</text>
+  <text x="60" y="370" font-size="11">• <tspan font-weight="700">Image quilting / texture synthesis:</tspan> minimum-error boundary cut via MST on grid.</text>
+  <text x="60" y="390" font-size="11">• <tspan font-weight="700">Approximation for traveling salesman:</tspan> MST gives 2-approx; Christofides 1.5-approx.</text>
+  <text x="60" y="410" font-size="11">• <tspan font-weight="700">Geometric MST:</tspan> Euclidean MST on point sets via Delaunay triangulation + Prim.</text>
+  <text x="60" y="430" font-size="11">• <tspan font-weight="700">Cluster validity / silhouette analysis:</tspan> MST-based cohesion metrics.</text>
+  <text x="60" y="465" font-size="11" fill="#4caf50" font-weight="700">Prim quietly powers many systems where Kruskal would be awkward to plug in.</text>
+</svg>

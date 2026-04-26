@@ -1,7 +1,7 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="system-ui, sans-serif">
   <rect width="900" height="500" fill="#f3f1f8"/>
-  <text x="450" y="32" text-anchor="middle" font-size="19" font-weight="700" fill="#1a1822">LCS DP Table — A = &ldquo;ABCBDAB&rdquo;, B = &ldquo;BDCABA&rdquo;</text>
-  <text x="450" y="54" text-anchor="middle" font-size="12" fill="#1a1822">dp[m][n] = 4. One LCS: &ldquo;BCBA&rdquo;. Diagonal = match; left/top = skip.</text>
+  <text x="450" y="32" text-anchor="middle" font-size="19" font-weight="700" fill="#1a1822">LCS DP Table — A = “ABCBDAB”, B = “BDCABA”</text>
+  <text x="450" y="54" text-anchor="middle" font-size="12" fill="#1a1822">dp[m][n] = 4. One LCS: “BCBA”. Diagonal = match; left/top = skip.</text>
 
   <!-- Column labels (B) -->
   <g font-size="12" font-family="monospace">

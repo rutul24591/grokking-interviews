@@ -59,7 +59,7 @@
   <text x="60" y="310" font-size="14" font-weight="700" fill="#6d5bd0">Complexity</text>
   <text x="60" y="335" font-size="12" fill="#1a1822"><tspan font-weight="700">Time:</tspan> Θ(log p) where p = target position. Gallop log p probes; binary p-range another log p.</text>
   <text x="60" y="355" font-size="12" fill="#1a1822"><tspan font-weight="700">Space:</tspan> Θ(1) for bounded arrays; Θ(p) if streaming and probes are not free.</text>
-  <text x="60" y="375" font-size="12" fill="#1a1822"><tspan font-weight="700">Works on:</tspan> unbounded or unknown-size sorted data — binary search&rsquo;s hi is unknown.</text>
+  <text x="60" y="375" font-size="12" fill="#1a1822"><tspan font-weight="700">Works on:</tspan> unbounded or unknown-size sorted data — binary search’s hi is unknown.</text>
   <text x="60" y="405" font-size="12" font-weight="700" fill="#4caf50">Wins over binary when: target near start, or n unknown. Matches binary at worst case (p = n).</text>
   <text x="60" y="435" font-size="11" fill="#cc4444" font-style="italic">Pitfall: i *= 2 overflows in 32-bit at i ≥ 2³⁰. Use 64-bit or check i &gt; n/2.</text>
   <text x="60" y="453" font-size="11" fill="#cc4444" font-style="italic">Pitfall: phase-2 bracket must be [i/2, min(i,n)) — not [i/2+1, i].</text>

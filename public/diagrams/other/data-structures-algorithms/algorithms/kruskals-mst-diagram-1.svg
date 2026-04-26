@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="system-ui, sans-serif">
+  <rect width="900" height="500" fill="#f3f1f8"/>
+  <text x="450" y="32" text-anchor="middle" font-size="19" font-weight="700" fill="#1a1822">Kruskal's MST — Greedy Edge Selection With Union-Find</text>
+
+  <rect x="40" y="60" width="820" height="200" fill="#fff" stroke="#6d5bd0" stroke-width="2" rx="6"/>
+  <text x="60" y="85" font-size="13" font-weight="700" fill="#6d5bd0">Algorithm</text>
+  <text x="60" y="115" font-size="11" font-family="monospace">sort edges by weight ascending</text>
+  <text x="60" y="133" font-size="11" font-family="monospace">DSU = UnionFind(V)</text>
+  <text x="60" y="151" font-size="11" font-family="monospace">mst = []</text>
+  <text x="60" y="169" font-size="11" font-family="monospace">for (u, v, w) in sorted edges:</text>
+  <text x="60" y="187" font-size="11" font-family="monospace">  if find(u) != find(v):</text>
+  <text x="60" y="205" font-size="11" font-family="monospace">    union(u, v); mst.append((u, v, w))</text>
+  <text x="60" y="223" font-size="11" font-family="monospace">    if len(mst) == V - 1: break</text>
+  <text x="60" y="245" font-size="11" fill="#4caf50" font-weight="700">Stop early once V-1 edges are added — MST complete.</text>
+
+  <rect x="40" y="280" width="820" height="195" fill="#fff" stroke="#4caf50" stroke-width="2" rx="6"/>
+  <text x="60" y="305" font-size="13" font-weight="700" fill="#4caf50">Complexity</text>
+  <text x="60" y="330" font-size="11">• Sort: O(E log E) = O(E log V) since E ≤ V².</text>
+  <text x="60" y="350" font-size="11">• V-1 unions, up to E finds: O(E · α(V)) with path compression + union by rank.</text>
+  <text x="60" y="370" font-size="11">• Total: O(E log V).</text>
+  <text x="60" y="390" font-size="11">• If edges already sorted (e.g., bucketed by integer weight): O(E · α(V)) ≈ linear.</text>
+  <text x="60" y="410" font-size="11">• Cut property guarantees correctness: the lightest edge crossing any cut is in some MST.</text>
+  <text x="60" y="430" font-size="11">• Cycle property dual: the heaviest edge in any cycle is in NO MST.</text>
+  <text x="60" y="465" font-size="11" fill="#4caf50" font-weight="700">Kruskal applies the cycle property: skip an edge that would close a cycle.</text>
+</svg>

@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="system-ui, sans-serif">
+  <rect width="900" height="500" fill="#f3f1f8"/>
+  <text x="450" y="32" text-anchor="middle" font-size="19" font-weight="700" fill="#1a1822">Topological Sort in Production</text>
+
+  <rect x="40" y="60" width="820" height="200" fill="#fff" stroke="#6d5bd0" stroke-width="2" rx="6"/>
+  <text x="60" y="85" font-size="13" font-weight="700" fill="#6d5bd0">Real-world systems</text>
+  <text x="60" y="112" font-size="11">• <tspan font-weight="700">Build systems:</tspan> Bazel, Make, Gradle, Buck, Pants — DAG of targets, topo for build order.</text>
+  <text x="60" y="132" font-size="11">• <tspan font-weight="700">Package managers:</tspan> npm, pip, apt — install order, dependency resolution, conflict detection.</text>
+  <text x="60" y="152" font-size="11">• <tspan font-weight="700">Schedulers:</tspan> Airflow, Dagster, Prefect — DAG of tasks, run downstream when upstream finishes.</text>
+  <text x="60" y="172" font-size="11">• <tspan font-weight="700">CI/CD:</tspan> GitHub Actions, GitLab CI, Jenkins — job dependencies, parallel waves.</text>
+  <text x="60" y="192" font-size="11">• <tspan font-weight="700">Compilers:</tspan> instruction scheduling, register allocation order, link order, IR pass ordering.</text>
+  <text x="60" y="212" font-size="11">• <tspan font-weight="700">Spreadsheet engines:</tspan> Excel/Google Sheets recalc order over cell dependency DAGs.</text>
+  <text x="60" y="232" font-size="11">• <tspan font-weight="700">Databases:</tspan> migration ordering, schema dependency, view materialization.</text>
+
+  <rect x="40" y="280" width="820" height="195" fill="#fff" stroke="#4caf50" stroke-width="2" rx="6"/>
+  <text x="60" y="305" font-size="13" font-weight="700" fill="#4caf50">Beyond linearization — DAG algorithms enabled by topo order</text>
+  <text x="60" y="330" font-size="11">• <tspan font-weight="700">Longest path on a DAG:</tspan> single pass in topo order with relaxation. O(V + E).</text>
+  <text x="60" y="350" font-size="11">• <tspan font-weight="700">Shortest path on a DAG:</tspan> same skeleton, min instead of max. Beats Dijkstra.</text>
+  <text x="60" y="370" font-size="11">• <tspan font-weight="700">Counting paths between two vertices:</tspan> DP over topo order.</text>
+  <text x="60" y="390" font-size="11">• <tspan font-weight="700">Critical path / PERT scheduling:</tspan> longest path = project duration.</text>
+  <text x="60" y="410" font-size="11">• <tspan font-weight="700">Reachability / transitive closure on a DAG:</tspan> bitset propagation in topo order.</text>
+  <text x="60" y="430" font-size="11">• <tspan font-weight="700">DP on DAG state-space:</tspan> any DP whose dependency graph is a DAG.</text>
+  <text x="60" y="465" font-size="11" fill="#4caf50" font-weight="700">Topo order turns "iterate carefully" into "iterate left to right."</text>
+</svg>

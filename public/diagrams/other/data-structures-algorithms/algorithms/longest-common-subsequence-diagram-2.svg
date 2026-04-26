@@ -1,6 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="system-ui, sans-serif">
   <rect width="900" height="500" fill="#f3f1f8"/>
-  <text x="450" y="32" text-anchor="middle" font-size="19" font-weight="700" fill="#1a1822">Myers&rsquo; Algorithm — LCS as Edit Graph</text>
+  <text x="450" y="32" text-anchor="middle" font-size="19" font-weight="700" fill="#1a1822">Myers’ Algorithm — LCS as Edit Graph</text>
   <text x="450" y="54" text-anchor="middle" font-size="12" fill="#1a1822">A = ABCABBA, B = CBABAC. Find shortest path from (0,0) to (m,n). Diagonals free; right/down cost 1.</text>
 
   <!-- Grid -->

@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="system-ui, sans-serif">
+  <rect width="900" height="500" fill="#f3f1f8"/>
+  <text x="450" y="32" text-anchor="middle" font-size="19" font-weight="700" fill="#1a1822">Floyd-Warshall — Three Nested Loops, All-Pairs Shortest Paths</text>
+
+  <rect x="40" y="60" width="820" height="200" fill="#fff" stroke="#6d5bd0" stroke-width="2" rx="6"/>
+  <text x="60" y="85" font-size="13" font-weight="700" fill="#6d5bd0">DP recurrence</text>
+  <text x="60" y="115" font-size="11" font-family="monospace">d[k][i][j] = min(d[k-1][i][j], d[k-1][i][k] + d[k-1][k][j])</text>
+  <text x="60" y="140" font-size="11">"Shortest path from i to j using intermediate vertices in {"{"}1..k{"}"} only."</text>
+  <text x="60" y="165" font-size="11">In place: the third dimension can be dropped because each entry is read before write</text>
+  <text x="60" y="183" font-size="11">in the right order — cleverly, even with the same array.</text>
+  <text x="60" y="215" font-size="11" font-family="monospace">for k in 0..V-1:</text>
+  <text x="60" y="233" font-size="11" font-family="monospace">  for i in 0..V-1:</text>
+  <text x="60" y="251" font-size="11" font-family="monospace">    for j in 0..V-1:</text>
+
+  <rect x="40" y="280" width="820" height="195" fill="#fff" stroke="#4caf50" stroke-width="2" rx="6"/>
+  <text x="60" y="305" font-size="13" font-weight="700" fill="#4caf50">Properties</text>
+  <text x="60" y="330" font-size="11">• <tspan font-weight="700">Time:</tspan> O(V³).  <tspan font-weight="700">Space:</tspan> O(V²) for distance + path-reconstruction matrix.</text>
+  <text x="60" y="350" font-size="11">• Handles negative edges. Detects negative cycles: any d[v][v] &lt; 0 after the loop.</text>
+  <text x="60" y="370" font-size="11">• k loop must be outermost — swapping i or j outside changes correctness.</text>
+  <text x="60" y="390" font-size="11">• Tight, branch-free inner loop is extraordinarily cache-friendly.</text>
+  <text x="60" y="410" font-size="11">• Generalizes to other semirings: transitive closure (∨, ∧), bottleneck (max, min),</text>
+  <text x="60" y="428" font-size="11">  count of paths (+, ×) — the algebraic Floyd-Warshall.</text>
+  <text x="60" y="465" font-size="11" fill="#4caf50" font-weight="700">Same skeleton, different (⊕, ⊗) operators — the pattern is more general than shortest paths.</text>
+</svg>

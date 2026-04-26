@@ -34,7 +34,7 @@
 
   <text x="60" y="365" font-size="11" fill="#1a1822"><tspan font-weight="700" fill="#6d5bd0">Strictly increasing:</tspan> a &lt; b required</text>
   <text x="60" y="383" font-size="11" fill="#1a1822" font-family="monospace">k = bisect_left(tails, x)   # lower_bound: first ≥ x</text>
-  <text x="60" y="401" font-size="11" fill="#1a1822">  LIS of [3, 3, 3] = 1 (can&rsquo;t reuse equal values)</text>
+  <text x="60" y="401" font-size="11" fill="#1a1822">  LIS of [3, 3, 3] = 1 (can’t reuse equal values)</text>
 
   <text x="60" y="432" font-size="11" fill="#1a1822"><tspan font-weight="700" fill="#6d5bd0">Non-strictly increasing:</tspan> a ≤ b allowed</text>
   <text x="60" y="450" font-size="11" fill="#1a1822" font-family="monospace">k = bisect_right(tails, x)  # upper_bound: first &gt; x</text>

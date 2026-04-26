@@ -43,7 +43,7 @@
   <text x="60" y="335" font-size="13" font-weight="700" fill="#4caf50">Real-world applications</text>
   <text x="60" y="358" font-size="11" fill="#1a1822">• ATM cash-dispenser algorithms (often</text>
   <text x="60" y="374" font-size="11" fill="#1a1822">  canonical → greedy; non-canonical → DP)</text>
-  <text x="60" y="392" font-size="11" fill="#1a1822">• Game currency: &ldquo;spend all gold&rdquo; change</text>
+  <text x="60" y="392" font-size="11" fill="#1a1822">• Game currency: “spend all gold” change</text>
   <text x="60" y="408" font-size="11" fill="#1a1822">• Postal stamp combinations (Frobenius)</text>
   <text x="60" y="426" font-size="11" fill="#1a1822">• Tax bracket splitting, billing rounding</text>
   <text x="60" y="444" font-size="11" fill="#1a1822">• Integer composition, combinatorics OEIS</text>
@@ -53,7 +53,7 @@
   <text x="480" y="358" font-size="11" fill="#1a1822">• Returning 0 instead of −1 for impossible</text>
   <text x="480" y="374" font-size="11" fill="#1a1822">  amounts (0 coins only works for amount 0)</text>
   <text x="480" y="392" font-size="11" fill="#1a1822">• Using INT_MAX without checking before +1</text>
-  <text x="480" y="408" font-size="11" fill="#1a1822">• Greedy where system isn&rsquo;t canonical</text>
+  <text x="480" y="408" font-size="11" fill="#1a1822">• Greedy where system isn’t canonical</text>
   <text x="480" y="426" font-size="11" fill="#1a1822">• Confusing combinations vs permutations</text>
   <text x="480" y="444" font-size="11" fill="#1a1822">• Assuming DP works when A ≫ 10⁹ (use BFS/IDA*)</text>
 </svg>
