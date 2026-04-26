@@ -37,9 +37,9 @@ export default function SecureStorageSensitiveDataArticle() {
           extensions, compromised devices, or physical access. The golden rule is: <strong>never store
           what you don&apos;t need</strong>.
         </HighlightBlock>
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Common sensitive data types:</strong>
-        </p>
+        </HighlightBlock>
         <ul className="space-y-2">
           <li>
             <strong>Authentication credentials:</strong> Passwords, API keys, access tokens, refresh tokens
@@ -89,9 +89,9 @@ export default function SecureStorageSensitiveDataArticle() {
         />
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">localStorage</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           localStorage provides an API with methods like <code className="text-sm">setItem('key', 'value')</code>, <code className="text-sm">getItem('key')</code>, <code className="text-sm">removeKey('key')</code>, and <code className="text-sm">clear()</code>. It has ~5-10MB capacity, persists until explicitly cleared, is shared across all tabs/windows of the same origin, is XSS vulnerable (accessible via JavaScript), is NOT CSRF vulnerable (not auto-sent with requests), and has no encryption (plaintext storage). Never store sensitive data like auth tokens or passwords in localStorage as it's insecure.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>When to use:</strong> Non-sensitive data, user preferences, cached public data, UI state.
         </p>
@@ -193,6 +193,11 @@ export default function SecureStorageSensitiveDataArticle() {
           When you must store sensitive data client-side, encryption provides an additional layer of
           protection. However, encryption in the browser has fundamental limitations.
         </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
+          Encryption mainly protects data at rest (device theft, disk inspection, offline caches). It does
+          not protect against XSS or malicious extensions if the attacker can access the runtime or keys.
+          Treat it as defense in depth, not a primary boundary.
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/frontend/security/secure-storage-comparison.svg"
@@ -262,9 +267,9 @@ export default function SecureStorageSensitiveDataArticle() {
         </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Pattern 2: Encrypted Storage for PII</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           For encrypting PII before storing, create a SecureStorage class that derives a key from a password using PBKDF2. In the <code className="text-sm">initialize()</code> method, generate a random salt, use <code className="text-sm">subtle.importKey()</code> with PBKDF2, derive the key with <code className="text-sm">subtle.deriveKey()</code> using 100,000 iterations and SHA-256, and store the salt (not secret) in localStorage. The <code className="text-sm">set()</code> method encrypts data using <code className="text-sm">subtle.encrypt()</code> with AES-GCM and a random IV, then stores the encrypted data and IV in IndexedDB. The <code className="text-sm">get()</code> method retrieves the record and decrypts it using <code className="text-sm">subtle.decrypt()</code>.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Pattern 3: Token Refresh with Minimal Exposure</h3>
         <p>
@@ -445,9 +450,9 @@ export default function SecureStorageSensitiveDataArticle() {
         <HighlightBlock as="p" tier="crucial">
           <strong>GDPR Requirements:</strong> GDPR Article 5 requires data minimization—only store necessary data client-side. Article 17 (Right to Erasure) requires clearing client-side data on user request. Article 32 requires appropriate encryption for personal data. Document storage practices in privacy policy. Implement data export functionality for Article 20 (Data Portability).
         </HighlightBlock>
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>CCPA/CPRA Requirements:</strong> California Consumer Privacy Act requires disclosure of data storage practices. Implement &quot;Do Not Sell My Personal Information&quot; mechanism. Disclose what data is stored client-side and why. Provide client-side data deletion mechanism for California residents.
-        </p>
+        </HighlightBlock>
         <HighlightBlock as="p" tier="crucial">
           <strong>PCI-DSS Requirements:</strong> PCI-DSS Requirement 3.4 requires rendering PAN unreadable anywhere it is stored. Never store card data client-side—use payment processor tokens (Stripe, Braintree). Document tokenization approach in ROC (Report on Compliance). Annual penetration testing must include storage security testing.
         </HighlightBlock>
@@ -489,9 +494,9 @@ export default function SecureStorageSensitiveDataArticle() {
         <HighlightBlock as="p" tier="crucial">
           <strong>Web Crypto API Support:</strong> Supported in Chrome 37+, Firefox 34+, Safari 10.1+, Edge 79+. Not supported in IE11. For legacy browser support, use polyfills (webcrypto-liner) or server-side encryption fallback. Document Web Crypto support in browser compatibility matrix.
         </HighlightBlock>
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>IndexedDB Support:</strong> Supported in all modern browsers (IE10+, all current versions). Safari has had bugs with IndexedDB in private browsing. Test IndexedDB across target browsers. Implement localStorage fallback for very old browsers. Monitor IndexedDB quota across browsers.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>HttpOnly Cookie Support:</strong> HttpOnly supported in all modern browsers (IE6+, all current versions). Some older mobile browsers have partial HttpOnly support. Test HttpOnly effectiveness using browser DevTools. Document HttpOnly support in browser compatibility matrix.
         </p>

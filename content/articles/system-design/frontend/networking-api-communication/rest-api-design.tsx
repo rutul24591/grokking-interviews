@@ -741,13 +741,13 @@ export default function RestApiDesignConciseArticle() {
                 <li>No → GraphQL or gRPC may be better</li>
               </ul>
             </HighlightBlock>
-            <li>
+            <HighlightBlock as="li" tier="important">
               <strong>Are your resources well-defined and stable?</strong>
               <ul>
                 <li>Yes → REST's fixed endpoints work well</li>
                 <li>No → GraphQL's flexible queries may help</li>
               </ul>
-            </li>
+            </HighlightBlock>
             <li>
               <strong>Is the API public-facing?</strong>
               <ul>
@@ -831,7 +831,7 @@ export default function RestApiDesignConciseArticle() {
               Q: How would you design pagination for a feed with millions of
               items?
             </p>
-            <p className="mt-2 text-sm">
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               A: Cursor-based pagination is the only viable approach at this
               scale. Offset-based pagination breaks down because the database
               must scan all rows up to the offset before returning results,
@@ -850,14 +850,14 @@ export default function RestApiDesignConciseArticle() {
               fetching the next page when the user scrolls near the bottom, and
               merge new pages into a normalized cache keyed by item ID to
               prevent duplicates.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
             <p className="font-semibold">
               Q: REST vs GraphQL - how do you choose?
             </p>
-            <p className="mt-2 text-sm">
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               A: The decision is driven by the data access pattern, not personal
               preference. Choose REST when resources have well-defined, stable
               shapes consumed by few clients, when HTTP caching is critical (CDN
@@ -876,7 +876,7 @@ export default function RestApiDesignConciseArticle() {
               (unnecessary complexity) or sticking with REST when every page
               requires 5+ waterfall requests to assemble its data (performance
               penalty).
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">

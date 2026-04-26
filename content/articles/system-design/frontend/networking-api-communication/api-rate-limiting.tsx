@@ -143,7 +143,7 @@ export default function ApiRateLimitingArticle() {
             per-second limits with no burst allowance, but it is less common
             than token bucket for general API consumption.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Sliding Window Log:</strong> A precise rate-limiting
             algorithm that tracks the timestamp of every request within the
             window. To check if a new request is allowed, count the requests in
@@ -156,7 +156,7 @@ export default function ApiRateLimitingArticle() {
             each request). For client-side limiting with modest request volumes
             (hundreds per window), the memory overhead is negligible and the
             accuracy is worth it.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Sliding Window Counter:</strong> A hybrid approach that
             approximates sliding window log with less memory. Instead of storing
@@ -310,7 +310,7 @@ export default function ApiRateLimitingArticle() {
             </tr>
           </thead>
           <tbody className="divide-y divide-theme">
-            <tr>
+            <HighlightBlock as="tr" tier="important">
               <td className="p-3">
                 <strong>Token Bucket</strong>
               </td>
@@ -326,7 +326,7 @@ export default function ApiRateLimitingArticle() {
                 • Burst allowance may not suit all APIs
                 <br />• Can allow brief over-limit if not carefully configured
               </td>
-            </tr>
+            </HighlightBlock>
             <tr>
               <td className="p-3">
                 <strong>Leaky Bucket</strong>
@@ -361,7 +361,7 @@ export default function ApiRateLimitingArticle() {
                 <br />• Counting operation on every request
               </td>
             </tr>
-            <tr>
+            <HighlightBlock as="tr" tier="important">
               <td className="p-3">
                 <strong>Sliding Window Counter</strong>
               </td>
@@ -377,7 +377,7 @@ export default function ApiRateLimitingArticle() {
                 • Requires tuning slot count parameter
                 <br />• May allow slightly more than limit at boundaries
               </td>
-            </tr>
+            </HighlightBlock>
           </tbody>
         </table>
 
@@ -516,14 +516,14 @@ export default function ApiRateLimitingArticle() {
             temporary bans. Always respect the Retry-After header and implement
             backoff for repeated 429s.
           </HighlightBlock>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>No Cross-Tab Coordination:</strong> Each browser tab
             independently consuming from a shared quota without awareness of
             other tabs. A user with five tabs open effectively has 1/5 of the
             expected quota per tab, leading to frequent rate limiting. Implement
             BroadcastChannel-based coordination to share quota state across tabs
             and centrally manage consumption.
-          </li>
+          </HighlightBlock>
           <HighlightBlock as="li" tier="crucial">
             <strong>Treating All Requests Equally:</strong> Processing requests
             in FIFO order regardless of importance when quota is scarce. This
@@ -576,7 +576,7 @@ export default function ApiRateLimitingArticle() {
           Client-side rate limiting is essential in these production scenarios:
         </HighlightBlock>
         <ul className="space-y-3">
-          <HighlightBlock as="li" tier="important">
+          <HighlightBlock as="li" tier="crucial">
             <strong>GitHub API Consumption:</strong> Applications integrating
             with GitHub's API must respect the 5,000 requests per hour limit for
             authenticated users. A CI/CD dashboard polling multiple repositories
@@ -688,11 +688,11 @@ export default function ApiRateLimitingArticle() {
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">
+            <HighlightBlock as="p" tier="important" className="font-semibold">
               Q3: How do you handle rate limiting when a user has multiple
               browser tabs open?
-            </p>
-            <p className="mt-2 text-sm">
+            </HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               <strong>Answer:</strong> This requires cross-tab coordination
               since rate limits are typically per-user-token, not per-tab. I
               would use the BroadcastChannel API to share quota state across
@@ -706,15 +706,15 @@ export default function ApiRateLimitingArticle() {
               requests on behalf of all tabs, distributing results via
               BroadcastChannel. This eliminates coordination overhead but
               requires handling leader failure.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">
+            <HighlightBlock as="p" tier="important" className="font-semibold">
               Q4: Explain the difference between token bucket and leaky bucket
               rate limiting. When would you use each?
-            </p>
-            <p className="mt-2 text-sm">
+            </HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               <strong>Answer:</strong> Token bucket adds tokens at a constant
               rate up to a capacity, and each request consumes a token. It
               allows bursting: a client that has been idle accumulates tokens
@@ -727,7 +727,7 @@ export default function ApiRateLimitingArticle() {
               limits with no burst tolerance, or when you want to enforce a
               smooth, predictable request pattern regardless of user activity
               patterns.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">

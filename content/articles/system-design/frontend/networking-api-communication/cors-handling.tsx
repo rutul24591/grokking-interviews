@@ -118,7 +118,7 @@ export default function CorsHandlingArticle() {
             malicious site can still submit forms or POST data to your API, but
             it cannot read the response without CORS permission.
           </HighlightBlock>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Simple vs Preflight Requests:</strong> CORS distinguishes
             between "simple" requests that can be sent directly and "preflight"
             requests that require a preliminary OPTIONS request. A request is
@@ -136,7 +136,7 @@ export default function CorsHandlingArticle() {
             request?" The server responds with Access-Control-Allow-Methods and
             Access-Control-Allow-Headers. Only if the preflight succeeds does
             the browser send the actual request.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Credentials and Cookies:</strong> By default, cross-origin
             requests do not include credentials (cookies, HTTP authentication,
@@ -617,7 +617,7 @@ export default function CorsHandlingArticle() {
             authenticated requests, also sets Access-Control-Allow-Credentials:
             true and frontend sets credentials: 'include'.
           </HighlightBlock>
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>SaaS Application with Customer Domains:</strong> A
             white-label SaaS product embedded on customer domains (customer1.com,
             customer2.com, etc.) needs to allow cross-origin API access from
@@ -627,7 +627,7 @@ export default function CorsHandlingArticle() {
             Origin, and use moderate Access-Control-Max-Age (3600) to allow
             timely updates when customers change domains. For security, also
             validate Referer header as a secondary check.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Public API with Wildcard CORS:</strong> A public API
             (e.g., weather data, cryptocurrency prices) that serves
@@ -732,7 +732,7 @@ export default function CorsHandlingArticle() {
               Q4: How does CORS relate to CSRF? Does CORS protect against CSRF
               attacks?
             </p>
-            <p className="mt-2 text-sm">
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               <strong>Answer:</strong> CORS does not protect against CSRF. CORS
               protects against unauthorized cross-origin reads -- it prevents
               evil.com from reading data from your API. CSRF is about
@@ -744,7 +744,7 @@ export default function CorsHandlingArticle() {
               by server), SameSite cookies (preventing cross-origin cookie
               sending), and origin/referrer validation. CORS and CSRF are
               complementary defenses addressing different attack vectors.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
@@ -752,7 +752,7 @@ export default function CorsHandlingArticle() {
               Q5: What is the purpose of the Vary: Origin header in CORS
               responses?
             </p>
-            <p className="mt-2 text-sm">
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               <strong>Answer:</strong> Vary: Origin tells CDNs and caches that
               the response varies based on the Origin request header. Without
               it, a CDN might cache a response with Access-Control-Allow-Origin:
@@ -764,7 +764,7 @@ export default function CorsHandlingArticle() {
               dynamic origin echo (validating Origin against whitelist and
               echoing back the match). For static wildcard responses (*), Vary:
               Origin is not strictly required but is still good practice.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">

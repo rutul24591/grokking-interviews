@@ -38,9 +38,9 @@ export default function ClientSideRateLimitingArticle() {
           direct API calls. Server-side rate limiting is mandatory for security; client-side is for UX
           and defense in depth.
         </HighlightBlock>
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Common use cases:</strong>
-        </p>
+        </HighlightBlock>
         <ul className="space-y-2">
           <li>
             <strong>Form submission prevention:</strong> Prevent double-clicks, rapid submissions
@@ -58,13 +58,13 @@ export default function ClientSideRateLimitingArticle() {
             <strong>Abuse mitigation:</strong> Slow down brute-force attempts, spam submissions
           </li>
         </ul>
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Why client-side rate limiting matters for staff/principal engineers:</strong> As a
           technical leader, you&apos;re responsible for designing systems that handle abuse gracefully.
           Client-side rate limiting reduces server load, improves user experience, and provides early
           signals of abuse patterns. Understanding these techniques enables you to design comprehensive
           abuse prevention strategies.
-        </p>
+        </HighlightBlock>
 
         <div className="my-6 rounded-lg border border-accent/30 bg-accent/10 p-6">
           <h3 className="mb-3 font-semibold">Key Insight: Client-Side Is UX, Server-Side Is Security</h3>
@@ -83,6 +83,12 @@ export default function ClientSideRateLimitingArticle() {
           Different techniques serve different purposes. Understanding when to use each is essential for
           effective implementation.
         </HighlightBlock>
+        <HighlightBlock as="p" tier="crucial">
+          Pick the technique based on what you are controlling: debounce for intent (act after quiet),
+          throttle for bounded freshness (act at most every interval), token-bucket for quotas (act until
+          budget is exhausted). In interviews, explicitly connect the choice to UX, backend protection, and
+          failure modes.
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/frontend/security/rate-limiting-techniques.svg"
@@ -92,9 +98,9 @@ export default function ClientSideRateLimitingArticle() {
         />
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Debouncing</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Debouncing delays function execution until a specified time has passed since the last invocation. Implement a debounce function that takes a function and delay, returns a new function that clears any existing timeout and sets a new one. Usage: for search input, get the element, create a debounced function that fetches with the query parameter and a 300ms delay, then add an input event listener that calls the debounced function. Without debounce, typing "hello" triggers 10 API calls (h, he, hel, hell, hello...); with debounce, only 1 API call after user stops typing.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>When to use debouncing:</strong>
         </p>
@@ -120,9 +126,9 @@ export default function ClientSideRateLimitingArticle() {
         </ul>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Rate Limiting (Token Bucket)</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Rate limiting enforces a maximum number of actions within a time window. The token bucket algorithm is commonly used. Implement a RateLimiter class with constructor taking tokensPerInterval and interval, initializing tokens and lastRefill. The <code className="text-sm">refill()</code> method calculates elapsed time and adds tokens. The <code className="text-sm">tryAcquire()</code> method refills, checks if tokens are available, decrements and returns true if available, or returns false if rate limited. The <code className="text-sm">getWaitTime()</code> method returns how long to wait before next token is available.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Usage Example</h3>
         <p>
@@ -139,9 +145,9 @@ export default function ClientSideRateLimitingArticle() {
         </ul>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Exponential Backoff</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Exponential backoff increases wait time between retries after failures. Useful for handling server-side rate limits gracefully. Implement an async <code className="text-sm">fetchWithBackoff(url, options, maxRetries)</code> function that loops through attempts, tries to fetch, checks for 429 status and uses the Retry-After header if available or calculates wait time as 2^attempt * 1000ms, sleeps for the wait time, and on error uses exponential backoff with jitter (baseDelay + random jitter). Include a <code className="text-sm">sleep(ms)</code> helper that returns a Promise with setTimeout.
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
@@ -153,14 +159,14 @@ export default function ClientSideRateLimitingArticle() {
         </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Form Submission Protection</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Implement a SubmitButton class with constructor taking a button element, storing the original text and setting isSubmitting to false. The async <code className="text-sm">submit(handler)</code> method checks if already submitting, sets isSubmitting to true, disables the button, changes text to "Submitting...", tries to call the handler, and in finally block resets isSubmitting, enables the button, and restores original text. Usage: create an instance and call submit in the form submit event listener.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">API Request Queue</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Implement a RequestQueue class with constructor taking concurrency (default 3), initializing queue array and running counter. The async add method returns a Promise that pushes the requestFn with resolve and reject to the queue and calls process. The process method loops while running is less than concurrency and queue has items, shifts a request, increments running, calls the requestFn, and in finally decrements running and calls process again. Usage: create an instance with concurrency limit (for example, 3), then use apiQueue.add to queue requests with automatic concurrency control.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Search Autocomplete with Debouncing</h3>
         <p>
@@ -197,19 +203,19 @@ export default function ClientSideRateLimitingArticle() {
         />
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Handling 429 Rate Limit Responses</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Implement an ApiClient class with constructor initializing rateLimitReset and rateLimitRemaining to null. The async <code className="text-sm">request(url, options)</code> method checks if rateLimitReset is set and current time is before it, throws a RateLimitError with wait time if so. Otherwise it fetches, parses rate limit headers (X-RateLimit-Remaining, X-RateLimit-Reset), and if status is 429, reads the Retry-After header or calculates wait time, and calls <code className="text-sm">notifyRateLimit(waitTime)</code> to update the UI.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Progressive Backoff Based on Server Signals</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Implement an AdaptiveRateLimiter class with constructor initializing baseDelay (1000ms), maxDelay (60000ms), currentDelay, and successCount. The async <code className="text-sm">execute(requestFn)</code> method loops up to 5 attempts, tries the requestFn, on success increments successCount and reduces currentDelay after 3 successes, on 429 error uses Retry-After header or doubles currentDelay, on other errors uses exponential backoff capped at maxDelay, adds random jitter, and sleeps before retry. Throws lastError after all attempts fail.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Syncing Client and Server Rate Limits</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Implement a SyncedRateLimiter class with constructor taking serverLimit (e.g., 100 requests) and serverWindow (e.g., 3600000ms for 1 hour), initializing requests array. The async <code className="text-sm">makeRequest(requestFn)</code> method calls <code className="text-sm">cleanupOldRequests()</code> to remove old entries, checks if requests length exceeds serverLimit and throws RateLimitError with wait time if so, otherwise calls requestFn, pushes current timestamp to requests array, and returns the result. Usage: create an instance with server limits (e.g., 100 requests per hour), check remaining requests before making requests, and handle rate limit errors gracefully.
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
@@ -328,15 +334,15 @@ export default function ClientSideRateLimitingArticle() {
         <HighlightBlock as="p" tier="crucial">
           Enterprise-scale rate limiting requires coordinated client-server rate limiting policies, consistent throttling configurations, and centralized monitoring across multiple applications, services, and geographic regions. In microservices architectures, each service must implement rate limiting consistently while supporting different rate limit policies.
         </HighlightBlock>
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Centralized Rate Limit Policy:</strong> Implement a centralized rate limit policy service that manages rate limits across all applications. Use infrastructure-as-code to enforce rate limit configurations consistently. Document rate limit policies in security standards.
-        </p>
+        </HighlightBlock>
         <HighlightBlock as="p" tier="important">
           <strong>Client-Server Coordination:</strong> Implement coordinated rate limiting between client and server. Client-side rate limiting reduces unnecessary requests. Server-side rate limiting enforces security boundaries. Use Retry-After headers to synchronize client behavior with server limits. Document client-server rate limit coordination.
         </HighlightBlock>
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Multi-Region Rate Limiting:</strong> For global applications, implement rate limiting in multiple regions. Use distributed rate limiting (Redis Cluster, DynamoDB) for consistent limits across regions. Implement region-specific rate limits based on traffic patterns. Document multi-region rate limiting architecture.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>API Gateway Integration:</strong> Implement rate limiting at the API gateway level. Use gateway-level rate limiting for consistent enforcement across all services. Configure rate limit bypass for trusted clients. Document API gateway rate limit configuration.
         </p>
@@ -347,12 +353,12 @@ export default function ClientSideRateLimitingArticle() {
         <HighlightBlock as="p" tier="crucial">
           Comprehensive rate limiting testing requires automated validation, manual verification, and penetration testing integrated into security operations.
         </HighlightBlock>
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Automated Rate Limit Testing:</strong> Use load testing tools (k6, Artillery) to verify rate limiting triggers correctly. Configure CI/CD pipelines to test rate limiting after each deployment. Set up automated alerts for: rate limit bypass, incorrect rate limit headers, excessive false positives.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Load Testing:</strong> Test rate limiting under load: (1) Verify rate limits trigger at correct thresholds, (2) Verify Retry-After headers are set correctly, (3) Test rate limit recovery after cooldown period. Use distributed load testing to simulate real-world traffic patterns.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Bypass Testing:</strong> Test for rate limit bypass: (1) Test from multiple IP addresses, (2) Test with different user agents, (3) Test with proxy/VPN, (4) Test API key rotation. Use tools like Burp Intruder for automated bypass testing. Document bypass test results.
         </p>
@@ -363,15 +369,15 @@ export default function ClientSideRateLimitingArticle() {
 
       <section>
         <h2>Compliance and Legal Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           Rate limiting implementation has significant compliance implications, particularly for applications handling financial transactions, healthcare data, or operating in regulated industries.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>PCI-DSS Requirements:</strong> PCI-DSS Requirement 6.5.9 requires rate limiting for authentication endpoints. Implement rate limiting for login attempts, password resets, and payment transactions. Document rate limiting controls in ROC (Report on Compliance).
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>HIPAA Requirements:</strong> HIPAA Security Rule 45 CFR 164.312(b) requires audit controls. Rate limiting helps prevent unauthorized access attempts. Document rate limiting as part of audit controls. Implement rate limit logging for ePHI access attempts.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>GDPR Implications:</strong> GDPR Article 32 requires appropriate security for personal data protection. Rate limiting helps prevent brute force attacks that could compromise personal data. Document rate limiting measures as part of security of processing.
         </p>
@@ -385,15 +391,15 @@ export default function ClientSideRateLimitingArticle() {
 
       <section>
         <h2>Performance Trade-offs: Security vs. User Experience</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           Rate limiting measures introduce measurable performance overhead that must be balanced against security requirements and user experience.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Client-Side Overhead:</strong> Debouncing adds 100-500ms delay to user actions. Throttling limits action frequency to configured interval. Test rate limiting with real users to ensure acceptable UX. Implement progressive rate limiting (warn before blocking).
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Server-Side Overhead:</strong> Rate limit checking adds 1-5ms per request for Redis lookup. Use local caching for rate limit state. Implement rate limit bypass for trusted clients. Monitor rate limit checking latency.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>False Positive Impact:</strong> Legitimate users may be rate limited during high-traffic periods. Implement rate limit exemptions for authenticated users. Use adaptive rate limiting based on user behavior. Monitor false positive rate and adjust thresholds.
         </p>
@@ -407,15 +413,15 @@ export default function ClientSideRateLimitingArticle() {
 
       <section>
         <h2>Browser and Platform Compatibility</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           Rate limiting support varies across browsers, operating systems, and platforms, requiring careful compatibility planning.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>JavaScript Rate Limiting:</strong> Debouncing and throttling work in all browsers (IE6+, all current versions). Test rate limiting across target browsers. Document rate limiting browser support matrix.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Fetch API Support:</strong> AbortController for request cancellation supported in Chrome 66+, Firefox 57+, Safari 11.1+, Edge 79+. For legacy browser support, use XMLHttpRequest with abort. Document AbortController support in browser compatibility matrix.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Mobile Browser Considerations:</strong> Mobile Chrome/Firefox match desktop support. iOS Safari has full support. Some older Android browsers have partial support. Test rate limiting on actual mobile devices.
         </p>
@@ -429,6 +435,11 @@ export default function ClientSideRateLimitingArticle() {
 
       <section>
         <h2>Real-World Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Real-world rate limiting is a layered system: client-side smoothing and feedback, server-side
+          enforcement for the trust boundary, and operational monitoring to tune thresholds and detect abuse.
+          These examples show the expected staff-level shape of the solution.
+        </HighlightBlock>
         <ul className="space-y-3">
           <HighlightBlock as="li" tier="important">
             <strong>E-Commerce Search:</strong> Debouncing on search input (300ms). Request cancellation on new query. Loading state during search. Error handling for failed searches. Server-side rate limiting for search API (10 requests/second).

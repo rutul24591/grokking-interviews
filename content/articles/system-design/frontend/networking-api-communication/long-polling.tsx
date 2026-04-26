@@ -518,14 +518,14 @@ export default function LongPollingConciseArticle() {
             retain long polling as a fallback for environments where WebSocket
             connections are blocked.
           </HighlightBlock>
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Notification Systems:</strong> Gmail and other Google
             services have historically used long polling (via the Channel API
             and later equivalent mechanisms) to deliver email notifications,
             calendar reminders, and collaboration events. The unidirectional
             nature (server pushes to client) maps perfectly to the notification
             use case.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Collaborative Editing:</strong> Early collaborative editors
             (Google Docs pre-2013, Etherpad) used long polling to distribute
@@ -657,9 +657,9 @@ export default function LongPollingConciseArticle() {
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-4 text-lg font-semibold">Real-World Benchmarks</h3>
           <ul className="space-y-2">
-            <li>
+            <HighlightBlock as="li" tier="important">
               <strong>Socket.IO:</strong> Handles 100K+ concurrent long polling connections.
-            </li>
+            </HighlightBlock>
             <li>
               <strong>CometD:</strong> Scales to millions of concurrent connections.
             </li>
@@ -679,9 +679,9 @@ export default function LongPollingConciseArticle() {
             <HighlightBlock as="li" tier="crucial">
               <strong>Server Resources:</strong> For 100K connections: ~2-5GB RAM.
             </HighlightBlock>
-            <li>
+            <HighlightBlock as="li" tier="important">
               <strong>Pub/Sub Backbone:</strong> Redis Pub/Sub: $200-1,000/month.
-            </li>
+            </HighlightBlock>
           </ul>
         </div>
 
@@ -722,13 +722,13 @@ export default function LongPollingConciseArticle() {
                 <li>No → Short polling or REST</li>
               </ul>
             </HighlightBlock>
-            <li>
+            <HighlightBlock as="li" tier="important">
               <strong>Is SSE supported in target browsers?</strong>
               <ul>
                 <li>Yes → SSE is simpler</li>
                 <li>No → Long polling with fallback</li>
               </ul>
-            </li>
+            </HighlightBlock>
           </ul>
         </div>
 
@@ -823,7 +823,7 @@ export default function LongPollingConciseArticle() {
               Q: How would you scale a long polling system to handle 1 million
               concurrent users?
             </p>
-            <p className="mt-2 text-sm">
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               A: At 1M concurrent connections, the key challenges are connection
               memory and event distribution. Architecture: Use an async server
               runtime (Node.js or Go) where each connection costs approximately
@@ -842,7 +842,7 @@ export default function LongPollingConciseArticle() {
               long polling&apos;s reconnection overhead becomes significant at 1M
               connections (approximately 30K reconnections per second just from
               timeouts).
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">

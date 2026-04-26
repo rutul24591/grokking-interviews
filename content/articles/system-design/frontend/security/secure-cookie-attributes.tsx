@@ -340,7 +340,24 @@ export default function SecureCookieAttributesArticle() {
 
       <section>
         <h2>Trade-offs & Considerations</h2>
-        <table className="w-full border-collapse">
+        <HighlightBlock as="p" tier="crucial">
+          Cookie attributes are explicit trade-offs: protect against XSS (HttpOnly), protect against network
+          interception (Secure), and reduce cross-site request risk (SameSite). Staff-level answers include
+          how these interact with SSO, embedded widgets, multi-subdomain architectures, and incident response
+          (rotation and revocation).
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
+          The common failure mode is treating cookie flags as a checklist. In production you need a coherent
+          baseline (what every auth cookie must have), a documented exception path (SameSite=None cases), and
+          testing across browsers.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
+          Use the table to justify a default posture like <code className="text-sm">HttpOnly</code> +
+          <code className="text-sm">Secure</code> + <code className="text-sm">SameSite=Lax</code> for auth,
+          and explicitly document any cookie that deviates from that baseline.
+        </HighlightBlock>
+        <HighlightBlock tier="crucial" className="overflow-x-auto">
+          <table className="w-full border-collapse">
           <thead>
             <tr className="border-b border-theme">
               <th className="p-3 text-left">Attribute</th>
@@ -415,7 +432,8 @@ export default function SecureCookieAttributesArticle() {
               </td>
             </tr>
           </tbody>
-        </table>
+          </table>
+        </HighlightBlock>
       </section>
 
       <section>
@@ -512,14 +530,14 @@ export default function SecureCookieAttributesArticle() {
             <strong>Missing Secure:</strong> Cookies sent over HTTP can be intercepted on public WiFi. Always
             use Secure in production.
           </HighlightBlock>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>SameSite=None without Secure:</strong> Modern browsers reject SameSite=None without Secure
             flag. Always pair them.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Overly broad Domain:</strong> <code className="text-sm">Domain=.example.com</code> allows
             all subdomains to access cookie. Use specific subdomain when possible.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Long expiration:</strong> Session cookies valid for months increase attack window. Use
             short expiration with refresh.
@@ -549,12 +567,17 @@ export default function SecureCookieAttributesArticle() {
 
       <section>
         <h2>Real-World Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Real-world cookie security is a portfolio of cookies with different risk profiles: auth/session,
+          refresh/remember-me, and functional preferences. The staff-level pattern is to keep the auth surface
+          minimal and hardened, and strictly limit any cookie that must be readable by JavaScript.
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">E-Commerce Platform</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Challenge:</strong> Secure session management for authenticated users, shopping cart
           persistence, remember-me functionality.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Solution:</strong>
         </p>
@@ -567,10 +590,10 @@ export default function SecureCookieAttributesArticle() {
         </ul>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Banking Application</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Challenge:</strong> Maximum security for financial transactions, regulatory compliance
           (PCI-DSS, FFIEC).
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Solution:</strong>
         </p>
@@ -618,15 +641,15 @@ export default function SecureCookieAttributesArticle() {
 
       <section>
         <h2>Architecture at Scale: Cookie Security in Enterprise Systems</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           Enterprise-scale cookie security requires coordinated session management, consistent attribute policies, and centralized monitoring across multiple applications and domains. In microservices architectures, each service must validate cookies consistently while supporting different session lifecycles.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Centralized Session Management:</strong> Implement a session service (Redis, Memcached) that stores session state centrally. All services validate session cookies against the central store. Use session tokens (not raw session data) in cookies to minimize cookie size. Implement session replication across regions for high availability. Document session architecture in system design documentation.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Cross-Domain Cookie Strategy:</strong> For multi-domain applications (example.com, app.example.com, api.example.com), use Domain attribute carefully. Prefer subdomain-specific cookies (app.example.com) over parent domain cookies (.example.com) to limit exposure. Use separate cookies for different security domains (auth cookie vs. preferences cookie). Document cookie domain strategy in security standards.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Token-Based Architecture:</strong> For API-heavy applications, use JWT tokens in HttpOnly cookies for web clients and Bearer tokens in Authorization headers for API clients. Implement token refresh endpoints with rotation. Store token blacklist in Redis for revocation scenarios. Use short-lived access tokens (15 minutes) with longer-lived refresh tokens (7 days).
         </p>
@@ -637,15 +660,15 @@ export default function SecureCookieAttributesArticle() {
 
       <section>
         <h2>Testing Strategies: Cookie Security Validation</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           Comprehensive cookie security testing requires automated scanning, manual verification, and penetration testing integrated into security operations.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Automated Cookie Scanning:</strong> Use OWASP ZAP, Burp Suite, or cookie-specific scanners (CookieScan, EditThisCookie) to verify cookie attributes. Configure CI/CD pipelines to scan staging environments after each deployment. Set up automated alerts for: missing HttpOnly on session cookies, missing Secure flag, SameSite=None without Secure, overly broad Domain attribute, excessive cookie expiration.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Session Fixation Testing:</strong> Test for session fixation vulnerabilities: (1) Obtain session cookie before authentication, (2) Authenticate with that session, (3) Verify session ID changes after login. Proper implementations regenerate session ID on authentication. Document session fixation test results in security assessments.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Cookie Tampering Tests:</strong> Attempt cookie manipulation: modify session ID, change expiration, alter signature (for signed cookies). Verify server rejects tampered cookies. Test for weak session ID generation (predictable patterns, insufficient entropy). Use tools like Burp Intruder for automated cookie fuzzing.
         </p>
@@ -659,15 +682,15 @@ export default function SecureCookieAttributesArticle() {
 
       <section>
         <h2>Compliance and Legal Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           Cookie security has significant compliance implications, particularly for applications handling personal data, financial transactions, or operating in regulated industries.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>GDPR Requirements:</strong> GDPR Article 5 requires data minimization—cookies should only collect necessary data. Article 7 requires explicit consent for non-essential cookies. Implement cookie consent banners with granular opt-in/opt-out. Document cookie purposes in privacy policy. Allow users to withdraw consent and delete cookies. Non-compliance can result in fines up to 4% of annual revenue or €20 million.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>CCPA/CPRA Requirements:</strong> California Consumer Privacy Act requires disclosure of cookie categories and purposes. Implement &quot;Do Not Sell My Personal Information&quot; mechanism. Honor Global Privacy Control (GPC) signals. Document cookie data sharing with third parties. Provide cookie deletion mechanism for California residents.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>PCI-DSS Requirements:</strong> PCI-DSS Requirement 6.5.4 requires secure session management for payment processing. Session cookies must use Secure flag, have reasonable timeout, and be invalidated on logout. Document cookie security controls in ROC (Report on Compliance). Annual penetration testing must include cookie security testing.
         </p>
@@ -681,15 +704,15 @@ export default function SecureCookieAttributesArticle() {
 
       <section>
         <h2>Performance Trade-offs: Security vs. User Experience</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           Cookie security measures introduce trade-offs between security, performance, and user experience that must be carefully balanced.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Cookie Size Impact:</strong> Cookies are sent with every HTTP request. Large cookies (greater than 4KB) increase bandwidth and latency. Keep session cookies minimal (token only, no user data). Use localStorage for non-sensitive data that doesn&apos;t need server access. Compress cookie values if necessary. Monitor cookie size in performance budgets.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Session Validation Overhead:</strong> Server-side session validation adds database/Redis lookup (5-20ms) per request. Use session caching with TTL matching cookie expiration. Implement lazy session loading (only validate when accessing session data). For high-traffic APIs, consider stateless JWT tokens to eliminate server-side validation.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>SameSite Impact on UX:</strong> SameSite=Strict breaks legitimate cross-origin flows (SSO, payment gateways, embedded widgets). Test cross-origin flows thoroughly before deploying SameSite=Strict. Use SameSite=Lax as default with Strict for high-risk operations. Implement CSRF tokens as backup for scenarios requiring SameSite=None.
         </p>
@@ -739,26 +762,26 @@ export default function SecureCookieAttributesArticle() {
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
             <p className="font-semibold">Q2: What&apos;s the difference between SameSite=Strict, Lax, and None?</p>
-            <p className="mt-2 text-sm">
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               A: <strong>SameSite=Strict</strong> never sends cookies with cross-origin requests—even when
               following a link from an external site. Maximum security but breaks external link navigation.
               <strong>SameSite=Lax</strong> sends cookies with top-level navigations (link clicks) but not
               subrequests (images, forms, fetch). Good balance of security and UX. <strong>SameSite=None</strong>
               sends cookies with all cross-origin requests but requires the Secure flag. Use only when
               cross-origin cookie sharing is explicitly needed.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
             <p className="font-semibold">Q3: Should JWT tokens be stored in localStorage or cookies?</p>
-            <p className="mt-2 text-sm">
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               A: <strong>HttpOnly cookies</strong> are generally recommended. They protect against XSS (JavaScript
               can&apos;t read HttpOnly cookies) and provide built-in CSRF protection with SameSite.
               <strong>localStorage</strong> is vulnerable to XSS—any script can read it—but avoids CSRF since
               tokens aren&apos;t auto-sent. For most applications, HttpOnly cookies with SameSite=Lax provide
               better security. Use localStorage only if you have strong XSS controls and need token access in
               JavaScript.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">

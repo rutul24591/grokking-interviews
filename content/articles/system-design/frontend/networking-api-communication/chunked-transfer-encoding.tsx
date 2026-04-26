@@ -441,10 +441,10 @@ export default function ChunkedTransferEncodingArticle() {
 
       <section>
         <h2>Common Pitfalls</h2>
-        <p>
+        <HighlightBlock as="p" tier="important">
           These mistakes appear frequently even in production applications at
           well-funded companies:
-        </p>
+        </HighlightBlock>
         <ul className="space-y-3">
           <HighlightBlock as="li" tier="crucial">
             <strong>Buffering Entire Response:</strong> Using response.json() or
@@ -453,13 +453,13 @@ export default function ChunkedTransferEncodingArticle() {
             encoding. Always use response.body.getReader() for streaming
             endpoints.
           </HighlightBlock>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Not Handling Incomplete Chunks:</strong> Assuming each
             read() returns a complete JSON object or SSE event. In reality,
             chunk boundaries are arbitrary -- a 10KB JSON object may span three
             4KB chunks. Always accumulate chunks into a buffer and parse
             complete messages only.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Ignoring Backpressure:</strong> Reading all chunks into an
             array before processing buffers the entire response in memory,
@@ -506,7 +506,7 @@ export default function ChunkedTransferEncodingArticle() {
           Chunked transfer encoding is essential in these production scenarios:
         </HighlightBlock>
         <ul className="space-y-3">
-          <HighlightBlock as="li" tier="important">
+          <HighlightBlock as="li" tier="crucial">
             <strong>LLM Token Streaming (ChatGPT, Claude):</strong> AI
             assistants stream generated tokens to the browser in real time. The
             server sends each token (or small batch) as a chunk, and the
@@ -516,7 +516,7 @@ export default function ChunkedTransferEncodingArticle() {
             and appends to the message display. Without chunked encoding, users
             would wait seconds for the entire response before seeing any output.
           </HighlightBlock>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Real-Time Dashboards:</strong> Financial trading dashboards,
             monitoring systems, and live scoreboards stream updates via chunked
             HTTP. The server holds the connection open and sends chunks as data
@@ -524,7 +524,7 @@ export default function ChunkedTransferEncodingArticle() {
             JSON-based event format, frontend processes chunks and updates
             charts/tables incrementally. This is an alternative to WebSockets
             for unidirectional streaming.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Large Dataset Export:</strong> Applications that export
             large datasets (CSV, JSON) use chunked encoding to stream results
@@ -582,7 +582,7 @@ export default function ChunkedTransferEncodingArticle() {
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
             <p className="font-semibold">Q2: What is the difference between chunked transfer encoding and
               content-length-based responses?</p>
-            <p className="mt-2 text-sm">
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               <strong>Answer:</strong> Content-Length responses specify the
               total body size upfront, and the client reads exactly that many
               bytes. The server must buffer the entire response to know the
@@ -590,7 +590,7 @@ export default function ChunkedTransferEncodingArticle() {
               (size + data), allowing the server to stream data progressively
               without knowing the total size. The client processes chunks as
               they arrive rather than waiting for completion.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">

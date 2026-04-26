@@ -232,7 +232,7 @@ export default function Http2AndHttp3ConciseArticle() {
             </tr>
           </thead>
           <tbody className="divide-y divide-theme">
-            <tr>
+            <HighlightBlock as="tr" tier="important">
               <td className="p-3">
                 <strong>Connection Setup</strong>
               </td>
@@ -248,7 +248,7 @@ export default function Http2AndHttp3ConciseArticle() {
                 1 RTT new connection (QUIC integrates TLS 1.3). 0-RTT for
                 resumed connections.
               </td>
-            </tr>
+            </HighlightBlock>
             <HighlightBlock as="tr" tier="crucial">
               <td className="p-3">
                 <strong>Multiplexing</strong>
@@ -532,7 +532,7 @@ export default function Http2AndHttp3ConciseArticle() {
             America), where QUIC's loss resilience provided the greatest
             benefit.
           </HighlightBlock>
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Akamai (HTTP/2 Push Experiments):</strong> Akamai conducted
             extensive experiments with HTTP/2 server push across their CDN.
             Their published results showed that push improved page load times by
@@ -541,7 +541,7 @@ export default function Http2AndHttp3ConciseArticle() {
             instrumental in the industry's decision to deprecate push in favor
             of 103 Early Hints. Akamai now recommends preload headers and Early
             Hints as more predictable alternatives.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Mobile Applications (Connection Migration):</strong>{" "}
             Ride-sharing apps (Uber, Lyft), mapping applications (Google Maps,
@@ -632,9 +632,9 @@ export default function Http2AndHttp3ConciseArticle() {
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-4 text-lg font-semibold">Real-World Benchmarks</h3>
           <ul className="space-y-2">
-            <li>
+            <HighlightBlock as="li" tier="important">
               <strong>Cloudflare:</strong> HTTP/3 reduces page load by 15-20% on average.
-            </li>
+            </HighlightBlock>
             <li>
               <strong>Facebook:</strong> HTTP/2 reduced mobile load time by 15%.
             </li>
@@ -700,13 +700,13 @@ export default function Http2AndHttp3ConciseArticle() {
                 <li>No → Upgrade infrastructure</li>
               </ul>
             </HighlightBlock>
-            <li>
+            <HighlightBlock as="li" tier="important">
               <strong>Is &gt;30% of traffic mobile?</strong>
               <ul>
                 <li>Yes → HTTP/3 provides significant gains</li>
                 <li>No → HTTP/2 may be sufficient</li>
               </ul>
-            </li>
+            </HighlightBlock>
           </ul>
         </div>
 
@@ -798,10 +798,10 @@ export default function Http2AndHttp3ConciseArticle() {
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">
+            <HighlightBlock as="p" tier="important" className="font-semibold">
               Q: Should you still bundle JavaScript with HTTP/2?
-            </p>
-            <p className="mt-2 text-sm">
+            </HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               A: Yes, but differently. The myth that "HTTP/2 means no bundling"
               is dangerous. While multiplexing makes many small requests cheap,
               there are still reasons to bundle: compression algorithms (Brotli,
@@ -817,7 +817,7 @@ export default function Http2AndHttp3ConciseArticle() {
               handle this automatically. The key insight is that HTTP/2 changed
               the optimal bundle count from 1 to roughly 5-15 per page, not from
               1 to 200.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">

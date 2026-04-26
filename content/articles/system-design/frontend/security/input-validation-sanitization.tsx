@@ -31,10 +31,10 @@ export default function InputValidationSanitizationArticle() {
           input to remove potentially harmful content. Together, they form the first line of defense against
           injection attacks, data corruption, and application errors.
         </HighlightBlock>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Input validation answers: &quot;Is this input acceptable?&quot; Sanitization answers: &quot;How can I
           make this input safe to use?&quot; Both are essential because:
-        </p>
+        </HighlightBlock>
         <ul className="space-y-2">
           <li>
             <strong>Security:</strong> Prevents injection attacks (XSS, SQL injection, command injection)
@@ -91,9 +91,9 @@ export default function InputValidationSanitizationArticle() {
           This is the more secure approach because it&apos;s impossible for an attacker to guess all possible
           variations of malicious input. For example, check if input is in an array of allowed values like draft, published, or archived, or validate against patterns like email regex or username pattern for 3-20 alphanumeric characters.
         </HighlightBlock>
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>When to use allowlist:</strong>
-        </p>
+        </HighlightBlock>
         <ul className="space-y-2">
           <li>When you know all valid values in advance (enums, status codes)</li>
           <li>For structured data (emails, phone numbers, dates)</li>
@@ -157,10 +157,10 @@ export default function InputValidationSanitizationArticle() {
         <p>
           <strong>Purpose:</strong> User experience, immediate feedback, reduce server load from invalid requests.
         </p>
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Limitations:</strong> Can be completely bypassed via browser dev tools, direct API calls,
           or custom clients.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Layer 2: Server-Side Validation (Critical)</h3>
         <HighlightBlock as="p" tier="crucial">
@@ -201,16 +201,16 @@ export default function InputValidationSanitizationArticle() {
 
       <section>
         <h2>Sanitization Techniques</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           Sanitization transforms input to make it safe for use in a specific context. Unlike validation
           (which rejects invalid input), sanitization modifies input to remove harmful content.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">HTML Sanitization</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           When you must allow HTML input (rich text editors, comments with formatting), use battle-tested
           sanitization libraries. Import DOMPurify and use <code className="text-sm">DOMPurify.sanitize(dirtyHTML)</code> for basic sanitization. Configure allowed tags (like b, i, em, strong, a, p, br, ul, ol, li) and attributes (like href, target, rel), and use ALLOWED_URI_REGEXP for URL validation. For specific contexts, use USE_PROFILES like svg or mathMl. For server-side sanitization in Node.js, use createDOMPurify with JSDOM.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Best practices:</strong>
         </p>
@@ -227,9 +227,9 @@ export default function InputValidationSanitizationArticle() {
         </p>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">URL Sanitization</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Validate and sanitize URLs before using them in href, src, or redirect attributes. Implement a <code className="text-sm">sanitizeUrl(url)</code> function that parses the URL, checks protocol against an allowlist (<code className="text-sm">http:</code>, <code className="text-sm">https:</code>, <code className="text-sm">mailto:</code>, <code className="text-sm">tel:</code>), blocks dangerous protocols like <code className="text-sm">javascript:</code>, <code className="text-sm">data:</code>, <code className="text-sm">vbscript:</code>, validates hostname to prevent internal network access (block localhost, 127.0.0.1, 192.168.*, 10.*), and returns <code className="text-sm">/safe-default</code> for invalid URLs. Usage: <code className="text-sm">{'<a href={sanitizeUrl(userProvidedUrl)}>Link</a>'}</code>.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">File Upload Sanitization</h3>
         <p>
@@ -454,14 +454,14 @@ export default function InputValidationSanitizationArticle() {
             <strong>Using blocklist as primary defense:</strong> Blocklists are inherently bypassable. Use
             allowlist whenever possible.
           </HighlightBlock>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Double-encoding bugs:</strong> Encoding already-encoded data can create vulnerabilities.
             Encode once, at the right layer.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Inconsistent validation:</strong> Different validation rules on client and server lead to
             confusion and potential bypasses.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Overly permissive patterns:</strong> <code className="text-sm">.*</code> or very broad
             patterns defeat the purpose of validation.
@@ -620,9 +620,9 @@ export default function InputValidationSanitizationArticle() {
         <HighlightBlock as="p" tier="crucial">
           <strong>PCI-DSS Requirements:</strong> PCI-DSS Requirement 6.5.1 requires input validation to prevent injection attacks. Implement input validation for all user-supplied data. Document validation controls in ROC (Report on Compliance). Annual penetration testing must include injection testing.
         </HighlightBlock>
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>HIPAA Requirements:</strong> HIPAA Security Rule 45 CFR 164.312(c)(1) requires integrity controls for ePHI. Input validation helps ensure data integrity. Document validation procedures in security policies. Implement audit logging for validation failures involving ePHI.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>GDPR Implications:</strong> GDPR Article 5 requires data accuracy—validation helps ensure accurate data collection. Article 25 requires data protection by design. Document validation measures as part of security of processing.
         </p>
@@ -658,15 +658,15 @@ export default function InputValidationSanitizationArticle() {
 
       <section>
         <h2>Browser and Platform Compatibility</h2>
-        <HighlightBlock as="p" tier="important">
+        <HighlightBlock as="p" tier="crucial">
           Validation support varies across browsers, operating systems, and platforms, requiring careful compatibility planning.
         </HighlightBlock>
         <HighlightBlock as="p" tier="important">
           <strong>HTML5 Validation:</strong> HTML5 validation attributes (required, pattern, min, max) supported in all modern browsers (IE10+, all current versions). Test HTML5 validation across target browsers. Document HTML5 validation browser support matrix.
         </HighlightBlock>
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>JavaScript Validation:</strong> JavaScript validation works in all browsers (IE6+, all current versions). Test validation across target browsers. Document validation browser support matrix.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Mobile Browser Considerations:</strong> Mobile Chrome/Firefox match desktop validation support. iOS Safari has full support. Some older Android browsers have partial support. Test validation on actual mobile devices.
         </p>

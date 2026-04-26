@@ -248,7 +248,7 @@ export default function ServerSentEventsConciseArticle() {
             </tr>
           </thead>
           <tbody className="divide-y divide-theme">
-            <tr>
+            <HighlightBlock as="tr" tier="important">
               <td className="p-3">
                 <strong>Simplicity</strong>
               </td>
@@ -261,7 +261,7 @@ export default function ServerSentEventsConciseArticle() {
                 Unidirectional only. Client cannot send data over the same
                 connection; must use separate HTTP requests.
               </td>
-            </tr>
+            </HighlightBlock>
             <HighlightBlock as="tr" tier="crucial">
               <td className="p-3">
                 <strong>Reconnection</strong>
@@ -500,12 +500,12 @@ export default function ServerSentEventsConciseArticle() {
             arrive. Twitter&apos;s streaming API originally used a similar
             long-lived HTTP streaming approach.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Financial Data & Stock Tickers:</strong> Real-time price
             updates, order book changes, and trade notifications. SSE is
             preferred over WebSocket here when the client only reads data and
             doesn&apos;t place orders through the same channel.
-          </li>
+          </HighlightBlock>
           <HighlightBlock as="li" tier="important">
             <strong>CI/CD Build Logs:</strong> GitHub Actions, GitLab CI, and
             similar systems stream build output to the browser as it happens.
@@ -768,11 +768,11 @@ export default function ServerSentEventsConciseArticle() {
               connections: ~1-5GB RAM, 100K+ file descriptors. Instance size:
               c5.large or equivalent (~$75/month).
             </li>
-            <li>
+            <HighlightBlock as="li" tier="important">
               <strong>Pub/Sub Backbone:</strong> Redis Pub/Sub for event
               distribution: $200-1,000/month for production-grade setup. NATS or
               Kafka for higher throughput: $500-2,000/month.
-            </li>
+            </HighlightBlock>
             <li>
               <strong>Load Balancer:</strong> Requires HTTP/2-aware load
               balancer with connection draining. AWS ALB: ~$0.0225/hour + LCU
@@ -856,13 +856,13 @@ export default function ServerSentEventsConciseArticle() {
                 <li>No → WebSocket may be better</li>
               </ul>
             </HighlightBlock>
-            <li>
+            <HighlightBlock as="li" tier="important">
               <strong>Do you need automatic reconnection?</strong>
               <ul>
                 <li>Yes → SSE has built-in reconnection</li>
                 <li>No → WebSocket or polling works</li>
               </ul>
-            </li>
+            </HighlightBlock>
             <li>
               <strong>Is HTTP-native operation important?</strong>
               <ul>
@@ -1019,7 +1019,7 @@ export default function ServerSentEventsConciseArticle() {
             <p className="font-semibold">
               Q: How do you handle authentication for SSE endpoints?
             </p>
-            <p className="mt-2 text-sm">
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               A: SSE supports standard HTTP authentication mechanisms. For
               cookie-based auth, set <code>withCredentials: true</code> on the
               EventSource (note: requires custom EventSource polyfill as native
@@ -1034,7 +1034,7 @@ export default function ServerSentEventsConciseArticle() {
               For high-security applications, use short-lived tokens and
               implement server-side session invalidation that closes active
               connections when a user logs out.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">

@@ -47,15 +47,15 @@ export default function AuthorizationRBACArticle() {
           authenticated but should only access resources and perform actions
           they&apos;re authorized for.
         </HighlightBlock>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Authorization models define how permissions are structured and
           enforced:
-        </p>
+        </HighlightBlock>
         <ul className="space-y-2">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Role-Based Access Control (RBAC):</strong> Permissions
             assigned to roles, users assigned to roles. Most common pattern.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Attribute-Based Access Control (ABAC):</strong> Access
             decisions based on attributes (user, resource, environment). More
@@ -623,10 +623,10 @@ export default function AuthorizationRBACArticle() {
             <strong>Stale permissions:</strong> Cached permissions not
             invalidated when roles change.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>IDOR vulnerabilities:</strong> Accessing resources by ID
             without ownership check (Insecure Direct Object Reference).
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Role explosion:</strong> Too many roles (Admin, SuperAdmin,
             MegaAdmin). Use ABAC for complex requirements.
@@ -677,15 +677,15 @@ export default function AuthorizationRBACArticle() {
 
       <section>
         <h2>Compliance and Legal Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           Authorization implementation has significant compliance implications, particularly for applications handling financial transactions, healthcare data, or operating in regulated industries.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>SOC 2 Controls:</strong> Authorization maps to SOC 2 Common Criteria CC6.1 (logical access controls). Document authorization policies, role definitions, permission assignment procedures for annual SOC 2 audits. Track authorization-related security incidents. Maintain audit logs of authorization decisions.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>PCI-DSS Requirements:</strong> PCI-DSS Requirement 7 requires access control based on need-to-know. Document role definitions and permission assignments. Implement annual access review (Requirement 7.2.3). Restrict cardholder data access to authorized personnel. Document authorization controls in ROC.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>HIPAA Requirements:</strong> HIPAA Security Rule 45 CFR 164.308(a)(4) requires access authorization. Implement role-based access control for ePHI. Document authorization procedures in security policies. Audit access to ePHI. Implement minimum necessary standard for PHI access.
         </p>
@@ -699,15 +699,15 @@ export default function AuthorizationRBACArticle() {
 
       <section>
         <h2>Performance Trade-offs: Security vs. Latency</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           Authorization measures introduce measurable performance overhead that must be balanced against security requirements.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Policy Evaluation Latency:</strong> ABAC policy evaluation adds 5-50ms per request depending on policy complexity. Use policy caching with TTL. Pre-compute permissions for common scenarios. For high-traffic APIs (&gt;10K RPS), consider policy decision caching at the edge.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Database Lookup Overhead:</strong> RBAC permission checks require database/Redis lookups (5-20ms). Cache user permissions with TTL matching session expiration. Implement lazy permission loading. Use permission bitmasks for simple role checks. Monitor permission lookup latency.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Centralized vs. Distributed:</strong> Centralized policy engines add network latency (10-100ms) but provide consistent enforcement. Distributed policy evaluation (OPA sidecar) reduces latency but increases complexity. Choose based on latency requirements and consistency needs.
         </p>
@@ -721,15 +721,15 @@ export default function AuthorizationRBACArticle() {
 
       <section>
         <h2>Browser and Platform Compatibility</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           Authorization support varies across browsers, operating systems, and platforms, requiring careful compatibility planning.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>API Client Authorization:</strong> Server-to-server API clients may not support browser-based authorization flows. Use client credentials grant for service accounts. Implement API key authentication for simple integrations. Document API authorization methods in developer documentation.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Mobile App Authorization:</strong> Native mobile apps should use custom Authorization headers with Bearer tokens. Implement token refresh in mobile apps. Use secure enclave for token storage. Test authorization on actual devices, not just emulators.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>WebView Considerations:</strong> iOS WKWebView and Android WebView have separate cookie storage. OAuth flows in WebViews may have different authorization behavior. Test authorization in actual app WebViews. Consider using system browser for OAuth flows.
         </p>

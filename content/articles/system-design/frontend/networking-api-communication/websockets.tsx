@@ -166,10 +166,10 @@ export default function WebSocketsConciseArticle() {
 
       <section>
         <h2>Architecture & Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="important">
           The WebSocket lifecycle consists of three phases: handshake,
           communication, and teardown.
-        </p>
+        </HighlightBlock>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-4 text-lg font-semibold">Connection Lifecycle</h3>
@@ -508,13 +508,13 @@ export default function WebSocketsConciseArticle() {
             low-latency push. Slack maintains one WebSocket per workspace
             connection, multiplexing channels over it.
           </HighlightBlock>
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Collaborative Editing (Figma, Google Docs, Miro):</strong>{" "}
             Multiplayer cursors, real-time text changes, and conflict resolution
             (CRDT/OT operations) require sub-100ms delivery in both directions.
             Figma uses WebSocket to synchronize design state across all
             connected users, with operational transforms ensuring consistency.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>
               Financial Trading Platforms (Bloomberg Terminal, Robinhood):
@@ -703,9 +703,9 @@ export default function WebSocketsConciseArticle() {
               <strong>Server Resources:</strong> ~1-10KB per connection. For 100K connections:
               ~1-10GB RAM.
             </HighlightBlock>
-            <li>
+            <HighlightBlock as="li" tier="important">
               <strong>Pub/Sub Backbone:</strong> Redis Cluster: $500-2,000/month.
-            </li>
+            </HighlightBlock>
             <li>
               <strong>Load Balancer:</strong> WebSocket-aware LB required. AWS ALB: ~$0.0225/hour.
             </li>
@@ -847,10 +847,10 @@ export default function WebSocketsConciseArticle() {
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">
+            <HighlightBlock as="p" tier="important" className="font-semibold">
               Q: WebSocket vs SSE vs Long Polling — when to use each?
-            </p>
-            <p className="mt-2 text-sm">
+            </HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               A: Use <strong>WebSocket</strong> when you need bidirectional,
               low-latency communication (chat, multiplayer, collaborative
               editing). Use <strong>Server-Sent Events (SSE)</strong> when
@@ -866,7 +866,7 @@ export default function WebSocketsConciseArticle() {
               compatibility. In practice, most applications use WebSocket for
               bidirectional and SSE for unidirectional, with long polling only
               as a fallback in Socket.IO-style libraries.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">

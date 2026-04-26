@@ -624,9 +624,9 @@ export default function ShortPollingConciseArticle() {
               <strong>Server Resources:</strong> For 100K users at 10s interval:
               600,000 requests/minute.
             </HighlightBlock>
-            <li>
+            <HighlightBlock as="li" tier="important">
               <strong>CDN Costs:</strong> CDN caching reduces origin load.
-            </li>
+            </HighlightBlock>
           </ul>
         </div>
 

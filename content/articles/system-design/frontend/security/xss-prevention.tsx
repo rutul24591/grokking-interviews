@@ -72,13 +72,18 @@ export default function XSSPreventionArticle() {
           XSS attacks are categorized based on how the malicious payload reaches the victim&apos;s browser.
           Understanding these categories is essential for designing appropriate defenses.
         </HighlightBlock>
+        <HighlightBlock as="p" tier="crucial">
+          Treat the categories as a scoping tool for defenses: reflected and stored XSS often map to server-side
+          templating and encoding failures, while DOM-based XSS is a client-side data flow issue (unsafe DOM APIs,
+          unsafe URL handling, and unsafe HTML insertion) that can bypass server-side validation entirely.
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Reflected XSS (Non-Persistent)</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           In reflected XSS, the malicious payload is part of the request sent to the server and immediately
           &quot;reflected&quot; back in the response without permanent storage. The attack requires social
           engineering—the victim must click a crafted link or submit a malicious form.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Attack Flow:</strong>
         </p>
@@ -182,17 +187,17 @@ export default function XSSPreventionArticle() {
 
       <section>
         <h2>XSS Impact & Attack Scenarios</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           Understanding the potential impact of XSS is crucial for prioritizing security investments and
           communicating risk to stakeholders.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Session Hijacking</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           The most common XSS attack goal is stealing session cookies. If cookies lack the <code className="text-sm">HttpOnly</code> flag,
           JavaScript can access them via <code className="text-sm">document.cookie</code> and exfiltrate them to an attacker-controlled server.
           An attacker&apos;s payload might read the cookie and send it to their server using a fetch request with the cookie data encoded in the URL.
-        </p>
+        </HighlightBlock>
         <p>
           With the session cookie, the attacker can impersonate the victim, access their account, perform
           transactions, or escalate privileges.
@@ -226,19 +231,19 @@ export default function XSSPreventionArticle() {
         </p>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Supply Chain Attacks</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Compromising a third-party script (analytics, ads, widgets) via XSS can affect all sites using that
           script. The 2018 British Airways Magecart attack injected skimming code via a compromised third-party
           script, stealing 380,000 payment cards.
-        </p>
+        </HighlightBlock>
 
         <div className="my-6 rounded-lg border border-accent/30 bg-accent/10 p-6">
           <h3 className="mb-3 font-semibold">Key Insight: XSS Is Often a Stepping Stone</h3>
-          <p>
+          <HighlightBlock as="p" tier="crucial">
             Rarely is XSS the end goal—it&apos;s a means to an end. Attackers use XSS to escalate privileges,
             pivot to other systems, or establish persistence. A &quot;simple&quot; alert() XSS can become a
             full account takeover with the right payload. Never dismiss XSS as &quot;just informational&quot;.
-          </p>
+          </HighlightBlock>
         </div>
       </section>
 
@@ -498,19 +503,19 @@ export default function XSSPreventionArticle() {
 
       <section>
         <h2>Sanitization Libraries</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           When you must allow HTML content (rich text editors, comments with formatting, user-generated
           content), use battle-tested sanitization libraries rather than building your own.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">DOMPurify</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           DOMPurify is the gold standard for HTML sanitization. It&apos;s fast, configurable, and actively
           maintained. It handles mutation XSS and browser quirks that custom sanitizers miss.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Usage:</strong> Import DOMPurify and call the <code className="text-sm">sanitize()</code> method on your HTML content. For basic sanitization, simply pass the HTML string. For stricter control, configure allowed tags (such as <code className="text-sm">b</code>, <code className="text-sm">i</code>, <code className="text-sm">em</code>, <code className="text-sm">strong</code>, <code className="text-sm">a</code>, <code className="text-sm">p</code>, <code className="text-sm">br</code>), allowed attributes (such as <code className="text-sm">href</code>, <code className="text-sm">target</code>, <code className="text-sm">rel</code>), and a URI regex pattern that only allows safe protocols like HTTP, HTTPS, and mailto. DOMPurify also supports context-specific sanitization profiles for SVG and MathML content.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Other Sanitizers</h3>
         <ul className="space-y-2">
@@ -528,17 +533,27 @@ export default function XSSPreventionArticle() {
 
         <div className="my-6 rounded-lg border border-accent/30 bg-accent/10 p-6">
           <h3 className="mb-3 font-semibold">Key Insight: Sanitize on Both Client and Server</h3>
-          <p>
+          <HighlightBlock as="p" tier="crucial">
             Client-side sanitization improves UX by providing immediate feedback. Server-side sanitization
             is mandatory for security—never trust client-side validation alone. An attacker can bypass your
             frontend and send malicious payloads directly to your API.
-          </p>
+          </HighlightBlock>
         </div>
       </section>
 
       <section>
         <h2>Trade-offs & Considerations</h2>
-        <table className="w-full border-collapse">
+        <HighlightBlock as="p" tier="important">
+          XSS prevention is rarely one control; it is a portfolio. The trade-offs come from where you place the
+          complexity: strict CSP and safe rendering defaults reduce incident risk but require disciplined
+          engineering practices and careful third-party integrations.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
+          In interviews, make the trade explicit: output encoding and safe-by-default frameworks are the baseline,
+          CSP is the safety net, and sanitization is a narrowly-scoped tool for rich text with explicit allowlists.
+        </HighlightBlock>
+        <HighlightBlock tier="crucial" className="overflow-x-auto">
+          <table className="w-full border-collapse">
           <thead>
             <tr className="border-b border-theme">
               <th className="p-3 text-left">Defense Layer</th>
@@ -613,7 +628,8 @@ export default function XSSPreventionArticle() {
               </td>
             </tr>
           </tbody>
-        </table>
+          </table>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/frontend/security/xss-defense-comparison.svg"
@@ -830,15 +846,15 @@ export default function XSSPreventionArticle() {
 
       <section>
         <h2>Compliance & Legal Context</h2>
-        <HighlightBlock as="p" tier="important">
+        <HighlightBlock as="p" tier="crucial">
           XSS vulnerabilities have significant compliance and legal implications beyond technical risk.
         </HighlightBlock>
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>OWASP Top 10:</strong> XSS consistently ranks in OWASP Top 10 (currently #3 in 2021). Many compliance frameworks reference OWASP Top 10 as a baseline requirement. Regular XSS testing demonstrates due diligence in security practices.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>GDPR Implications:</strong> XSS that leads to personal data exfiltration constitutes a data breach under GDPR Article 33, requiring notification within 72 hours. Fines can reach 4% of annual global revenue or €20 million. Document XSS prevention measures as part of Article 32 &quot;security of processing&quot; requirements.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>PCI-DSS Requirements:</strong> PCI-DSS Requirement 6.5.7 explicitly requires protection against XSS for payment processing systems. Annual penetration testing (Requirement 11.3) must include XSS testing. Non-compliance can result in fines up to $500,000 per incident and loss of payment processing capabilities.
         </p>
@@ -874,15 +890,15 @@ export default function XSSPreventionArticle() {
 
       <section>
         <h2>Browser & Platform Compatibility</h2>
-        <HighlightBlock as="p" tier="important">
+        <HighlightBlock as="p" tier="crucial">
           XSS prevention effectiveness varies across browsers and platforms.
         </HighlightBlock>
         <HighlightBlock as="p" tier="important">
           <strong>CSP Support:</strong> CSP Level 3 (nonce, strict-dynamic) supported in Chrome 63+, Firefox 67+, Safari 12.1+, Edge 79+. For older browsers, implement CSP Level 2 with <code className="text-sm">unsafe-inline</code> fallback (less secure). Use <code className="text-sm">Content-Security-Policy-Report-Only</code> header to test policies before enforcement.
         </HighlightBlock>
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Trusted Types:</strong> Chrome 83+, Edge 83+ support Trusted Types API for DOM XSS prevention. Firefox and Safari have not implemented. Use as progressive enhancement: <code className="text-sm">if (window.trustedTypes)</code> to enable stricter policies for supporting browsers.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Mobile Considerations:</strong> Mobile browsers often have stricter resource limits. CSP evaluation and sanitization can impact battery life. Test XSS prevention on low-end devices (2GB RAM, quad-core CPU) to ensure acceptable performance. Consider reducing sanitization complexity for mobile user agents.
         </p>
@@ -915,10 +931,10 @@ export default function XSSPreventionArticle() {
         </ul>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">E-Commerce Platform</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Challenge:</strong> Product reviews, Q&A sections, and seller descriptions allow user-generated
           content. Payment processing makes XSS particularly dangerous.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Solution:</strong>
         </p>
@@ -987,19 +1003,19 @@ export default function XSSPreventionArticle() {
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
             <p className="font-semibold">Q2: Why is output encoding more important than input validation for XSS prevention?</p>
-            <p className="mt-2 text-sm">
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               A: Input validation checks data at the entry point, but it can&apos;t account for all possible
               injection contexts. The same payload might be harmless in one context (JSON) but devastating in
               another (HTML). Output encoding transforms data specifically for the target context (HTML body,
               attribute, JavaScript, URL, CSS), ensuring the browser interprets it as data, not code. Input
               validation is still valuable for catching obvious attacks and improving data quality, but encoding
               at the point of output is the definitive defense.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
             <p className="font-semibold">Q3: How does Content Security Policy (CSP) prevent XSS, and what are its limitations?</p>
-            <p className="mt-2 text-sm">
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               A: CSP prevents XSS by declaring which sources of content are trusted. A strict CSP with
               <code className="text-sm">script-src 'self'</code> blocks inline scripts and scripts from untrusted CDNs, even if an
               attacker successfully injects them. CSP can also block <code className="text-sm">eval()</code>, <code className="text-sm">javascript:</code> URLs,
@@ -1007,7 +1023,7 @@ export default function XSSPreventionArticle() {
               first-party scripts), requires careful configuration to avoid breaking functionality, browser
               support varies, and <code className="text-sm">&apos;unsafe-inline&apos;</code> or wildcards defeat its purpose. CSP is a
               defense-in-depth layer, not a silver bullet.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">

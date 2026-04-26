@@ -297,10 +297,10 @@ export default function ContentSecurityPolicyArticle() {
         </ul>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Nonce Sources</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Nonces (number used once) allow specific inline scripts while blocking others.
           Include a nonce in your CSP header like <code className="text-sm">script-src 'self' 'nonce-abc123xyz'</code>, then add the same nonce attribute to script tags in your HTML. Scripts with the matching nonce attribute will execute, while scripts without a nonce will be blocked.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Nonce best practices:</strong>
         </p>
@@ -505,6 +505,16 @@ export default function ContentSecurityPolicyArticle() {
 
       <section>
         <h2>Trade-offs & Considerations</h2>
+        <HighlightBlock as="p" tier="important">
+          In interviews, your trade-off story should cover migration risk (Report-Only first), operational
+          overhead (nonce generation + rollout discipline), and third-party scripts. The goal is to land on
+          an enforceable policy that meaningfully reduces XSS blast radius.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
+          A practical staff-level position is: start with <strong>report-only</strong>, inventory the
+          blocked sources, remove or isolate high-risk third parties, then move to nonce-based
+          <code className="text-sm">script-src</code> with tight allowlists and violation monitoring.
+        </HighlightBlock>
         <HighlightBlock tier="crucial" className="overflow-x-auto">
           <table className="w-full border-collapse">
             <thead>
@@ -872,9 +882,9 @@ export default function ContentSecurityPolicyArticle() {
         <HighlightBlock as="p" tier="important">
           <strong>OWASP Top 10:</strong> CSP is referenced in OWASP Top 10 2021 A03:Injection as a mitigation technique. OWASP recommends CSP as defense-in-depth layer against XSS. Many compliance auditors expect CSP implementation as evidence of security maturity. Document CSP policy and enforcement level for annual security assessments.
         </HighlightBlock>
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>PCI-DSS Requirements:</strong> PCI-DSS v4.0 Requirement 6.4.3 recommends CSP for payment pages. While not mandatory, CSP demonstrates due diligence in XSS prevention. Annual penetration testing (Requirement 11.3) should verify CSP effectiveness. Document CSP implementation in ROC (Report on Compliance) for annual assessments.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>GDPR Implications:</strong> CSP helps fulfill GDPR Article 32 security of processing by implementing appropriate technical measures against XSS-based data breaches. CSP violation logs can serve as evidence of security monitoring. However, violation reports containing user data (URLs, user-agents) must be handled per GDPR data retention policies.
         </p>

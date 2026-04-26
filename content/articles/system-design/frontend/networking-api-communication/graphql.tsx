@@ -822,11 +822,11 @@ export default function GraphQLConciseArticle() {
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-4 text-lg font-semibold">Infrastructure Costs</h3>
           <ul className="space-y-2">
-            <li>
+            <HighlightBlock as="li" tier="important">
               <strong>Server Resources:</strong> GraphQL resolvers are
               CPU-intensive (query parsing, validation, execution). For
               high-traffic APIs: 2-4x CPU compared to equivalent REST endpoints.
-            </li>
+            </HighlightBlock>
             <li>
               <strong>Database Load:</strong> Without proper batching, GraphQL
               can increase DB queries by 10-100x (N+1 problem). With DataLoader:
@@ -1039,10 +1039,10 @@ export default function GraphQLConciseArticle() {
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">
+            <HighlightBlock as="p" tier="important" className="font-semibold">
               Q: When would you choose REST over GraphQL?
-            </p>
-            <p className="mt-2 text-sm">
+            </HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               A: REST is preferable when: (1) the API is public-facing and
               caching is critical -- REST endpoints are trivially cached by
               CDNs, while GraphQL requires persisted queries + GET requests for
@@ -1058,7 +1058,7 @@ export default function GraphQLConciseArticle() {
               third-party) need different views of the same data, the data model
               has deep relationships, or reducing round trips is critical for
               performance.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
