@@ -610,6 +610,64 @@ export default function StaticSiteGenerationConciseArticle() {
       </section>
 
       <section>
+        <h2>Common Interview Questions</h2>
+        <div className="space-y-4">
+          <div className="rounded-lg border border-theme bg-panel-soft p-4">
+            <p className="font-semibold">Q: SSG vs SSR - when to use each?</p>
+            <p className="mt-2 text-sm">
+              A: Use SSG for content that changes infrequently (hours to days)
+              where maximum performance matters (blogs, docs, marketing). Use
+              SSR for dynamic content needing real-time data or personalization
+              (e-commerce with live inventory, user dashboards). SSG has faster
+              load (CDN) but stale content. SSR has slower load (server
+              processing) but always fresh. ISR bridges the gap.
+            </p>
+          </div>
+
+          <div className="rounded-lg border border-theme bg-panel-soft p-4">
+            <p className="font-semibold">
+              Q: How do you handle content updates in SSG?
+            </p>
+            <p className="mt-2 text-sm">
+              A: Three approaches: 1) Full rebuild triggered by CMS webhooks
+              (simple, works for small sites). 2) ISR with revalidation
+              intervals (Next.js - pages regenerate after N seconds). 3)
+              On-demand revalidation via API (Next.js - CMS triggers specific
+              page updates). Choose based on update frequency and site size.
+            </p>
+          </div>
+
+          <div className="rounded-lg border border-theme bg-panel-soft p-4">
+            <p className="font-semibold">
+              Q: What is Incremental Static Regeneration (ISR)?
+            </p>
+            <p className="mt-2 text-sm">
+              A: ISR is hybrid approach combining SSG and SSR. Pages are static
+              but regenerate in background after revalidation period. First
+              request after revalidation serves stale content (fast), triggers
+              rebuild, subsequent requests get fresh content. Gives SSG
+              performance with near-real-time updates. Set revalidate: 60 in
+              Next.js getStaticProps to regenerate every 60 seconds.
+            </p>
+          </div>
+
+          <div className="rounded-lg border border-theme bg-panel-soft p-4">
+            <p className="font-semibold">
+              Q: How would you optimize SSG build times?
+            </p>
+            <p className="mt-2 text-sm">
+              A: Use incremental builds (rebuild only changed pages), implement
+              parallel data fetching, cache API responses during build, use
+              GraphQL to fetch only needed fields, paginate large collections,
+              consider ISR to reduce build scope, optimize images at build time,
+              monitor and profile slow build steps. Target builds {"&lt;"}10
+              minutes for 1000+ page sites.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <section>
         <h2>References & Further Reading</h2>
         <ul className="space-y-2">
           <li>
@@ -683,64 +741,6 @@ export default function StaticSiteGenerationConciseArticle() {
             </a>
           </li>
         </ul>
-      </section>
-
-      <section>
-        <h2>Common Interview Questions</h2>
-        <div className="space-y-4">
-          <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">Q: SSG vs SSR - when to use each?</p>
-            <p className="mt-2 text-sm">
-              A: Use SSG for content that changes infrequently (hours to days)
-              where maximum performance matters (blogs, docs, marketing). Use
-              SSR for dynamic content needing real-time data or personalization
-              (e-commerce with live inventory, user dashboards). SSG has faster
-              load (CDN) but stale content. SSR has slower load (server
-              processing) but always fresh. ISR bridges the gap.
-            </p>
-          </div>
-
-          <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">
-              Q: How do you handle content updates in SSG?
-            </p>
-            <p className="mt-2 text-sm">
-              A: Three approaches: 1) Full rebuild triggered by CMS webhooks
-              (simple, works for small sites). 2) ISR with revalidation
-              intervals (Next.js - pages regenerate after N seconds). 3)
-              On-demand revalidation via API (Next.js - CMS triggers specific
-              page updates). Choose based on update frequency and site size.
-            </p>
-          </div>
-
-          <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">
-              Q: What is Incremental Static Regeneration (ISR)?
-            </p>
-            <p className="mt-2 text-sm">
-              A: ISR is hybrid approach combining SSG and SSR. Pages are static
-              but regenerate in background after revalidation period. First
-              request after revalidation serves stale content (fast), triggers
-              rebuild, subsequent requests get fresh content. Gives SSG
-              performance with near-real-time updates. Set revalidate: 60 in
-              Next.js getStaticProps to regenerate every 60 seconds.
-            </p>
-          </div>
-
-          <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">
-              Q: How would you optimize SSG build times?
-            </p>
-            <p className="mt-2 text-sm">
-              A: Use incremental builds (rebuild only changed pages), implement
-              parallel data fetching, cache API responses during build, use
-              GraphQL to fetch only needed fields, paginate large collections,
-              consider ISR to reduce build scope, optimize images at build time,
-              monitor and profile slow build steps. Target builds {"&lt;"}10
-              minutes for 1000+ page sites.
-            </p>
-          </div>
-        </div>
       </section>
     </ArticleLayout>
   );

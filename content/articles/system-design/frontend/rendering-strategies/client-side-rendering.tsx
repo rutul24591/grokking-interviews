@@ -103,9 +103,9 @@ function ClientSideRenderingArticleContent() {
             style={highlightStyle("important", "inline")}
           >
             minimal HTML page
-          </span>, and
-          JavaScript is responsible for dynamically rendering content on the
-          client. The server sends a{" "}
+          </span>
+          , and JavaScript is responsible for dynamically rendering content on
+          the client. The server sends a{" "}
           <span
             className={highlight("important")}
             style={highlightStyle("important", "inline")}
@@ -118,8 +118,8 @@ function ClientSideRenderingArticleContent() {
             style={highlightStyle("important", "inline")}
           >
             JavaScript bundles
-          </span>,
-          and the application builds the DOM entirely in the browser.
+          </span>
+          , and the application builds the DOM entirely in the browser.
         </p>
         <p>
           CSR emerged with the rise of Single Page Applications (SPAs) around
@@ -144,17 +144,26 @@ function ClientSideRenderingArticleContent() {
           define how it operates:
         </p>
         <ul>
-          <li className={highlight("important")} style={highlightStyle("important")}>
+          <li
+            className={highlight("important")}
+            style={highlightStyle("important")}
+          >
             <strong>Initial HTML Shell:</strong> The server returns minimal HTML
             (often just a div with id="root") with script tags that reference
             JavaScript bundles. This HTML contains no meaningful content.
           </li>
-          <li className={highlight("crucial")} style={highlightStyle("crucial")}>
+          <li
+            className={highlight("crucial")}
+            style={highlightStyle("crucial")}
+          >
             <strong>JavaScript Hydration:</strong> Once JS downloads and
             executes, it takes over the page, fetches data via APIs, and
             dynamically constructs the DOM tree in the browser.
           </li>
-          <li className={highlight("important")} style={highlightStyle("important")}>
+          <li
+            className={highlight("important")}
+            style={highlightStyle("important")}
+          >
             <strong>Runtime Rendering:</strong> All rendering happens at runtime
             in the browser. Components mount, state updates trigger re-renders,
             and the virtual DOM reconciles changes to the actual DOM.
@@ -175,7 +184,10 @@ function ClientSideRenderingArticleContent() {
 
       <section>
         <h2>Architecture & Flow</h2>
-        <p className={highlight("important")} style={highlightStyle("important")}>
+        <p
+          className={highlight("important")}
+          style={highlightStyle("important")}
+        >
           The CSR architecture follows a distinct request-response pattern:
         </p>
 
@@ -242,8 +254,7 @@ function ClientSideRenderingArticleContent() {
           >
             "blank screen"
           </span>{" "}
-          or
-          loading spinner during steps 2-7, which can take 3-10 seconds on
+          or loading spinner during steps 2-7, which can take 3-10 seconds on
           slower networks or devices. The First Contentful Paint (FCP) is
           delayed until JavaScript executes and renders content.
         </p>
@@ -268,7 +279,10 @@ function ClientSideRenderingArticleContent() {
             </tr>
           </thead>
           <tbody className="divide-y divide-theme">
-            <tr className={highlight("crucial")} style={highlightStyle("crucial")}>
+            <tr
+              className={highlight("crucial")}
+              style={highlightStyle("crucial")}
+            >
               <td className="p-3">
                 <strong>Performance</strong>
               </td>
@@ -292,7 +306,10 @@ function ClientSideRenderingArticleContent() {
                 <br />• Poor on slow networks/devices
               </td>
             </tr>
-            <tr className={highlight("crucial")} style={highlightStyle("crucial")}>
+            <tr
+              className={highlight("crucial")}
+              style={highlightStyle("crucial")}
+            >
               <td className="p-3">
                 <strong>SEO</strong>
               </td>
@@ -324,7 +341,10 @@ function ClientSideRenderingArticleContent() {
                 <br />• Requires good DevOps for deployments
               </td>
             </tr>
-            <tr className={highlight("important")} style={highlightStyle("important")}>
+            <tr
+              className={highlight("important")}
+              style={highlightStyle("important")}
+            >
               <td className="p-3">
                 <strong>User Experience</strong>
               </td>
@@ -374,17 +394,26 @@ function ClientSideRenderingArticleContent() {
         <h2>Best Practices</h2>
         <p>To build performant CSR applications, follow these practices:</p>
         <ol className="space-y-3">
-          <li className={highlight("crucial")} style={highlightStyle("crucial")}>
+          <li
+            className={highlight("crucial")}
+            style={highlightStyle("crucial")}
+          >
             <strong>Code Splitting:</strong> Split bundles by route using
             dynamic imports. Load only necessary code for current page. Use
             React.lazy() or Vue's defineAsyncComponent().
           </li>
-          <li className={highlight("important")} style={highlightStyle("important")}>
+          <li
+            className={highlight("important")}
+            style={highlightStyle("important")}
+          >
             <strong>Aggressive Caching:</strong> Use service workers for offline
             support. Cache API responses with stale-while-revalidate strategy.
             Leverage HTTP cache headers for static assets.
           </li>
-          <li className={highlight("crucial")} style={highlightStyle("crucial")}>
+          <li
+            className={highlight("crucial")}
+            style={highlightStyle("crucial")}
+          >
             <strong>Optimize Bundle Size:</strong> Tree-shake unused code,
             minify production builds, use modern JavaScript for modern browsers
             (with fallback), and analyze bundle with webpack-bundle-analyzer.
@@ -421,13 +450,19 @@ function ClientSideRenderingArticleContent() {
         <h2>Common Pitfalls</h2>
         <p>Avoid these common mistakes when building CSR applications:</p>
         <ul className="space-y-3">
-          <li className={highlight("crucial")} style={highlightStyle("crucial")}>
+          <li
+            className={highlight("crucial")}
+            style={highlightStyle("crucial")}
+          >
             <strong>Ignoring Initial Load Performance:</strong> Shipping massive
             JavaScript bundles (3MB+) that take 10+ seconds to load and parse.
             Always measure and optimize bundle size. Target {"&lt;"}200KB for
             initial JS payload.
           </li>
-          <li className={highlight("crucial")} style={highlightStyle("crucial")}>
+          <li
+            className={highlight("crucial")}
+            style={highlightStyle("crucial")}
+          >
             <strong>No SEO Strategy:</strong> Building CSR apps without
             considering SEO needs. If organic traffic matters, use SSR, SSG, or
             prerendering. CSR alone is insufficient for content-driven sites.
@@ -464,13 +499,19 @@ function ClientSideRenderingArticleContent() {
         <h2>Real-World Use Cases</h2>
         <p>CSR excels in these scenarios:</p>
         <ul className="space-y-3">
-          <li className={highlight("important")} style={highlightStyle("important")}>
+          <li
+            className={highlight("important")}
+            style={highlightStyle("important")}
+          >
             <strong>Dashboard Applications:</strong> Admin panels, analytics
             dashboards, and internal tools where SEO doesn't matter and users
             are authenticated. Examples: Vercel Dashboard, Netlify UI, Stripe
             Dashboard.
           </li>
-          <li className={highlight("important")} style={highlightStyle("important")}>
+          <li
+            className={highlight("important")}
+            style={highlightStyle("important")}
+          >
             <strong>Web Applications:</strong> Rich interactive apps like Gmail,
             Figma, Notion, or Linear where the experience needs to feel native
             and responsive.
@@ -514,6 +555,61 @@ function ClientSideRenderingArticleContent() {
               • Public-facing content requiring social sharing (no meta tags)
             </li>
           </ul>
+        </div>
+      </section>
+
+      <section>
+        <h2>Common Interview Questions</h2>
+        <div className="space-y-4">
+          <div
+            className={classNames(
+              "rounded-lg border border-theme bg-panel-soft p-4",
+              highlight("important"),
+            )}
+            style={highlightStyle("important")}
+          >
+            <p className="font-semibold">Q: Why is CSR bad for SEO?</p>
+            <p className="mt-2 text-sm">
+              A: Search engine crawlers receive empty HTML. Content only appears
+              after JavaScript executes and data loads. While Googlebot can
+              render JS, it's slow and unreliable. Other crawlers (Bing, social
+              media bots) often can't execute JS at all, seeing no content.
+            </p>
+          </div>
+
+          <div
+            className={classNames(
+              "rounded-lg border border-theme bg-panel-soft p-4",
+              highlight("crucial"),
+            )}
+            style={highlightStyle("crucial")}
+          >
+            <p className="font-semibold">
+              Q: How would you optimize CSR performance?
+            </p>
+            <p className="mt-2 text-sm">
+              A: Code splitting by route, tree shaking unused code, lazy loading
+              images/components, service worker caching, compression (Brotli),
+              using CDN, prefetching likely routes, skeleton screens, and
+              keeping initial bundle under 200KB.
+            </p>
+          </div>
+
+          <div
+            className={classNames(
+              "rounded-lg border border-theme bg-panel-soft p-4",
+              highlight("crucial"),
+            )}
+            style={highlightStyle("crucial")}
+          >
+            <p className="font-semibold">Q: CSR vs SSR - when to use each?</p>
+            <p className="mt-2 text-sm">
+              A: Use CSR for authenticated apps where SEO doesn't matter and
+              interactivity is critical (dashboards, tools). Use SSR for public
+              content, e-commerce, or marketing sites where SEO and fast initial
+              load matter. Or use hybrid (Next.js) to get benefits of both.
+            </p>
+          </div>
         </div>
       </section>
 
@@ -571,61 +667,6 @@ function ClientSideRenderingArticleContent() {
             </a>
           </li>
         </ul>
-      </section>
-
-      <section>
-        <h2>Common Interview Questions</h2>
-        <div className="space-y-4">
-          <div
-            className={classNames(
-              "rounded-lg border border-theme bg-panel-soft p-4",
-              highlight("important"),
-            )}
-            style={highlightStyle("important")}
-          >
-            <p className="font-semibold">Q: Why is CSR bad for SEO?</p>
-            <p className="mt-2 text-sm">
-              A: Search engine crawlers receive empty HTML. Content only appears
-              after JavaScript executes and data loads. While Googlebot can
-              render JS, it's slow and unreliable. Other crawlers (Bing, social
-              media bots) often can't execute JS at all, seeing no content.
-            </p>
-          </div>
-
-          <div
-            className={classNames(
-              "rounded-lg border border-theme bg-panel-soft p-4",
-              highlight("crucial"),
-            )}
-            style={highlightStyle("crucial")}
-          >
-            <p className="font-semibold">
-              Q: How would you optimize CSR performance?
-            </p>
-            <p className="mt-2 text-sm">
-              A: Code splitting by route, tree shaking unused code, lazy loading
-              images/components, service worker caching, compression (Brotli),
-              using CDN, prefetching likely routes, skeleton screens, and
-              keeping initial bundle under 200KB.
-            </p>
-          </div>
-
-          <div
-            className={classNames(
-              "rounded-lg border border-theme bg-panel-soft p-4",
-              highlight("crucial"),
-            )}
-            style={highlightStyle("crucial")}
-          >
-            <p className="font-semibold">Q: CSR vs SSR - when to use each?</p>
-            <p className="mt-2 text-sm">
-              A: Use CSR for authenticated apps where SEO doesn't matter and
-              interactivity is critical (dashboards, tools). Use SSR for public
-              content, e-commerce, or marketing sites where SEO and fast initial
-              load matter. Or use hybrid (Next.js) to get benefits of both.
-            </p>
-          </div>
-        </div>
       </section>
     </>
   );

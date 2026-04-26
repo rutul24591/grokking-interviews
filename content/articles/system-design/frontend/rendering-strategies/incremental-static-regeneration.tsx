@@ -684,6 +684,45 @@ export default function IncrementalStaticRegenerationConciseArticle() {
       </section>
 
       <section>
+        <h2>Common Interview Questions</h2>
+        <div className="space-y-4">
+          <div>
+            <h3 className="font-semibold text-sm">
+              Q: How does ISR handle high traffic during regeneration?
+            </h3>
+            <p className="mt-1 text-sm">
+              A: Regeneration happens in background—cached page continues
+              serving all traffic. Next.js deduplicates concurrent regeneration
+              requests (cache stampede prevention). Only one regeneration runs
+              per page even with 1000s of requests. Users never wait.
+            </p>
+          </div>
+          <div>
+            <h3 className="font-semibold text-sm">
+              Q: What happens if revalidation fails (API error)?
+            </h3>
+            <p className="mt-1 text-sm">
+              A: Stale content continues serving. Failed regeneration
+              doesn&apos;t break the site. Implement error logging and
+              monitoring. Consider retry logic or fallback data. Show content
+              freshness timestamps to users if critical.
+            </p>
+          </div>
+          <div>
+            <h3 className="font-semibold text-sm">
+              Q: ISR vs ISG vs SSG with cache - what&apos;s the difference?
+            </h3>
+            <p className="mt-1 text-sm">
+              A: ISR = Incremental Static Regeneration (Next.js term). ISG =
+              Incremental Static Generation (same concept, different name). SSG
+              with cache = static files + CDN caching only (no background
+              regeneration). ISR adds automatic background updates.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <section>
         <h2>References &amp; Further Reading</h2>
         <ul className="space-y-2">
           <li>
@@ -747,45 +786,6 @@ export default function IncrementalStaticRegenerationConciseArticle() {
             </a>
           </li>
         </ul>
-      </section>
-
-      <section>
-        <h2>Common Interview Questions</h2>
-        <div className="space-y-4">
-          <div>
-            <h3 className="font-semibold text-sm">
-              Q: How does ISR handle high traffic during regeneration?
-            </h3>
-            <p className="mt-1 text-sm">
-              A: Regeneration happens in background—cached page continues
-              serving all traffic. Next.js deduplicates concurrent regeneration
-              requests (cache stampede prevention). Only one regeneration runs
-              per page even with 1000s of requests. Users never wait.
-            </p>
-          </div>
-          <div>
-            <h3 className="font-semibold text-sm">
-              Q: What happens if revalidation fails (API error)?
-            </h3>
-            <p className="mt-1 text-sm">
-              A: Stale content continues serving. Failed regeneration
-              doesn&apos;t break the site. Implement error logging and
-              monitoring. Consider retry logic or fallback data. Show content
-              freshness timestamps to users if critical.
-            </p>
-          </div>
-          <div>
-            <h3 className="font-semibold text-sm">
-              Q: ISR vs ISG vs SSG with cache - what&apos;s the difference?
-            </h3>
-            <p className="mt-1 text-sm">
-              A: ISR = Incremental Static Regeneration (Next.js term). ISG =
-              Incremental Static Generation (same concept, different name). SSG
-              with cache = static files + CDN caching only (no background
-              regeneration). ISR adds automatic background updates.
-            </p>
-          </div>
-        </div>
       </section>
     </ArticleLayout>
   );

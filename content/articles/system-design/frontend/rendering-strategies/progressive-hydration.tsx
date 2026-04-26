@@ -537,6 +537,55 @@ export default function ProgressiveHydrationConciseArticle() {
       </section>
 
       <section>
+        <h2>Common Interview Questions</h2>
+        <div className="space-y-4">
+          <div className="rounded-lg border border-theme bg-panel-soft p-4">
+            <p className="font-semibold">
+              Q: How does progressive hydration improve Time to Interactive?
+            </p>
+            <p className="mt-2 text-sm">
+              A: Instead of hydrating the entire page at once (3-8s),
+              progressive hydration breaks it into priority chunks. Critical
+              elements (nav, hero CTA) hydrate first in 200-500ms, making the
+              page immediately interactive. Less critical components hydrate
+              later during idle time or when visible. This eliminates the
+              &quot;frozen page&quot; problem where users click but nothing
+              happens.
+            </p>
+          </div>
+
+          <div className="rounded-lg border border-theme bg-panel-soft p-4">
+            <p className="font-semibold">
+              Q: How do you decide component priority levels?
+            </p>
+            <p className="mt-2 text-sm">
+              A: Use analytics and user intent. Critical = components users
+              interact with first (navigation, search, primary CTA). High =
+              visible interactive content (product grids, videos). Normal =
+              below-fold interactive content. Low = analytics, chat widgets,
+              footer. Avoid assumptions - use real user behavior data to inform
+              priorities.
+            </p>
+          </div>
+
+          <div className="rounded-lg border border-theme bg-panel-soft p-4">
+            <p className="font-semibold">
+              Q: What&apos;s the difference between progressive, selective, and
+              partial hydration?
+            </p>
+            <p className="mt-2 text-sm">
+              A: Progressive hydrates everything eventually, just in priority
+              order. Selective only hydrates interactive components - static
+              content never hydrates. Partial is similar to progressive but with
+              more granular control - hydrates based on specific conditions
+              (visibility, interaction, time). All three solve the same problem
+              (slow hydration) with different approaches.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <section>
         <h2>References & Further Reading</h2>
         <ul className="space-y-2">
           <li>
@@ -600,55 +649,6 @@ export default function ProgressiveHydrationConciseArticle() {
             </a>
           </li>
         </ul>
-      </section>
-
-      <section>
-        <h2>Common Interview Questions</h2>
-        <div className="space-y-4">
-          <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">
-              Q: How does progressive hydration improve Time to Interactive?
-            </p>
-            <p className="mt-2 text-sm">
-              A: Instead of hydrating the entire page at once (3-8s),
-              progressive hydration breaks it into priority chunks. Critical
-              elements (nav, hero CTA) hydrate first in 200-500ms, making the
-              page immediately interactive. Less critical components hydrate
-              later during idle time or when visible. This eliminates the
-              &quot;frozen page&quot; problem where users click but nothing
-              happens.
-            </p>
-          </div>
-
-          <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">
-              Q: How do you decide component priority levels?
-            </p>
-            <p className="mt-2 text-sm">
-              A: Use analytics and user intent. Critical = components users
-              interact with first (navigation, search, primary CTA). High =
-              visible interactive content (product grids, videos). Normal =
-              below-fold interactive content. Low = analytics, chat widgets,
-              footer. Avoid assumptions - use real user behavior data to inform
-              priorities.
-            </p>
-          </div>
-
-          <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">
-              Q: What&apos;s the difference between progressive, selective, and
-              partial hydration?
-            </p>
-            <p className="mt-2 text-sm">
-              A: Progressive hydrates everything eventually, just in priority
-              order. Selective only hydrates interactive components - static
-              content never hydrates. Partial is similar to progressive but with
-              more granular control - hydrates based on specific conditions
-              (visibility, interaction, time). All three solve the same problem
-              (slow hydration) with different approaches.
-            </p>
-          </div>
-        </div>
       </section>
     </ArticleLayout>
   );

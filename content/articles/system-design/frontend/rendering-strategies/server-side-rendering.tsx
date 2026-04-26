@@ -36,8 +36,8 @@ export default function ServerSideRenderingConciseArticle() {
           browser as fully-formed markup, and then "hydrated" with JavaScript to
           become interactive. Unlike CSR where the browser receives an{" "}
           <Highlight tier="important">empty shell</Highlight>, SSR delivers{" "}
-          <Highlight tier="important">meaningful content immediately</Highlight>, enabling faster
-          First Contentful Paint and better SEO.
+          <Highlight tier="important">meaningful content immediately</Highlight>
+          , enabling faster First Contentful Paint and better SEO.
         </HighlightBlock>
         <p>
           SSR represents a return to traditional server rendering with a modern
@@ -509,6 +509,66 @@ export default function ServerSideRenderingConciseArticle() {
       </section>
 
       <section>
+        <h2>Common Interview Questions</h2>
+        <div className="space-y-4">
+          <div className="rounded-lg border border-theme bg-panel-soft p-4">
+            <p className="font-semibold">
+              Q: What is hydration and why is it needed?
+            </p>
+            <p className="mt-2 text-sm">
+              A: Hydration is the process where client-side JavaScript attaches
+              event listeners and state to server-rendered HTML. It's needed
+              because SSR sends static HTML - the page is visible but not
+              interactive. Hydration makes buttons clickable, forms submittable,
+              and state management work. React reconciles its virtual DOM with
+              existing DOM instead of replacing it.
+            </p>
+          </div>
+
+          <div className="rounded-lg border border-theme bg-panel-soft p-4">
+            <p className="font-semibold">Q: SSR vs CSR - when to use each?</p>
+            <p className="mt-2 text-sm">
+              A: Use SSR for public content needing SEO and fast initial load
+              (e-commerce, news, marketing pages). Use CSR for authenticated
+              apps where SEO doesn't matter and interactivity is key
+              (dashboards, tools). SSR has fast FCP but slow TTFB. CSR has slow
+              FCP but fast subsequent navigation. Hybrid approaches (Next.js)
+              let you choose per-page.
+            </p>
+          </div>
+
+          <div className="rounded-lg border border-theme bg-panel-soft p-4">
+            <p className="font-semibold">
+              Q: What are hydration mismatches and how do you prevent them?
+            </p>
+            <p className="mt-2 text-sm">
+              A: Hydration mismatches occur when server-rendered HTML differs
+              from client-rendered output. Causes: using Date.now(),
+              Math.random(), localStorage, or browser APIs during render.
+              Prevent by ensuring identical server/client output. Use useEffect
+              for client-only code. Validate that random/time-based values are
+              serialized from server. Use suppressHydrationWarning only when
+              necessary (like timestamps).
+            </p>
+          </div>
+
+          <div className="rounded-lg border border-theme bg-panel-soft p-4">
+            <p className="font-semibold">
+              Q: How would you optimize SSR performance?
+            </p>
+            <p className="mt-2 text-sm">
+              A: Minimize TTFB by keeping data fetching fast ({"&lt;"}500ms),
+              using caching (Redis, CDN). Implement streaming SSR (React 18) to
+              send HTML progressively. Use edge functions (Vercel, Cloudflare)
+              for lower latency. Optimize hydration with code splitting and
+              selective hydration. Consider ISR for mostly-static pages. Use CDN
+              edge caching with stale-while-revalidate.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <section>
         <h2>References & Further Reading</h2>
         <ul className="space-y-2">
           <li>
@@ -572,66 +632,6 @@ export default function ServerSideRenderingConciseArticle() {
             </a>
           </li>
         </ul>
-      </section>
-
-      <section>
-        <h2>Common Interview Questions</h2>
-        <div className="space-y-4">
-          <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">
-              Q: What is hydration and why is it needed?
-            </p>
-            <p className="mt-2 text-sm">
-              A: Hydration is the process where client-side JavaScript attaches
-              event listeners and state to server-rendered HTML. It's needed
-              because SSR sends static HTML - the page is visible but not
-              interactive. Hydration makes buttons clickable, forms submittable,
-              and state management work. React reconciles its virtual DOM with
-              existing DOM instead of replacing it.
-            </p>
-          </div>
-
-          <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">Q: SSR vs CSR - when to use each?</p>
-            <p className="mt-2 text-sm">
-              A: Use SSR for public content needing SEO and fast initial load
-              (e-commerce, news, marketing pages). Use CSR for authenticated
-              apps where SEO doesn't matter and interactivity is key
-              (dashboards, tools). SSR has fast FCP but slow TTFB. CSR has slow
-              FCP but fast subsequent navigation. Hybrid approaches (Next.js)
-              let you choose per-page.
-            </p>
-          </div>
-
-          <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">
-              Q: What are hydration mismatches and how do you prevent them?
-            </p>
-            <p className="mt-2 text-sm">
-              A: Hydration mismatches occur when server-rendered HTML differs
-              from client-rendered output. Causes: using Date.now(),
-              Math.random(), localStorage, or browser APIs during render.
-              Prevent by ensuring identical server/client output. Use useEffect
-              for client-only code. Validate that random/time-based values are
-              serialized from server. Use suppressHydrationWarning only when
-              necessary (like timestamps).
-            </p>
-          </div>
-
-          <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">
-              Q: How would you optimize SSR performance?
-            </p>
-            <p className="mt-2 text-sm">
-              A: Minimize TTFB by keeping data fetching fast ({"&lt;"}500ms),
-              using caching (Redis, CDN). Implement streaming SSR (React 18) to
-              send HTML progressively. Use edge functions (Vercel, Cloudflare)
-              for lower latency. Optimize hydration with code splitting and
-              selective hydration. Consider ISR for mostly-static pages. Use CDN
-              edge caching with stale-while-revalidate.
-            </p>
-          </div>
-        </div>
       </section>
     </ArticleLayout>
   );

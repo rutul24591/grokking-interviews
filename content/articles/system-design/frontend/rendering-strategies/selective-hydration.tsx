@@ -187,7 +187,9 @@ export default function SelectiveHydrationConciseArticle() {
           The key difference from traditional SSR: static sections never execute
           framework code. A 2000-word blog post stays as pure HTML - no React
           virtual DOM representation, no framework overhead, no event listeners.
-          This eliminates <Highlight tier="important">80-90% of hydration work</Highlight> for content-heavy pages.
+          This eliminates{" "}
+          <Highlight tier="important">80-90% of hydration work</Highlight> for
+          content-heavy pages.
         </HighlightBlock>
 
         <ArticleImage
@@ -537,6 +539,53 @@ export default function SelectiveHydrationConciseArticle() {
       </section>
 
       <section>
+        <h2>Common Interview Questions</h2>
+        <div className="space-y-4">
+          <div className="rounded-lg border border-theme bg-panel-soft p-4">
+            <p className="font-semibold">
+              Q: How does selective hydration differ from progressive hydration?
+            </p>
+            <p className="mt-2 text-sm">
+              A: Selective hydration only hydrates interactive components -
+              static content never gets JavaScript and stays as HTML forever.
+              Progressive hydration hydrates everything eventually, just in
+              priority order. For a blog post, selective hydration ships zero JS
+              for the article text (static), while progressive would still
+              hydrate it eventually. Selective achieves much larger JS
+              reductions (60-90% vs 20-40%).
+            </p>
+          </div>
+
+          <div className="rounded-lg border border-theme bg-panel-soft p-4">
+            <p className="font-semibold">Q: What is islands architecture?</p>
+            <p className="mt-2 text-sm">
+              A: Islands architecture is the pattern underpinning selective
+              hydration. The page is an ocean of static HTML with small
+              &quot;islands&quot; of interactivity scattered throughout. Each
+              island is independent, hydrates separately, and can even use
+              different frameworks. For example, a blog post (static ocean) with
+              a React like button island, a React comment section island, and
+              vanilla JS theme toggle island.
+            </p>
+          </div>
+
+          <div className="rounded-lg border border-theme bg-panel-soft p-4">
+            <p className="font-semibold">
+              Q: When should you use selective hydration?
+            </p>
+            <p className="mt-2 text-sm">
+              A: Use selective hydration for content-driven sites where 80%+ of
+              the page is static (blogs, documentation, news, marketing pages).
+              If most content just needs to be displayed (not interactive),
+              selective hydration eliminates framework overhead for that
+              content. Avoid for highly interactive apps (dashboards, tools)
+              where most components need JavaScript anyway.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <section>
         <h2>References & Further Reading</h2>
         <ul className="space-y-2">
           <li>
@@ -600,53 +649,6 @@ export default function SelectiveHydrationConciseArticle() {
             </a>
           </li>
         </ul>
-      </section>
-
-      <section>
-        <h2>Common Interview Questions</h2>
-        <div className="space-y-4">
-          <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">
-              Q: How does selective hydration differ from progressive hydration?
-            </p>
-            <p className="mt-2 text-sm">
-              A: Selective hydration only hydrates interactive components -
-              static content never gets JavaScript and stays as HTML forever.
-              Progressive hydration hydrates everything eventually, just in
-              priority order. For a blog post, selective hydration ships zero JS
-              for the article text (static), while progressive would still
-              hydrate it eventually. Selective achieves much larger JS
-              reductions (60-90% vs 20-40%).
-            </p>
-          </div>
-
-          <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">Q: What is islands architecture?</p>
-            <p className="mt-2 text-sm">
-              A: Islands architecture is the pattern underpinning selective
-              hydration. The page is an ocean of static HTML with small
-              &quot;islands&quot; of interactivity scattered throughout. Each
-              island is independent, hydrates separately, and can even use
-              different frameworks. For example, a blog post (static ocean) with
-              a React like button island, a React comment section island, and
-              vanilla JS theme toggle island.
-            </p>
-          </div>
-
-          <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">
-              Q: When should you use selective hydration?
-            </p>
-            <p className="mt-2 text-sm">
-              A: Use selective hydration for content-driven sites where 80%+ of
-              the page is static (blogs, documentation, news, marketing pages).
-              If most content just needs to be displayed (not interactive),
-              selective hydration eliminates framework overhead for that
-              content. Avoid for highly interactive apps (dashboards, tools)
-              where most components need JavaScript anyway.
-            </p>
-          </div>
-        </div>
       </section>
     </ArticleLayout>
   );
