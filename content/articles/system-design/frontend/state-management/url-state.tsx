@@ -193,13 +193,13 @@ export default function UrlStateQueryParametersConciseArticle() {
             </tr>
           </thead>
           <tbody className="divide-y divide-theme">
-            <tr>
+            <HighlightBlock as="tr" tier="important">
               <td className="p-3"><strong>Shareability</strong></td>
               <td className="p-3">Native -- copy URL</td>
               <td className="p-3">None</td>
               <td className="p-3">None</td>
               <td className="p-3">None</td>
-            </tr>
+            </HighlightBlock>
             <tr>
               <td className="p-3"><strong>Persistence</strong></td>
               <td className="p-3">Per session (history), permanent via bookmark</td>
@@ -431,7 +431,9 @@ export default function UrlStateQueryParametersConciseArticle() {
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">Q: What are the trade-offs of storing state in the URL vs localStorage vs React state?</p>
+            <HighlightBlock as="p" tier="important" className="font-semibold">
+              Q: What are the trade-offs of storing state in the URL vs localStorage vs React state?
+            </HighlightBlock>
             <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               A: URL state is shareable, bookmarkable, SEO-friendly, and works with back/forward navigation, but is
               limited to ~2,000 characters and requires serialization overhead. localStorage persists across sessions

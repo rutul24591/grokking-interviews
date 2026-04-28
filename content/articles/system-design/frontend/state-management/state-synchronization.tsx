@@ -192,13 +192,13 @@ export default function StateSynchronizationConciseArticle() {
             </tr>
           </thead>
           <tbody className="divide-y divide-theme">
-            <tr>
+            <HighlightBlock as="tr" tier="important">
               <td className="p-3"><strong>Browser Support</strong></td>
               <td className="p-3">Modern browsers, Safari 15.4+</td>
               <td className="p-3">Universal (IE8+)</td>
               <td className="p-3">Chrome, Firefox, Edge (no Safari)</td>
               <td className="p-3">All modern browsers</td>
-            </tr>
+            </HighlightBlock>
             <tr>
               <td className="p-3"><strong>Payload Size</strong></td>
               <td className="p-3">Limited by structured clone (~256MB)</td>

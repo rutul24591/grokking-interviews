@@ -280,7 +280,7 @@ export default function ModuleFederationArticle() {
                 </HighlightBlock>
               </td>
             </tr>
-            <tr>
+            <HighlightBlock as="tr" tier="important">
               <td className="p-3">
                 <strong>Developer Experience</strong>
               </td>
@@ -296,7 +296,7 @@ export default function ModuleFederationArticle() {
                 • Difficult to debug version negotiation issues
                 <br />• Limited IDE support for remote module types
               </td>
-            </tr>
+            </HighlightBlock>
             <tr>
               <td className="p-3">
                 <strong>Reliability</strong>
@@ -567,9 +567,9 @@ export default function ModuleFederationArticle() {
 
       <section>
         <h2>Performance Benchmarks</h2>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Module Federation introduces performance overhead that must be measured and optimized. Understanding the performance characteristics is essential for production deployments.
-        </p>
+        </HighlightBlock>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-4 text-lg font-semibold">Performance Metrics to Track</h3>
@@ -582,21 +582,21 @@ export default function ModuleFederationArticle() {
               </tr>
             </thead>
             <tbody className="divide-y divide-theme">
-              <tr>
+              <HighlightBlock as="tr" tier="crucial">
                 <td className="p-2">Remote Load Time</td>
                 <td className="p-2">&lt;500ms per remote</td>
                 <td className="p-2">Performance API, Web Vitals</td>
-              </tr>
-              <tr>
+              </HighlightBlock>
+              <HighlightBlock as="tr" tier="important">
                 <td className="p-2">Shared Scope Init Time</td>
                 <td className="p-2">&lt;100ms</td>
                 <td className="p-2">Custom performance marks</td>
-              </tr>
-              <tr>
+              </HighlightBlock>
+              <HighlightBlock as="tr" tier="important">
                 <td className="p-2">Bundle Deduplication Rate</td>
                 <td className="p-2">&gt;80% for shared deps</td>
                 <td className="p-2">Webpack Bundle Analyzer</td>
-              </tr>
+              </HighlightBlock>
               <tr>
                 <td className="p-2">Time to Interactive</td>
                 <td className="p-2">&lt;3.5s on 3G</td>
@@ -653,22 +653,22 @@ export default function ModuleFederationArticle() {
 
       <section>
         <h2>Cost Analysis</h2>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Module Federation has significant cost implications for infrastructure, development, and operations. Understanding the total cost of ownership is essential for justifying the architecture.
-        </p>
+        </HighlightBlock>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-4 text-lg font-semibold">Infrastructure Costs</h3>
           <ul className="space-y-2">
-            <li>
+            <HighlightBlock as="li" tier="crucial">
               <strong>CDN Costs:</strong> Each remote is served from CDN. Estimate: $0.05-0.20/GB depending on provider and volume. For 10 remotes serving 1TB/month each: $50-200/month total.
-            </li>
+            </HighlightBlock>
             <li>
               <strong>Build Infrastructure:</strong> Each remote requires separate CI/CD pipelines. Estimate: $50-200/month per pipeline. For 10 remotes: $500-2,000/month.
             </li>
-            <li>
+            <HighlightBlock as="li" tier="important">
               <strong>Monitoring &amp; Observability:</strong> Each remote needs error tracking, performance monitoring, and logging. Estimate: $100-300/month per remote. For 10 remotes: $1,000-3,000/month.
-            </li>
+            </HighlightBlock>
           </ul>
         </div>
 

@@ -151,18 +151,18 @@ export default function MicroFrontendsArticle() {
                 <td className="p-2">Request-level</td>
                 <td className="p-2">Good</td>
               </tr>
-              <tr>
+              <HighlightBlock as="tr" tier="important">
                 <td className="p-2">Runtime JS (single-spa, MF)</td>
                 <td className="p-2">Client</td>
                 <td className="p-2">Moderate</td>
                 <td className="p-2">Moderate</td>
-              </tr>
-              <tr>
+              </HighlightBlock>
+              <HighlightBlock as="tr" tier="important">
                 <td className="p-2">Iframe</td>
                 <td className="p-2">Client</td>
                 <td className="p-2">Complete</td>
                 <td className="p-2">Worst</td>
-              </tr>
+              </HighlightBlock>
             </tbody>
           </table>
         </div>
@@ -171,6 +171,7 @@ export default function MicroFrontendsArticle() {
           src="/diagrams/system-design-concepts/frontend/scalability-architecture-patterns/micro-frontends-diagram-1.svg"
           alt="Micro-Frontends Composition Patterns comparison table showing Build-time, Server-side, Runtime JS, and Iframe patterns with their isolation and performance characteristics"
           caption="Composition patterns comparison — trade-offs between isolation and performance across four composition strategies"
+          captionTier="important"
         />
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
@@ -299,7 +300,7 @@ export default function MicroFrontendsArticle() {
             </tr>
           </thead>
           <tbody className="divide-y divide-theme">
-            <tr>
+            <HighlightBlock as="tr" tier="important">
               <td className="p-3">
                 <strong>Team Autonomy</strong>
               </td>
@@ -315,7 +316,7 @@ export default function MicroFrontendsArticle() {
                 • Duplicated infrastructure and tooling effort
                 <br />• Cross-cutting concerns require coordination
               </td>
-            </tr>
+            </HighlightBlock>
             <tr>
               <td className="p-3">
                 <strong>Performance</strong>
@@ -841,29 +842,29 @@ export default function MicroFrontendsArticle() {
       <section>
         <h2>Common Pitfalls</h2>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Premature Decomposition:</strong> Adopting micro-frontends
             before the organization needs them. If you have one or two frontend
             teams, a well-structured monolith with clear module boundaries is
             simpler, faster, and easier to maintain. Micro-frontends solve
             organizational scaling problems — if you do not have those problems,
             you are adding distributed systems complexity for no benefit.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Inconsistent User Experience:</strong> When different teams
             use different frameworks, design libraries, or UX patterns, the
             application feels disjointed. Users do not care about your team
             structure — they expect a unified experience. A shared design system
             and UX guidelines are non-negotiable.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Dependency Duplication:</strong> Without Module Federation
             or careful configuration, each micro-frontend bundles its own copy
             of React, React DOM, and other large libraries. Three
             micro-frontends each bundling React adds 400KB+ to the total
             payload. Use shared dependencies via Module Federation, externals,
             or import maps.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Integration Testing Gaps:</strong> Teams test their
             micro-frontends in isolation but do not test the composed
@@ -892,26 +893,26 @@ export default function MicroFrontendsArticle() {
       <section>
         <h2>Real-World Use Cases</h2>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>IKEA:</strong> IKEA uses micro-frontends to enable dozens of
             teams across multiple countries to contribute to ikea.com
             independently. Each product category, checkout flow, and content
             section is a separate micro-frontend deployed independently.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Spotify:</strong> Spotify&apos;s desktop application was an
             early adopter of micro-frontend concepts using iframes for
             isolation. Each section (Browse, Search, Playlist, Now Playing) was
             independently developed and deployed by autonomous
             &quot;squads.&quot;
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Zalando:</strong> Zalando&apos;s frontend platform (Project
             Mosaic) uses server-side fragment composition. Each page is
             assembled from independently deployed fragments rendered by
             different teams. This approach optimizes for first-load performance
             through server-side rendering of all fragments.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>DAZN:</strong> The sports streaming platform uses a
             client-side micro-frontend architecture with a custom runtime that

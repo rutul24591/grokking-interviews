@@ -189,12 +189,12 @@ export default function OptimisticUpdatesConciseArticle() {
           captionTier="important"
         />
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           The diagram above illustrates the fundamental UX difference. In the pessimistic model, the user waits
           300-500ms between action and feedback, seeing a loading spinner or disabled button. In the optimistic model,
           feedback is instantaneous (under 16ms, within a single animation frame), and the network round-trip happens
           invisibly in the background. This difference is the entire motivation for the pattern.
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
@@ -213,12 +213,12 @@ export default function OptimisticUpdatesConciseArticle() {
             </tr>
           </thead>
           <tbody className="divide-y divide-theme">
-            <tr>
+            <HighlightBlock as="tr" tier="important">
               <td className="p-3"><strong>UX Feel</strong></td>
               <td className="p-3">Instant, native-app-like responsiveness</td>
               <td className="p-3">Noticeable delay with loading indicators</td>
               <td className="p-3">Variable - may show stale data temporarily</td>
-            </tr>
+            </HighlightBlock>
             <tr>
               <td className="p-3"><strong>Complexity</strong></td>
               <td className="p-3">High - requires snapshot, rollback, reconciliation logic</td>

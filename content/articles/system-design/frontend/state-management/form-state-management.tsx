@@ -206,13 +206,13 @@ export default function FormStateManagementConciseArticle() {
               </tr>
             </thead>
             <tbody>
-              <tr className="border-b border-theme/40">
+              <HighlightBlock as="tr" tier="important" className="border-b border-theme/40">
                 <td className="py-2 pr-4 font-medium">Re-renders</td>
                 <td className="py-2 pr-4">Minimal (ref-based)</td>
                 <td className="py-2 pr-4">High (context-based)</td>
                 <td className="py-2 pr-4">Minimal (subscription)</td>
                 <td className="py-2">High (per keystroke)</td>
-              </tr>
+              </HighlightBlock>
               <tr className="border-b border-theme/40">
                 <td className="py-2 pr-4 font-medium">Bundle Size</td>
                 <td className="py-2 pr-4">~9 kB gzipped</td>

@@ -176,7 +176,7 @@ export default function FactoryPatternArticle() {
                 <br />• Type narrowing is harder with factory returns
               </td>
             </HighlightBlock>
-            <tr>
+            <HighlightBlock as="tr" tier="important">
               <td className="p-3">
                 <strong>Testability</strong>
               </td>
@@ -192,7 +192,7 @@ export default function FactoryPatternArticle() {
                 • Registration-based factories can mask missing implementations
                 <br />• Complex factory hierarchies are hard to mock
               </td>
-            </tr>
+            </HighlightBlock>
             <HighlightBlock as="tr" tier="important">
               <td className="p-3">
                 <strong>Maintainability</strong>
@@ -241,13 +241,13 @@ export default function FactoryPatternArticle() {
             to select the correct implementation, and TypeScript narrows the
             return type automatically.
           </HighlightBlock>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Prefer Function Factories Over Class Factories:</strong> In
             JavaScript, a factory function that returns plain objects or JSX is
             simpler and more idiomatic than a class hierarchy with abstract
             methods. Reserve class-based factories for genuinely complex
             creation logic with shared state.
-          </li>
+          </HighlightBlock>
           <HighlightBlock as="li" tier="important">
             <strong>Use Registration for Extensible Factories:</strong> When the
             set of product types must be extensible (plugins, user-defined
@@ -255,13 +255,13 @@ export default function FactoryPatternArticle() {
             This follows the Open/Closed Principle — the factory is open for
             extension but closed for modification.
           </HighlightBlock>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Keep Factory Logic Pure:</strong> Factories should create
             and return objects without side effects. Avoid putting
             initialization logic (API calls, event subscriptions, DOM
             manipulation) inside the factory. Let the consumer handle lifecycle
             management of the created product.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Combine with Strategy Pattern:</strong> Use factories to
             select strategy implementations at runtime. For example, a
@@ -269,33 +269,33 @@ export default function FactoryPatternArticle() {
             (email, phone, credit card) based on the field type, with each
             strategy implementing a common validate() interface.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Provide Fallback Products:</strong> Registration-based
             factories should handle missing type keys gracefully — either by
             returning a default product, throwing a descriptive error, or
             rendering a fallback UI component. Silent failures in factories lead
             to hard-to-debug rendering issues.
-          </li>
+          </HighlightBlock>
         </ol>
       </section>
 
       <section>
         <h2>Common Pitfalls</h2>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Factory God Object:</strong> A single factory that creates
             dozens of unrelated product types becomes a maintenance bottleneck.
             Split factories along domain boundaries — a form field factory, a
             chart factory, a notification factory — each responsible for its own
             product family.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Losing Type Information:</strong> Returning a broad base
             type from the factory forces consumers to use type assertions or
             runtime checks. Use TypeScript generics or overloaded function
             signatures to preserve specific product types through the factory
             call.
-          </li>
+          </HighlightBlock>
           <HighlightBlock as="li" tier="crucial">
             <strong>Over-Engineering Simple Cases:</strong> Creating a factory
             for a component that only has two variants (and is unlikely to grow)
@@ -303,13 +303,13 @@ export default function FactoryPatternArticle() {
             more readable and maintainable than a factory abstraction for
             trivial cases.
           </HighlightBlock>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Coupling Factory to Framework:</strong> A factory that
             directly creates React components cannot be reused if the
             application migrates to another framework. Keep the factory&apos;s
             core logic framework-agnostic and use a thin adapter layer for
             framework-specific rendering.
-          </li>
+          </HighlightBlock>
           <HighlightBlock as="li" tier="important">
             <strong>Ignoring Initialization Order:</strong> Registration-based
             factories depend on all products being registered before the factory
@@ -324,40 +324,40 @@ export default function FactoryPatternArticle() {
       <section>
         <h2>Real-World Use Cases</h2>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Form Builders (Formik, React Hook Form):</strong> Form
             libraries use factories to render the appropriate input component
             based on field configuration. A schema-driven form maps field types
             (text, select, date, file) to concrete input components through a
             field factory.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Chart Libraries (Recharts, Victory):</strong> Charting
             libraries use factories to create the appropriate chart type (bar,
             line, pie, scatter) from a data specification. The factory selects
             the rendering strategy, axis configuration, and legend layout based
             on the chart type.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Notification Systems:</strong> Applications render different
             notification components (toast, banner, modal, inline) based on
             severity and context. A notification factory maps type and priority
             to the appropriate visual component and positioning strategy.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>CMS Block Editors (Notion, WordPress Gutenberg):</strong>{" "}
             Block editors use factories to render content blocks based on type —
             paragraphs, headings, images, embeds, tables. Each block type
             registers itself with the block factory, enabling plugin-based
             extensibility.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Design System Theme Switching:</strong> Applications
             supporting multiple themes or brands use abstract factories to
             produce consistently styled component families. Switching themes
             swaps the entire component factory, ensuring visual coherence across
             all UI elements.
-          </li>
+          </HighlightBlock>
         </ul>
       </section>
 
@@ -373,12 +373,12 @@ export default function FactoryPatternArticle() {
             <HighlightBlock as="li" tier="crucial">
               <strong>Input Validation:</strong> Factory methods must validate type parameters and creation parameters. Mitigation: use TypeScript enums for type parameters, validate all input parameters, implement allowlists for valid types.
             </HighlightBlock>
-            <li>
+            <HighlightBlock as="li" tier="important">
               <strong>Access Control:</strong> Not all code should be able to create all object types. Mitigation: implement factory access control, use private constructors with factory friend patterns, validate caller permissions.
-            </li>
-            <li>
+            </HighlightBlock>
+            <HighlightBlock as="li" tier="important">
               <strong>Object Initialization Security:</strong> Created objects must be properly initialized. Mitigation: enforce required parameters, validate object state after creation, use builder pattern for complex objects.
-            </li>
+            </HighlightBlock>
           </ul>
         </div>
 
@@ -417,11 +417,11 @@ export default function FactoryPatternArticle() {
                 <td className="p-2">&lt;0.1ms</td>
                 <td className="p-2">Performance.now()</td>
               </tr>
-              <tr>
+              <HighlightBlock as="tr" tier="crucial">
                 <td className="p-2">Object Creation Time</td>
                 <td className="p-2">&lt;1ms per object</td>
                 <td className="p-2">Performance.now()</td>
-              </tr>
+              </HighlightBlock>
               <tr>
                 <td className="p-2">Registry Size</td>
                 <td className="p-2">&lt;100 types</td>
@@ -440,9 +440,9 @@ export default function FactoryPatternArticle() {
             <li>
               <strong>Switch-Based Factory:</strong> Lookup: ~0.01ms. Best for: &lt;10 types, simple creation logic. Limitation: not extensible without modification.
             </li>
-            <li>
+            <HighlightBlock as="li" tier="important">
               <strong>Registry-Based Factory:</strong> Lookup: ~0.05ms. Best for: extensible systems, plugin architectures. Limitation: slightly higher overhead.
-            </li>
+            </HighlightBlock>
             <li>
               <strong>Class-Based Factory:</strong> Lookup: ~0.1ms. Best for: complex creation logic, inheritance hierarchies. Limitation: more complex implementation.
             </li>
@@ -462,9 +462,9 @@ export default function FactoryPatternArticle() {
             <li>
               <strong>Implementation Complexity:</strong> Simple factories: &lt;1 day. Registry-based: 1-2 days. Class-based with inheritance: 2-3 days.
             </li>
-            <li>
+            <HighlightBlock as="li" tier="important">
               <strong>Maintenance:</strong> Switch-based factories require modification for new types (OCP violation). Registry-based factories allow extension without modification.
-            </li>
+            </HighlightBlock>
           </ul>
         </div>
 
@@ -479,7 +479,11 @@ export default function FactoryPatternArticle() {
       <section>
         <h2>Common Interview Questions</h2>
         <div className="space-y-4">
-          <div className="rounded-lg border border-theme bg-panel-soft p-4">
+          <HighlightBlock
+            as="div"
+            tier="crucial"
+            className="rounded-lg border border-theme bg-panel-soft p-4"
+          >
             <p className="font-semibold">
               Q: What is the difference between Simple Factory, Factory Method,
               and Abstract Factory?
@@ -496,7 +500,7 @@ export default function FactoryPatternArticle() {
               common due to the language&apos;s functional nature and lack of
               traditional class hierarchies.
             </HighlightBlock>
-          </div>
+          </HighlightBlock>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
             <p className="font-semibold">

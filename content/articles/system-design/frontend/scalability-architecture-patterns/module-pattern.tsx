@@ -182,7 +182,7 @@ export default function ModulePatternArticle() {
             </tr>
           </thead>
           <tbody className="divide-y divide-theme">
-            <tr>
+            <HighlightBlock as="tr" tier="important">
               <td className="p-3">
                 <strong>Encapsulation</strong>
               </td>
@@ -198,7 +198,7 @@ export default function ModulePatternArticle() {
                 • Private members cannot be tested directly
                 <br />• Over-encapsulation leads to cumbersome APIs
               </td>
-            </tr>
+            </HighlightBlock>
             <HighlightBlock as="tr" tier="crucial">
               <td className="p-3">
                 <strong>Dependency Management</strong>
@@ -216,7 +216,7 @@ export default function ModulePatternArticle() {
                 <br />• Dynamic imports add complexity to dependency graphs
               </td>
             </HighlightBlock>
-            <tr>
+            <HighlightBlock as="tr" tier="important">
               <td className="p-3">
                 <strong>Developer Experience</strong>
               </td>
@@ -233,7 +233,7 @@ export default function ModulePatternArticle() {
                 • Bundler configuration can be complex
                 <br />• Top-level await adds ordering considerations
               </td>
-            </tr>
+            </HighlightBlock>
             <tr>
               <td className="p-3">
                 <strong>Performance</strong>
@@ -265,13 +265,13 @@ export default function ModulePatternArticle() {
             &quot;type&quot;: &quot;module&quot; for Node.js projects. Use .mjs
             extension only when coexisting with CommonJS in the same package.
           </HighlightBlock>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Keep Modules Focused:</strong> Each module should have a
             single responsibility. If a module exports more than 7-10 items,
             consider splitting it. A barrel file (index.ts) can re-export from
             sub-modules for convenience, but be aware of tree-shaking
             implications.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Prefer Named Exports Over Default:</strong> Named exports
             improve refactoring safety (renaming is tracked), enable better IDE
@@ -320,13 +320,13 @@ export default function ModulePatternArticle() {
             which may happen at unexpected times during code splitting. Move
             side effects into explicitly called initialization functions.
           </HighlightBlock>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Over-Reliance on Barrel Files:</strong> A single index.ts
             that re-exports hundreds of modules forces the bundler to process
             the entire dependency tree even when only one export is used. This
             dramatically increases build times and bundle sizes when
             tree-shaking is imperfect.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Module Scope Confusion with CJS:</strong> CommonJS modules
             are wrapped in a function by Node.js, so top-level this refers to
@@ -354,27 +354,27 @@ export default function ModulePatternArticle() {
       <section>
         <h2>Real-World Use Cases</h2>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>React Component Libraries:</strong> Libraries like Material
             UI and Chakra UI use ES Module structures with individual component
             entry points. This allows consumers to import only the components
             they use, with tree-shaking eliminating the rest. The module
             boundary defines what is a stable public API versus internal
             implementation detail.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Webpack and Rollup Plugins:</strong> Build tool plugins are
             modules that export a function conforming to a specific interface.
             The module pattern allows plugins to encapsulate complex
             transformation logic while exposing a simple configuration API.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Node.js Microservices:</strong> Each microservice is
             typically a module with clearly defined exports (route handlers,
             middleware, utilities). The module boundary serves as the
             service&apos;s internal API, while HTTP/gRPC defines the external
             API.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Monorepo Packages:</strong> In monorepos managed by Nx or
             Turborepo, each package is a module with its own package.json and
@@ -401,9 +401,9 @@ export default function ModulePatternArticle() {
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-4 text-lg font-semibold">Module Security Patterns</h3>
           <ul className="space-y-2">
-            <li>
+            <HighlightBlock as="li" tier="important">
               <strong>Private State Protection:</strong> Use closures or private fields (#field) to protect sensitive data. Mitigation: avoid exposing sensitive data through public APIs, use WeakMap for private data, implement access control on module methods.
-            </li>
+            </HighlightBlock>
             <li>
               <strong>API Surface Minimization:</strong> Expose only necessary public methods. Mitigation: use module pattern to encapsulate implementation details, document public API clearly, avoid leaking internal state.
             </li>
@@ -428,9 +428,9 @@ export default function ModulePatternArticle() {
 
       <section>
         <h2>Performance Benchmarks</h2>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Module Pattern performance depends on closure overhead, initialization strategy, and module bundling efficiency.
-        </p>
+        </HighlightBlock>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-4 text-lg font-semibold">Performance Metrics to Track</h3>
@@ -443,21 +443,21 @@ export default function ModulePatternArticle() {
               </tr>
             </thead>
             <tbody className="divide-y divide-theme">
-              <tr>
+              <HighlightBlock as="tr" tier="important">
                 <td className="p-2">Module Initialization</td>
                 <td className="p-2">&lt;1ms per module</td>
                 <td className="p-2">Performance.now()</td>
-              </tr>
-              <tr>
+              </HighlightBlock>
+              <HighlightBlock as="tr" tier="important">
                 <td className="p-2">Closure Overhead</td>
                 <td className="p-2">&lt;0.01ms per access</td>
                 <td className="p-2">Performance.now()</td>
-              </tr>
-              <tr>
+              </HighlightBlock>
+              <HighlightBlock as="tr" tier="crucial">
                 <td className="p-2">Bundle Size</td>
                 <td className="p-2">Depends on module</td>
                 <td className="p-2">Webpack Bundle Analyzer</td>
-              </tr>
+              </HighlightBlock>
             </tbody>
           </table>
         </div>
@@ -490,9 +490,9 @@ export default function ModulePatternArticle() {
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-4 text-lg font-semibold">Development Costs</h3>
           <ul className="space-y-2">
-            <li>
+            <HighlightBlock as="li" tier="important">
               <strong>Implementation:</strong> ES modules: built into language. IIFE modules: &lt;1 day per module.
-            </li>
+            </HighlightBlock>
             <li>
               <strong>Maintenance:</strong> Well-encapsulated modules are easier to maintain. Estimate: 20-30% reduction in bug fixes for well-encapsulated code.
             </li>
@@ -532,7 +532,7 @@ export default function ModulePatternArticle() {
               Q: How do ES Modules handle circular dependencies differently from
               CommonJS?
             </p>
-            <p className="mt-2 text-sm">
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               A: ES Modules use live bindings — imports are references to the
               exporting module&apos;s variables, not copies. During the
               three-phase loading process (parse → instantiate → evaluate),
@@ -542,7 +542,7 @@ export default function ModulePatternArticle() {
               exports object at require() time. If module A requires module B
               which requires module A, B gets a partially initialized copy of
               A&apos;s exports, leading to subtle undefined-property bugs.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
@@ -550,7 +550,7 @@ export default function ModulePatternArticle() {
               Q: Why do named exports enable better tree-shaking than default
               exports?
             </p>
-            <p className="mt-2 text-sm">
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               A: Named exports are statically analyzable — the bundler can
               determine at build time exactly which exports are imported and
               used. Unused named exports can be safely eliminated. Default
@@ -559,7 +559,7 @@ export default function ModulePatternArticle() {
               properties are used. Additionally, re-exporting default exports
               through barrel files can create analysis barriers that prevent
               effective dead-code elimination.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">

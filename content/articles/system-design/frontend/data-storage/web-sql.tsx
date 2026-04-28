@@ -207,12 +207,12 @@ export default function WebSQLConciseArticle() {
                 <td className="py-2 pr-4">ACID with versionchange, readonly, readwrite</td>
                 <td className="py-2">None (synchronous)</td>
               </tr>
-              <tr className="border-b border-theme/40">
+              <HighlightBlock as="tr" tier="important" className="border-b border-theme/40">
                 <td className="py-2 pr-4 font-medium">Async Model</td>
                 <td className="py-2 pr-4">Nested callbacks</td>
                 <td className="py-2 pr-4">Event-based (IDBRequest)</td>
                 <td className="py-2">Synchronous (blocks main thread)</td>
-              </tr>
+              </HighlightBlock>
               <tr className="border-b border-theme/40">
                 <td className="py-2 pr-4 font-medium">Storage Limit</td>
                 <td className="py-2 pr-4">5 MB default, user prompt for more</td>
@@ -225,18 +225,18 @@ export default function WebSQLConciseArticle() {
                 <td className="py-2 pr-4">Structured clone (objects, arrays, blobs, files)</td>
                 <td className="py-2">Strings only (must JSON.stringify)</td>
               </tr>
-              <tr className="border-b border-theme/40">
+              <HighlightBlock as="tr" tier="crucial" className="border-b border-theme/40">
                 <td className="py-2 pr-4 font-medium">Standardization</td>
                 <td className="py-2 pr-4 text-orange-600 dark:text-orange-400">Abandoned (2010)</td>
                 <td className="py-2 pr-4 text-green-600 dark:text-green-400">W3C Recommendation</td>
                 <td className="py-2 text-green-600 dark:text-green-400">W3C Recommendation</td>
-              </tr>
-              <tr className="border-b border-theme/40">
+              </HighlightBlock>
+              <HighlightBlock as="tr" tier="important" className="border-b border-theme/40">
                 <td className="py-2 pr-4 font-medium">Browser Support</td>
                 <td className="py-2 pr-4">Chrome (removed 2024), Safari only</td>
                 <td className="py-2 pr-4">All modern browsers</td>
                 <td className="py-2">All browsers</td>
-              </tr>
+              </HighlightBlock>
               <tr className="border-b border-theme/40">
                 <td className="py-2 pr-4 font-medium">Developer Ergonomics</td>
                 <td className="py-2 pr-4">High (SQL is widely known)</td>

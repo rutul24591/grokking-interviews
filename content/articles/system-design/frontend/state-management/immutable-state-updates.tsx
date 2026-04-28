@@ -170,13 +170,13 @@ export default function ImmutableStateUpdatesConciseArticle() {
           captionTier="important"
         />
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           This architectural guarantee is what makes React&rsquo;s rendering fast. Instead of deep-comparing every
           property on every object in the state tree (O(n) per check), React only needs a single reference
           comparison (O(1)) at each level. Components wrapped in <code>React.memo</code> or using
           <code>useMemo</code>/<code>useCallback</code> benefit directly from this &mdash; if the reference
           didn&rsquo;t change, the memoized result is reused without any computation.
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
@@ -193,22 +193,22 @@ export default function ImmutableStateUpdatesConciseArticle() {
             </tr>
           </thead>
           <tbody className="divide-y divide-theme">
-            <tr>
+            <HighlightBlock as="tr" tier="important">
               <td className="p-3"><strong>Ergonomics</strong></td>
               <td className="p-3">Good for flat state; verbose for nested</td>
               <td className="p-3">Excellent &mdash; write mutative code</td>
               <td className="p-3">Poor &mdash; non-native API (.get, .set)</td>
               <td className="p-3">Simple one-liner</td>
               <td className="p-3">Error-prone, tedious</td>
-            </tr>
-            <tr>
+            </HighlightBlock>
+            <HighlightBlock as="tr" tier="important">
               <td className="p-3"><strong>Performance</strong></td>
               <td className="p-3">Fast (shallow copy only)</td>
               <td className="p-3">Good (Proxy overhead ~2-5x spread)</td>
               <td className="p-3">Excellent (persistent data structures)</td>
               <td className="p-3">Slow (full deep clone)</td>
               <td className="p-3">Slow (recursive traversal)</td>
-            </tr>
+            </HighlightBlock>
             <tr>
               <td className="p-3"><strong>Bundle Size</strong></td>
               <td className="p-3">0 KB (native)</td>

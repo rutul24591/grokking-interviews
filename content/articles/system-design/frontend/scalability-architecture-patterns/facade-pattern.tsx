@@ -404,9 +404,9 @@ export default function FacadePatternArticle() {
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-4 text-lg font-semibold">Development Costs</h3>
           <ul className="space-y-2">
-            <li>
+            <HighlightBlock as="li" tier="important">
               <strong>Implementation:</strong> Simple facades: 1-2 days. Complex facades with caching/batching: 3-5 days.
-            </li>
+            </HighlightBlock>
             <li>
               <strong>Maintenance:</strong> Facades reduce coupling, making subsystem changes easier. Estimate: 20-30% reduction in change propagation.
             </li>

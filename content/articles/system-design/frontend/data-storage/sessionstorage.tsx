@@ -183,13 +183,13 @@ export default function SessionStorageConciseArticle() {
               </tr>
             </thead>
             <tbody>
-              <tr className="border-b border-theme">
+              <HighlightBlock as="tr" tier="important" className="border-b border-theme">
                 <td className="px-3 py-2 font-medium">Scope</td>
                 <td className="px-3 py-2">Tab + origin</td>
                 <td className="px-3 py-2">Origin (all tabs)</td>
                 <td className="px-3 py-2">Origin + path (sent to server)</td>
                 <td className="px-3 py-2">Origin (all tabs)</td>
-              </tr>
+              </HighlightBlock>
               <tr className="border-b border-theme">
                 <td className="px-3 py-2 font-medium">Lifetime</td>
                 <td className="px-3 py-2">Tab close</td>
@@ -469,14 +469,14 @@ export default function SessionStorageConciseArticle() {
               Q: Compare sessionStorage, localStorage, cookies, and IndexedDB for different use cases. When
               would you choose each?
             </p>
-            <p className="mt-2 text-sm">
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               A: sessionStorage: tab-scoped, cleared on tab close (5-10MB) -- wizard state, form drafts,
               temporary filters. localStorage: persistent across sessions (5-10MB), no server transmission --
               theme preferences, feature flags. Cookies: small (4KB), sent with requests, HttpOnly option --
               auth tokens, session IDs. IndexedDB: large structured storage (50MB+), async, complex queries --
               offline-first apps, large datasets, binary data. Choose based on: persistence needs, size
               requirements, server access needs, and query complexity.
-            </p>
+            </HighlightBlock>
           </div>
         </div>
       </section>

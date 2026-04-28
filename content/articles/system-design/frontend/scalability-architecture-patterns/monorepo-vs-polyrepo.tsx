@@ -68,14 +68,14 @@ export default function MonorepoVsPolyrepoArticle() {
       <section>
         <h2>Core Concepts</h2>
         <ul>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Workspace Packages:</strong> In a monorepo, each project is
             a &quot;workspace package&quot; with its own package.json, but
             sharing a root-level node_modules and lockfile. Package managers
             (pnpm workspaces, npm workspaces, Yarn workspaces) handle internal
             dependency linking, and tools like Nx and Turborepo orchestrate
             builds across packages.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Affected/Changed Detection:</strong> Monorepo build tools
             analyze the dependency graph to determine which packages are
@@ -128,7 +128,10 @@ export default function MonorepoVsPolyrepoArticle() {
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-4 text-lg font-semibold">Monorepo Structure</h3>
-          <p>A typical frontend monorepo structure with shared tooling:</p>
+          <HighlightBlock as="p" tier="important">
+            A typical frontend monorepo structure with shared tooling. In interviews, call out how this structure
+            enables shared CI caching, consistent dependency versions, and cross-package refactors.
+          </HighlightBlock>
           <ul className="mt-3 space-y-1 font-mono text-sm">
             <li>my-org/</li>
             <li>&nbsp;&nbsp;├── packages/</li>
@@ -240,7 +243,7 @@ export default function MonorepoVsPolyrepoArticle() {
             </tr>
           </thead>
           <tbody className="divide-y divide-theme">
-            <tr>
+            <HighlightBlock as="tr" tier="important">
               <td className="p-3">
                 <strong>Code Sharing</strong>
               </td>
@@ -256,8 +259,8 @@ export default function MonorepoVsPolyrepoArticle() {
                 • Explicit versioning and changelogs
                 <br />• Consumers choose when to upgrade
               </td>
-            </tr>
-            <tr>
+            </HighlightBlock>
+            <HighlightBlock as="tr" tier="important">
               <td className="p-3">
                 <strong>CI/CD</strong>
               </td>
@@ -273,7 +276,7 @@ export default function MonorepoVsPolyrepoArticle() {
                 • Independent build/test/deploy
                 <br />• No cross-repo impact analysis
               </td>
-            </tr>
+            </HighlightBlock>
             <tr>
               <td className="p-3">
                 <strong>Refactoring</strong>
@@ -433,13 +436,13 @@ export default function MonorepoVsPolyrepoArticle() {
             thousands of projects. They built custom tools (Blaze/Bazel) for
             build orchestration and Piper for version control at this scale.
           </HighlightBlock>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Vercel/Next.js (Monorepo with Turborepo):</strong> The
             Next.js repository is a monorepo managed with Turborepo (which
             Vercel built for this purpose). It contains the framework, examples,
             documentation, and test suites in a single repo with remote caching
             for CI optimization.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Netflix (Polyrepo):</strong> Netflix uses polyrepos aligned
             with team ownership. Each microservice and UI application is a
@@ -516,16 +519,16 @@ export default function MonorepoVsPolyrepoArticle() {
               </tr>
             </thead>
             <tbody className="divide-y divide-theme">
-              <tr>
+              <HighlightBlock as="tr" tier="important">
                 <td className="p-2">Clone Time</td>
                 <td className="p-2">&lt;30 seconds</td>
                 <td className="p-2">git clone timing</td>
-              </tr>
-              <tr>
+              </HighlightBlock>
+              <HighlightBlock as="tr" tier="important">
                 <td className="p-2">Build Time (Affected)</td>
                 <td className="p-2">&lt;5 minutes</td>
                 <td className="p-2">CI/CD metrics</td>
-              </tr>
+              </HighlightBlock>
               <tr>
                 <td className="p-2">CI/CD Queue Time</td>
                 <td className="p-2">&lt;2 minutes</td>
@@ -568,9 +571,9 @@ export default function MonorepoVsPolyrepoArticle() {
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-4 text-lg font-semibold">Monorepo Costs</h3>
           <ul className="space-y-2">
-            <li>
+            <HighlightBlock as="li" tier="important">
               <strong>Infrastructure:</strong> Single large repository. Git hosting: $100-500/month for large repos. CI/CD: $500-2,000/month with affected builds.
-            </li>
+            </HighlightBlock>
             <li>
               <strong>Tooling:</strong> Nx Cloud, Turborepo Turbo: $0-500/month for remote caching.
             </li>

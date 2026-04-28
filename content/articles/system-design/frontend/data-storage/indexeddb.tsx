@@ -221,14 +221,14 @@ export default function IndexedDBConciseArticle() {
             </tr>
           </thead>
           <tbody className="divide-y divide-theme">
-            <tr>
+            <HighlightBlock as="tr" tier="crucial">
               <td className="p-3"><strong>Capacity</strong></td>
               <td className="p-3">Hundreds of MB to GB</td>
               <td className="p-3">~5-10MB</td>
               <td className="p-3">Origin quota (GB+)</td>
               <td className="p-3">~50MB (browser-specific)</td>
               <td className="p-3">Origin quota (via OPFS)</td>
-            </tr>
+            </HighlightBlock>
             <tr>
               <td className="p-3"><strong>Data Model</strong></td>
               <td className="p-3">Key-value object stores with B-tree indexes</td>

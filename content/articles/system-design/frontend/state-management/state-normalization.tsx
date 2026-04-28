@@ -185,18 +185,18 @@ export default function StateNormalizationConciseArticle() {
             </tr>
           </thead>
           <tbody className="divide-y divide-theme">
-            <tr>
+            <HighlightBlock as="tr" tier="important">
               <td className="p-3"><strong>Update Consistency</strong></td>
               <td className="p-3">Excellent - single source of truth, one update propagates everywhere</td>
               <td className="p-3">Poor - must find and patch every nested copy manually</td>
               <td className="p-3">Moderate - stale data until refetch; can use query invalidation</td>
-            </tr>
-            <tr>
+            </HighlightBlock>
+            <HighlightBlock as="tr" tier="important">
               <td className="p-3"><strong>Memory Usage</strong></td>
               <td className="p-3">Optimal - no duplicate entity objects in memory</td>
               <td className="p-3">High - same entity stored multiple times across responses</td>
               <td className="p-3">High - each query key holds its own copy of response data</td>
-            </tr>
+            </HighlightBlock>
             <tr>
               <td className="p-3"><strong>Lookup Speed</strong></td>
               <td className="p-3">O(1) by ID via byId map</td>

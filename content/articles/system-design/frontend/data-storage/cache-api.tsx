@@ -234,13 +234,13 @@ export default function CacheApiConciseArticle() {
             </tr>
           </thead>
           <tbody className="divide-y divide-theme">
-            <tr>
+            <HighlightBlock as="tr" tier="important">
               <td className="p-3"><strong>Data Model</strong></td>
               <td className="p-3">Request/Response pairs</td>
               <td className="p-3">Request/Response pairs</td>
               <td className="p-3">Structured objects, blobs, files</td>
               <td className="p-3">String key-value</td>
-            </tr>
+            </HighlightBlock>
             <tr>
               <td className="p-3"><strong>Control</strong></td>
               <td className="p-3">Full programmatic CRUD</td>

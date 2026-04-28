@@ -270,14 +270,14 @@ export default function StorageQuotasAndEvictionConciseArticle() {
             </tr>
           </thead>
           <tbody className="divide-y divide-theme">
-            <tr>
+            <HighlightBlock as="tr" tier="important">
               <td className="p-3">
                 <strong>Global Pool</strong>
               </td>
               <td className="p-3">~60% of total disk</td>
               <td className="p-3">~50% of total disk</td>
               <td className="p-3">~1 GB initial, prompts for more</td>
-            </tr>
+            </HighlightBlock>
             <tr>
               <td className="p-3">
                 <strong>Per-Origin Limit</strong>

@@ -273,7 +273,7 @@ export default function LocalComponentStateConciseArticle() {
               </tr>
             </thead>
             <tbody>
-              <tr className="border-b border-theme">
+              <HighlightBlock as="tr" tier="important" className="border-b border-theme">
                 <td className="p-3 text-sm font-medium">Complexity</td>
                 <td className="p-3 text-sm">
                   Minimal &mdash; single value, single setter
@@ -287,7 +287,7 @@ export default function LocalComponentStateConciseArticle() {
                 <td className="p-3 text-sm">
                   High &mdash; setup, selectors, subscriptions
                 </td>
-              </tr>
+              </HighlightBlock>
               <tr className="border-b border-theme">
                 <td className="p-3 text-sm font-medium">Re-renders</td>
                 <td className="p-3 text-sm">

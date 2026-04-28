@@ -84,13 +84,13 @@ export default function PublishSubscribePatternArticle() {
             can be as simple as a Map of topic strings to callback arrays, or as
             sophisticated as a distributed message queue.
           </HighlightBlock>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Topic / Channel:</strong> A named category that messages are
             published to and subscribed from. Topics provide logical grouping
             and filtering — subscribers only receive messages from topics they
             have subscribed to. Topics can be hierarchical
             (user.profile.updated) with wildcard subscriptions (user.*).
-          </li>
+          </HighlightBlock>
           <HighlightBlock as="li" tier="important">
             <strong>Message Envelope:</strong> The standardized format for
             messages flowing through the system. A well-designed envelope
@@ -210,7 +210,7 @@ export default function PublishSubscribePatternArticle() {
                 <br />• Event storms can cascade through the system
               </td>
             </HighlightBlock>
-            <tr>
+            <HighlightBlock as="tr" tier="important">
               <td className="p-3">
                 <strong>Testability</strong>
               </td>
@@ -226,7 +226,7 @@ export default function PublishSubscribePatternArticle() {
                 • Async event handling complicates assertions
                 <br />• Event ordering in tests may differ from production
               </td>
-            </tr>
+            </HighlightBlock>
             <tr>
               <td className="p-3">
                 <strong>Performance</strong>
@@ -278,20 +278,20 @@ export default function PublishSubscribePatternArticle() {
             prevent other subscribers from receiving the event. Log errors with
             the topic name and subscriber identifier for debugging.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Add Middleware Support:</strong> Design the event bus to
             support middleware that intercepts events before they reach
             subscribers. Common middleware includes: logging (recording all
             events for debugging), validation (checking payloads against
             schemas), and transformation (normalizing data formats).
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Document the Event Catalog:</strong> Maintain a registry of
             all events in the system with their topics, payload schemas,
             publishers, and subscribers. This serves as the contract
             documentation for the event-driven architecture and enables impact
             analysis when changing events.
-          </li>
+          </HighlightBlock>
         </ol>
       </section>
 
@@ -312,13 +312,13 @@ export default function PublishSubscribePatternArticle() {
             feature appears broken because a subscriber was not registered. Add
             development-mode warnings for events with zero subscribers.
           </HighlightBlock>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Ordering Dependencies:</strong> Subscribers that depend on
             being called in a specific order create fragile systems. Pub-Sub
             does not guarantee ordering across different subscribers for the
             same topic. If ordering matters, use a saga or process manager
             pattern instead.
-          </li>
+          </HighlightBlock>
           <HighlightBlock as="li" tier="important">
             <strong>Payload Bloat:</strong> Including too much data in event
             payloads (entire entities instead of IDs, full state snapshots
@@ -326,34 +326,34 @@ export default function PublishSubscribePatternArticle() {
             for cross-context communication. Include only the minimum data
             subscribers need to act; let them fetch additional data if required.
           </HighlightBlock>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Global Bus as a Crutch:</strong> Using a global event bus
             for all communication — including between parent and child
             components — is an anti-pattern. Direct props, callbacks, and React
             Context are better for component-level communication. Reserve
             Pub-Sub for cross-module or cross-context communication where direct
             coupling is impractical.
-          </li>
+          </HighlightBlock>
         </ul>
       </section>
 
       <section>
         <h2>Real-World Use Cases</h2>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Redux Store:</strong> Redux is a Pub-Sub system where
             dispatch() publishes actions to the store, reducers process them,
             and subscribers (connected components) are notified of state
             changes. The store is the broker, actions are messages, and action
             types are topics.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Cross-Tab Synchronization:</strong> Applications use the
             BroadcastChannel API to synchronize state across browser tabs. When
             a user logs out in one tab, a &quot;auth:logout&quot; event is
             published via BroadcastChannel, and all other tabs subscribe and
             respond by clearing their sessions.
-          </li>
+          </HighlightBlock>
           <HighlightBlock as="li" tier="important">
             <strong>Micro-Frontend Communication:</strong> Independent
             micro-frontends (different teams, different frameworks) communicate
@@ -392,12 +392,12 @@ export default function PublishSubscribePatternArticle() {
             <HighlightBlock as="li" tier="crucial">
               <strong>Event Injection:</strong> Attackers can publish malicious events to trigger unauthorized actions. Mitigation: implement event authentication (HMAC signatures), validate event schemas rigorously, use allowlists for event types, implement publisher authentication.
             </HighlightBlock>
-            <li>
+            <HighlightBlock as="li" tier="important">
               <strong>Event Tampering:</strong> Events in transit can be modified. Mitigation: use signed events, implement end-to-end encryption for sensitive events, validate event integrity at subscriber level.
-            </li>
-            <li>
+            </HighlightBlock>
+            <HighlightBlock as="li" tier="important">
               <strong>Replay Attacks:</strong> Captured legitimate events can be replayed. Mitigation: include timestamps and nonces in events, implement event idempotency checks, maintain event logs to detect duplicates.
-            </li>
+            </HighlightBlock>
           </ul>
         </div>
 
@@ -407,9 +407,9 @@ export default function PublishSubscribePatternArticle() {
             <HighlightBlock as="li" tier="important">
               <strong>Publish Authorization:</strong> Not all publishers should publish to all topics. Mitigation: implement topic-based access control, validate publisher permissions before accepting events, use scoped API keys for publishers.
             </HighlightBlock>
-            <li>
+            <HighlightBlock as="li" tier="important">
               <strong>Subscribe Authorization:</strong> Not all subscribers should receive all events. Mitigation: implement subscription-level access control, filter events based on subscriber permissions, use separate channels for different security levels.
-            </li>
+            </HighlightBlock>
             <li>
               <strong>Event Data Leakage:</strong> Subscribers may receive sensitive data they shouldn't access. Mitigation: implement data minimization (only include necessary data in events), use field-level encryption for sensitive data, implement event filtering at broker level.
             </li>
@@ -447,9 +447,9 @@ export default function PublishSubscribePatternArticle() {
             <HighlightBlock as="li" tier="crucial">
               <strong>Contract Tests (Middle):</strong> Verify event schemas match between publishers and subscribers. Use schema registry with compatibility checks. Run contract tests in CI for all publishers and subscribers.
             </HighlightBlock>
-            <li>
+            <HighlightBlock as="li" tier="important">
               <strong>Load Tests (Top):</strong> Test broker performance under load. Measure message throughput, latency, and subscriber lag. Verify backpressure mechanisms work correctly.
-            </li>
+            </HighlightBlock>
           </ul>
         </div>
 
@@ -489,9 +489,9 @@ export default function PublishSubscribePatternArticle() {
 
       <section>
         <h2>Performance Benchmarks</h2>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Pub-Sub performance depends on broker efficiency, message throughput, and subscriber count. Understanding performance characteristics is essential for production systems.
-        </p>
+        </HighlightBlock>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-4 text-lg font-semibold">Performance Metrics to Track</h3>
@@ -504,16 +504,16 @@ export default function PublishSubscribePatternArticle() {
               </tr>
             </thead>
             <tbody className="divide-y divide-theme">
-              <tr>
+              <HighlightBlock as="tr" tier="important">
                 <td className="p-2">Message Throughput</td>
                 <td className="p-2">10,000+ msg/sec</td>
                 <td className="p-2">Broker metrics</td>
-              </tr>
-              <tr>
+              </HighlightBlock>
+              <HighlightBlock as="tr" tier="crucial">
                 <td className="p-2">End-to-End Latency</td>
                 <td className="p-2">&lt;100ms (95th percentile)</td>
                 <td className="p-2">Distributed tracing</td>
-              </tr>
+              </HighlightBlock>
               <tr>
                 <td className="p-2">Subscriber Lag</td>
                 <td className="p-2">&lt;100 messages</td>
@@ -539,12 +539,12 @@ export default function PublishSubscribePatternArticle() {
             Different Pub-Sub implementations have different performance characteristics:
           </p>
           <ul className="mt-3 space-y-2">
-            <li>
+            <HighlightBlock as="li" tier="important">
               <strong>Redis Pub/Sub:</strong> Throughput: 100,000+ msg/sec. Latency: &lt;1ms. Best for: in-memory, low-latency requirements. Limitation: no persistence, messages lost on restart.
-            </li>
-            <li>
+            </HighlightBlock>
+            <HighlightBlock as="li" tier="important">
               <strong>Kafka:</strong> Throughput: 1,000,000+ msg/sec. Latency: 2-10ms. Best for: durable event sourcing, high throughput. Limitation: operational complexity, requires ZooKeeper.
-            </li>
+            </HighlightBlock>
             <li>
               <strong>RabbitMQ:</strong> Throughput: 50,000+ msg/sec. Latency: 1-5ms. Best for: complex routing, enterprise features. Limitation: lower throughput than Kafka.
             </li>
@@ -575,19 +575,19 @@ export default function PublishSubscribePatternArticle() {
 
       <section>
         <h2>Cost Analysis</h2>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Pub-Sub systems have significant infrastructure and operational costs. Understanding the total cost of ownership is essential for justifying the architecture.
-        </p>
+        </HighlightBlock>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-4 text-lg font-semibold">Infrastructure Costs</h3>
           <ul className="space-y-2">
-            <li>
+            <HighlightBlock as="li" tier="important">
               <strong>Managed Broker Services:</strong> AWS EventBridge ($1.00/million events), Google Pub/Sub ($0.40/million messages), Azure Service Bus ($0.05/hour + $0.01/million operations). For 100M events/month: $40-100/month.
-            </li>
-            <li>
+            </HighlightBlock>
+            <HighlightBlock as="li" tier="crucial">
               <strong>Self-Hosted Kafka:</strong> Infrastructure: $500-2,000/month (3-5 node cluster). Operations: 0.5-1 FTE for maintenance. Total: $5,000-15,000/month including operations.
-            </li>
+            </HighlightBlock>
             <li>
               <strong>Self-Hosted RabbitMQ:</strong> Infrastructure: $200-500/month (smaller cluster). Operations: 0.25-0.5 FTE. Total: $2,500-7,500/month including operations.
             </li>
@@ -609,18 +609,26 @@ export default function PublishSubscribePatternArticle() {
           </ul>
         </div>
 
-        <div className="my-6 rounded-lg border border-accent/30 bg-accent/10 p-6">
+        <HighlightBlock
+          as="div"
+          tier="crucial"
+          className="my-6 rounded-lg border border-accent/30 bg-accent/10 p-6"
+        >
           <h3 className="mb-3 font-semibold">ROI Decision Framework</h3>
           <p>
             Use managed services when: (1) you have &lt;10M events/month, (2) limited DevOps resources, (3) rapid prototyping needed. Self-host when: (1) you have &gt;100M events/month, (2) strict data residency requirements, (3) dedicated DevOps team available. For most startups, managed services show better ROI until scale justifies self-hosting.
           </p>
-        </div>
+        </HighlightBlock>
       </section>
 
       <section>
         <h2>Common Interview Questions</h2>
         <div className="space-y-4">
-          <div className="rounded-lg border border-theme bg-panel-soft p-4">
+          <HighlightBlock
+            as="div"
+            tier="crucial"
+            className="rounded-lg border border-theme bg-panel-soft p-4"
+          >
             <p className="font-semibold">
               Q: What is the key difference between Observer and Pub-Sub
               patterns?
@@ -635,9 +643,13 @@ export default function PublishSubscribePatternArticle() {
               full decoupling enables cross-module, cross-framework, and even
               cross-process communication that Observer cannot support.
             </p>
-          </div>
+          </HighlightBlock>
 
-          <div className="rounded-lg border border-theme bg-panel-soft p-4">
+          <HighlightBlock
+            as="div"
+            tier="important"
+            className="rounded-lg border border-theme bg-panel-soft p-4"
+          >
             <p className="font-semibold">
               Q: How would you implement cross-tab communication using Pub-Sub?
             </p>
@@ -652,9 +664,13 @@ export default function PublishSubscribePatternArticle() {
               to prevent self-echo. Close channels on page unload to prevent
               leaks.
             </p>
-          </div>
+          </HighlightBlock>
 
-          <div className="rounded-lg border border-theme bg-panel-soft p-4">
+          <HighlightBlock
+            as="div"
+            tier="important"
+            className="rounded-lg border border-theme bg-panel-soft p-4"
+          >
             <p className="font-semibold">
               Q: How does Redux relate to the Pub-Sub pattern?
             </p>
@@ -668,7 +684,7 @@ export default function PublishSubscribePatternArticle() {
               processing (no side effects in message handling), and immutable
               state updates (new state is always a new object reference).
             </p>
-          </div>
+          </HighlightBlock>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
             <p className="font-semibold">

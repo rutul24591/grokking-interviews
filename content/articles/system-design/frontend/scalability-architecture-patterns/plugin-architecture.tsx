@@ -117,7 +117,10 @@ export default function PluginArchitectureArticle() {
           <h3 className="mb-4 text-lg font-semibold">
             Host Application / Plugin API / Lifecycle Hooks
           </h3>
-          <p>The host application exposes a plugin API with lifecycle hooks:</p>
+          <HighlightBlock as="p" tier="important">
+            The host application exposes a plugin API with lifecycle hooks. The API boundary is where you enforce
+            versioning, capability restrictions, and error isolation.
+          </HighlightBlock>
           <ol className="mt-3 space-y-2">
             <li>
               <strong>Host Core:</strong> The application&apos;s core
@@ -159,10 +162,10 @@ export default function PluginArchitectureArticle() {
               <strong>2. Loading:</strong> Plugin code and manifest are fetched
               (dynamic import, script tag injection)
             </li>
-            <li>
+            <HighlightBlock as="li" tier="crucial">
               <strong>3. Validation:</strong> Manifest is checked — API version
               compatibility, required permissions, dependency resolution
-            </li>
+            </HighlightBlock>
             <li>
               <strong>4. Registration:</strong> Plugin&apos;s contribution
               points are registered with the host (commands, views, menus)
@@ -285,10 +288,12 @@ export default function PluginArchitectureArticle() {
                 <br />• Community contributions scale development
               </td>
               <td className="p-3">
-                • Plugin API documentation must be excellent
-                <br />
-                • Debugging requires understanding host internals
-                <br />• Plugin developer experience is a product itself
+                <HighlightBlock tier="important">
+                  • Plugin API documentation must be excellent
+                  <br />
+                  • Debugging requires understanding host internals
+                  <br />• Plugin developer experience is a product itself
+                </HighlightBlock>
               </td>
             </tr>
             <tr>
@@ -330,13 +335,13 @@ export default function PluginArchitectureArticle() {
             type, running a command, or navigating to a specific view. This
             keeps startup fast regardless of installed plugin count.
           </HighlightBlock>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Version the Plugin API:</strong> Use semantic versioning for
             the plugin API. Plugins declare the minimum API version they
             require. The host can run plugins targeting older API versions
             through compatibility shims. Breaking changes require a major
             version bump and a migration guide.
-          </li>
+          </HighlightBlock>
           <HighlightBlock as="li" tier="important">
             <strong>Provide a Plugin Development Kit (PDK):</strong> Give plugin
             developers a CLI for scaffolding, a local development server with
@@ -351,27 +356,27 @@ export default function PluginArchitectureArticle() {
             notification. Never let a plugin crash bring down the host
             application.
           </HighlightBlock>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Monitor Plugin Performance:</strong> Track each
             plugin&apos;s activation time, memory usage, and API call frequency.
             Surface slow or resource-heavy plugins to users so they can make
             informed decisions about which plugins to keep. VS Code&apos;s
             &quot;Extension Bisect&quot; feature helps identify problematic
             extensions.
-          </li>
+          </HighlightBlock>
         </ol>
       </section>
 
       <section>
         <h2>Common Pitfalls</h2>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Insufficient Extension Points:</strong> Launching with too
             few hooks forces plugin developers to use workarounds
             (monkey-patching, accessing internals) that break on host updates.
             Analyze the most common plugin use cases and provide extension
             points for each. Better to have unused hooks than to force hacks.
-          </li>
+          </HighlightBlock>
           <HighlightBlock as="li" tier="crucial">
             <strong>Leaking Host Internals:</strong> Exposing internal data
             structures or implementation details through the plugin API creates
@@ -387,13 +392,13 @@ export default function PluginArchitectureArticle() {
             that affect the host. Implement at least basic sandboxing for
             untrusted plugins.
           </HighlightBlock>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Plugin Ordering Issues:</strong> When multiple plugins hook
             into the same extension point, their execution order may matter.
             Without explicit ordering controls (priority values, before/after
             declarations), the order is non-deterministic and plugins may
             conflict.
-          </li>
+          </HighlightBlock>
           <HighlightBlock as="li" tier="important">
             <strong>Marketplace Without Curation:</strong> An unreviewed
             marketplace quickly fills with low-quality, abandoned, or malicious
@@ -414,14 +419,14 @@ export default function PluginArchitectureArticle() {
             rich API for editor manipulation, language services, debugging, and
             UI customization.
           </HighlightBlock>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Webpack Plugin System (Tapable):</strong> Webpack&apos;s
             entire compilation pipeline is built on Tapable hooks. Plugins tap
             into hooks at every compilation stage — entry resolution, module
             building, chunk optimization, asset emission. This is a synchronous
             hook-based plugin system where plugins are first-party or
             community-maintained.
-          </li>
+          </HighlightBlock>
           <HighlightBlock as="li" tier="important">
             <strong>Figma Plugins:</strong> Figma plugins run in a sandboxed
             iframe with access to the Figma Plugin API. They can read and modify
@@ -437,14 +442,14 @@ export default function PluginArchitectureArticle() {
             network requests, and browser chrome. Manifest V3 introduced
             stricter sandboxing and capability restrictions.
           </HighlightBlock>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Storybook Addons:</strong> Storybook&apos;s addon system
             allows extending the component development environment with panels
             (accessibility checker, design tokens), decorators (theme wrapper,
             viewport simulator), and presets (configuration bundles). Addons
             register via a channel-based communication model between the manager
             UI and preview iframe.
-          </li>
+          </HighlightBlock>
         </ul>
       </section>
 
@@ -463,12 +468,12 @@ export default function PluginArchitectureArticle() {
             <HighlightBlock as="li" tier="important">
               <strong>Capability-Based Security:</strong> Plugins should only have access to explicitly granted capabilities. Mitigation: implement capability manifest, validate plugin permissions, use principle of least privilege.
             </HighlightBlock>
-            <li>
+            <HighlightBlock as="li" tier="important">
               <strong>Code Signing:</strong> Verify plugin integrity before loading. Mitigation: sign plugins with cryptographic signatures, verify signatures before loading, use trusted plugin registries.
-            </li>
-            <li>
+            </HighlightBlock>
+            <HighlightBlock as="li" tier="important">
               <strong>API Surface Minimization:</strong> Expose only necessary host APIs to plugins. Mitigation: document plugin API clearly, version plugin APIs, avoid exposing sensitive host functionality.
-            </li>
+            </HighlightBlock>
           </ul>
         </div>
 
@@ -515,11 +520,11 @@ export default function PluginArchitectureArticle() {
                 <td className="p-2">&lt;10% performance impact</td>
                 <td className="p-2">Benchmark comparison</td>
               </tr>
-              <tr>
+              <HighlightBlock as="tr" tier="important">
                 <td className="p-2">IPC Latency</td>
                 <td className="p-2">&lt;1ms per message</td>
                 <td className="p-2">Performance.now()</td>
-              </tr>
+              </HighlightBlock>
               <tr>
                 <td className="p-2">Plugin Count</td>
                 <td className="p-2">&lt;100 active plugins</td>
@@ -550,9 +555,9 @@ export default function PluginArchitectureArticle() {
 
       <section>
         <h2>Cost Analysis</h2>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Plugin Architecture has significant infrastructure and operational costs but enables ecosystem growth and third-party extensibility.
-        </p>
+        </HighlightBlock>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-4 text-lg font-semibold">Infrastructure Costs</h3>
@@ -560,9 +565,9 @@ export default function PluginArchitectureArticle() {
             <li>
               <strong>Plugin Registry:</strong> Hosting plugin marketplace, version management, download serving. Estimate: $500-2,000/month for moderate traffic.
             </li>
-            <li>
+            <HighlightBlock as="li" tier="crucial">
               <strong>Security Infrastructure:</strong> Code signing, vulnerability scanning, sandboxing infrastructure. Estimate: $1,000-5,000/month.
-            </li>
+            </HighlightBlock>
             <li>
               <strong>Developer Relations:</strong> Plugin SDK documentation, developer support, community management. Estimate: 1-2 FTE for active ecosystems.
             </li>
@@ -581,12 +586,16 @@ export default function PluginArchitectureArticle() {
           </ul>
         </div>
 
-        <div className="my-6 rounded-lg border border-accent/30 bg-accent/10 p-6">
+        <HighlightBlock
+          as="div"
+          tier="important"
+          className="my-6 rounded-lg border border-accent/30 bg-accent/10 p-6"
+        >
           <h3 className="mb-3 font-semibold">When to Use Plugin Architecture</h3>
           <p>
             Use plugins when: (1) you need third-party extensibility, (2) you want to enable ecosystem growth, (3) you need to support custom integrations. Avoid when: (1) you have no third-party developers, (2) security requirements are too strict for third-party code, (3) the complexity outweighs the benefits.
           </p>
-        </div>
+        </HighlightBlock>
       </section>
 
       <section>

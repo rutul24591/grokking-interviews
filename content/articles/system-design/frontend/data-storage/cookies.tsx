@@ -238,6 +238,11 @@ export default function CookiesConciseArticle() {
 
       <section>
         <h2>Trade-offs: Cookies vs. Other Storage Mechanisms</h2>
+        <HighlightBlock as="p" tier="important">
+          Staff-level heuristic: use <strong>cookies</strong> only when the server must read the value (SSR state,
+          sessions) or when you need browser-managed credential semantics. Use <strong>localStorage/sessionStorage</strong>
+          for client-only preferences, and <strong>IndexedDB</strong> for structured/offline datasets.
+        </HighlightBlock>
         <table className="w-full border-collapse text-sm">
           <thead>
             <tr className="border-b border-theme">
@@ -256,20 +261,20 @@ export default function CookiesConciseArticle() {
               <td className="p-3">5-10 MB</td>
               <td className="p-3">Hundreds of MB+</td>
             </tr>
-            <tr className="border-b border-theme">
+            <HighlightBlock as="tr" tier="crucial" className="border-b border-theme">
               <td className="p-3 font-medium">Sent with HTTP requests</td>
               <td className="p-3">Yes (automatic)</td>
               <td className="p-3">No</td>
               <td className="p-3">No</td>
               <td className="p-3">No</td>
-            </tr>
-            <tr className="border-b border-theme">
+            </HighlightBlock>
+            <HighlightBlock as="tr" tier="important" className="border-b border-theme">
               <td className="p-3 font-medium">Server-readable</td>
               <td className="p-3">Yes (every request)</td>
               <td className="p-3">No (JS only)</td>
               <td className="p-3">No (JS only)</td>
               <td className="p-3">No (JS only)</td>
-            </tr>
+            </HighlightBlock>
             <tr className="border-b border-theme">
               <td className="p-3 font-medium">Expiration control</td>
               <td className="p-3">Expires / Max-Age</td>
@@ -277,13 +282,13 @@ export default function CookiesConciseArticle() {
               <td className="p-3">Tab lifetime</td>
               <td className="p-3">Persistent (manual delete)</td>
             </tr>
-            <tr className="border-b border-theme">
+            <HighlightBlock as="tr" tier="important" className="border-b border-theme">
               <td className="p-3 font-medium">JS access control</td>
               <td className="p-3">HttpOnly blocks JS</td>
               <td className="p-3">Always accessible</td>
               <td className="p-3">Always accessible</td>
               <td className="p-3">Always accessible</td>
-            </tr>
+            </HighlightBlock>
             <tr className="border-b border-theme">
               <td className="p-3 font-medium">Cross-origin behavior</td>
               <td className="p-3">SameSite controls</td>

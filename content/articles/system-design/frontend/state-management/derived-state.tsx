@@ -152,13 +152,13 @@ export default function DerivedStateConciseArticle() {
           captionTier="important"
         />
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           Selector composition mirrors this graph. In Reselect, you would define <code>selectFilteredItems</code> using
           <code>selectItems</code> and <code>selectFilter</code> as input selectors, then <code>selectSortedFilteredItems</code>
           using <code>selectFilteredItems</code> and <code>selectSortOrder</code>. Each selector acts as a memoization
           boundary in the graph. If any input selector returns the same reference as the previous call, the output
           selector is skipped entirely.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/frontend/state-management/selector-memoization.svg"
@@ -204,14 +204,14 @@ export default function DerivedStateConciseArticle() {
             </tr>
           </thead>
           <tbody className="divide-y divide-theme">
-            <tr>
+            <HighlightBlock as="tr" tier="important">
               <td className="p-3"><strong>Automatic Tracking</strong></td>
               <td className="p-3">No — manual deps array</td>
               <td className="p-3">No — explicit input selectors</td>
               <td className="p-3">Yes — proxy-based</td>
               <td className="p-3">Yes — atom graph</td>
               <td className="p-3">No</td>
-            </tr>
+            </HighlightBlock>
             <tr>
               <td className="p-3"><strong>Caching</strong></td>
               <td className="p-3">Single value, per component</td>

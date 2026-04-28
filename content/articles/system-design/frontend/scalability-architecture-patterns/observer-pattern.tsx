@@ -178,7 +178,7 @@ export default function ObserverPatternArticle() {
             </tr>
           </thead>
           <tbody className="divide-y divide-theme">
-            <tr>
+            <HighlightBlock as="tr" tier="important">
               <td className="p-3">
                 <strong>Reactivity</strong>
               </td>
@@ -194,7 +194,7 @@ export default function ObserverPatternArticle() {
                 • Difficult to predict execution order
                 <br />• Can trigger unnecessary re-renders
               </td>
-            </tr>
+            </HighlightBlock>
             <tr>
               <td className="p-3">
                 <strong>Coupling</strong>
@@ -282,13 +282,13 @@ export default function ObserverPatternArticle() {
             for DOM changes. These APIs are optimized by the browser engine and
             integrated with the rendering pipeline.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Document Observer Contracts:</strong> Each subject should
             clearly document what events it emits, what data is included in
             notifications, and what ordering guarantees exist. Without this
             contract, observers make assumptions that break when the subject
             evolves.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Consider Weak References for Long-Lived Subjects:</strong>{" "}
             For subjects that outlive their observers (global event buses,
@@ -311,13 +311,13 @@ export default function ObserverPatternArticle() {
             a potential memory leak. In SPAs that run for hours, these leaks
             accumulate and degrade performance.
           </HighlightBlock>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Notification Storms:</strong> When observer A updates state
             that triggers observer B, which updates state that triggers observer
             C, and so on, the cascading notifications can freeze the UI. Break
             cycles by batching state updates (React&apos;s automatic batching)
             or using microtask scheduling to defer cascading notifications.
-          </li>
+          </HighlightBlock>
           <HighlightBlock as="li" tier="important">
             <strong>Stale Closure State:</strong> In React, observer callbacks
             defined in useEffect capture the state values at the time the effect
@@ -325,13 +325,13 @@ export default function ObserverPatternArticle() {
             refs to access current values within observer callbacks, or ensure
             the effect re-subscribes when relevant dependencies change.
           </HighlightBlock>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Over-Observing:</strong> Subscribing to broad state changes
             when only a narrow slice is needed causes excessive re-renders. A
             component that subscribes to the entire Redux state tree re-renders
             on every action. Use selectors, memoization, and fine-grained
             subscriptions to limit the blast radius of state changes.
-          </li>
+          </HighlightBlock>
           <HighlightBlock as="li" tier="important">
             <strong>Synchronous Observer Bottlenecks:</strong> When a subject
             notifies many observers synchronously and some observers perform
@@ -345,27 +345,27 @@ export default function ObserverPatternArticle() {
       <section>
         <h2>Real-World Use Cases</h2>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>React State Management:</strong> Zustand, Jotai, and Valtio
             all use observer patterns internally. Components subscribe to state
             slices, and the store notifies subscribers on changes. React&apos;s
             useSyncExternalStore hook is the official API for connecting
             external observable stores to React&apos;s rendering pipeline.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Intersection Observer for Lazy Loading:</strong>{" "}
             Applications like Instagram, Twitter, and infinite-scroll feeds use
             IntersectionObserver to detect when elements enter the viewport,
             triggering image loading, data fetching, or animation playback only
             when content is visible.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Real-Time Collaboration:</strong> Tools like Figma and
             Google Docs use observer patterns for operational transformation —
             local changes are observed and broadcast, while remote changes are
             received and applied, with all observers notified to update their
             views.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Form Validation Libraries:</strong> React Hook Form uses
             observers to watch specific form fields and trigger validation or
@@ -393,12 +393,12 @@ export default function ObserverPatternArticle() {
             <HighlightBlock as="li" tier="crucial">
               <strong>Observer Hijacking:</strong> Attackers can register malicious observers to intercept sensitive events. Mitigation: validate observer registration sources, implement observer allowlists, use weak references for observers to prevent memory leaks.
             </HighlightBlock>
-            <li>
+            <HighlightBlock as="li" tier="important">
               <strong>Event Data Leakage:</strong> Observers may receive sensitive data in event payloads. Mitigation: implement data minimization (only include necessary data in events), use event filtering to restrict which observers receive sensitive events, encrypt sensitive event payloads.
-            </li>
-            <li>
+            </HighlightBlock>
+            <HighlightBlock as="li" tier="important">
               <strong>Denial of Service via Observer Flooding:</strong> Attackers can trigger excessive event notifications to overwhelm observers. Mitigation: implement rate limiting on event emission, use debouncing/throttling for high-frequency events, implement circuit breakers for observer notification.
-            </li>
+            </HighlightBlock>
           </ul>
         </div>
 
@@ -408,9 +408,9 @@ export default function ObserverPatternArticle() {
             <li>
               <strong>WeakRef for Observers:</strong> Use WeakRef to hold observer references. Allows garbage collection of destroyed observers. Prevents memory leaks from forgotten unsubscriptions.
             </li>
-            <li>
+            <HighlightBlock as="li" tier="important">
               <strong>Automatic Cleanup:</strong> Implement automatic cleanup in component unmount hooks (useEffect cleanup, ngOnDestroy). Track all subscriptions and unsubscribe on destroy.
-            </li>
+            </HighlightBlock>
             <li>
               <strong>Memory Monitoring:</strong> Monitor memory usage in production. Set up alerts for memory growth patterns. Use browser DevTools Memory profiler for leak detection.
             </li>
@@ -420,9 +420,9 @@ export default function ObserverPatternArticle() {
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-4 text-lg font-semibold">Cross-Origin Observer Security</h3>
           <ul className="space-y-2">
-            <li>
+            <HighlightBlock as="li" tier="important">
               <strong>postMessage Validation:</strong> When using postMessage for cross-origin observation, validate message origins strictly. Use MessageChannel for trusted communication.
-            </li>
+            </HighlightBlock>
             <li>
               <strong>CSP for Observers:</strong> Implement strict Content Security Policy to prevent unauthorized observer registration via injected scripts.
             </li>
@@ -445,9 +445,9 @@ export default function ObserverPatternArticle() {
             <li>
               <strong>Integration Tests (Middle):</strong> Test observer-subject interaction. Verify that observers receive correct event data. Test error handling when observers throw during notification.
             </li>
-            <li>
+            <HighlightBlock as="li" tier="important">
               <strong>Memory Leak Tests (Middle):</strong> Test that observers are garbage collected after unsubscription. Use weak refs and verify GC behavior. Run memory profiling in CI for critical components.
-            </li>
+            </HighlightBlock>
             <li>
               <strong>Performance Tests (Top):</strong> Test notification performance with many observers. Measure notification latency. Verify that batching/throttling works correctly under load.
             </li>
@@ -478,9 +478,9 @@ export default function ObserverPatternArticle() {
             <li>
               <strong>Notification Order:</strong> Test that observers are notified in expected order (if order matters). Document ordering guarantees.
             </li>
-            <li>
+            <HighlightBlock as="li" tier="important">
               <strong>Error Isolation:</strong> Test that one observer throwing doesn't prevent other observers from being notified. Implement try-catch in notification loop.
-            </li>
+            </HighlightBlock>
             <li>
               <strong>Async Observers:</strong> Test async observer notification. Verify that promises are handled correctly. Test error handling for rejected promises.
             </li>
@@ -505,21 +505,21 @@ export default function ObserverPatternArticle() {
               </tr>
             </thead>
             <tbody className="divide-y divide-theme">
-              <tr>
+              <HighlightBlock as="tr" tier="important">
                 <td className="p-2">Notification Latency</td>
                 <td className="p-2">&lt;1ms per observer</td>
                 <td className="p-2">Performance.now()</td>
-              </tr>
+              </HighlightBlock>
               <tr>
                 <td className="p-2">Observer Count</td>
                 <td className="p-2">&lt;100 per subject</td>
                 <td className="p-2">Runtime monitoring</td>
               </tr>
-              <tr>
+              <HighlightBlock as="tr" tier="important">
                 <td className="p-2">Cleanup Time</td>
                 <td className="p-2">&lt;0.1ms per observer</td>
                 <td className="p-2">Performance.now()</td>
-              </tr>
+              </HighlightBlock>
               <tr>
                 <td className="p-2">Memory per Observer</td>
                 <td className="p-2">&lt;1KB per observer</td>
@@ -601,27 +601,35 @@ export default function ObserverPatternArticle() {
             <li>
               <strong>Memory Overhead:</strong> Each observer reference consumes memory. For 1,000 observers: ~1MB of memory. Memory leaks from forgotten cleanup can grow unbounded.
             </li>
-            <li>
+            <HighlightBlock as="li" tier="important">
               <strong>CPU Overhead:</strong> Notification loops consume CPU. For high-frequency events (scroll, resize), unoptimized notification can cause jank. Throttling/batching essential.
-            </li>
+            </HighlightBlock>
             <li>
               <strong>GC Pressure:</strong> Frequent observer registration/unregistration creates GC pressure. Use WeakRef or object pools for high-churn scenarios.
             </li>
           </ul>
         </div>
 
-        <div className="my-6 rounded-lg border border-accent/30 bg-accent/10 p-6">
+        <HighlightBlock
+          as="div"
+          tier="important"
+          className="my-6 rounded-lg border border-accent/30 bg-accent/10 p-6"
+        >
           <h3 className="mb-3 font-semibold">ROI Decision Framework</h3>
           <p>
             Use established libraries (RxJS, EventEmitter) when: (1) you need advanced features (operators, backpressure), (2) team is familiar with the library, (3) bundle size is acceptable. Implement custom when: (1) you need minimal overhead, (2) simple use case (basic pub-sub), (3) bundle size is critical.
           </p>
-        </div>
+        </HighlightBlock>
       </section>
 
       <section>
         <h2>Common Interview Questions</h2>
         <div className="space-y-4">
-          <div className="rounded-lg border border-theme bg-panel-soft p-4">
+          <HighlightBlock
+            as="div"
+            tier="important"
+            className="rounded-lg border border-theme bg-panel-soft p-4"
+          >
             <p className="font-semibold">
               Q: What is the difference between the Observer Pattern and the
               Publish-Subscribe Pattern?
@@ -638,7 +646,7 @@ export default function ObserverPatternArticle() {
               (addEventListener on the element); Redux uses pub-sub (dispatch
               actions to the store, subscribers react to state changes).
             </HighlightBlock>
-          </div>
+          </HighlightBlock>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
             <p className="font-semibold">

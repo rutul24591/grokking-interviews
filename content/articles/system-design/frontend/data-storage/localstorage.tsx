@@ -261,13 +261,13 @@ export default function LocalStorageConciseArticle() {
             </tr>
           </thead>
           <tbody className="divide-y divide-theme">
-            <tr>
+            <HighlightBlock as="tr" tier="important">
               <td className="p-3"><strong>Capacity</strong></td>
               <td className="p-3">5-10MB per origin</td>
               <td className="p-3">5-10MB per origin</td>
               <td className="p-3">4KB per cookie, ~80 cookies per domain</td>
               <td className="p-3">Hundreds of MB to GB (dynamic quota)</td>
-            </tr>
+            </HighlightBlock>
             <tr>
               <td className="p-3"><strong>Persistence</strong></td>
               <td className="p-3">Permanent (until manually cleared)</td>

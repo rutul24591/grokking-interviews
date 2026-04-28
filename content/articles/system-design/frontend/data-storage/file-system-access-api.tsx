@@ -162,6 +162,12 @@ export default function FileSystemAccessApiConciseArticle() {
           caption="Figure 2: Permission flow — read vs. write access and session lifecycle"
           captionTier="crucial"
         />
+        <HighlightBlock as="p" tier="important">
+          Treat file and directory handles as <strong>capabilities</strong>: the handle itself represents authority.
+          Persisting handles for later reuse can improve UX, but it also expands the security surface. For interview
+          discussions, explicitly call out how you gate handle persistence, re-check permissions on startup, and
+          degrade gracefully when handles become invalid or permissions are revoked.
+        </HighlightBlock>
       </section>
 
       {/* ============================================================
@@ -185,13 +191,13 @@ export default function FileSystemAccessApiConciseArticle() {
               </tr>
             </thead>
             <tbody>
-              <tr className="border-b border-theme">
+              <HighlightBlock as="tr" tier="crucial" className="border-b border-theme">
                 <td className="px-4 py-2 font-medium">User visible files</td>
                 <td className="px-4 py-2">Yes — real disk files</td>
                 <td className="px-4 py-2">No — browser sandbox</td>
                 <td className="px-4 py-2">No</td>
                 <td className="px-4 py-2">Read-only snapshot</td>
-              </tr>
+              </HighlightBlock>
               <tr className="border-b border-theme">
                 <td className="px-4 py-2 font-medium">Write support</td>
                 <td className="px-4 py-2">Full read/write with permission</td>

@@ -144,7 +144,7 @@ export default function StatePersistenceConciseArticle() {
           mismatches, and performance bottlenecks.
         </HighlightBlock>
 
-        <div className="my-6 rounded-lg bg-panel-soft p-6">
+        <HighlightBlock as="div" tier="important" className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-4 text-lg font-semibold">Persistence Lifecycle</h3>
           <ol className="space-y-3">
             <li><strong>1. Application Initializes:</strong> JavaScript loads, state management library creates the store with default values.</li>
@@ -158,7 +158,7 @@ export default function StatePersistenceConciseArticle() {
             <li><strong>9. State Changes:</strong> As the user interacts, state updates flow through the store.</li>
             <li><strong>10. Debounce & Persist:</strong> A debounce timer (typically 300ms) batches rapid changes, then serializes and writes to storage.</li>
           </ol>
-        </div>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/frontend/state-management/persistence-lifecycle.svg"
@@ -198,22 +198,22 @@ export default function StatePersistenceConciseArticle() {
             </tr>
           </thead>
           <tbody className="divide-y divide-theme">
-            <tr>
+            <HighlightBlock as="tr" tier="important">
               <td className="p-3"><strong>Capacity</strong></td>
               <td className="p-3">5-10 MB</td>
               <td className="p-3">5-10 MB</td>
               <td className="p-3">50%+ of disk</td>
               <td className="p-3">~4 KB per cookie</td>
               <td className="p-3">Origin quota</td>
-            </tr>
-            <tr>
+            </HighlightBlock>
+            <HighlightBlock as="tr" tier="important">
               <td className="p-3"><strong>API Type</strong></td>
               <td className="p-3">Synchronous</td>
               <td className="p-3">Synchronous</td>
               <td className="p-3">Asynchronous</td>
               <td className="p-3">Synchronous (document.cookie)</td>
               <td className="p-3">Asynchronous</td>
-            </tr>
+            </HighlightBlock>
             <tr>
               <td className="p-3"><strong>Structured Data</strong></td>
               <td className="p-3">No (strings only)</td>

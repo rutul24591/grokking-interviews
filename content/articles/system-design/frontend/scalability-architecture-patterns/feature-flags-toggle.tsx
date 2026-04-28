@@ -207,7 +207,7 @@ export default function FeatureFlagsToggleArticle() {
                 </HighlightBlock>
               </td>
             </tr>
-            <tr>
+            <HighlightBlock as="tr" tier="important">
               <td className="p-3"><strong>Development Velocity</strong></td>
               <td className="p-3">
                 • Trunk-based development (no long-lived branches)<br />
@@ -219,7 +219,7 @@ export default function FeatureFlagsToggleArticle() {
                 • Testing all flag combinations is exponential<br />
                 • Code complexity increases with flag conditionals
               </td>
-            </tr>
+            </HighlightBlock>
             <tr>
               <td className="p-3"><strong>Experimentation</strong></td>
               <td className="p-3">

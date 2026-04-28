@@ -227,7 +227,7 @@ export default function GlobalStateManagementConciseArticle() {
               </tr>
             </thead>
             <tbody>
-              <tr className="border-b border-theme">
+              <HighlightBlock as="tr" tier="important" className="border-b border-theme">
                 <td className="px-3 py-2 font-medium">Bundle Size</td>
                 <td className="px-3 py-2">~11KB (RTK)</td>
                 <td className="px-3 py-2">~1.1KB</td>
@@ -235,7 +235,7 @@ export default function GlobalStateManagementConciseArticle() {
                 <td className="px-3 py-2">~3.5KB</td>
                 <td className="px-3 py-2">~16KB</td>
                 <td className="px-3 py-2">0 (built-in)</td>
-              </tr>
+              </HighlightBlock>
               <tr className="border-b border-theme">
                 <td className="px-3 py-2 font-medium">Boilerplate</td>
                 <td className="px-3 py-2">Medium (RTK reduces it)</td>
