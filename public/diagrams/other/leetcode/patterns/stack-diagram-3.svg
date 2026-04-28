@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="system-ui, sans-serif">
+  <rect width="900" height="500" fill="#f3f1f8"/>
+  <text x="450" y="32" text-anchor="middle" font-size="19" font-weight="700" fill="#1a1822">Canonical Stack Leetcode Problems</text>
+
+  <rect x="40" y="60" width="820" height="200" fill="#fff" stroke="#6d5bd0" stroke-width="2" rx="6"/>
+  <text x="60" y="88" font-size="13" font-weight="700" fill="#6d5bd0">Bracket / matched-pair</text>
+  <text x="60" y="115" font-size="11">• 20. Valid Parentheses — base template</text>
+  <text x="60" y="135" font-size="11">• 32. Longest Valid Parentheses — stack of indices, track last invalid</text>
+  <text x="60" y="155" font-size="11">• 921 / 1249. Minimum Add / Remove to Make Parentheses Valid</text>
+  <text x="60" y="175" font-size="11">• 1614. Maximum Nesting Depth — running counter (stack-equivalent)</text>
+  <text x="60" y="195" font-size="11">• 394. Decode String — push (multiplier, prefix) on &apos;[&apos;, pop on &apos;]&apos;</text>
+  <text x="60" y="225" font-size="11">• 71. Simplify Path — push directories, pop on &apos;..&apos;</text>
+
+  <rect x="40" y="280" width="820" height="195" fill="#fff" stroke="#4caf50" stroke-width="2" rx="6"/>
+  <text x="60" y="308" font-size="13" font-weight="700" fill="#4caf50">Stack as data-structure design</text>
+  <text x="60" y="335" font-size="11">• 155. Min Stack — pair every push with running min</text>
+  <text x="60" y="355" font-size="11">• 232. Implement Queue using Stacks — amortised O(1) per op</text>
+  <text x="60" y="375" font-size="11">• 225. Implement Stack using Queues</text>
+  <text x="60" y="395" font-size="11">• 150. Evaluate Reverse Polish Notation — pure stack evaluator</text>
+  <text x="60" y="415" font-size="11">• 224 / 227 / 772. Basic Calculator I/II/III — values + operators stacks</text>
+  <text x="60" y="435" font-size="11">• 173. Binary Search Tree Iterator — controlled-DFS via stack</text>
+  <text x="60" y="460" font-size="11" fill="#4caf50" font-weight="700">Whenever &quot;current state depends on most recent unfinished thing&quot;, reach for a stack.</text>
+</svg>

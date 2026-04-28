@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="system-ui, sans-serif">
+  <rect width="900" height="500" fill="#f3f1f8"/>
+  <text x="450" y="32" text-anchor="middle" font-size="19" font-weight="700" fill="#1a1822">Walk-through — [3, 1, 5, 4, 2]</text>
+
+  <rect x="40" y="60" width="820" height="200" fill="#fff" stroke="#6d5bd0" stroke-width="2" rx="6"/>
+  <text x="60" y="88" font-size="13" font-weight="700" fill="#6d5bd0">Step-by-step swaps</text>
+  <text x="60" y="115" font-size="11">i = 0: nums[0] = 3, target index 2. Swap with nums[2] = 5 → [5, 1, 3, 4, 2]</text>
+  <text x="60" y="135" font-size="11">i = 0: nums[0] = 5, target index 4. Swap with nums[4] = 2 → [2, 1, 3, 4, 5]</text>
+  <text x="60" y="155" font-size="11">i = 0: nums[0] = 2, target index 1. Swap with nums[1] = 1 → [1, 2, 3, 4, 5]</text>
+  <text x="60" y="175" font-size="11">i = 0: nums[0] = 1, in place. Advance i.</text>
+  <text x="60" y="195" font-size="11">i = 1..4: every value already at its target index. No more swaps.</text>
+  <text x="60" y="225" font-size="11">Total swaps: 3. Each swap fixes one position; outer loop never revisits done indices.</text>
+
+  <rect x="40" y="280" width="820" height="195" fill="#fff" stroke="#4caf50" stroke-width="2" rx="6"/>
+  <text x="60" y="308" font-size="13" font-weight="700" fill="#4caf50">Variant: missing number in [0, n]</text>
+  <text x="60" y="335" font-size="11">Input: [4, 0, 3, 1] — values in 0..n, n = 4. One value is missing.</text>
+  <text x="60" y="355" font-size="11">Place each v at index v. After cyclic sort: [0, 1, ?, 3, 4] where ? marks gap.</text>
+  <text x="60" y="375" font-size="11">Skip swap when target index would be out of range (v == n).</text>
+  <text x="60" y="395" font-size="11">After pass, scan for first index where nums[i] != i — that index is the missing value.</text>
+  <text x="60" y="425" font-size="11">For duplicates: after pass, any nums[i] != i+1 reveals both the duplicate and missing.</text>
+  <text x="60" y="465" font-size="11" fill="#4caf50" font-weight="700">One pass places values; second pass identifies anomalies.</text>
+</svg>

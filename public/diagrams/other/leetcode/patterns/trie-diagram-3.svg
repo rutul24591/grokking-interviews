@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="system-ui, sans-serif">
+  <rect width="900" height="500" fill="#f3f1f8"/>
+  <text x="450" y="32" text-anchor="middle" font-size="19" font-weight="700" fill="#1a1822">Canonical Trie Leetcode Problems</text>
+
+  <rect x="40" y="60" width="820" height="200" fill="#fff" stroke="#6d5bd0" stroke-width="2" rx="6"/>
+  <text x="60" y="88" font-size="13" font-weight="700" fill="#6d5bd0">Pure trie problems</text>
+  <text x="60" y="115" font-size="11">• 208. Implement Trie — base class</text>
+  <text x="60" y="135" font-size="11">• 211. Add and Search Word — wildcard with DFS over &apos;.&apos;</text>
+  <text x="60" y="155" font-size="11">• 1268. Search Suggestions System — DFS to collect bottom-3 alphabetically</text>
+  <text x="60" y="175" font-size="11">• 642. Design Search Autocomplete — trie + frequency aggregation</text>
+  <text x="60" y="195" font-size="11">• 720. Longest Word in Dictionary — prefix-walkable longest</text>
+  <text x="60" y="225" font-size="11">• 14. Longest Common Prefix — trivial trie or zip-and-compare</text>
+
+  <rect x="40" y="280" width="820" height="195" fill="#fff" stroke="#4caf50" stroke-width="2" rx="6"/>
+  <text x="60" y="308" font-size="13" font-weight="700" fill="#4caf50">Trie + algorithm</text>
+  <text x="60" y="335" font-size="11">• 212. Word Search II — trie + grid DFS</text>
+  <text x="60" y="355" font-size="11">• 421. Maximum XOR of Two Numbers — bit-trie, greedy descent</text>
+  <text x="60" y="375" font-size="11">• 1707. Maximum XOR With Element From Array — bit-trie + offline queries</text>
+  <text x="60" y="395" font-size="11">• 472. Concatenated Words — trie + DP</text>
+  <text x="60" y="415" font-size="11">• 745. Prefix and Suffix Search — two tries (one for reversed words)</text>
+  <text x="60" y="435" font-size="11">• 336. Palindrome Pairs — trie of reversed words</text>
+  <text x="60" y="465" font-size="11" fill="#4caf50" font-weight="700">Reach for trie when prefixes are queried many times against a dictionary.</text>
+</svg>

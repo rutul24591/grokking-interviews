@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="system-ui, sans-serif">
+  <rect width="900" height="500" fill="#f3f1f8"/>
+  <text x="450" y="32" text-anchor="middle" font-size="19" font-weight="700" fill="#1a1822">Stack — LIFO Bookkeeping for Nested Structure</text>
+
+  <rect x="40" y="60" width="820" height="200" fill="#fff" stroke="#6d5bd0" stroke-width="2" rx="6"/>
+  <text x="60" y="88" font-size="13" font-weight="700" fill="#6d5bd0">When a stack fits</text>
+  <text x="60" y="115" font-size="11">• Matched-pair / bracket validation — push openers, pop on closer</text>
+  <text x="60" y="135" font-size="11">• Expression evaluation — operator precedence with two stacks</text>
+  <text x="60" y="155" font-size="11">• Iterative DFS — replace recursion with explicit stack</text>
+  <text x="60" y="175" font-size="11">• Undo / call-stack / nearest enclosing scope</text>
+  <text x="60" y="195" font-size="11">• &quot;Process the most recent thing first&quot; signal phrase</text>
+  <text x="60" y="225" font-size="11" font-weight="700">Operations: push, pop, peek — all O(1).</text>
+
+  <rect x="40" y="280" width="820" height="195" fill="#fff" stroke="#4caf50" stroke-width="2" rx="6"/>
+  <text x="60" y="308" font-size="13" font-weight="700" fill="#4caf50">Bracket-matching template</text>
+  <text x="60" y="335" font-size="11">For each character c in s:</text>
+  <text x="60" y="355" font-size="11">  if c is opener: push c</text>
+  <text x="60" y="375" font-size="11">  if c is closer: stack must be non-empty AND top must be the matching opener; pop</text>
+  <text x="60" y="395" font-size="11">After scan, stack must be empty.</text>
+  <text x="60" y="425" font-size="11">Mismatch on push, pop, or final-empty check ⟹ invalid.</text>
+  <text x="60" y="455" font-size="11" fill="#4caf50" font-weight="700">If you see &quot;most recent&quot;, &quot;balanced&quot;, or &quot;nested&quot;, the stack is the structure.</text>
+</svg>

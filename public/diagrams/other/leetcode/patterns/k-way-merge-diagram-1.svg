@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="system-ui, sans-serif">
+  <rect width="900" height="500" fill="#f3f1f8"/>
+  <text x="450" y="32" text-anchor="middle" font-size="19" font-weight="700" fill="#1a1822">K-way Merge — Pattern Overview</text>
+
+  <rect x="40" y="60" width="820" height="200" fill="#fff" stroke="#6d5bd0" stroke-width="2" rx="6"/>
+  <text x="60" y="88" font-size="13" font-weight="700" fill="#6d5bd0">Setup</text>
+  <text x="60" y="115" font-size="11">k sorted lists, total N elements. Goal: produce a single sorted output</text>
+  <text x="60" y="135" font-size="11">or answer a query (k-th smallest, smallest range covering all).</text>
+  <text x="60" y="160" font-size="11" font-weight="700">Heap-based merge: O(N log k) time, O(k) heap.</text>
+  <text x="60" y="180" font-size="11">Push the head of every list with a back-pointer (list-id, index).</text>
+  <text x="60" y="200" font-size="11">Pop the smallest, emit, push the next item of that list.</text>
+  <text x="60" y="225" font-size="11">Pairwise merge is O(N k) — strictly worse for k &gt; 2.</text>
+
+  <rect x="40" y="280" width="820" height="195" fill="#fff" stroke="#4caf50" stroke-width="2" rx="6"/>
+  <text x="60" y="308" font-size="13" font-weight="700" fill="#4caf50">Why a heap is right</text>
+  <text x="60" y="335" font-size="11">• At each step you need the global minimum of k frontiers — heap gives O(log k).</text>
+  <text x="60" y="355" font-size="11">• The heap size is bounded by k regardless of N.</text>
+  <text x="60" y="375" font-size="11">• Back-pointers let you advance only the list that contributed.</text>
+  <text x="60" y="395" font-size="11">• Generalises: matrix as rows, fraction generators, range-cover problems.</text>
+  <text x="60" y="425" font-size="11">External-sort tape merge uses the same structure on disk-resident lists.</text>
+  <text x="60" y="465" font-size="11" fill="#4caf50" font-weight="700">Anywhere you have k sorted streams: heap of frontiers.</text>
+</svg>

@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="system-ui, sans-serif">
+  <rect width="900" height="500" fill="#f3f1f8"/>
+  <text x="450" y="32" text-anchor="middle" font-size="19" font-weight="700" fill="#1a1822">Two-Pointer Pattern — Convergent and Parallel Variants</text>
+
+  <rect x="40" y="60" width="820" height="200" fill="#fff" stroke="#6d5bd0" stroke-width="2" rx="6"/>
+  <text x="60" y="85" font-size="13" font-weight="700" fill="#6d5bd0">Convergent (opposite-end) two pointers</text>
+  <text x="60" y="112" font-size="11">Use when input is sorted or symmetric. Pointers L=0, R=n-1 walk toward each other.</text>
+  <text x="60" y="132" font-size="11">Decision rule: compare A[L]+A[R] (or some predicate) against target.</text>
+  <text x="60" y="152" font-size="11">  • too small → L++   • too large → R--   • match → record / shift both</text>
+  <text x="60" y="180" font-size="11">Examples: Two Sum II (sorted), 3Sum, Container With Most Water, Trapping Rain Water,</text>
+  <text x="60" y="200" font-size="11">Valid Palindrome, Reverse String, Sort Colors (Dutch flag — three pointers).</text>
+  <text x="60" y="228" font-size="11" font-weight="700">Invariant: the answer (if any) lies in A[L..R]. Each step shrinks the search space by 1.</text>
+  <text x="60" y="248" font-size="11" fill="#4caf50" font-weight="700">Time O(n), space O(1). The standard upgrade from O(n²) brute force.</text>
+
+  <rect x="40" y="280" width="820" height="195" fill="#fff" stroke="#4caf50" stroke-width="2" rx="6"/>
+  <text x="60" y="305" font-size="13" font-weight="700" fill="#4caf50">Parallel (same-direction) two pointers</text>
+  <text x="60" y="330" font-size="11">Use for in-place transformations, partitioning, or read/write head separation.</text>
+  <text x="60" y="350" font-size="11">Slow pointer marks the next write position; fast pointer scans forward.</text>
+  <text x="60" y="370" font-size="11">Examples: Remove Duplicates from Sorted Array, Move Zeroes, Remove Element,</text>
+  <text x="60" y="390" font-size="11">Partition (Lomuto / Hoare), Merge Sorted Array (write from the back).</text>
+  <text x="60" y="418" font-size="11" font-weight="700">Invariant: A[0..slow] holds the &quot;kept&quot; prefix; A[fast..n-1] holds unprocessed.</text>
+  <text x="60" y="445" font-size="11" fill="#4caf50" font-weight="700">Sub-pattern: fast/slow on linked lists for cycle detection (Floyd) — see separate article.</text>
+</svg>

@@ -4460,6 +4460,58 @@ export const subcategoryArticles: Record<string, Array<{slug: string; title: str
       "description": "Email template builder with drag blocks, variable insertion, responsive preview, and HTML output."
     }
   ],
+  "system-design-problems/low-level-design/forms-input-systems": [
+    {
+      "slug": "ai-assisted-form-fill",
+      "title": "Design an AI-assisted Form Fill System",
+      "description": "LLD for AI-driven form auto-fill: suggestion lifecycle, accept/reject UX, latency handling, privacy, and integration with the form engine."
+    },
+    {
+      "slug": "color-picker",
+      "title": "Design a Color Picker",
+      "description": "LLD for an accessible Color Picker with HSV/HSL/RGB/HEX, alpha, eyedropper, saved palettes, and contrast preview against a reference background."
+    },
+    {
+      "slug": "date-time-picker",
+      "title": "Design a Date / Time Picker",
+      "description": "LLD for an accessible Date/Time Picker handling time zones, locale formats, keyboard navigation, ranges, and constraint-driven availability."
+    },
+    {
+      "slug": "draft-persistence-system",
+      "title": "Design a Draft Persistence System",
+      "description": "LLD for autosaving form drafts, hybrid local + server storage, conflict resolution on resume, and resilient sync in React/Next.js."
+    },
+    {
+      "slug": "dynamic-conditional-form-engine",
+      "title": "Design a Dynamic Conditional Form Engine",
+      "description": "LLD for a reactive conditional engine driving field visibility, enablement, requiredness, and computed values from a safe predicate DSL."
+    },
+    {
+      "slug": "file-input-system",
+      "title": "Design a File Input System",
+      "description": "LLD for an accessible file input supporting drag-and-drop, multi-file, MIME/size validation, previews, and progress as a form-friendly control."
+    },
+    {
+      "slug": "form-builder",
+      "title": "Design a Form Builder",
+      "description": "LLD for a schema-driven Form Builder supporting dynamic fields, sync/async validation, conditional visibility, and multi-step flows in React/Next.js."
+    },
+    {
+      "slug": "form-validation-engine",
+      "title": "Design a Form Validation Engine",
+      "description": "LLD for a reusable validation engine supporting sync/async rules, schema-driven validation, cross-field dependencies, and i18n in React/Next.js."
+    },
+    {
+      "slug": "large-form-performance",
+      "title": "Design a Large Form Performance System",
+      "description": "LLD techniques for keeping huge forms (hundreds of fields) fast: field-level subscriptions, uncontrolled inputs, sectional virtualization, deferred validation."
+    },
+    {
+      "slug": "wizard-multi-step-form",
+      "title": "Design a Wizard / Multi-step Form",
+      "description": "LLD for a multi-step Wizard preserving state across steps, validating per step, supporting branching, deep links, and resumable flows in React/Next.js."
+    }
+  ],
   "system-design-problems/low-level-design/state-management-data-architecture": [
     {
       "slug": "api-versioning-frontend",
@@ -5018,6 +5070,153 @@ export const subcategoryArticles: Record<string, Array<{slug: string; title: str
       "slug": "tries",
       "title": "Tries",
       "description": "Prefix trees that exploit shared key prefixes for O(L) lookup independent of n — the structure behind autocomplete, IP routing, and modern key-value indexes."
+    }
+  ],
+  "other/leetcode/patterns": [
+    {
+      "slug": "backtracking",
+      "title": "Backtracking Pattern",
+      "description": "Choose, explore, un-choose — DFS with disciplined state management. Enumerate subsets, permutations, and combinations; solve N-queens and sudoku; prune aggressively."
+    },
+    {
+      "slug": "binary-search",
+      "title": "Binary Search Pattern",
+      "description": "Logarithmic search by halving a monotone search space — the canonical pattern for sorted-array lookup, lower_bound / upper_bound, and parametric search where you binary-search the answer."
+    },
+    {
+      "slug": "bit-manipulation",
+      "title": "Bit Manipulation Pattern",
+      "description": "Bitwise operations, XOR identities, popcount tricks, and bitmask DP — the toolkit for compact set representation and constant-factor speedups."
+    },
+    {
+      "slug": "cyclic-sort",
+      "title": "Cyclic Sort Pattern",
+      "description": "Place each value at its target index in O(n) time and O(1) extra space — the canonical pattern for missing/duplicate problems on bounded integer ranges."
+    },
+    {
+      "slug": "divide-and-conquer",
+      "title": "Divide and Conquer Pattern",
+      "description": "Split a problem into independent subproblems, solve recursively, and combine — the structural backbone of sort, search, and a host of clever algorithms."
+    },
+    {
+      "slug": "dynamic-programming",
+      "title": "Dynamic Programming Pattern",
+      "description": "Trade exponential recursion for polynomial time by memoising overlapping subproblems — the most asked, most feared, and most rewarding pattern in coding interviews."
+    },
+    {
+      "slug": "fast-slow-pointers",
+      "title": "Fast & Slow Pointers (Floyd's Tortoise and Hare)",
+      "description": "Two pointers advancing at different speeds detect cycles, find midpoints, and locate cycle entries in linked lists and iterated functions — all in O(n) time and O(1) space."
+    },
+    {
+      "slug": "graph",
+      "title": "Graph Pattern",
+      "description": "BFS, DFS, Dijkstra, topological sort, and the engineering choices behind graph representation, traversal, and shortest-path algorithms."
+    },
+    {
+      "slug": "greedy",
+      "title": "Greedy Pattern",
+      "description": "Make the locally optimal choice at every step, never reconsider, and rely on the greedy-choice property to deliver a globally optimal answer in linear or near-linear time."
+    },
+    {
+      "slug": "hash-table",
+      "title": "Hash Table Pattern",
+      "description": "The O(1) average-case lookup that turns repeated linear searches into single passes — the most pervasive interview pattern, underpinning two-sum, anagram grouping, longest consecutive sequence, and most cache designs."
+    },
+    {
+      "slug": "heap",
+      "title": "Heap Pattern",
+      "description": "Priority-queue workhorse for top-k, k-way merge, Dijkstra, two-heaps median, and event scheduling — O(log n) push/pop with O(1) peek."
+    },
+    {
+      "slug": "in-place-linked-list-reversal",
+      "title": "In-Place Linked List Reversal Pattern",
+      "description": "The prev/curr/next triple-step that reverses a singly linked list in O(n) time and O(1) extra space — the substrate for k-group reversal, palindrome checks, reorder list, and any problem that needs to walk a singly linked list backwards."
+    },
+    {
+      "slug": "k-way-merge",
+      "title": "K-way Merge Pattern",
+      "description": "Merge k sorted streams with a min-heap of frontiers — O(N log k) time, O(k) space — and the trick for matrix and virtual-list queries."
+    },
+    {
+      "slug": "linked-list",
+      "title": "Linked List Pattern",
+      "description": "Pointer-surgery techniques for singly and doubly linked lists — dummy heads, fast/slow pointers, splicing, and the design problems (LRU, LFU) that pair a list with a hash map for O(1) operations."
+    },
+    {
+      "slug": "math",
+      "title": "Math Pattern",
+      "description": "Number theory, modular arithmetic, fast exponentiation, sieves, and combinatorics — closed-form thinking that turns brute force into logarithmic."
+    },
+    {
+      "slug": "merge-intervals",
+      "title": "Merge Intervals Pattern",
+      "description": "Sort by start time, walk once, merge or append — the universal scaffold for problems where the input is a list of intervals and the question is about their union, overlap, or scheduling."
+    },
+    {
+      "slug": "monotonic-queue",
+      "title": "Monotonic Queue Pattern",
+      "description": "A deque maintained in monotone order with eviction at both ends — the linear-time tool for sliding-window max / min and DP transitions where the optimum comes from a bounded suffix."
+    },
+    {
+      "slug": "monotonic-stack",
+      "title": "Monotonic Stack Pattern",
+      "description": "A stack maintained in monotone order, evicting violators on push — the linear-time tool for next-greater / smaller queries, histogram rectangles, and lex-smallest-after-removals problems."
+    },
+    {
+      "slug": "prefix-sum",
+      "title": "Prefix Sum Pattern",
+      "description": "Linear preprocessing that turns range-sum queries into O(1) lookups, and — combined with a hash map — collapses an entire family of subarray-sum-equals-k problems from O(n²) to O(n)."
+    },
+    {
+      "slug": "queues",
+      "title": "Queues Pattern",
+      "description": "FIFO scheduling for breadth-first search, level-order traversal, topological sort, and the design problems that pair a queue with a hash map or a fixed-size buffer to hit O(1) per operation."
+    },
+    {
+      "slug": "recursion",
+      "title": "Recursion Pattern",
+      "description": "Base cases, reduction, and combination — the discipline of solving a problem by reducing it to a smaller instance, with stack-depth and tail-call awareness."
+    },
+    {
+      "slug": "sliding-window",
+      "title": "Sliding Window Pattern",
+      "description": "Linear-time technique for contiguous-range problems where a window grows and shrinks across an array or string while maintaining an aggregate — the canonical pattern for substring, subarray, and rate-counting questions."
+    },
+    {
+      "slug": "stack",
+      "title": "Stack Pattern",
+      "description": "LIFO bookkeeping for nested structure — bracket matching, expression evaluation, iterative DFS, and the family of design problems where the next answer depends on the most recent unfinished thing."
+    },
+    {
+      "slug": "string",
+      "title": "String Pattern",
+      "description": "Sliding-window, hashing, stack, trie, and substring-search techniques applied to strings — the umbrella pattern that intersects every other algorithmic family."
+    },
+    {
+      "slug": "top-k-elements",
+      "title": "Top K Elements Pattern",
+      "description": "Bounded-heap, quickselect, and bucket-sort techniques for selecting the k best elements — the dominant pattern for streaming and frequency questions."
+    },
+    {
+      "slug": "tree",
+      "title": "Tree Pattern",
+      "description": "Recursive decomposition over binary trees and BSTs — the four traversal orders, the top-down vs. bottom-up split, and the canonical problems (LCA, diameter, max path sum, validate BST) that test the discipline."
+    },
+    {
+      "slug": "trie",
+      "title": "Trie Pattern",
+      "description": "Prefix tree for string sets — O(L) insert and search, prefix-shared storage, and the substrate for autocomplete, wildcard matching, dictionary-grid search, and bit-trie XOR problems."
+    },
+    {
+      "slug": "two-pointer",
+      "title": "Two-Pointer Pattern",
+      "description": "Linear-time technique that uses two indices walking through one or two sequences to replace nested loops — the foundational Leetcode pattern for sorted-array pair problems and in-place rewrites."
+    },
+    {
+      "slug": "union-find",
+      "title": "Union-Find Pattern",
+      "description": "Disjoint-set union for online connectivity, MST construction, cycle detection, and equivalence-class problems — near-O(1) per operation with path compression and union by rank."
     }
   ]
 };

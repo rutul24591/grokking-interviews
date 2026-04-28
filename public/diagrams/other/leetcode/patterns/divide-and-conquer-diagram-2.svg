@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="system-ui, sans-serif">
+  <rect width="900" height="500" fill="#f3f1f8"/>
+  <text x="450" y="32" text-anchor="middle" font-size="19" font-weight="700" fill="#1a1822">Recurrence Analysis — Master Theorem at a Glance</text>
+
+  <rect x="40" y="60" width="820" height="200" fill="#fff" stroke="#6d5bd0" stroke-width="2" rx="6"/>
+  <text x="60" y="88" font-size="13" font-weight="700" fill="#6d5bd0">T(n) = a·T(n/b) + f(n)</text>
+  <text x="60" y="115" font-size="11">a = number of subproblems, b = shrink factor, f(n) = combine cost</text>
+  <text x="60" y="140" font-size="11">Case 1: f(n) = O(n^c) where c &lt; log_b(a) → T(n) = Θ(n^log_b(a))</text>
+  <text x="60" y="160" font-size="11">Case 2: f(n) = Θ(n^c) where c = log_b(a) → T(n) = Θ(n^c · log n)</text>
+  <text x="60" y="180" font-size="11">Case 3: f(n) = Ω(n^c) where c &gt; log_b(a) and regularity holds → T(n) = Θ(f(n))</text>
+  <text x="60" y="210" font-size="11">Merge sort: a=2, b=2, f(n)=O(n) → Case 2 → Θ(n log n).</text>
+  <text x="60" y="230" font-size="11">Binary search: a=1, b=2, f(n)=O(1) → Case 2 → Θ(log n).</text>
+
+  <rect x="40" y="280" width="820" height="195" fill="#fff" stroke="#4caf50" stroke-width="2" rx="6"/>
+  <text x="60" y="308" font-size="13" font-weight="700" fill="#4caf50">Subtleties</text>
+  <text x="60" y="335" font-size="11">• Strassen: a=7, b=2, f(n)=O(n²) → Case 1 → Θ(n^log₂7) ≈ Θ(n^2.81)</text>
+  <text x="60" y="355" font-size="11">• Karatsuba: a=3, b=2 → Θ(n^log₂3) ≈ Θ(n^1.58) — beats schoolbook O(n²)</text>
+  <text x="60" y="375" font-size="11">• Closest-pair: a=2, b=2, f(n)=O(n) → Θ(n log n) with smart strip combine</text>
+  <text x="60" y="395" font-size="11">• Recursion depth = log_b(n); stack memory matters for large n</text>
+  <text x="60" y="425" font-size="11">When recurrence is unbalanced (a·n/b unequal pieces), master theorem fails;</text>
+  <text x="60" y="445" font-size="11">use Akra-Bazzi or recursion-tree summation instead.</text>
+  <text x="60" y="465" font-size="11" fill="#4caf50" font-weight="700">Recognise the recurrence shape; the answer follows mechanically.</text>
+</svg>

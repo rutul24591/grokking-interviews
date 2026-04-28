@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="system-ui, sans-serif">
+  <rect width="900" height="500" fill="#f3f1f8"/>
+  <text x="450" y="32" text-anchor="middle" font-size="19" font-weight="700" fill="#1a1822">Implementation Template</text>
+
+  <rect x="40" y="60" width="820" height="200" fill="#fff" stroke="#6d5bd0" stroke-width="2" rx="6"/>
+  <text x="60" y="88" font-size="13" font-weight="700" fill="#6d5bd0">find with path compression</text>
+  <text x="60" y="115" font-size="11">parent: int[n], parent[i] = i initially</text>
+  <text x="60" y="135" font-size="11">find(x):</text>
+  <text x="60" y="155" font-size="11">  if parent[x] != x: parent[x] = find(parent[x])</text>
+  <text x="60" y="175" font-size="11">  return parent[x]</text>
+  <text x="60" y="205" font-size="11">Iterative version: walk up to root, then walk again to overwrite each parent.</text>
+  <text x="60" y="225" font-size="11">After one find, every node on the path points directly to the root.</text>
+
+  <rect x="40" y="280" width="820" height="195" fill="#fff" stroke="#4caf50" stroke-width="2" rx="6"/>
+  <text x="60" y="308" font-size="13" font-weight="700" fill="#4caf50">union by rank (or size)</text>
+  <text x="60" y="335" font-size="11">rank: int[n], rank[i] = 0 initially</text>
+  <text x="60" y="355" font-size="11">union(x, y):</text>
+  <text x="60" y="375" font-size="11">  rx, ry = find(x), find(y); if rx == ry: return false</text>
+  <text x="60" y="395" font-size="11">  if rank[rx] &lt; rank[ry]: swap rx, ry</text>
+  <text x="60" y="415" font-size="11">  parent[ry] = rx; if rank[rx] == rank[ry]: rank[rx] += 1</text>
+  <text x="60" y="435" font-size="11">  return true</text>
+  <text x="60" y="465" font-size="11" fill="#4caf50" font-weight="700">union returns false ⇒ x and y were already connected — useful for cycle detection.</text>
+</svg>

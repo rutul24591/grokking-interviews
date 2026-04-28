@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="system-ui, sans-serif">
+  <rect width="900" height="500" fill="#f3f1f8"/>
+  <text x="450" y="32" text-anchor="middle" font-size="19" font-weight="700" fill="#1a1822">Canonical Greedy Leetcode Problems</text>
+
+  <rect x="40" y="60" width="820" height="200" fill="#fff" stroke="#6d5bd0" stroke-width="2" rx="6"/>
+  <text x="60" y="88" font-size="13" font-weight="700" fill="#6d5bd0">Interval / scheduling</text>
+  <text x="60" y="115" font-size="11">• 435. Non-overlapping Intervals — sort by end, take earliest-finishing</text>
+  <text x="60" y="135" font-size="11">• 452. Min Arrows to Burst Balloons — same earliest-finish-first idea</text>
+  <text x="60" y="155" font-size="11">• 56. Merge Intervals — sort by start, merge overlapping</text>
+  <text x="60" y="175" font-size="11">• 253. Meeting Rooms II — heap of end times, greedy room reuse</text>
+  <text x="60" y="195" font-size="11">• 621. Task Scheduler — pick most-frequent task that is off cooldown</text>
+  <text x="60" y="225" font-size="11">• 763. Partition Labels — extend partition to cover last index of each char</text>
+
+  <rect x="40" y="280" width="820" height="195" fill="#fff" stroke="#4caf50" stroke-width="2" rx="6"/>
+  <text x="60" y="308" font-size="13" font-weight="700" fill="#4caf50">Jump &amp; reach</text>
+  <text x="60" y="335" font-size="11">• 55. Jump Game — track furthest reachable index</text>
+  <text x="60" y="355" font-size="11">• 45. Jump Game II — extend reach in O(n) by counting jumps</text>
+  <text x="60" y="375" font-size="11">• 134. Gas Station — start at first station after a deficit; one pass works</text>
+  <text x="60" y="395" font-size="11">• 122. Best Time to Buy and Sell Stock II — sum every positive delta</text>
+  <text x="60" y="415" font-size="11">• 376. Wiggle Subsequence — count direction changes greedily</text>
+  <text x="60" y="435" font-size="11">• 406. Queue Reconstruction by Height — sort tall-first, insert by k</text>
+  <text x="60" y="465" font-size="11" fill="#4caf50" font-weight="700">Sort by the right key, then take what you cannot afford to leave.</text>
+</svg>

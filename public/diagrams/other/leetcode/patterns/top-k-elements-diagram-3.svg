@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="system-ui, sans-serif">
+  <rect width="900" height="500" fill="#f3f1f8"/>
+  <text x="450" y="32" text-anchor="middle" font-size="19" font-weight="700" fill="#1a1822">Canonical Top-K Leetcode Problems</text>
+
+  <rect x="40" y="60" width="820" height="200" fill="#fff" stroke="#6d5bd0" stroke-width="2" rx="6"/>
+  <text x="60" y="88" font-size="13" font-weight="700" fill="#6d5bd0">Numerical top-k</text>
+  <text x="60" y="115" font-size="11">• 215. Kth Largest Element in an Array — quickselect or heap</text>
+  <text x="60" y="135" font-size="11">• 703. Kth Largest in a Stream — min-heap of size k, online</text>
+  <text x="60" y="155" font-size="11">• 973. K Closest Points to Origin — heap by squared distance</text>
+  <text x="60" y="175" font-size="11">• 658. Find K Closest Elements — binary search for window or heap</text>
+  <text x="60" y="195" font-size="11">• 378. Kth Smallest in Sorted Matrix — heap or binary-search on value</text>
+  <text x="60" y="225" font-size="11">• 786. Kth Smallest Prime Fraction — heap of (num, den) pairs</text>
+
+  <rect x="40" y="280" width="820" height="195" fill="#fff" stroke="#4caf50" stroke-width="2" rx="6"/>
+  <text x="60" y="308" font-size="13" font-weight="700" fill="#4caf50">Frequency / categorical top-k</text>
+  <text x="60" y="335" font-size="11">• 347. Top K Frequent Elements — counter + min-heap (or bucket sort)</text>
+  <text x="60" y="355" font-size="11">• 692. Top K Frequent Words — comparator: frequency desc, lex asc</text>
+  <text x="60" y="375" font-size="11">• 451. Sort Characters by Frequency — counter + bucket / heap</text>
+  <text x="60" y="395" font-size="11">• 1985. Find the Kth Largest Integer in the Array — string-comparator heap</text>
+  <text x="60" y="415" font-size="11">• 1845. Seat Reservation Manager — min-heap of available seats</text>
+  <text x="60" y="435" font-size="11">• 295. Find Median from Data Stream — two heaps (top-k variant)</text>
+  <text x="60" y="465" font-size="11" fill="#4caf50" font-weight="700">If the question says &quot;top k&quot;, your default tool is the bounded heap.</text>
+</svg>

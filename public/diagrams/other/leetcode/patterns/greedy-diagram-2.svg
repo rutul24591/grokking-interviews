@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="system-ui, sans-serif">
+  <rect width="900" height="500" fill="#f3f1f8"/>
+  <text x="450" y="32" text-anchor="middle" font-size="19" font-weight="700" fill="#1a1822">Proof Techniques — Why a Greedy Choice Is Safe</text>
+
+  <rect x="40" y="60" width="820" height="200" fill="#fff" stroke="#6d5bd0" stroke-width="2" rx="6"/>
+  <text x="60" y="88" font-size="13" font-weight="700" fill="#6d5bd0">Exchange argument</text>
+  <text x="60" y="115" font-size="11">1. Assume an optimal solution OPT differs from the greedy solution GREEDY</text>
+  <text x="60" y="135" font-size="11">2. Find the first place they differ; show OPT can be modified to match GREEDY</text>
+  <text x="60" y="155" font-size="11">3. Show the modification does not decrease OPT&apos;s value</text>
+  <text x="60" y="175" font-size="11">4. Conclude GREEDY achieves the same value as OPT — therefore it is optimal</text>
+  <text x="60" y="205" font-size="11">Used for: interval scheduling (earliest-finish-first), Huffman, Kruskal&apos;s MST</text>
+  <text x="60" y="235" font-size="11">The exchange must be value-preserving and feasibility-preserving.</text>
+
+  <rect x="40" y="280" width="820" height="195" fill="#fff" stroke="#4caf50" stroke-width="2" rx="6"/>
+  <text x="60" y="308" font-size="13" font-weight="700" fill="#4caf50">Greedy stays ahead</text>
+  <text x="60" y="335" font-size="11">1. Show that after k steps, greedy&apos;s partial solution dominates any other</text>
+  <text x="60" y="355" font-size="11">2. By induction, greedy stays ahead at every step including the last</text>
+  <text x="60" y="375" font-size="11">3. Therefore greedy&apos;s final answer is optimal</text>
+  <text x="60" y="405" font-size="11">Used for: interval scheduling alternative proof, shortest jobs first, Dijkstra</text>
+  <text x="60" y="435" font-size="11">Both proofs require precise definitions of &quot;dominates&quot; — usually a numerical</text>
+  <text x="60" y="455" font-size="11">comparison of partial cost or partial completion.</text>
+  <text x="60" y="475" font-size="11" fill="#4caf50" font-weight="700">No proof, no greedy — fall back to DP if you cannot prove correctness.</text>
+</svg>

@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="system-ui, sans-serif">
+  <rect width="900" height="500" fill="#f3f1f8"/>
+  <text x="450" y="32" text-anchor="middle" font-size="19" font-weight="700" fill="#1a1822">Trie — Prefix Tree for String Sets</text>
+
+  <rect x="40" y="60" width="820" height="200" fill="#fff" stroke="#6d5bd0" stroke-width="2" rx="6"/>
+  <text x="60" y="88" font-size="13" font-weight="700" fill="#6d5bd0">Structure</text>
+  <text x="60" y="115" font-size="11">Each node represents a prefix; edges are characters.</text>
+  <text x="60" y="135" font-size="11">A boolean flag marks &quot;end of a word&quot;.</text>
+  <text x="60" y="160" font-size="11" font-weight="700">Operations on string of length L:</text>
+  <text x="60" y="180" font-size="11">  insert: O(L); search exact: O(L); search prefix: O(L)</text>
+  <text x="60" y="200" font-size="11">  delete: O(L); space O(N * L) worst case (one node per char in the worst input)</text>
+  <text x="60" y="225" font-size="11">Shared-prefix structure ⟹ much smaller than N * L when prefixes overlap.</text>
+
+  <rect x="40" y="280" width="820" height="195" fill="#fff" stroke="#4caf50" stroke-width="2" rx="6"/>
+  <text x="60" y="308" font-size="13" font-weight="700" fill="#4caf50">Node representation choices</text>
+  <text x="60" y="335" font-size="11">• Fixed array (size 26 for lowercase) — fastest, sparse for non-alphabetic data</text>
+  <text x="60" y="355" font-size="11">• Hash map of char to node — flexible alphabet, slight overhead</text>
+  <text x="60" y="375" font-size="11">• Compressed trie (radix / Patricia) — collapses single-child chains</text>
+  <text x="60" y="395" font-size="11">• Ternary search tree — three children per node, smaller for sparse alphabets</text>
+  <text x="60" y="425" font-size="11">For Leetcode-style alphabetic input: int[26] children + boolean isEnd is the default.</text>
+  <text x="60" y="455" font-size="11" fill="#4caf50" font-weight="700">Trie wins when many strings share prefixes and queries are prefix-based.</text>
+</svg>

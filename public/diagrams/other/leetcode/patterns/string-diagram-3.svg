@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="system-ui, sans-serif">
+  <rect width="900" height="500" fill="#f3f1f8"/>
+  <text x="450" y="32" text-anchor="middle" font-size="19" font-weight="700" fill="#1a1822">Canonical String Leetcode Problems</text>
+
+  <rect x="40" y="60" width="820" height="200" fill="#fff" stroke="#6d5bd0" stroke-width="2" rx="6"/>
+  <text x="60" y="88" font-size="13" font-weight="700" fill="#6d5bd0">Window / two-pointer</text>
+  <text x="60" y="115" font-size="11">• 3. Longest Substring Without Repeating Characters — sliding window</text>
+  <text x="60" y="135" font-size="11">• 76. Minimum Window Substring — variable window with frequency match</text>
+  <text x="60" y="155" font-size="11">• 567. Permutation in String — fixed-size sliding window with counts</text>
+  <text x="60" y="175" font-size="11">• 438. Find All Anagrams in a String — same as 567</text>
+  <text x="60" y="195" font-size="11">• 424. Longest Repeating Character Replacement — window + max-freq invariant</text>
+  <text x="60" y="225" font-size="11">• 5. Longest Palindromic Substring — expand-around-center or Manacher</text>
+
+  <rect x="40" y="280" width="820" height="195" fill="#fff" stroke="#4caf50" stroke-width="2" rx="6"/>
+  <text x="60" y="308" font-size="13" font-weight="700" fill="#4caf50">Hashing / parsing / manipulation</text>
+  <text x="60" y="335" font-size="11">• 49. Group Anagrams — sorted string or count-tuple as hash key</text>
+  <text x="60" y="355" font-size="11">• 242. Valid Anagram — count comparison</text>
+  <text x="60" y="375" font-size="11">• 28. Find the Index of the First Occurrence — KMP / Rabin-Karp</text>
+  <text x="60" y="395" font-size="11">• 394. Decode String — stack of (string, count) pairs</text>
+  <text x="60" y="415" font-size="11">• 271. Encode and Decode Strings — length-prefix encoding</text>
+  <text x="60" y="435" font-size="11">• 647. Palindromic Substrings — expand around centers, count</text>
+  <text x="60" y="465" font-size="11" fill="#4caf50" font-weight="700">String questions live at the intersection of every other pattern.</text>
+</svg>

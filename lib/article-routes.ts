@@ -8,984 +8,2859 @@
  */
 
 export const articleRoutes: Record<string, () => Promise<any>> = {
-  "system-design-concepts/frontend-concepts/accessibility-a11y/accessible-forms": () => import("@/content/articles/system-design/frontend/accessibility-a11y/accessible-forms"),
-  "system-design-concepts/frontend-concepts/accessibility-a11y/accessible-modals-and-dialogs": () => import("@/content/articles/system-design/frontend/accessibility-a11y/accessible-modals-and-dialogs"),
-  "system-design-concepts/frontend-concepts/accessibility-a11y/aria-attributes": () => import("@/content/articles/system-design/frontend/accessibility-a11y/aria-attributes"),
-  "system-design-concepts/frontend-concepts/accessibility-a11y/color-contrast": () => import("@/content/articles/system-design/frontend/accessibility-a11y/color-contrast"),
-  "system-design-concepts/frontend-concepts/accessibility-a11y/focus-management": () => import("@/content/articles/system-design/frontend/accessibility-a11y/focus-management"),
-  "system-design-concepts/frontend-concepts/accessibility-a11y/keyboard-navigation": () => import("@/content/articles/system-design/frontend/accessibility-a11y/keyboard-navigation"),
-  "system-design-concepts/frontend-concepts/accessibility-a11y/screen-reader-support": () => import("@/content/articles/system-design/frontend/accessibility-a11y/screen-reader-support"),
-  "system-design-concepts/frontend-concepts/accessibility-a11y/semantic-html": () => import("@/content/articles/system-design/frontend/accessibility-a11y/semantic-html"),
-  "system-design-concepts/frontend-concepts/accessibility-a11y/skip-links": () => import("@/content/articles/system-design/frontend/accessibility-a11y/skip-links"),
-  "system-design-concepts/frontend-concepts/accessibility-a11y/wcag-guidelines": () => import("@/content/articles/system-design/frontend/accessibility-a11y/wcag-guidelines"),
-  "system-design-concepts/frontend-concepts/analytics-tracking/conversion-funnels": () => import("@/content/articles/system-design/frontend/analytics-tracking/conversion-funnels"),
-  "system-design-concepts/frontend-concepts/analytics-tracking/cookie-consent-management": () => import("@/content/articles/system-design/frontend/analytics-tracking/cookie-consent-management"),
-  "system-design-concepts/frontend-concepts/analytics-tracking/custom-dimensions-metrics": () => import("@/content/articles/system-design/frontend/analytics-tracking/custom-dimensions-metrics"),
-  "system-design-concepts/frontend-concepts/analytics-tracking/event-tracking": () => import("@/content/articles/system-design/frontend/analytics-tracking/event-tracking"),
-  "system-design-concepts/frontend-concepts/analytics-tracking/page-view-tracking": () => import("@/content/articles/system-design/frontend/analytics-tracking/page-view-tracking"),
-  "system-design-concepts/frontend-concepts/analytics-tracking/privacy-compliant-tracking": () => import("@/content/articles/system-design/frontend/analytics-tracking/privacy-compliant-tracking"),
-  "system-design-concepts/frontend-concepts/analytics-tracking/user-journey-tracking": () => import("@/content/articles/system-design/frontend/analytics-tracking/user-journey-tracking"),
-  "system-design-concepts/frontend-concepts/animation-transitions/animation-queuing": () => import("@/content/articles/system-design/frontend/animation-transitions/animation-queuing"),
-  "system-design-concepts/frontend-concepts/animation-transitions/css-transitions-and-animations": () => import("@/content/articles/system-design/frontend/animation-transitions/css-transitions-and-animations"),
-  "system-design-concepts/frontend-concepts/animation-transitions/javascript-animation-libraries": () => import("@/content/articles/system-design/frontend/animation-transitions/javascript-animation-libraries"),
-  "system-design-concepts/frontend-concepts/animation-transitions/performance-considerations-60fps": () => import("@/content/articles/system-design/frontend/animation-transitions/performance-considerations-60fps"),
-  "system-design-concepts/frontend-concepts/animation-transitions/request-animation-frame": () => import("@/content/articles/system-design/frontend/animation-transitions/request-animation-frame"),
-  "system-design-concepts/frontend-concepts/animation-transitions/web-animations-api": () => import("@/content/articles/system-design/frontend/animation-transitions/web-animations-api"),
-  "system-design-concepts/frontend-concepts/asset-management/asset-preloading": () => import("@/content/articles/system-design/frontend/asset-management/asset-preloading"),
-  "system-design-concepts/frontend-concepts/asset-management/asset-versioning-and-cache-busting": () => import("@/content/articles/system-design/frontend/asset-management/asset-versioning-and-cache-busting"),
-  "system-design-concepts/frontend-concepts/asset-management/cdn-strategy": () => import("@/content/articles/system-design/frontend/asset-management/cdn-strategy"),
-  "system-design-concepts/frontend-concepts/asset-management/font-loading-strategies": () => import("@/content/articles/system-design/frontend/asset-management/font-loading-strategies"),
-  "system-design-concepts/frontend-concepts/asset-management/image-optimization-and-formats": () => import("@/content/articles/system-design/frontend/asset-management/image-optimization-and-formats"),
-  "system-design-concepts/frontend-concepts/asset-management/static-asset-hosting": () => import("@/content/articles/system-design/frontend/asset-management/static-asset-hosting"),
-  "system-design-concepts/frontend-concepts/asset-management/svg-vs-icon-fonts": () => import("@/content/articles/system-design/frontend/asset-management/svg-vs-icon-fonts"),
-  "system-design-concepts/frontend-concepts/browser-apis/battery-status-api": () => import("@/content/articles/system-design/frontend/browser-apis/battery-status-api"),
-  "system-design-concepts/frontend-concepts/browser-apis/broadcast-channel-api": () => import("@/content/articles/system-design/frontend/browser-apis/broadcast-channel-api"),
-  "system-design-concepts/frontend-concepts/browser-apis/clipboard-api": () => import("@/content/articles/system-design/frontend/browser-apis/clipboard-api"),
-  "system-design-concepts/frontend-concepts/browser-apis/geolocation-api": () => import("@/content/articles/system-design/frontend/browser-apis/geolocation-api"),
-  "system-design-concepts/frontend-concepts/browser-apis/intersection-observer-api": () => import("@/content/articles/system-design/frontend/browser-apis/intersection-observer-api"),
-  "system-design-concepts/frontend-concepts/browser-apis/mutation-observer-api": () => import("@/content/articles/system-design/frontend/browser-apis/mutation-observer-api"),
-  "system-design-concepts/frontend-concepts/browser-apis/notification-api": () => import("@/content/articles/system-design/frontend/browser-apis/notification-api"),
-  "system-design-concepts/frontend-concepts/browser-apis/payment-request-api": () => import("@/content/articles/system-design/frontend/browser-apis/payment-request-api"),
-  "system-design-concepts/frontend-concepts/browser-apis/resize-observer-api": () => import("@/content/articles/system-design/frontend/browser-apis/resize-observer-api"),
-  "system-design-concepts/frontend-concepts/browser-apis/service-workers": () => import("@/content/articles/system-design/frontend/browser-apis/service-workers"),
-  "system-design-concepts/frontend-concepts/browser-apis/shared-workers": () => import("@/content/articles/system-design/frontend/browser-apis/shared-workers"),
-  "system-design-concepts/frontend-concepts/browser-apis/vibration-api": () => import("@/content/articles/system-design/frontend/browser-apis/vibration-api"),
-  "system-design-concepts/frontend-concepts/browser-apis/web-animations-api": () => import("@/content/articles/system-design/frontend/browser-apis/web-animations-api"),
-  "system-design-concepts/frontend-concepts/browser-apis/web-workers": () => import("@/content/articles/system-design/frontend/browser-apis/web-workers"),
-  "system-design-concepts/frontend-concepts/build-deployment/blue-green-deployment": () => import("@/content/articles/system-design/frontend/build-deployment/blue-green-deployment"),
-  "system-design-concepts/frontend-concepts/build-deployment/canary-releases": () => import("@/content/articles/system-design/frontend/build-deployment/canary-releases"),
-  "system-design-concepts/frontend-concepts/build-deployment/ci-cd-pipelines": () => import("@/content/articles/system-design/frontend/build-deployment/ci-cd-pipelines"),
-  "system-design-concepts/frontend-concepts/build-deployment/environment-variables": () => import("@/content/articles/system-design/frontend/build-deployment/environment-variables"),
-  "system-design-concepts/frontend-concepts/build-deployment/feature-flags-for-gradual-rollout": () => import("@/content/articles/system-design/frontend/build-deployment/feature-flags-for-gradual-rollout"),
-  "system-design-concepts/frontend-concepts/build-deployment/rollback-strategies": () => import("@/content/articles/system-design/frontend/build-deployment/rollback-strategies"),
-  "system-design-concepts/frontend-concepts/build-deployment/webpack-vite-rollup-configuration": () => import("@/content/articles/system-design/frontend/build-deployment/webpack-vite-rollup-configuration"),
-  "system-design-concepts/frontend-concepts/build-deployment/zero-downtime-deployment": () => import("@/content/articles/system-design/frontend/build-deployment/zero-downtime-deployment"),
-  "system-design-concepts/frontend-concepts/caching-strategies/application-cache": () => import("@/content/articles/system-design/frontend/caching-strategies/application-cache"),
-  "system-design-concepts/frontend-concepts/caching-strategies/browser-caching": () => import("@/content/articles/system-design/frontend/caching-strategies/browser-caching"),
-  "system-design-concepts/frontend-concepts/caching-strategies/cache-invalidation-strategies": () => import("@/content/articles/system-design/frontend/caching-strategies/cache-invalidation-strategies"),
-  "system-design-concepts/frontend-concepts/caching-strategies/caching-patterns": () => import("@/content/articles/system-design/frontend/caching-strategies/caching-patterns"),
-  "system-design-concepts/frontend-concepts/caching-strategies/cdn-caching": () => import("@/content/articles/system-design/frontend/caching-strategies/cdn-caching"),
-  "system-design-concepts/frontend-concepts/caching-strategies/indexeddb-caching": () => import("@/content/articles/system-design/frontend/caching-strategies/indexeddb-caching"),
-  "system-design-concepts/frontend-concepts/caching-strategies/memory-caching": () => import("@/content/articles/system-design/frontend/caching-strategies/memory-caching"),
-  "system-design-concepts/frontend-concepts/caching-strategies/service-worker-caching": () => import("@/content/articles/system-design/frontend/caching-strategies/service-worker-caching"),
-  "system-design-concepts/frontend-concepts/caching-strategies/stale-while-revalidate": () => import("@/content/articles/system-design/frontend/caching-strategies/stale-while-revalidate"),
-  "system-design-concepts/frontend-concepts/component-design/atomic-design-principles": () => import("@/content/articles/system-design/frontend/component-design/atomic-design-principles"),
-  "system-design-concepts/frontend-concepts/component-design/component-composition": () => import("@/content/articles/system-design/frontend/component-design/component-composition"),
-  "system-design-concepts/frontend-concepts/component-design/component-lifecycle-optimization": () => import("@/content/articles/system-design/frontend/component-design/component-lifecycle-optimization"),
-  "system-design-concepts/frontend-concepts/component-design/compound-components": () => import("@/content/articles/system-design/frontend/component-design/compound-components"),
-  "system-design-concepts/frontend-concepts/component-design/controlled-vs-uncontrolled-components": () => import("@/content/articles/system-design/frontend/component-design/controlled-vs-uncontrolled-components"),
-  "system-design-concepts/frontend-concepts/component-design/higher-order-components": () => import("@/content/articles/system-design/frontend/component-design/higher-order-components"),
-  "system-design-concepts/frontend-concepts/component-design/render-props": () => import("@/content/articles/system-design/frontend/component-design/render-props"),
-  "system-design-concepts/frontend-concepts/component-design/smart-vs-dumb-components": () => import("@/content/articles/system-design/frontend/component-design/smart-vs-dumb-components"),
-  "system-design-concepts/frontend-concepts/data-storage/cache-api": () => import("@/content/articles/system-design/frontend/data-storage/cache-api"),
-  "system-design-concepts/frontend-concepts/data-storage/cookies": () => import("@/content/articles/system-design/frontend/data-storage/cookies"),
-  "system-design-concepts/frontend-concepts/data-storage/file-system-access-api": () => import("@/content/articles/system-design/frontend/data-storage/file-system-access-api"),
-  "system-design-concepts/frontend-concepts/data-storage/indexeddb": () => import("@/content/articles/system-design/frontend/data-storage/indexeddb"),
-  "system-design-concepts/frontend-concepts/data-storage/localstorage": () => import("@/content/articles/system-design/frontend/data-storage/localstorage"),
-  "system-design-concepts/frontend-concepts/data-storage/sessionstorage": () => import("@/content/articles/system-design/frontend/data-storage/sessionstorage"),
-  "system-design-concepts/frontend-concepts/data-storage/storage-quotas-and-eviction": () => import("@/content/articles/system-design/frontend/data-storage/storage-quotas-and-eviction"),
-  "system-design-concepts/frontend-concepts/data-storage/web-sql": () => import("@/content/articles/system-design/frontend/data-storage/web-sql"),
-  "system-design-concepts/frontend-concepts/data-visualization/canvas-vs-svg-for-rendering": () => import("@/content/articles/system-design/frontend/data-visualization/canvas-vs-svg-for-rendering"),
-  "system-design-concepts/frontend-concepts/data-visualization/chart-libraries-integration": () => import("@/content/articles/system-design/frontend/data-visualization/chart-libraries-integration"),
-  "system-design-concepts/frontend-concepts/data-visualization/dashboard-design": () => import("@/content/articles/system-design/frontend/data-visualization/dashboard-design"),
-  "system-design-concepts/frontend-concepts/data-visualization/interactive-visualizations": () => import("@/content/articles/system-design/frontend/data-visualization/interactive-visualizations"),
-  "system-design-concepts/frontend-concepts/data-visualization/large-dataset-rendering": () => import("@/content/articles/system-design/frontend/data-visualization/large-dataset-rendering"),
-  "system-design-concepts/frontend-concepts/data-visualization/real-time-data-updates": () => import("@/content/articles/system-design/frontend/data-visualization/real-time-data-updates"),
-  "system-design-concepts/frontend-concepts/edge-cases-and-user-experience/dark-mode-implementation": () => import("@/content/articles/system-design/frontend/edge-cases-and-user-experience/dark-mode-implementation"),
-  "system-design-concepts/frontend-concepts/edge-cases-and-user-experience/empty-states": () => import("@/content/articles/system-design/frontend/edge-cases-and-user-experience/empty-states"),
-  "system-design-concepts/frontend-concepts/edge-cases-and-user-experience/error-states": () => import("@/content/articles/system-design/frontend/edge-cases-and-user-experience/error-states"),
-  "system-design-concepts/frontend-concepts/edge-cases-and-user-experience/infinite-scroll-vs-pagination": () => import("@/content/articles/system-design/frontend/edge-cases-and-user-experience/infinite-scroll-vs-pagination"),
-  "system-design-concepts/frontend-concepts/edge-cases-and-user-experience/keyboard-shortcuts": () => import("@/content/articles/system-design/frontend/edge-cases-and-user-experience/keyboard-shortcuts"),
-  "system-design-concepts/frontend-concepts/edge-cases-and-user-experience/loading-states": () => import("@/content/articles/system-design/frontend/edge-cases-and-user-experience/loading-states"),
-  "system-design-concepts/frontend-concepts/edge-cases-and-user-experience/optimistic-ui-updates": () => import("@/content/articles/system-design/frontend/edge-cases-and-user-experience/optimistic-ui-updates"),
-  "system-design-concepts/frontend-concepts/edge-cases-and-user-experience/print-stylesheets": () => import("@/content/articles/system-design/frontend/edge-cases-and-user-experience/print-stylesheets"),
-  "system-design-concepts/frontend-concepts/edge-cases-and-user-experience/skeleton-screens": () => import("@/content/articles/system-design/frontend/edge-cases-and-user-experience/skeleton-screens"),
-  "system-design-concepts/frontend-concepts/edge-cases-and-user-experience/undo-redo-functionality": () => import("@/content/articles/system-design/frontend/edge-cases-and-user-experience/undo-redo-functionality"),
-  "system-design-concepts/frontend-concepts/error-handling-monitoring/error-boundaries": () => import("@/content/articles/system-design/frontend/error-handling-monitoring/error-boundaries"),
-  "system-design-concepts/frontend-concepts/error-handling-monitoring/error-reporting": () => import("@/content/articles/system-design/frontend/error-handling-monitoring/error-reporting"),
-  "system-design-concepts/frontend-concepts/error-handling-monitoring/feature-detection": () => import("@/content/articles/system-design/frontend/error-handling-monitoring/feature-detection"),
-  "system-design-concepts/frontend-concepts/error-handling-monitoring/global-error-handlers": () => import("@/content/articles/system-design/frontend/error-handling-monitoring/global-error-handlers"),
-  "system-design-concepts/frontend-concepts/error-handling-monitoring/graceful-degradation": () => import("@/content/articles/system-design/frontend/error-handling-monitoring/graceful-degradation"),
-  "system-design-concepts/frontend-concepts/error-handling-monitoring/logging-strategies": () => import("@/content/articles/system-design/frontend/error-handling-monitoring/logging-strategies"),
-  "system-design-concepts/frontend-concepts/error-handling-monitoring/performance-monitoring": () => import("@/content/articles/system-design/frontend/error-handling-monitoring/performance-monitoring"),
-  "system-design-concepts/frontend-concepts/error-handling-monitoring/source-maps": () => import("@/content/articles/system-design/frontend/error-handling-monitoring/source-maps"),
-  "system-design-concepts/frontend-concepts/error-handling-monitoring/user-error-messages": () => import("@/content/articles/system-design/frontend/error-handling-monitoring/user-error-messages"),
-  "system-design-concepts/frontend-concepts/forms-validation/auto-save-functionality": () => import("@/content/articles/system-design/frontend/forms-validation/auto-save-functionality"),
-  "system-design-concepts/frontend-concepts/forms-validation/client-side-validation": () => import("@/content/articles/system-design/frontend/forms-validation/client-side-validation"),
-  "system-design-concepts/frontend-concepts/forms-validation/file-upload-handling": () => import("@/content/articles/system-design/frontend/forms-validation/file-upload-handling"),
-  "system-design-concepts/frontend-concepts/forms-validation/form-accessibility": () => import("@/content/articles/system-design/frontend/forms-validation/form-accessibility"),
-  "system-design-concepts/frontend-concepts/forms-validation/form-serialization": () => import("@/content/articles/system-design/frontend/forms-validation/form-serialization"),
-  "system-design-concepts/frontend-concepts/forms-validation/form-state-management": () => import("@/content/articles/system-design/frontend/forms-validation/form-state-management"),
-  "system-design-concepts/frontend-concepts/forms-validation/multi-step-forms": () => import("@/content/articles/system-design/frontend/forms-validation/multi-step-forms"),
-  "system-design-concepts/frontend-concepts/forms-validation/real-time-validation": () => import("@/content/articles/system-design/frontend/forms-validation/real-time-validation"),
-  "system-design-concepts/frontend-concepts/internationalization-i18n-localization-l10n/currency-formatting": () => import("@/content/articles/system-design/frontend/internationalization-i18n-localization-l10n/currency-formatting"),
-  "system-design-concepts/frontend-concepts/internationalization-i18n-localization-l10n/date-time-number-formatting": () => import("@/content/articles/system-design/frontend/internationalization-i18n-localization-l10n/date-time-number-formatting"),
-  "system-design-concepts/frontend-concepts/internationalization-i18n-localization-l10n/lazy-loading-translations": () => import("@/content/articles/system-design/frontend/internationalization-i18n-localization-l10n/lazy-loading-translations"),
-  "system-design-concepts/frontend-concepts/internationalization-i18n-localization-l10n/locale-detection": () => import("@/content/articles/system-design/frontend/internationalization-i18n-localization-l10n/locale-detection"),
-  "system-design-concepts/frontend-concepts/internationalization-i18n-localization-l10n/multi-language-support": () => import("@/content/articles/system-design/frontend/internationalization-i18n-localization-l10n/multi-language-support"),
-  "system-design-concepts/frontend-concepts/internationalization-i18n-localization-l10n/rtl-support": () => import("@/content/articles/system-design/frontend/internationalization-i18n-localization-l10n/rtl-support"),
-  "system-design-concepts/frontend-concepts/internationalization-i18n-localization-l10n/translation-management": () => import("@/content/articles/system-design/frontend/internationalization-i18n-localization-l10n/translation-management"),
-  "system-design-concepts/frontend-concepts/memory-management/dom-reference-management": () => import("@/content/articles/system-design/frontend/memory-management/dom-reference-management"),
-  "system-design-concepts/frontend-concepts/memory-management/event-listener-cleanup": () => import("@/content/articles/system-design/frontend/memory-management/event-listener-cleanup"),
-  "system-design-concepts/frontend-concepts/memory-management/garbage-collection-understanding": () => import("@/content/articles/system-design/frontend/memory-management/garbage-collection-understanding"),
-  "system-design-concepts/frontend-concepts/memory-management/memory-leaks-prevention": () => import("@/content/articles/system-design/frontend/memory-management/memory-leaks-prevention"),
-  "system-design-concepts/frontend-concepts/memory-management/memory-profiling": () => import("@/content/articles/system-design/frontend/memory-management/memory-profiling"),
-  "system-design-concepts/frontend-concepts/memory-management/timer-cleanup": () => import("@/content/articles/system-design/frontend/memory-management/timer-cleanup"),
-  "system-design-concepts/frontend-concepts/mobile-considerations/app-like-experience-pwa": () => import("@/content/articles/system-design/frontend/mobile-considerations/app-like-experience-pwa"),
-  "system-design-concepts/frontend-concepts/mobile-considerations/device-orientation-api": () => import("@/content/articles/system-design/frontend/mobile-considerations/device-orientation-api"),
-  "system-design-concepts/frontend-concepts/mobile-considerations/mobile-first-design": () => import("@/content/articles/system-design/frontend/mobile-considerations/mobile-first-design"),
-  "system-design-concepts/frontend-concepts/mobile-considerations/mobile-network-considerations": () => import("@/content/articles/system-design/frontend/mobile-considerations/mobile-network-considerations"),
-  "system-design-concepts/frontend-concepts/mobile-considerations/mobile-performance-optimization": () => import("@/content/articles/system-design/frontend/mobile-considerations/mobile-performance-optimization"),
-  "system-design-concepts/frontend-concepts/mobile-considerations/responsive-design": () => import("@/content/articles/system-design/frontend/mobile-considerations/responsive-design"),
-  "system-design-concepts/frontend-concepts/mobile-considerations/touch-events-vs-pointer-events": () => import("@/content/articles/system-design/frontend/mobile-considerations/touch-events-vs-pointer-events"),
-  "system-design-concepts/frontend-concepts/mobile-considerations/viewport-configuration": () => import("@/content/articles/system-design/frontend/mobile-considerations/viewport-configuration"),
-  "system-design-concepts/frontend-concepts/networking-api-communication/api-rate-limiting": () => import("@/content/articles/system-design/frontend/networking-api-communication/api-rate-limiting"),
-  "system-design-concepts/frontend-concepts/networking-api-communication/chunked-transfer-encoding": () => import("@/content/articles/system-design/frontend/networking-api-communication/chunked-transfer-encoding"),
-  "system-design-concepts/frontend-concepts/networking-api-communication/circuit-breaker-pattern": () => import("@/content/articles/system-design/frontend/networking-api-communication/circuit-breaker-pattern"),
-  "system-design-concepts/frontend-concepts/networking-api-communication/cors-handling": () => import("@/content/articles/system-design/frontend/networking-api-communication/cors-handling"),
-  "system-design-concepts/frontend-concepts/networking-api-communication/graphql": () => import("@/content/articles/system-design/frontend/networking-api-communication/graphql"),
-  "system-design-concepts/frontend-concepts/networking-api-communication/http2-and-http3": () => import("@/content/articles/system-design/frontend/networking-api-communication/http2-and-http3"),
-  "system-design-concepts/frontend-concepts/networking-api-communication/long-polling": () => import("@/content/articles/system-design/frontend/networking-api-communication/long-polling"),
-  "system-design-concepts/frontend-concepts/networking-api-communication/multipart-upload": () => import("@/content/articles/system-design/frontend/networking-api-communication/multipart-upload"),
-  "system-design-concepts/frontend-concepts/networking-api-communication/request-batching": () => import("@/content/articles/system-design/frontend/networking-api-communication/request-batching"),
-  "system-design-concepts/frontend-concepts/networking-api-communication/request-cancellation": () => import("@/content/articles/system-design/frontend/networking-api-communication/request-cancellation"),
-  "system-design-concepts/frontend-concepts/networking-api-communication/request-queuing": () => import("@/content/articles/system-design/frontend/networking-api-communication/request-queuing"),
-  "system-design-concepts/frontend-concepts/networking-api-communication/rest-api-design": () => import("@/content/articles/system-design/frontend/networking-api-communication/rest-api-design"),
-  "system-design-concepts/frontend-concepts/networking-api-communication/retry-logic-and-exponential-backoff": () => import("@/content/articles/system-design/frontend/networking-api-communication/retry-logic-and-exponential-backoff"),
-  "system-design-concepts/frontend-concepts/networking-api-communication/server-sent-events": () => import("@/content/articles/system-design/frontend/networking-api-communication/server-sent-events"),
-  "system-design-concepts/frontend-concepts/networking-api-communication/short-polling": () => import("@/content/articles/system-design/frontend/networking-api-communication/short-polling"),
-  "system-design-concepts/frontend-concepts/networking-api-communication/webrtc-peer-to-peer": () => import("@/content/articles/system-design/frontend/networking-api-communication/webrtc-peer-to-peer"),
-  "system-design-concepts/frontend-concepts/networking-api-communication/websockets": () => import("@/content/articles/system-design/frontend/networking-api-communication/websockets"),
-  "system-design-concepts/frontend-concepts/offline-support/background-sync": () => import("@/content/articles/system-design/frontend/offline-support/background-sync"),
-  "system-design-concepts/frontend-concepts/offline-support/conflict-resolution": () => import("@/content/articles/system-design/frontend/offline-support/conflict-resolution"),
-  "system-design-concepts/frontend-concepts/offline-support/network-status-detection": () => import("@/content/articles/system-design/frontend/offline-support/network-status-detection"),
-  "system-design-concepts/frontend-concepts/offline-support/offline-first-architecture": () => import("@/content/articles/system-design/frontend/offline-support/offline-first-architecture"),
-  "system-design-concepts/frontend-concepts/offline-support/periodic-background-sync": () => import("@/content/articles/system-design/frontend/offline-support/periodic-background-sync"),
-  "system-design-concepts/frontend-concepts/offline-support/progressive-web-apps": () => import("@/content/articles/system-design/frontend/offline-support/progressive-web-apps"),
-  "system-design-concepts/frontend-concepts/offline-support/service-workers": () => import("@/content/articles/system-design/frontend/offline-support/service-workers"),
-  "system-design-concepts/frontend-concepts/performance-optimization/above-the-fold-optimization": () => import("@/content/articles/system-design/frontend/performance-optimization/above-the-fold-optimization"),
-  "system-design-concepts/frontend-concepts/performance-optimization/bundle-size-optimization": () => import("@/content/articles/system-design/frontend/performance-optimization/bundle-size-optimization"),
-  "system-design-concepts/frontend-concepts/performance-optimization/code-splitting": () => import("@/content/articles/system-design/frontend/performance-optimization/code-splitting"),
-  "system-design-concepts/frontend-concepts/performance-optimization/compression": () => import("@/content/articles/system-design/frontend/performance-optimization/compression"),
-  "system-design-concepts/frontend-concepts/performance-optimization/critical-css": () => import("@/content/articles/system-design/frontend/performance-optimization/critical-css"),
-  "system-design-concepts/frontend-concepts/performance-optimization/debouncing-and-throttling": () => import("@/content/articles/system-design/frontend/performance-optimization/debouncing-and-throttling"),
-  "system-design-concepts/frontend-concepts/performance-optimization/image-optimization": () => import("@/content/articles/system-design/frontend/performance-optimization/image-optimization"),
-  "system-design-concepts/frontend-concepts/performance-optimization/lazy-loading": () => import("@/content/articles/system-design/frontend/performance-optimization/lazy-loading"),
-  "system-design-concepts/frontend-concepts/performance-optimization/memoization-and-react-memo": () => import("@/content/articles/system-design/frontend/performance-optimization/memoization-and-react-memo"),
-  "system-design-concepts/frontend-concepts/performance-optimization/minification-and-uglification": () => import("@/content/articles/system-design/frontend/performance-optimization/minification-and-uglification"),
-  "system-design-concepts/frontend-concepts/performance-optimization/performance-budgets": () => import("@/content/articles/system-design/frontend/performance-optimization/performance-budgets"),
-  "system-design-concepts/frontend-concepts/performance-optimization/request-deduplication": () => import("@/content/articles/system-design/frontend/performance-optimization/request-deduplication"),
-  "system-design-concepts/frontend-concepts/performance-optimization/resource-hints": () => import("@/content/articles/system-design/frontend/performance-optimization/resource-hints"),
-  "system-design-concepts/frontend-concepts/performance-optimization/tree-shaking": () => import("@/content/articles/system-design/frontend/performance-optimization/tree-shaking"),
-  "system-design-concepts/frontend-concepts/performance-optimization/virtualization-windowing": () => import("@/content/articles/system-design/frontend/performance-optimization/virtualization-windowing"),
-  "system-design-concepts/frontend-concepts/performance-optimization/web-vitals": () => import("@/content/articles/system-design/frontend/performance-optimization/web-vitals"),
-  "system-design-concepts/frontend-concepts/real-time-features/collaborative-editing": () => import("@/content/articles/system-design/frontend/real-time-features/collaborative-editing"),
-  "system-design-concepts/frontend-concepts/real-time-features/live-updates-feed": () => import("@/content/articles/system-design/frontend/real-time-features/live-updates-feed"),
-  "system-design-concepts/frontend-concepts/real-time-features/presence-systems": () => import("@/content/articles/system-design/frontend/real-time-features/presence-systems"),
-  "system-design-concepts/frontend-concepts/real-time-features/real-time-notifications": () => import("@/content/articles/system-design/frontend/real-time-features/real-time-notifications"),
-  "system-design-concepts/frontend-concepts/real-time-features/server-sent-events": () => import("@/content/articles/system-design/frontend/real-time-features/server-sent-events"),
-  "system-design-concepts/frontend-concepts/real-time-features/webrtc": () => import("@/content/articles/system-design/frontend/real-time-features/webrtc"),
-  "system-design-concepts/frontend-concepts/real-time-features/websockets": () => import("@/content/articles/system-design/frontend/real-time-features/websockets"),
-  "system-design-concepts/frontend-concepts/rendering-strategies/client-side-rendering": () => import("@/content/articles/system-design/frontend/rendering-strategies/client-side-rendering"),
-  "system-design-concepts/frontend-concepts/rendering-strategies/edge-rendering": () => import("@/content/articles/system-design/frontend/rendering-strategies/edge-rendering"),
-  "system-design-concepts/frontend-concepts/rendering-strategies/incremental-static-regeneration": () => import("@/content/articles/system-design/frontend/rendering-strategies/incremental-static-regeneration"),
-  "system-design-concepts/frontend-concepts/rendering-strategies/islands-architecture": () => import("@/content/articles/system-design/frontend/rendering-strategies/islands-architecture"),
-  "system-design-concepts/frontend-concepts/rendering-strategies/partial-hydration": () => import("@/content/articles/system-design/frontend/rendering-strategies/partial-hydration"),
-  "system-design-concepts/frontend-concepts/rendering-strategies/progressive-hydration": () => import("@/content/articles/system-design/frontend/rendering-strategies/progressive-hydration"),
-  "system-design-concepts/frontend-concepts/rendering-strategies/selective-hydration": () => import("@/content/articles/system-design/frontend/rendering-strategies/selective-hydration"),
-  "system-design-concepts/frontend-concepts/rendering-strategies/server-side-rendering": () => import("@/content/articles/system-design/frontend/rendering-strategies/server-side-rendering"),
-  "system-design-concepts/frontend-concepts/rendering-strategies/static-site-generation": () => import("@/content/articles/system-design/frontend/rendering-strategies/static-site-generation"),
-  "system-design-concepts/frontend-concepts/rendering-strategies/streaming-ssr": () => import("@/content/articles/system-design/frontend/rendering-strategies/streaming-ssr"),
-  "system-design-concepts/frontend-concepts/routing/client-side-routing": () => import("@/content/articles/system-design/frontend/routing/client-side-routing"),
-  "system-design-concepts/frontend-concepts/routing/deep-linking": () => import("@/content/articles/system-design/frontend/routing/deep-linking"),
-  "system-design-concepts/frontend-concepts/routing/dynamic-routes": () => import("@/content/articles/system-design/frontend/routing/dynamic-routes"),
-  "system-design-concepts/frontend-concepts/routing/hash-based-routing": () => import("@/content/articles/system-design/frontend/routing/hash-based-routing"),
-  "system-design-concepts/frontend-concepts/routing/history-api": () => import("@/content/articles/system-design/frontend/routing/history-api"),
-  "system-design-concepts/frontend-concepts/routing/nested-routes": () => import("@/content/articles/system-design/frontend/routing/nested-routes"),
-  "system-design-concepts/frontend-concepts/routing/route-based-code-splitting": () => import("@/content/articles/system-design/frontend/routing/route-based-code-splitting"),
-  "system-design-concepts/frontend-concepts/routing/route-guards": () => import("@/content/articles/system-design/frontend/routing/route-guards"),
-  "system-design-concepts/frontend-concepts/routing/url-parameter-handling": () => import("@/content/articles/system-design/frontend/routing/url-parameter-handling"),
-  "system-design-concepts/frontend-concepts/scalability-architecture-patterns/component-libraries-and-design-systems": () => import("@/content/articles/system-design/frontend/scalability-architecture-patterns/component-libraries-and-design-systems"),
-  "system-design-concepts/frontend-concepts/scalability-architecture-patterns/event-driven-architecture": () => import("@/content/articles/system-design/frontend/scalability-architecture-patterns/event-driven-architecture"),
-  "system-design-concepts/frontend-concepts/scalability-architecture-patterns/facade-pattern": () => import("@/content/articles/system-design/frontend/scalability-architecture-patterns/facade-pattern"),
-  "system-design-concepts/frontend-concepts/scalability-architecture-patterns/factory-pattern": () => import("@/content/articles/system-design/frontend/scalability-architecture-patterns/factory-pattern"),
-  "system-design-concepts/frontend-concepts/scalability-architecture-patterns/feature-flags-toggle": () => import("@/content/articles/system-design/frontend/scalability-architecture-patterns/feature-flags-toggle"),
-  "system-design-concepts/frontend-concepts/scalability-architecture-patterns/micro-frontends": () => import("@/content/articles/system-design/frontend/scalability-architecture-patterns/micro-frontends"),
-  "system-design-concepts/frontend-concepts/scalability-architecture-patterns/module-federation": () => import("@/content/articles/system-design/frontend/scalability-architecture-patterns/module-federation"),
-  "system-design-concepts/frontend-concepts/scalability-architecture-patterns/module-pattern": () => import("@/content/articles/system-design/frontend/scalability-architecture-patterns/module-pattern"),
-  "system-design-concepts/frontend-concepts/scalability-architecture-patterns/monorepo-vs-polyrepo": () => import("@/content/articles/system-design/frontend/scalability-architecture-patterns/monorepo-vs-polyrepo"),
-  "system-design-concepts/frontend-concepts/scalability-architecture-patterns/observer-pattern": () => import("@/content/articles/system-design/frontend/scalability-architecture-patterns/observer-pattern"),
-  "system-design-concepts/frontend-concepts/scalability-architecture-patterns/plugin-architecture": () => import("@/content/articles/system-design/frontend/scalability-architecture-patterns/plugin-architecture"),
-  "system-design-concepts/frontend-concepts/scalability-architecture-patterns/publish-subscribe-pattern": () => import("@/content/articles/system-design/frontend/scalability-architecture-patterns/publish-subscribe-pattern"),
-  "system-design-concepts/frontend-concepts/scalability-architecture-patterns/singleton-pattern": () => import("@/content/articles/system-design/frontend/scalability-architecture-patterns/singleton-pattern"),
-  "system-design-concepts/frontend-concepts/search-filtering/client-side-search-implementation": () => import("@/content/articles/system-design/frontend/search-filtering/client-side-search-implementation"),
-  "system-design-concepts/frontend-concepts/search-filtering/elasticsearch-integration": () => import("@/content/articles/system-design/frontend/search-filtering/elasticsearch-integration"),
-  "system-design-concepts/frontend-concepts/search-filtering/faceted-search": () => import("@/content/articles/system-design/frontend/search-filtering/faceted-search"),
-  "system-design-concepts/frontend-concepts/search-filtering/full-text-search-libraries": () => import("@/content/articles/system-design/frontend/search-filtering/full-text-search-libraries"),
-  "system-design-concepts/frontend-concepts/search-filtering/search-debouncing": () => import("@/content/articles/system-design/frontend/search-filtering/search-debouncing"),
-  "system-design-concepts/frontend-concepts/search-filtering/search-history": () => import("@/content/articles/system-design/frontend/search-filtering/search-history"),
-  "system-design-concepts/frontend-concepts/search-filtering/search-suggestions-autocomplete": () => import("@/content/articles/system-design/frontend/search-filtering/search-suggestions-autocomplete"),
-  "system-design-concepts/frontend-concepts/security/authentication-patterns": () => import("@/content/articles/system-design/frontend/security/authentication-patterns"),
-  "system-design-concepts/frontend-concepts/security/authorization-rbac": () => import("@/content/articles/system-design/frontend/security/authorization-rbac"),
-  "system-design-concepts/frontend-concepts/security/clickjacking-prevention": () => import("@/content/articles/system-design/frontend/security/clickjacking-prevention"),
-  "system-design-concepts/frontend-concepts/security/client-side-rate-limiting": () => import("@/content/articles/system-design/frontend/security/client-side-rate-limiting"),
-  "system-design-concepts/frontend-concepts/security/content-security-policy": () => import("@/content/articles/system-design/frontend/security/content-security-policy"),
-  "system-design-concepts/frontend-concepts/security/csrf-protection": () => import("@/content/articles/system-design/frontend/security/csrf-protection"),
-  "system-design-concepts/frontend-concepts/security/https-tls": () => import("@/content/articles/system-design/frontend/security/https-tls"),
-  "system-design-concepts/frontend-concepts/security/input-validation-sanitization": () => import("@/content/articles/system-design/frontend/security/input-validation-sanitization"),
-  "system-design-concepts/frontend-concepts/security/secure-cookie-attributes": () => import("@/content/articles/system-design/frontend/security/secure-cookie-attributes"),
-  "system-design-concepts/frontend-concepts/security/secure-storage-sensitive-data": () => import("@/content/articles/system-design/frontend/security/secure-storage-sensitive-data"),
-  "system-design-concepts/frontend-concepts/security/subresource-integrity": () => import("@/content/articles/system-design/frontend/security/subresource-integrity"),
-  "system-design-concepts/frontend-concepts/security/token-refresh-strategies": () => import("@/content/articles/system-design/frontend/security/token-refresh-strategies"),
-  "system-design-concepts/frontend-concepts/security/xss-prevention": () => import("@/content/articles/system-design/frontend/security/xss-prevention"),
-  "system-design-concepts/frontend-concepts/seo-optimization/canonical-urls": () => import("@/content/articles/system-design/frontend/seo-optimization/canonical-urls"),
-  "system-design-concepts/frontend-concepts/seo-optimization/meta-tags": () => import("@/content/articles/system-design/frontend/seo-optimization/meta-tags"),
-  "system-design-concepts/frontend-concepts/seo-optimization/pagination-and-infinite-scroll-seo": () => import("@/content/articles/system-design/frontend/seo-optimization/pagination-and-infinite-scroll-seo"),
-  "system-design-concepts/frontend-concepts/seo-optimization/robots-txt": () => import("@/content/articles/system-design/frontend/seo-optimization/robots-txt"),
-  "system-design-concepts/frontend-concepts/seo-optimization/semantic-html-for-seo": () => import("@/content/articles/system-design/frontend/seo-optimization/semantic-html-for-seo"),
-  "system-design-concepts/frontend-concepts/seo-optimization/server-side-rendering-for-seo": () => import("@/content/articles/system-design/frontend/seo-optimization/server-side-rendering-for-seo"),
-  "system-design-concepts/frontend-concepts/seo-optimization/social-media-optimization": () => import("@/content/articles/system-design/frontend/seo-optimization/social-media-optimization"),
-  "system-design-concepts/frontend-concepts/seo-optimization/structured-data-schema-markup": () => import("@/content/articles/system-design/frontend/seo-optimization/structured-data-schema-markup"),
-  "system-design-concepts/frontend-concepts/seo-optimization/url-structure": () => import("@/content/articles/system-design/frontend/seo-optimization/url-structure"),
-  "system-design-concepts/frontend-concepts/seo-optimization/xml-sitemaps": () => import("@/content/articles/system-design/frontend/seo-optimization/xml-sitemaps"),
-  "system-design-concepts/frontend-concepts/state-management/derived-state": () => import("@/content/articles/system-design/frontend/state-management/derived-state"),
-  "system-design-concepts/frontend-concepts/state-management/form-state-management": () => import("@/content/articles/system-design/frontend/state-management/form-state-management"),
-  "system-design-concepts/frontend-concepts/state-management/global-state-management": () => import("@/content/articles/system-design/frontend/state-management/global-state-management"),
-  "system-design-concepts/frontend-concepts/state-management/immutable-state-updates": () => import("@/content/articles/system-design/frontend/state-management/immutable-state-updates"),
-  "system-design-concepts/frontend-concepts/state-management/local-component-state": () => import("@/content/articles/system-design/frontend/state-management/local-component-state"),
-  "system-design-concepts/frontend-concepts/state-management/optimistic-updates": () => import("@/content/articles/system-design/frontend/state-management/optimistic-updates"),
-  "system-design-concepts/frontend-concepts/state-management/server-state-management": () => import("@/content/articles/system-design/frontend/state-management/server-state-management"),
-  "system-design-concepts/frontend-concepts/state-management/state-normalization": () => import("@/content/articles/system-design/frontend/state-management/state-normalization"),
-  "system-design-concepts/frontend-concepts/state-management/state-persistence": () => import("@/content/articles/system-design/frontend/state-management/state-persistence"),
-  "system-design-concepts/frontend-concepts/state-management/state-synchronization": () => import("@/content/articles/system-design/frontend/state-management/state-synchronization"),
-  "system-design-concepts/frontend-concepts/state-management/url-state": () => import("@/content/articles/system-design/frontend/state-management/url-state"),
-  "system-design-concepts/frontend-concepts/testing-strategies/e2e-testing": () => import("@/content/articles/system-design/frontend/testing-strategies/e2e-testing"),
-  "system-design-concepts/frontend-concepts/testing-strategies/integration-testing": () => import("@/content/articles/system-design/frontend/testing-strategies/integration-testing"),
-  "system-design-concepts/frontend-concepts/testing-strategies/unit-testing": () => import("@/content/articles/system-design/frontend/testing-strategies/unit-testing"),
-  "system-design-concepts/frontend-concepts/testing-strategies/visual-regression-testing": () => import("@/content/articles/system-design/frontend/testing-strategies/visual-regression-testing"),
-  "system-design-concepts/frontend-concepts/third-party-integration/analytics-tools-integration": () => import("@/content/articles/system-design/frontend/third-party-integration/analytics-tools-integration"),
-  "system-design-concepts/frontend-concepts/third-party-integration/chat-widget-integration": () => import("@/content/articles/system-design/frontend/third-party-integration/chat-widget-integration"),
-  "system-design-concepts/frontend-concepts/third-party-integration/oauth-integration": () => import("@/content/articles/system-design/frontend/third-party-integration/oauth-integration"),
-  "system-design-concepts/frontend-concepts/third-party-integration/payment-gateway-integration": () => import("@/content/articles/system-design/frontend/third-party-integration/payment-gateway-integration"),
-  "system-design-concepts/frontend-concepts/third-party-integration/script-loading-strategies": () => import("@/content/articles/system-design/frontend/third-party-integration/script-loading-strategies"),
-  "system-design-concepts/frontend-concepts/third-party-integration/social-media-integration": () => import("@/content/articles/system-design/frontend/third-party-integration/social-media-integration"),
-  "system-design-concepts/frontend-concepts/third-party-integration/widget-embedding": () => import("@/content/articles/system-design/frontend/third-party-integration/widget-embedding"),
-  "system-design-concepts/frontend-concepts/web-standards-and-compatibility/browser-feature-detection": () => import("@/content/articles/system-design/frontend/web-standards-and-compatibility/browser-feature-detection"),
-  "system-design-concepts/frontend-concepts/web-standards-and-compatibility/cross-browser-testing": () => import("@/content/articles/system-design/frontend/web-standards-and-compatibility/cross-browser-testing"),
-  "system-design-concepts/frontend-concepts/web-standards-and-compatibility/css-vendor-prefixes": () => import("@/content/articles/system-design/frontend/web-standards-and-compatibility/css-vendor-prefixes"),
-  "system-design-concepts/frontend-concepts/web-standards-and-compatibility/graceful-degradation": () => import("@/content/articles/system-design/frontend/web-standards-and-compatibility/graceful-degradation"),
-  "system-design-concepts/frontend-concepts/web-standards-and-compatibility/legacy-browser-support": () => import("@/content/articles/system-design/frontend/web-standards-and-compatibility/legacy-browser-support"),
-  "system-design-concepts/frontend-concepts/web-standards-and-compatibility/polyfills-and-transpilation": () => import("@/content/articles/system-design/frontend/web-standards-and-compatibility/polyfills-and-transpilation"),
-  "system-design-concepts/frontend-concepts/web-standards-and-compatibility/progressive-enhancement": () => import("@/content/articles/system-design/frontend/web-standards-and-compatibility/progressive-enhancement"),
-  "system-design-concepts/backend-concepts/advanced-topics/b-trees-b-trees": () => import("@/content/articles/system-design/backend/advanced-topics/b-trees-b-trees"),
-  "system-design-concepts/backend-concepts/advanced-topics/bloom-filters": () => import("@/content/articles/system-design/backend/advanced-topics/bloom-filters"),
-  "system-design-concepts/backend-concepts/advanced-topics/conflict-free-replicated-data-types": () => import("@/content/articles/system-design/backend/advanced-topics/conflict-free-replicated-data-types"),
-  "system-design-concepts/backend-concepts/advanced-topics/count-min-sketch": () => import("@/content/articles/system-design/backend/advanced-topics/count-min-sketch"),
-  "system-design-concepts/backend-concepts/advanced-topics/geo-sharding": () => import("@/content/articles/system-design/backend/advanced-topics/geo-sharding"),
-  "system-design-concepts/backend-concepts/advanced-topics/global-distribution": () => import("@/content/articles/system-design/backend/advanced-topics/global-distribution"),
-  "system-design-concepts/backend-concepts/advanced-topics/hot-partitions": () => import("@/content/articles/system-design/backend/advanced-topics/hot-partitions"),
-  "system-design-concepts/backend-concepts/advanced-topics/hyperloglog": () => import("@/content/articles/system-design/backend/advanced-topics/hyperloglog"),
-  "system-design-concepts/backend-concepts/advanced-topics/leader-election": () => import("@/content/articles/system-design/backend/advanced-topics/leader-election"),
-  "system-design-concepts/backend-concepts/advanced-topics/lsm-trees": () => import("@/content/articles/system-design/backend/advanced-topics/lsm-trees"),
-  "system-design-concepts/backend-concepts/advanced-topics/merkle-trees": () => import("@/content/articles/system-design/backend/advanced-topics/merkle-trees"),
-  "system-design-concepts/backend-concepts/advanced-topics/operational-transformation": () => import("@/content/articles/system-design/backend/advanced-topics/operational-transformation"),
-  "system-design-concepts/backend-concepts/advanced-topics/skip-lists": () => import("@/content/articles/system-design/backend/advanced-topics/skip-lists"),
-  "system-design-concepts/backend-concepts/advanced-topics/snapshot-isolation": () => import("@/content/articles/system-design/backend/advanced-topics/snapshot-isolation"),
-  "system-design-concepts/backend-concepts/advanced-topics/tail-latency": () => import("@/content/articles/system-design/backend/advanced-topics/tail-latency"),
-  "system-design-concepts/backend-concepts/advanced-topics/time-series-optimization": () => import("@/content/articles/system-design/backend/advanced-topics/time-series-optimization"),
-  "system-design-concepts/backend-concepts/advanced-topics/write-ahead-logging": () => import("@/content/articles/system-design/backend/advanced-topics/write-ahead-logging"),
-  "system-design-concepts/backend-concepts/advanced-topics/zero-copy-techniques": () => import("@/content/articles/system-design/backend/advanced-topics/zero-copy-techniques"),
-  "system-design-concepts/backend-concepts/caching-performance/application-level-caching": () => import("@/content/articles/system-design/backend/caching-performance/application-level-caching"),
-  "system-design-concepts/backend-concepts/caching-performance/cache-breakdown": () => import("@/content/articles/system-design/backend/caching-performance/cache-breakdown"),
-  "system-design-concepts/backend-concepts/caching-performance/cache-coherence": () => import("@/content/articles/system-design/backend/caching-performance/cache-coherence"),
-  "system-design-concepts/backend-concepts/caching-performance/cache-eviction-policies": () => import("@/content/articles/system-design/backend/caching-performance/cache-eviction-policies"),
-  "system-design-concepts/backend-concepts/caching-performance/cache-invalidation": () => import("@/content/articles/system-design/backend/caching-performance/cache-invalidation"),
-  "system-design-concepts/backend-concepts/caching-performance/cache-penetration": () => import("@/content/articles/system-design/backend/caching-performance/cache-penetration"),
-  "system-design-concepts/backend-concepts/caching-performance/cache-stampede": () => import("@/content/articles/system-design/backend/caching-performance/cache-stampede"),
-  "system-design-concepts/backend-concepts/caching-performance/cache-warming": () => import("@/content/articles/system-design/backend/caching-performance/cache-warming"),
-  "system-design-concepts/backend-concepts/caching-performance/caching-strategies": () => import("@/content/articles/system-design/backend/caching-performance/caching-strategies"),
-  "system-design-concepts/backend-concepts/caching-performance/cdn-caching": () => import("@/content/articles/system-design/backend/caching-performance/cdn-caching"),
-  "system-design-concepts/backend-concepts/caching-performance/database-connection-pooling": () => import("@/content/articles/system-design/backend/caching-performance/database-connection-pooling"),
-  "system-design-concepts/backend-concepts/caching-performance/database-query-caching": () => import("@/content/articles/system-design/backend/caching-performance/database-query-caching"),
-  "system-design-concepts/backend-concepts/caching-performance/distributed-caching": () => import("@/content/articles/system-design/backend/caching-performance/distributed-caching"),
-  "system-design-concepts/backend-concepts/caching-performance/http-caching": () => import("@/content/articles/system-design/backend/caching-performance/http-caching"),
-  "system-design-concepts/backend-concepts/caching-performance/lazy-loading": () => import("@/content/articles/system-design/backend/caching-performance/lazy-loading"),
-  "system-design-concepts/backend-concepts/caching-performance/memoization": () => import("@/content/articles/system-design/backend/caching-performance/memoization"),
-  "system-design-concepts/backend-concepts/caching-performance/multi-level-caching": () => import("@/content/articles/system-design/backend/caching-performance/multi-level-caching"),
-  "system-design-concepts/backend-concepts/caching-performance/object-pooling": () => import("@/content/articles/system-design/backend/caching-performance/object-pooling"),
-  "system-design-concepts/backend-concepts/caching-performance/page-caching": () => import("@/content/articles/system-design/backend/caching-performance/page-caching"),
-  "system-design-concepts/backend-concepts/caching-performance/prefetching": () => import("@/content/articles/system-design/backend/caching-performance/prefetching"),
-  "system-design-concepts/backend-concepts/data-processing-analytics/aggregations": () => import("@/content/articles/system-design/backend/data-processing-analytics/aggregations"),
-  "system-design-concepts/backend-concepts/data-processing-analytics/apache-kafka": () => import("@/content/articles/system-design/backend/data-processing-analytics/apache-kafka"),
-  "system-design-concepts/backend-concepts/data-processing-analytics/apache-spark": () => import("@/content/articles/system-design/backend/data-processing-analytics/apache-spark"),
-  "system-design-concepts/backend-concepts/data-processing-analytics/batch-processing": () => import("@/content/articles/system-design/backend/data-processing-analytics/batch-processing"),
-  "system-design-concepts/backend-concepts/data-processing-analytics/change-data-capture": () => import("@/content/articles/system-design/backend/data-processing-analytics/change-data-capture"),
-  "system-design-concepts/backend-concepts/data-processing-analytics/data-compression": () => import("@/content/articles/system-design/backend/data-processing-analytics/data-compression"),
-  "system-design-concepts/backend-concepts/data-processing-analytics/data-deduplication": () => import("@/content/articles/system-design/backend/data-processing-analytics/data-deduplication"),
-  "system-design-concepts/backend-concepts/data-processing-analytics/data-partitioning": () => import("@/content/articles/system-design/backend/data-processing-analytics/data-partitioning"),
-  "system-design-concepts/backend-concepts/data-processing-analytics/data-pipelines": () => import("@/content/articles/system-design/backend/data-processing-analytics/data-pipelines"),
-  "system-design-concepts/backend-concepts/data-processing-analytics/data-serialization": () => import("@/content/articles/system-design/backend/data-processing-analytics/data-serialization"),
-  "system-design-concepts/backend-concepts/data-processing-analytics/etl-elt-pipelines": () => import("@/content/articles/system-design/backend/data-processing-analytics/etl-elt-pipelines"),
-  "system-design-concepts/backend-concepts/data-processing-analytics/exactly-once-semantics": () => import("@/content/articles/system-design/backend/data-processing-analytics/exactly-once-semantics"),
-  "system-design-concepts/backend-concepts/data-processing-analytics/kappa-architecture": () => import("@/content/articles/system-design/backend/data-processing-analytics/kappa-architecture"),
-  "system-design-concepts/backend-concepts/data-processing-analytics/lambda-architecture": () => import("@/content/articles/system-design/backend/data-processing-analytics/lambda-architecture"),
-  "system-design-concepts/backend-concepts/data-processing-analytics/mapreduce": () => import("@/content/articles/system-design/backend/data-processing-analytics/mapreduce"),
-  "system-design-concepts/backend-concepts/data-processing-analytics/message-ordering": () => import("@/content/articles/system-design/backend/data-processing-analytics/message-ordering"),
-  "system-design-concepts/backend-concepts/data-processing-analytics/stream-processing": () => import("@/content/articles/system-design/backend/data-processing-analytics/stream-processing"),
-  "system-design-concepts/backend-concepts/data-processing-analytics/windowing": () => import("@/content/articles/system-design/backend/data-processing-analytics/windowing"),
-  "system-design-concepts/backend-concepts/data-storage-databases/acid-properties": () => import("@/content/articles/system-design/backend/data-storage-databases/acid-properties"),
-  "system-design-concepts/backend-concepts/data-storage-databases/base-properties": () => import("@/content/articles/system-design/backend/data-storage-databases/base-properties"),
-  "system-design-concepts/backend-concepts/data-storage-databases/blob-storage": () => import("@/content/articles/system-design/backend/data-storage-databases/blob-storage"),
-  "system-design-concepts/backend-concepts/data-storage-databases/block-storage": () => import("@/content/articles/system-design/backend/data-storage-databases/block-storage"),
-  "system-design-concepts/backend-concepts/data-storage-databases/cap-theorem": () => import("@/content/articles/system-design/backend/data-storage-databases/cap-theorem"),
-  "system-design-concepts/backend-concepts/data-storage-databases/cdn-edge-storage": () => import("@/content/articles/system-design/backend/data-storage-databases/cdn-edge-storage"),
-  "system-design-concepts/backend-concepts/data-storage-databases/column-family-stores": () => import("@/content/articles/system-design/backend/data-storage-databases/column-family-stores"),
-  "system-design-concepts/backend-concepts/data-storage-databases/concurrency-control": () => import("@/content/articles/system-design/backend/data-storage-databases/concurrency-control"),
-  "system-design-concepts/backend-concepts/data-storage-databases/conflict-resolution": () => import("@/content/articles/system-design/backend/data-storage-databases/conflict-resolution"),
-  "system-design-concepts/backend-concepts/data-storage-databases/connection-pooling": () => import("@/content/articles/system-design/backend/data-storage-databases/connection-pooling"),
-  "system-design-concepts/backend-concepts/data-storage-databases/consistency-models": () => import("@/content/articles/system-design/backend/data-storage-databases/consistency-models"),
-  "system-design-concepts/backend-concepts/data-storage-databases/data-lakes": () => import("@/content/articles/system-design/backend/data-storage-databases/data-lakes"),
-  "system-design-concepts/backend-concepts/data-storage-databases/data-modeling-in-nosql": () => import("@/content/articles/system-design/backend/data-storage-databases/data-modeling-in-nosql"),
-  "system-design-concepts/backend-concepts/data-storage-databases/data-warehouses": () => import("@/content/articles/system-design/backend/data-storage-databases/data-warehouses"),
-  "system-design-concepts/backend-concepts/data-storage-databases/database-constraints": () => import("@/content/articles/system-design/backend/data-storage-databases/database-constraints"),
-  "system-design-concepts/backend-concepts/data-storage-databases/database-indexes": () => import("@/content/articles/system-design/backend/data-storage-databases/database-indexes"),
-  "system-design-concepts/backend-concepts/data-storage-databases/database-partitioning": () => import("@/content/articles/system-design/backend/data-storage-databases/database-partitioning"),
-  "system-design-concepts/backend-concepts/data-storage-databases/deadlocks": () => import("@/content/articles/system-design/backend/data-storage-databases/deadlocks"),
-  "system-design-concepts/backend-concepts/data-storage-databases/document-databases": () => import("@/content/articles/system-design/backend/data-storage-databases/document-databases"),
-  "system-design-concepts/backend-concepts/data-storage-databases/file-systems": () => import("@/content/articles/system-design/backend/data-storage-databases/file-systems"),
-  "system-design-concepts/backend-concepts/data-storage-databases/graph-databases": () => import("@/content/articles/system-design/backend/data-storage-databases/graph-databases"),
-  "system-design-concepts/backend-concepts/data-storage-databases/in-memory-databases": () => import("@/content/articles/system-design/backend/data-storage-databases/in-memory-databases"),
-  "system-design-concepts/backend-concepts/data-storage-databases/index-types": () => import("@/content/articles/system-design/backend/data-storage-databases/index-types"),
-  "system-design-concepts/backend-concepts/data-storage-databases/key-value-stores": () => import("@/content/articles/system-design/backend/data-storage-databases/key-value-stores"),
-  "system-design-concepts/backend-concepts/data-storage-databases/object-storage": () => import("@/content/articles/system-design/backend/data-storage-databases/object-storage"),
-  "system-design-concepts/backend-concepts/data-storage-databases/orms": () => import("@/content/articles/system-design/backend/data-storage-databases/orms"),
-  "system-design-concepts/backend-concepts/data-storage-databases/query-optimization-techniques": () => import("@/content/articles/system-design/backend/data-storage-databases/query-optimization-techniques"),
-  "system-design-concepts/backend-concepts/data-storage-databases/query-patterns": () => import("@/content/articles/system-design/backend/data-storage-databases/query-patterns"),
-  "system-design-concepts/backend-concepts/data-storage-databases/read-replicas": () => import("@/content/articles/system-design/backend/data-storage-databases/read-replicas"),
-  "system-design-concepts/backend-concepts/data-storage-databases/relational-database-design": () => import("@/content/articles/system-design/backend/data-storage-databases/relational-database-design"),
-  "system-design-concepts/backend-concepts/data-storage-databases/replication-in-nosql": () => import("@/content/articles/system-design/backend/data-storage-databases/replication-in-nosql"),
-  "system-design-concepts/backend-concepts/data-storage-databases/search-engines": () => import("@/content/articles/system-design/backend/data-storage-databases/search-engines"),
-  "system-design-concepts/backend-concepts/data-storage-databases/sharding-strategies": () => import("@/content/articles/system-design/backend/data-storage-databases/sharding-strategies"),
-  "system-design-concepts/backend-concepts/data-storage-databases/sql-queries-optimization": () => import("@/content/articles/system-design/backend/data-storage-databases/sql-queries-optimization"),
-  "system-design-concepts/backend-concepts/data-storage-databases/stored-procedures-functions": () => import("@/content/articles/system-design/backend/data-storage-databases/stored-procedures-functions"),
-  "system-design-concepts/backend-concepts/data-storage-databases/time-series-databases": () => import("@/content/articles/system-design/backend/data-storage-databases/time-series-databases"),
-  "system-design-concepts/backend-concepts/data-storage-databases/transaction-isolation-levels": () => import("@/content/articles/system-design/backend/data-storage-databases/transaction-isolation-levels"),
-  "system-design-concepts/backend-concepts/data-storage-databases/triggers": () => import("@/content/articles/system-design/backend/data-storage-databases/triggers"),
-  "system-design-concepts/backend-concepts/data-storage-databases/views-materialized-views": () => import("@/content/articles/system-design/backend/data-storage-databases/views-materialized-views"),
-  "system-design-concepts/backend-concepts/design-patterns-architectures/adapter-pattern": () => import("@/content/articles/system-design/backend/design-patterns-architectures/adapter-pattern"),
-  "system-design-concepts/backend-concepts/design-patterns-architectures/ambassador-pattern": () => import("@/content/articles/system-design/backend/design-patterns-architectures/ambassador-pattern"),
-  "system-design-concepts/backend-concepts/design-patterns-architectures/anti-corruption-layer": () => import("@/content/articles/system-design/backend/design-patterns-architectures/anti-corruption-layer"),
-  "system-design-concepts/backend-concepts/design-patterns-architectures/api-gateway-pattern": () => import("@/content/articles/system-design/backend/design-patterns-architectures/api-gateway-pattern"),
-  "system-design-concepts/backend-concepts/design-patterns-architectures/backend-for-frontend": () => import("@/content/articles/system-design/backend/design-patterns-architectures/backend-for-frontend"),
-  "system-design-concepts/backend-concepts/design-patterns-architectures/bulkhead-pattern": () => import("@/content/articles/system-design/backend/design-patterns-architectures/bulkhead-pattern"),
-  "system-design-concepts/backend-concepts/design-patterns-architectures/cache-aside-pattern": () => import("@/content/articles/system-design/backend/design-patterns-architectures/cache-aside-pattern"),
-  "system-design-concepts/backend-concepts/design-patterns-architectures/circuit-breaker-pattern": () => import("@/content/articles/system-design/backend/design-patterns-architectures/circuit-breaker-pattern"),
-  "system-design-concepts/backend-concepts/design-patterns-architectures/clean-architecture": () => import("@/content/articles/system-design/backend/design-patterns-architectures/clean-architecture"),
-  "system-design-concepts/backend-concepts/design-patterns-architectures/cqrs-pattern": () => import("@/content/articles/system-design/backend/design-patterns-architectures/cqrs-pattern"),
-  "system-design-concepts/backend-concepts/design-patterns-architectures/database-per-service": () => import("@/content/articles/system-design/backend/design-patterns-architectures/database-per-service"),
-  "system-design-concepts/backend-concepts/design-patterns-architectures/domain-driven-design": () => import("@/content/articles/system-design/backend/design-patterns-architectures/domain-driven-design"),
-  "system-design-concepts/backend-concepts/design-patterns-architectures/event-driven-architecture": () => import("@/content/articles/system-design/backend/design-patterns-architectures/event-driven-architecture"),
-  "system-design-concepts/backend-concepts/design-patterns-architectures/event-sourcing-pattern": () => import("@/content/articles/system-design/backend/design-patterns-architectures/event-sourcing-pattern"),
-  "system-design-concepts/backend-concepts/design-patterns-architectures/hexagonal-architecture": () => import("@/content/articles/system-design/backend/design-patterns-architectures/hexagonal-architecture"),
-  "system-design-concepts/backend-concepts/design-patterns-architectures/layered-architecture": () => import("@/content/articles/system-design/backend/design-patterns-architectures/layered-architecture"),
-  "system-design-concepts/backend-concepts/design-patterns-architectures/materialized-view-pattern": () => import("@/content/articles/system-design/backend/design-patterns-architectures/materialized-view-pattern"),
-  "system-design-concepts/backend-concepts/design-patterns-architectures/microservices-architecture": () => import("@/content/articles/system-design/backend/design-patterns-architectures/microservices-architecture"),
-  "system-design-concepts/backend-concepts/design-patterns-architectures/monolithic-architecture": () => import("@/content/articles/system-design/backend/design-patterns-architectures/monolithic-architecture"),
-  "system-design-concepts/backend-concepts/design-patterns-architectures/repository-pattern": () => import("@/content/articles/system-design/backend/design-patterns-architectures/repository-pattern"),
-  "system-design-concepts/backend-concepts/design-patterns-architectures/retry-pattern": () => import("@/content/articles/system-design/backend/design-patterns-architectures/retry-pattern"),
-  "system-design-concepts/backend-concepts/design-patterns-architectures/saga-pattern": () => import("@/content/articles/system-design/backend/design-patterns-architectures/saga-pattern"),
-  "system-design-concepts/backend-concepts/design-patterns-architectures/serverless-architecture": () => import("@/content/articles/system-design/backend/design-patterns-architectures/serverless-architecture"),
-  "system-design-concepts/backend-concepts/design-patterns-architectures/service-mesh-pattern": () => import("@/content/articles/system-design/backend/design-patterns-architectures/service-mesh-pattern"),
-  "system-design-concepts/backend-concepts/design-patterns-architectures/shared-database-anti-pattern": () => import("@/content/articles/system-design/backend/design-patterns-architectures/shared-database-anti-pattern"),
-  "system-design-concepts/backend-concepts/design-patterns-architectures/sidecar-pattern": () => import("@/content/articles/system-design/backend/design-patterns-architectures/sidecar-pattern"),
-  "system-design-concepts/backend-concepts/design-patterns-architectures/strangler-fig-pattern": () => import("@/content/articles/system-design/backend/design-patterns-architectures/strangler-fig-pattern"),
-  "system-design-concepts/backend-concepts/design-patterns-architectures/throttling-pattern": () => import("@/content/articles/system-design/backend/design-patterns-architectures/throttling-pattern"),
-  "system-design-concepts/backend-concepts/design-patterns-architectures/timeout-pattern": () => import("@/content/articles/system-design/backend/design-patterns-architectures/timeout-pattern"),
-  "system-design-concepts/backend-concepts/design-patterns-architectures/unit-of-work-pattern": () => import("@/content/articles/system-design/backend/design-patterns-architectures/unit-of-work-pattern"),
-  "system-design-concepts/backend-concepts/fundamentals-building-blocks/api-design-best-practices": () => import("@/content/articles/system-design/backend/fundamentals-building-blocks/api-design-best-practices"),
-  "system-design-concepts/backend-concepts/fundamentals-building-blocks/character-encoding": () => import("@/content/articles/system-design/backend/fundamentals-building-blocks/character-encoding"),
-  "system-design-concepts/backend-concepts/fundamentals-building-blocks/client-server-architecture": () => import("@/content/articles/system-design/backend/fundamentals-building-blocks/client-server-architecture"),
-  "system-design-concepts/backend-concepts/fundamentals-building-blocks/compression": () => import("@/content/articles/system-design/backend/fundamentals-building-blocks/compression"),
-  "system-design-concepts/backend-concepts/fundamentals-building-blocks/domain-name-system": () => import("@/content/articles/system-design/backend/fundamentals-building-blocks/domain-name-system"),
-  "system-design-concepts/backend-concepts/fundamentals-building-blocks/horizontal-vs-vertical-scaling": () => import("@/content/articles/system-design/backend/fundamentals-building-blocks/horizontal-vs-vertical-scaling"),
-  "system-design-concepts/backend-concepts/fundamentals-building-blocks/http-https-protocol": () => import("@/content/articles/system-design/backend/fundamentals-building-blocks/http-https-protocol"),
-  "system-design-concepts/backend-concepts/fundamentals-building-blocks/ip-addressing": () => import("@/content/articles/system-design/backend/fundamentals-building-blocks/ip-addressing"),
-  "system-design-concepts/backend-concepts/fundamentals-building-blocks/networking-fundamentals": () => import("@/content/articles/system-design/backend/fundamentals-building-blocks/networking-fundamentals"),
-  "system-design-concepts/backend-concepts/fundamentals-building-blocks/osi-model-tcp-ip-stack": () => import("@/content/articles/system-design/backend/fundamentals-building-blocks/osi-model-tcp-ip-stack"),
-  "system-design-concepts/backend-concepts/fundamentals-building-blocks/request-response-lifecycle": () => import("@/content/articles/system-design/backend/fundamentals-building-blocks/request-response-lifecycle"),
-  "system-design-concepts/backend-concepts/fundamentals-building-blocks/rest-api-design": () => import("@/content/articles/system-design/backend/fundamentals-building-blocks/rest-api-design"),
-  "system-design-concepts/backend-concepts/fundamentals-building-blocks/serialization-formats": () => import("@/content/articles/system-design/backend/fundamentals-building-blocks/serialization-formats"),
-  "system-design-concepts/backend-concepts/fundamentals-building-blocks/stateless-vs-stateful-services": () => import("@/content/articles/system-design/backend/fundamentals-building-blocks/stateless-vs-stateful-services"),
-  "system-design-concepts/backend-concepts/fundamentals-building-blocks/tcp-vs-udp": () => import("@/content/articles/system-design/backend/fundamentals-building-blocks/tcp-vs-udp"),
-  "system-design-concepts/backend-concepts/infrastructure-deployment/auto-scaling": () => import("@/content/articles/system-design/backend/infrastructure-deployment/auto-scaling"),
-  "system-design-concepts/backend-concepts/infrastructure-deployment/blue-green-deployment": () => import("@/content/articles/system-design/backend/infrastructure-deployment/blue-green-deployment"),
-  "system-design-concepts/backend-concepts/infrastructure-deployment/canary-deployment": () => import("@/content/articles/system-design/backend/infrastructure-deployment/canary-deployment"),
-  "system-design-concepts/backend-concepts/infrastructure-deployment/ci-cd-pipelines": () => import("@/content/articles/system-design/backend/infrastructure-deployment/ci-cd-pipelines"),
-  "system-design-concepts/backend-concepts/infrastructure-deployment/cloud-services": () => import("@/content/articles/system-design/backend/infrastructure-deployment/cloud-services"),
-  "system-design-concepts/backend-concepts/infrastructure-deployment/configuration-management": () => import("@/content/articles/system-design/backend/infrastructure-deployment/configuration-management"),
-  "system-design-concepts/backend-concepts/infrastructure-deployment/container-orchestration": () => import("@/content/articles/system-design/backend/infrastructure-deployment/container-orchestration"),
-  "system-design-concepts/backend-concepts/infrastructure-deployment/containerization": () => import("@/content/articles/system-design/backend/infrastructure-deployment/containerization"),
-  "system-design-concepts/backend-concepts/infrastructure-deployment/feature-flags": () => import("@/content/articles/system-design/backend/infrastructure-deployment/feature-flags"),
-  "system-design-concepts/backend-concepts/infrastructure-deployment/gitops": () => import("@/content/articles/system-design/backend/infrastructure-deployment/gitops"),
-  "system-design-concepts/backend-concepts/infrastructure-deployment/immutable-infrastructure": () => import("@/content/articles/system-design/backend/infrastructure-deployment/immutable-infrastructure"),
-  "system-design-concepts/backend-concepts/infrastructure-deployment/infrastructure-as-code": () => import("@/content/articles/system-design/backend/infrastructure-deployment/infrastructure-as-code"),
-  "system-design-concepts/backend-concepts/infrastructure-deployment/load-balancer-configuration": () => import("@/content/articles/system-design/backend/infrastructure-deployment/load-balancer-configuration"),
-  "system-design-concepts/backend-concepts/infrastructure-deployment/networking": () => import("@/content/articles/system-design/backend/infrastructure-deployment/networking"),
-  "system-design-concepts/backend-concepts/infrastructure-deployment/rolling-deployment": () => import("@/content/articles/system-design/backend/infrastructure-deployment/rolling-deployment"),
-  "system-design-concepts/backend-concepts/infrastructure-deployment/service-discovery": () => import("@/content/articles/system-design/backend/infrastructure-deployment/service-discovery"),
-  "system-design-concepts/backend-concepts/infrastructure-deployment/service-registry": () => import("@/content/articles/system-design/backend/infrastructure-deployment/service-registry"),
-  "system-design-concepts/backend-concepts/infrastructure-deployment/virtual-machines": () => import("@/content/articles/system-design/backend/infrastructure-deployment/virtual-machines"),
-  "system-design-concepts/backend-concepts/monitoring-operations/alerting": () => import("@/content/articles/system-design/backend/monitoring-operations/alerting"),
-  "system-design-concepts/backend-concepts/monitoring-operations/anomaly-detection": () => import("@/content/articles/system-design/backend/monitoring-operations/anomaly-detection"),
-  "system-design-concepts/backend-concepts/monitoring-operations/apm-application-performance-monitoring": () => import("@/content/articles/system-design/backend/monitoring-operations/apm-application-performance-monitoring"),
-  "system-design-concepts/backend-concepts/monitoring-operations/capacity-planning": () => import("@/content/articles/system-design/backend/monitoring-operations/capacity-planning"),
-  "system-design-concepts/backend-concepts/monitoring-operations/dashboards": () => import("@/content/articles/system-design/backend/monitoring-operations/dashboards"),
-  "system-design-concepts/backend-concepts/monitoring-operations/database-monitoring": () => import("@/content/articles/system-design/backend/monitoring-operations/database-monitoring"),
-  "system-design-concepts/backend-concepts/monitoring-operations/distributed-tracing": () => import("@/content/articles/system-design/backend/monitoring-operations/distributed-tracing"),
-  "system-design-concepts/backend-concepts/monitoring-operations/error-budgets": () => import("@/content/articles/system-design/backend/monitoring-operations/error-budgets"),
-  "system-design-concepts/backend-concepts/monitoring-operations/health-monitoring": () => import("@/content/articles/system-design/backend/monitoring-operations/health-monitoring"),
-  "system-design-concepts/backend-concepts/monitoring-operations/infrastructure-monitoring": () => import("@/content/articles/system-design/backend/monitoring-operations/infrastructure-monitoring"),
-  "system-design-concepts/backend-concepts/monitoring-operations/log-aggregation": () => import("@/content/articles/system-design/backend/monitoring-operations/log-aggregation"),
-  "system-design-concepts/backend-concepts/monitoring-operations/logging": () => import("@/content/articles/system-design/backend/monitoring-operations/logging"),
-  "system-design-concepts/backend-concepts/monitoring-operations/metrics": () => import("@/content/articles/system-design/backend/monitoring-operations/metrics"),
-  "system-design-concepts/backend-concepts/monitoring-operations/monitoring-tools": () => import("@/content/articles/system-design/backend/monitoring-operations/monitoring-tools"),
-  "system-design-concepts/backend-concepts/monitoring-operations/observability": () => import("@/content/articles/system-design/backend/monitoring-operations/observability"),
-  "system-design-concepts/backend-concepts/monitoring-operations/performance-profiling": () => import("@/content/articles/system-design/backend/monitoring-operations/performance-profiling"),
-  "system-design-concepts/backend-concepts/monitoring-operations/sli-slo-sla": () => import("@/content/articles/system-design/backend/monitoring-operations/sli-slo-sla"),
-  "system-design-concepts/backend-concepts/monitoring-operations/tracing": () => import("@/content/articles/system-design/backend/monitoring-operations/tracing"),
-  "system-design-concepts/backend-concepts/network-communication/api-gateway-pattern": () => import("@/content/articles/system-design/backend/network-communication/api-gateway-pattern"),
-  "system-design-concepts/backend-concepts/network-communication/api-versioning": () => import("@/content/articles/system-design/backend/network-communication/api-versioning"),
-  "system-design-concepts/backend-concepts/network-communication/bulkhead-pattern": () => import("@/content/articles/system-design/backend/network-communication/bulkhead-pattern"),
-  "system-design-concepts/backend-concepts/network-communication/circuit-breaker-pattern": () => import("@/content/articles/system-design/backend/network-communication/circuit-breaker-pattern"),
-  "system-design-concepts/backend-concepts/network-communication/content-delivery-networks": () => import("@/content/articles/system-design/backend/network-communication/content-delivery-networks"),
-  "system-design-concepts/backend-concepts/network-communication/event-streaming": () => import("@/content/articles/system-design/backend/network-communication/event-streaming"),
-  "system-design-concepts/backend-concepts/network-communication/forward-proxy": () => import("@/content/articles/system-design/backend/network-communication/forward-proxy"),
-  "system-design-concepts/backend-concepts/network-communication/graphql": () => import("@/content/articles/system-design/backend/network-communication/graphql"),
-  "system-design-concepts/backend-concepts/network-communication/grpc": () => import("@/content/articles/system-design/backend/network-communication/grpc"),
-  "system-design-concepts/backend-concepts/network-communication/load-balancers": () => import("@/content/articles/system-design/backend/network-communication/load-balancers"),
-  "system-design-concepts/backend-concepts/network-communication/long-polling": () => import("@/content/articles/system-design/backend/network-communication/long-polling"),
-  "system-design-concepts/backend-concepts/network-communication/message-queues": () => import("@/content/articles/system-design/backend/network-communication/message-queues"),
-  "system-design-concepts/backend-concepts/network-communication/pub-sub-systems": () => import("@/content/articles/system-design/backend/network-communication/pub-sub-systems"),
-  "system-design-concepts/backend-concepts/network-communication/request-hedging": () => import("@/content/articles/system-design/backend/network-communication/request-hedging"),
-  "system-design-concepts/backend-concepts/network-communication/retry-mechanisms": () => import("@/content/articles/system-design/backend/network-communication/retry-mechanisms"),
-  "system-design-concepts/backend-concepts/network-communication/reverse-proxy": () => import("@/content/articles/system-design/backend/network-communication/reverse-proxy"),
-  "system-design-concepts/backend-concepts/network-communication/rpc": () => import("@/content/articles/system-design/backend/network-communication/rpc"),
-  "system-design-concepts/backend-concepts/network-communication/server-sent-events": () => import("@/content/articles/system-design/backend/network-communication/server-sent-events"),
-  "system-design-concepts/backend-concepts/network-communication/service-discovery": () => import("@/content/articles/system-design/backend/network-communication/service-discovery"),
-  "system-design-concepts/backend-concepts/network-communication/service-mesh": () => import("@/content/articles/system-design/backend/network-communication/service-mesh"),
-  "system-design-concepts/backend-concepts/network-communication/throttling-rate-limiting": () => import("@/content/articles/system-design/backend/network-communication/throttling-rate-limiting"),
-  "system-design-concepts/backend-concepts/network-communication/timeout-strategies": () => import("@/content/articles/system-design/backend/network-communication/timeout-strategies"),
-  "system-design-concepts/backend-concepts/network-communication/websockets": () => import("@/content/articles/system-design/backend/network-communication/websockets"),
-  "system-design-concepts/backend-concepts/reliability-fault-tolerance/at-most-once-vs-at-least-once-vs-exactly-once": () => import("@/content/articles/system-design/backend/reliability-fault-tolerance/at-most-once-vs-at-least-once-vs-exactly-once"),
-  "system-design-concepts/backend-concepts/reliability-fault-tolerance/automatic-recovery": () => import("@/content/articles/system-design/backend/reliability-fault-tolerance/automatic-recovery"),
-  "system-design-concepts/backend-concepts/reliability-fault-tolerance/backup-restore": () => import("@/content/articles/system-design/backend/reliability-fault-tolerance/backup-restore"),
-  "system-design-concepts/backend-concepts/reliability-fault-tolerance/chaos-engineering": () => import("@/content/articles/system-design/backend/reliability-fault-tolerance/chaos-engineering"),
-  "system-design-concepts/backend-concepts/reliability-fault-tolerance/data-integrity": () => import("@/content/articles/system-design/backend/reliability-fault-tolerance/data-integrity"),
-  "system-design-concepts/backend-concepts/reliability-fault-tolerance/dead-letter-queues": () => import("@/content/articles/system-design/backend/reliability-fault-tolerance/dead-letter-queues"),
-  "system-design-concepts/backend-concepts/reliability-fault-tolerance/disaster-recovery": () => import("@/content/articles/system-design/backend/reliability-fault-tolerance/disaster-recovery"),
-  "system-design-concepts/backend-concepts/reliability-fault-tolerance/error-handling-patterns": () => import("@/content/articles/system-design/backend/reliability-fault-tolerance/error-handling-patterns"),
-  "system-design-concepts/backend-concepts/reliability-fault-tolerance/failover-mechanisms": () => import("@/content/articles/system-design/backend/reliability-fault-tolerance/failover-mechanisms"),
-  "system-design-concepts/backend-concepts/reliability-fault-tolerance/fault-detection": () => import("@/content/articles/system-design/backend/reliability-fault-tolerance/fault-detection"),
-  "system-design-concepts/backend-concepts/reliability-fault-tolerance/graceful-degradation": () => import("@/content/articles/system-design/backend/reliability-fault-tolerance/graceful-degradation"),
-  "system-design-concepts/backend-concepts/reliability-fault-tolerance/health-checks": () => import("@/content/articles/system-design/backend/reliability-fault-tolerance/health-checks"),
-  "system-design-concepts/backend-concepts/reliability-fault-tolerance/high-availability": () => import("@/content/articles/system-design/backend/reliability-fault-tolerance/high-availability"),
-  "system-design-concepts/backend-concepts/reliability-fault-tolerance/idempotency": () => import("@/content/articles/system-design/backend/reliability-fault-tolerance/idempotency"),
-  "system-design-concepts/backend-concepts/reliability-fault-tolerance/multi-region-deployment": () => import("@/content/articles/system-design/backend/reliability-fault-tolerance/multi-region-deployment"),
-  "system-design-concepts/backend-concepts/reliability-fault-tolerance/redundancy": () => import("@/content/articles/system-design/backend/reliability-fault-tolerance/redundancy"),
-  "system-design-concepts/backend-concepts/reliability-fault-tolerance/rollback-strategies": () => import("@/content/articles/system-design/backend/reliability-fault-tolerance/rollback-strategies"),
-  "system-design-concepts/backend-concepts/scalability-distributed-systems/asynchronous-processing": () => import("@/content/articles/system-design/backend/scalability-distributed-systems/asynchronous-processing"),
-  "system-design-concepts/backend-concepts/scalability-distributed-systems/consensus-algorithms": () => import("@/content/articles/system-design/backend/scalability-distributed-systems/consensus-algorithms"),
-  "system-design-concepts/backend-concepts/scalability-distributed-systems/consistent-hashing": () => import("@/content/articles/system-design/backend/scalability-distributed-systems/consistent-hashing"),
-  "system-design-concepts/backend-concepts/scalability-distributed-systems/cqrs": () => import("@/content/articles/system-design/backend/scalability-distributed-systems/cqrs"),
-  "system-design-concepts/backend-concepts/scalability-distributed-systems/data-denormalization": () => import("@/content/articles/system-design/backend/scalability-distributed-systems/data-denormalization"),
-  "system-design-concepts/backend-concepts/scalability-distributed-systems/data-replication": () => import("@/content/articles/system-design/backend/scalability-distributed-systems/data-replication"),
-  "system-design-concepts/backend-concepts/scalability-distributed-systems/database-read-replicas": () => import("@/content/articles/system-design/backend/scalability-distributed-systems/database-read-replicas"),
-  "system-design-concepts/backend-concepts/scalability-distributed-systems/database-sharding": () => import("@/content/articles/system-design/backend/scalability-distributed-systems/database-sharding"),
-  "system-design-concepts/backend-concepts/scalability-distributed-systems/distributed-coordination": () => import("@/content/articles/system-design/backend/scalability-distributed-systems/distributed-coordination"),
-  "system-design-concepts/backend-concepts/scalability-distributed-systems/distributed-locks": () => import("@/content/articles/system-design/backend/scalability-distributed-systems/distributed-locks"),
-  "system-design-concepts/backend-concepts/scalability-distributed-systems/distributed-transactions": () => import("@/content/articles/system-design/backend/scalability-distributed-systems/distributed-transactions"),
-  "system-design-concepts/backend-concepts/scalability-distributed-systems/event-sourcing": () => import("@/content/articles/system-design/backend/scalability-distributed-systems/event-sourcing"),
-  "system-design-concepts/backend-concepts/scalability-distributed-systems/gossip-protocol": () => import("@/content/articles/system-design/backend/scalability-distributed-systems/gossip-protocol"),
-  "system-design-concepts/backend-concepts/scalability-distributed-systems/horizontal-scaling": () => import("@/content/articles/system-design/backend/scalability-distributed-systems/horizontal-scaling"),
-  "system-design-concepts/backend-concepts/scalability-distributed-systems/microservices-architecture": () => import("@/content/articles/system-design/backend/scalability-distributed-systems/microservices-architecture"),
-  "system-design-concepts/backend-concepts/scalability-distributed-systems/partitioning-strategies": () => import("@/content/articles/system-design/backend/scalability-distributed-systems/partitioning-strategies"),
-  "system-design-concepts/backend-concepts/scalability-distributed-systems/quorum": () => import("@/content/articles/system-design/backend/scalability-distributed-systems/quorum"),
-  "system-design-concepts/backend-concepts/scalability-distributed-systems/replication-strategies": () => import("@/content/articles/system-design/backend/scalability-distributed-systems/replication-strategies"),
-  "system-design-concepts/backend-concepts/scalability-distributed-systems/service-decomposition": () => import("@/content/articles/system-design/backend/scalability-distributed-systems/service-decomposition"),
-  "system-design-concepts/backend-concepts/scalability-distributed-systems/split-brain-problem": () => import("@/content/articles/system-design/backend/scalability-distributed-systems/split-brain-problem"),
-  "system-design-concepts/backend-concepts/scalability-distributed-systems/vector-clocks": () => import("@/content/articles/system-design/backend/scalability-distributed-systems/vector-clocks"),
-  "system-design-concepts/backend-concepts/scalability-distributed-systems/write-scaling": () => import("@/content/articles/system-design/backend/scalability-distributed-systems/write-scaling"),
-  "system-design-concepts/backend-concepts/security-authentication/abac-attribute-based-access-control": () => import("@/content/articles/system-design/backend/security-authentication/abac-attribute-based-access-control"),
-  "system-design-concepts/backend-concepts/security-authentication/api-keys-secrets-management": () => import("@/content/articles/system-design/backend/security-authentication/api-keys-secrets-management"),
-  "system-design-concepts/backend-concepts/security-authentication/api-security": () => import("@/content/articles/system-design/backend/security-authentication/api-security"),
-  "system-design-concepts/backend-concepts/security-authentication/authentication-vs-authorization": () => import("@/content/articles/system-design/backend/security-authentication/authentication-vs-authorization"),
-  "system-design-concepts/backend-concepts/security-authentication/cors-cross-origin-resource-sharing": () => import("@/content/articles/system-design/backend/security-authentication/cors-cross-origin-resource-sharing"),
-  "system-design-concepts/backend-concepts/security-authentication/csrf-protection": () => import("@/content/articles/system-design/backend/security-authentication/csrf-protection"),
-  "system-design-concepts/backend-concepts/security-authentication/encryption": () => import("@/content/articles/system-design/backend/security-authentication/encryption"),
-  "system-design-concepts/backend-concepts/security-authentication/hashing-salting": () => import("@/content/articles/system-design/backend/security-authentication/hashing-salting"),
-  "system-design-concepts/backend-concepts/security-authentication/https": () => import("@/content/articles/system-design/backend/security-authentication/https"),
-  "system-design-concepts/backend-concepts/security-authentication/input-validation-sanitization": () => import("@/content/articles/system-design/backend/security-authentication/input-validation-sanitization"),
-  "system-design-concepts/backend-concepts/security-authentication/jwt-json-web-tokens": () => import("@/content/articles/system-design/backend/security-authentication/jwt-json-web-tokens"),
-  "system-design-concepts/backend-concepts/security-authentication/multi-factor-authentication": () => import("@/content/articles/system-design/backend/security-authentication/multi-factor-authentication"),
-  "system-design-concepts/backend-concepts/security-authentication/oauth-2-0": () => import("@/content/articles/system-design/backend/security-authentication/oauth-2-0"),
-  "system-design-concepts/backend-concepts/security-authentication/rate-limiting": () => import("@/content/articles/system-design/backend/security-authentication/rate-limiting"),
-  "system-design-concepts/backend-concepts/security-authentication/rbac-role-based-access-control": () => import("@/content/articles/system-design/backend/security-authentication/rbac-role-based-access-control"),
-  "system-design-concepts/backend-concepts/security-authentication/secrets-rotation": () => import("@/content/articles/system-design/backend/security-authentication/secrets-rotation"),
-  "system-design-concepts/backend-concepts/security-authentication/security-headers": () => import("@/content/articles/system-design/backend/security-authentication/security-headers"),
-  "system-design-concepts/backend-concepts/security-authentication/session-management": () => import("@/content/articles/system-design/backend/security-authentication/session-management"),
-  "system-design-concepts/backend-concepts/security-authentication/single-sign-on-sso": () => import("@/content/articles/system-design/backend/security-authentication/single-sign-on-sso"),
-  "system-design-concepts/backend-concepts/security-authentication/sql-injection-prevention": () => import("@/content/articles/system-design/backend/security-authentication/sql-injection-prevention"),
-  "system-design-concepts/backend-concepts/security-authentication/tls-ssl": () => import("@/content/articles/system-design/backend/security-authentication/tls-ssl"),
-  "system-design-concepts/backend-concepts/security-authentication/vulnerability-scanning": () => import("@/content/articles/system-design/backend/security-authentication/vulnerability-scanning"),
-  "system-design-concepts/backend-concepts/security-authentication/web-application-firewall": () => import("@/content/articles/system-design/backend/security-authentication/web-application-firewall"),
-  "system-design-concepts/backend-concepts/security-authentication/xss-prevention": () => import("@/content/articles/system-design/backend/security-authentication/xss-prevention"),
-  "system-design-concepts/backend-concepts/system-components-services/a-b-testing-service": () => import("@/content/articles/system-design/backend/system-components-services/a-b-testing-service"),
-  "system-design-concepts/backend-concepts/system-components-services/analytics-service": () => import("@/content/articles/system-design/backend/system-components-services/analytics-service"),
-  "system-design-concepts/backend-concepts/system-components-services/audit-logging-service": () => import("@/content/articles/system-design/backend/system-components-services/audit-logging-service"),
-  "system-design-concepts/backend-concepts/system-components-services/authentication-service": () => import("@/content/articles/system-design/backend/system-components-services/authentication-service"),
-  "system-design-concepts/backend-concepts/system-components-services/authorization-service": () => import("@/content/articles/system-design/backend/system-components-services/authorization-service"),
-  "system-design-concepts/backend-concepts/system-components-services/content-moderation-service": () => import("@/content/articles/system-design/backend/system-components-services/content-moderation-service"),
-  "system-design-concepts/backend-concepts/system-components-services/email-service": () => import("@/content/articles/system-design/backend/system-components-services/email-service"),
-  "system-design-concepts/backend-concepts/system-components-services/feature-flag-service": () => import("@/content/articles/system-design/backend/system-components-services/feature-flag-service"),
-  "system-design-concepts/backend-concepts/system-components-services/file-storage-service": () => import("@/content/articles/system-design/backend/system-components-services/file-storage-service"),
-  "system-design-concepts/backend-concepts/system-components-services/geolocation-service": () => import("@/content/articles/system-design/backend/system-components-services/geolocation-service"),
-  "system-design-concepts/backend-concepts/system-components-services/job-scheduler": () => import("@/content/articles/system-design/backend/system-components-services/job-scheduler"),
-  "system-design-concepts/backend-concepts/system-components-services/media-processing-service": () => import("@/content/articles/system-design/backend/system-components-services/media-processing-service"),
-  "system-design-concepts/backend-concepts/system-components-services/notification-service": () => import("@/content/articles/system-design/backend/system-components-services/notification-service"),
-  "system-design-concepts/backend-concepts/system-components-services/payment-processing": () => import("@/content/articles/system-design/backend/system-components-services/payment-processing"),
-  "system-design-concepts/backend-concepts/system-components-services/rate-limiting-service": () => import("@/content/articles/system-design/backend/system-components-services/rate-limiting-service"),
-  "system-design-concepts/backend-concepts/system-components-services/recommendation-engine": () => import("@/content/articles/system-design/backend/system-components-services/recommendation-engine"),
-  "system-design-concepts/backend-concepts/system-components-services/search-service": () => import("@/content/articles/system-design/backend/system-components-services/search-service"),
-  "system-design-concepts/backend-concepts/system-components-services/session-management-service": () => import("@/content/articles/system-design/backend/system-components-services/session-management-service"),
-  "system-design-concepts/backend-concepts/system-components-services/sms-service": () => import("@/content/articles/system-design/backend/system-components-services/sms-service"),
-  "system-design-concepts/backend-concepts/system-components-services/user-service": () => import("@/content/articles/system-design/backend/system-components-services/user-service"),
-  "requirements/functional-requirements/admin-moderation/abuse-detection": () => import("@/content/articles/requirements/functional-requirements/admin-moderation/abuse-detection"),
-  "requirements/functional-requirements/admin-moderation/admin-apis": () => import("@/content/articles/requirements/functional-requirements/admin-moderation/admin-apis"),
-  "requirements/functional-requirements/admin-moderation/admin-dashboard": () => import("@/content/articles/requirements/functional-requirements/admin-moderation/admin-dashboard"),
-  "requirements/functional-requirements/admin-moderation/alerting-systems": () => import("@/content/articles/requirements/functional-requirements/admin-moderation/alerting-systems"),
-  "requirements/functional-requirements/admin-moderation/analytics-dashboard": () => import("@/content/articles/requirements/functional-requirements/admin-moderation/analytics-dashboard"),
-  "requirements/functional-requirements/admin-moderation/audit-logging": () => import("@/content/articles/requirements/functional-requirements/admin-moderation/audit-logging"),
-  "requirements/functional-requirements/admin-moderation/compliance-tools": () => import("@/content/articles/requirements/functional-requirements/admin-moderation/compliance-tools"),
-  "requirements/functional-requirements/admin-moderation/configuration-services": () => import("@/content/articles/requirements/functional-requirements/admin-moderation/configuration-services"),
-  "requirements/functional-requirements/admin-moderation/content-moderation-service": () => import("@/content/articles/requirements/functional-requirements/admin-moderation/content-moderation-service"),
-  "requirements/functional-requirements/admin-moderation/feature-flag-ui": () => import("@/content/articles/requirements/functional-requirements/admin-moderation/feature-flag-ui"),
-  "requirements/functional-requirements/admin-moderation/legal-requests": () => import("@/content/articles/requirements/functional-requirements/admin-moderation/legal-requests"),
-  "requirements/functional-requirements/admin-moderation/moderation-queue-ui": () => import("@/content/articles/requirements/functional-requirements/admin-moderation/moderation-queue-ui"),
-  "requirements/functional-requirements/admin-moderation/moderation-services": () => import("@/content/articles/requirements/functional-requirements/admin-moderation/moderation-services"),
-  "requirements/functional-requirements/admin-moderation/monitoring-tools": () => import("@/content/articles/requirements/functional-requirements/admin-moderation/monitoring-tools"),
-  "requirements/functional-requirements/admin-moderation/reporting-tools-ui": () => import("@/content/articles/requirements/functional-requirements/admin-moderation/reporting-tools-ui"),
-  "requirements/functional-requirements/admin-moderation/user-management-services": () => import("@/content/articles/requirements/functional-requirements/admin-moderation/user-management-services"),
-  "requirements/functional-requirements/admin-moderation/user-management-ui": () => import("@/content/articles/requirements/functional-requirements/admin-moderation/user-management-ui"),
-  "requirements/functional-requirements/communication/chat-ui": () => import("@/content/articles/requirements/functional-requirements/communication/chat-ui"),
-  "requirements/functional-requirements/communication/email-delivery-services": () => import("@/content/articles/requirements/functional-requirements/communication/email-delivery-services"),
-  "requirements/functional-requirements/communication/end-to-end-encryption": () => import("@/content/articles/requirements/functional-requirements/communication/end-to-end-encryption"),
-  "requirements/functional-requirements/communication/group-chat-ui": () => import("@/content/articles/requirements/functional-requirements/communication/group-chat-ui"),
-  "requirements/functional-requirements/communication/media-sharing-chat": () => import("@/content/articles/requirements/functional-requirements/communication/media-sharing-chat"),
-  "requirements/functional-requirements/communication/messaging-service": () => import("@/content/articles/requirements/functional-requirements/communication/messaging-service"),
-  "requirements/functional-requirements/communication/notification-center": () => import("@/content/articles/requirements/functional-requirements/communication/notification-center"),
-  "requirements/functional-requirements/communication/notification-delivery": () => import("@/content/articles/requirements/functional-requirements/communication/notification-delivery"),
-  "requirements/functional-requirements/communication/offline-message-queue": () => import("@/content/articles/requirements/functional-requirements/communication/offline-message-queue"),
-  "requirements/functional-requirements/communication/presence-indicators": () => import("@/content/articles/requirements/functional-requirements/communication/presence-indicators"),
-  "requirements/functional-requirements/communication/pub-sub-messaging": () => import("@/content/articles/requirements/functional-requirements/communication/pub-sub-messaging"),
-  "requirements/functional-requirements/communication/push-notification-service": () => import("@/content/articles/requirements/functional-requirements/communication/push-notification-service"),
-  "requirements/functional-requirements/communication/read-receipts": () => import("@/content/articles/requirements/functional-requirements/communication/read-receipts"),
-  "requirements/functional-requirements/communication/real-time-broadcasting": () => import("@/content/articles/requirements/functional-requirements/communication/real-time-broadcasting"),
-  "requirements/functional-requirements/communication/sms-gateways": () => import("@/content/articles/requirements/functional-requirements/communication/sms-gateways"),
-  "requirements/functional-requirements/communication/voice-video-calling-ui": () => import("@/content/articles/requirements/functional-requirements/communication/voice-video-calling-ui"),
-  "requirements/functional-requirements/communication/webrtc": () => import("@/content/articles/requirements/functional-requirements/communication/webrtc"),
-  "requirements/functional-requirements/communication/websocket-server": () => import("@/content/articles/requirements/functional-requirements/communication/websocket-server"),
-  "requirements/functional-requirements/content-management/cdn-delivery": () => import("@/content/articles/requirements/functional-requirements/content-management/cdn-delivery"),
-  "requirements/functional-requirements/content-management/content-categorization-ui": () => import("@/content/articles/requirements/functional-requirements/content-management/content-categorization-ui"),
-  "requirements/functional-requirements/content-management/content-lifecycle-management": () => import("@/content/articles/requirements/functional-requirements/content-management/content-lifecycle-management"),
-  "requirements/functional-requirements/content-management/content-moderation": () => import("@/content/articles/requirements/functional-requirements/content-management/content-moderation"),
-  "requirements/functional-requirements/content-management/content-preview": () => import("@/content/articles/requirements/functional-requirements/content-management/content-preview"),
-  "requirements/functional-requirements/content-management/content-scheduling-ui": () => import("@/content/articles/requirements/functional-requirements/content-management/content-scheduling-ui"),
-  "requirements/functional-requirements/content-management/content-sharing-interface": () => import("@/content/articles/requirements/functional-requirements/content-management/content-sharing-interface"),
-  "requirements/functional-requirements/content-management/content-storage": () => import("@/content/articles/requirements/functional-requirements/content-management/content-storage"),
-  "requirements/functional-requirements/content-management/content-tagging-ui": () => import("@/content/articles/requirements/functional-requirements/content-management/content-tagging-ui"),
-  "requirements/functional-requirements/content-management/content-validation": () => import("@/content/articles/requirements/functional-requirements/content-management/content-validation"),
-  "requirements/functional-requirements/content-management/content-versioning": () => import("@/content/articles/requirements/functional-requirements/content-management/content-versioning"),
-  "requirements/functional-requirements/content-management/create-content-ui": () => import("@/content/articles/requirements/functional-requirements/content-management/create-content-ui"),
-  "requirements/functional-requirements/content-management/crud-apis": () => import("@/content/articles/requirements/functional-requirements/content-management/crud-apis"),
-  "requirements/functional-requirements/content-management/delete-content-ui": () => import("@/content/articles/requirements/functional-requirements/content-management/delete-content-ui"),
-  "requirements/functional-requirements/content-management/draft-saving": () => import("@/content/articles/requirements/functional-requirements/content-management/draft-saving"),
-  "requirements/functional-requirements/content-management/edit-content-ui": () => import("@/content/articles/requirements/functional-requirements/content-management/edit-content-ui"),
-  "requirements/functional-requirements/content-management/file-attachments": () => import("@/content/articles/requirements/functional-requirements/content-management/file-attachments"),
-  "requirements/functional-requirements/content-management/media-processing": () => import("@/content/articles/requirements/functional-requirements/content-management/media-processing"),
-  "requirements/functional-requirements/content-management/media-upload": () => import("@/content/articles/requirements/functional-requirements/content-management/media-upload"),
-  "requirements/functional-requirements/content-management/object-storage": () => import("@/content/articles/requirements/functional-requirements/content-management/object-storage"),
-  "requirements/functional-requirements/content-management/publishing-workflow": () => import("@/content/articles/requirements/functional-requirements/content-management/publishing-workflow"),
-  "requirements/functional-requirements/content-management/rich-text-editor": () => import("@/content/articles/requirements/functional-requirements/content-management/rich-text-editor"),
-  "requirements/functional-requirements/content-management/search-indexing": () => import("@/content/articles/requirements/functional-requirements/content-management/search-indexing"),
-  "requirements/functional-requirements/content-management/soft-delete": () => import("@/content/articles/requirements/functional-requirements/content-management/soft-delete"),
-  "requirements/functional-requirements/content-management/tagging-categorization-management": () => import("@/content/articles/requirements/functional-requirements/content-management/tagging-categorization-management"),
-  "requirements/functional-requirements/content-management/view-content-pages": () => import("@/content/articles/requirements/functional-requirements/content-management/view-content-pages"),
-  "requirements/functional-requirements/discovery-search-feed-browsing/category-navigation": () => import("@/content/articles/requirements/functional-requirements/discovery-search-feed-browsing/category-navigation"),
-  "requirements/functional-requirements/discovery-search-feed-browsing/elasticsearch": () => import("@/content/articles/requirements/functional-requirements/discovery-search-feed-browsing/elasticsearch"),
-  "requirements/functional-requirements/discovery-search-feed-browsing/explore-page": () => import("@/content/articles/requirements/functional-requirements/discovery-search-feed-browsing/explore-page"),
-  "requirements/functional-requirements/discovery-search-feed-browsing/faceted-search": () => import("@/content/articles/requirements/functional-requirements/discovery-search-feed-browsing/faceted-search"),
-  "requirements/functional-requirements/discovery-search-feed-browsing/feed-display": () => import("@/content/articles/requirements/functional-requirements/discovery-search-feed-browsing/feed-display"),
-  "requirements/functional-requirements/discovery-search-feed-browsing/feed-generation": () => import("@/content/articles/requirements/functional-requirements/discovery-search-feed-browsing/feed-generation"),
-  "requirements/functional-requirements/discovery-search-feed-browsing/filters-and-sorting": () => import("@/content/articles/requirements/functional-requirements/discovery-search-feed-browsing/filters-and-sorting"),
-  "requirements/functional-requirements/discovery-search-feed-browsing/infinite-scrolling": () => import("@/content/articles/requirements/functional-requirements/discovery-search-feed-browsing/infinite-scrolling"),
-  "requirements/functional-requirements/discovery-search-feed-browsing/query-processing": () => import("@/content/articles/requirements/functional-requirements/discovery-search-feed-browsing/query-processing"),
-  "requirements/functional-requirements/discovery-search-feed-browsing/ranking-optimization": () => import("@/content/articles/requirements/functional-requirements/discovery-search-feed-browsing/ranking-optimization"),
-  "requirements/functional-requirements/discovery-search-feed-browsing/recommendation-algorithms": () => import("@/content/articles/requirements/functional-requirements/discovery-search-feed-browsing/recommendation-algorithms"),
-  "requirements/functional-requirements/discovery-search-feed-browsing/recommendation-carousel": () => import("@/content/articles/requirements/functional-requirements/discovery-search-feed-browsing/recommendation-carousel"),
-  "requirements/functional-requirements/discovery-search-feed-browsing/related-content": () => import("@/content/articles/requirements/functional-requirements/discovery-search-feed-browsing/related-content"),
-  "requirements/functional-requirements/discovery-search-feed-browsing/search-analytics": () => import("@/content/articles/requirements/functional-requirements/discovery-search-feed-browsing/search-analytics"),
-  "requirements/functional-requirements/discovery-search-feed-browsing/search-bar": () => import("@/content/articles/requirements/functional-requirements/discovery-search-feed-browsing/search-bar"),
-  "requirements/functional-requirements/discovery-search-feed-browsing/search-indexing": () => import("@/content/articles/requirements/functional-requirements/discovery-search-feed-browsing/search-indexing"),
-  "requirements/functional-requirements/discovery-search-feed-browsing/search-ranking": () => import("@/content/articles/requirements/functional-requirements/discovery-search-feed-browsing/search-ranking"),
-  "requirements/functional-requirements/discovery-search-feed-browsing/search-results-ui": () => import("@/content/articles/requirements/functional-requirements/discovery-search-feed-browsing/search-results-ui"),
-  "requirements/functional-requirements/discovery-search-feed-browsing/trending-computation": () => import("@/content/articles/requirements/functional-requirements/discovery-search-feed-browsing/trending-computation"),
-  "requirements/functional-requirements/discovery-search-feed-browsing/trending-section": () => import("@/content/articles/requirements/functional-requirements/discovery-search-feed-browsing/trending-section"),
-  "requirements/functional-requirements/identity-access/access-control-policies": () => import("@/content/articles/requirements/functional-requirements/identity-access/access-control-policies"),
-  "requirements/functional-requirements/identity-access/account-lockout": () => import("@/content/articles/requirements/functional-requirements/identity-access/account-lockout"),
-  "requirements/functional-requirements/identity-access/account-recovery-ui": () => import("@/content/articles/requirements/functional-requirements/identity-access/account-recovery-ui"),
-  "requirements/functional-requirements/identity-access/account-settings-ui": () => import("@/content/articles/requirements/functional-requirements/identity-access/account-settings-ui"),
-  "requirements/functional-requirements/identity-access/account-verification": () => import("@/content/articles/requirements/functional-requirements/identity-access/account-verification"),
-  "requirements/functional-requirements/identity-access/authentication-audit-logs": () => import("@/content/articles/requirements/functional-requirements/identity-access/authentication-audit-logs"),
-  "requirements/functional-requirements/identity-access/authentication-service": () => import("@/content/articles/requirements/functional-requirements/identity-access/authentication-service"),
-  "requirements/functional-requirements/identity-access/credential-rotation": () => import("@/content/articles/requirements/functional-requirements/identity-access/credential-rotation"),
-  "requirements/functional-requirements/identity-access/device-session-management-ui": () => import("@/content/articles/requirements/functional-requirements/identity-access/device-session-management-ui"),
-  "requirements/functional-requirements/identity-access/device-session-tracking": () => import("@/content/articles/requirements/functional-requirements/identity-access/device-session-tracking"),
-  "requirements/functional-requirements/identity-access/email-verification": () => import("@/content/articles/requirements/functional-requirements/identity-access/email-verification"),
-  "requirements/functional-requirements/identity-access/identity-providers": () => import("@/content/articles/requirements/functional-requirements/identity-access/identity-providers"),
-  "requirements/functional-requirements/identity-access/login-attempt-tracking": () => import("@/content/articles/requirements/functional-requirements/identity-access/login-attempt-tracking"),
-  "requirements/functional-requirements/identity-access/login-interface": () => import("@/content/articles/requirements/functional-requirements/identity-access/login-interface"),
-  "requirements/functional-requirements/identity-access/logout": () => import("@/content/articles/requirements/functional-requirements/identity-access/logout"),
-  "requirements/functional-requirements/identity-access/mfa-setup": () => import("@/content/articles/requirements/functional-requirements/identity-access/mfa-setup"),
-  "requirements/functional-requirements/identity-access/oauth-providers": () => import("@/content/articles/requirements/functional-requirements/identity-access/oauth-providers"),
-  "requirements/functional-requirements/identity-access/password-hashing-and-validation": () => import("@/content/articles/requirements/functional-requirements/identity-access/password-hashing-and-validation"),
-  "requirements/functional-requirements/identity-access/password-reset": () => import("@/content/articles/requirements/functional-requirements/identity-access/password-reset"),
-  "requirements/functional-requirements/identity-access/permission-validation": () => import("@/content/articles/requirements/functional-requirements/identity-access/permission-validation"),
-  "requirements/functional-requirements/identity-access/phone-verification": () => import("@/content/articles/requirements/functional-requirements/identity-access/phone-verification"),
-  "requirements/functional-requirements/identity-access/profile-settings-ui": () => import("@/content/articles/requirements/functional-requirements/identity-access/profile-settings-ui"),
-  "requirements/functional-requirements/identity-access/rbac": () => import("@/content/articles/requirements/functional-requirements/identity-access/rbac"),
-  "requirements/functional-requirements/identity-access/security-audit-logging": () => import("@/content/articles/requirements/functional-requirements/identity-access/security-audit-logging"),
-  "requirements/functional-requirements/identity-access/security-settings-ui": () => import("@/content/articles/requirements/functional-requirements/identity-access/security-settings-ui"),
-  "requirements/functional-requirements/identity-access/session-management": () => import("@/content/articles/requirements/functional-requirements/identity-access/session-management"),
-  "requirements/functional-requirements/identity-access/session-persistence": () => import("@/content/articles/requirements/functional-requirements/identity-access/session-persistence"),
-  "requirements/functional-requirements/identity-access/session-revocation": () => import("@/content/articles/requirements/functional-requirements/identity-access/session-revocation"),
-  "requirements/functional-requirements/identity-access/signup-interface": () => import("@/content/articles/requirements/functional-requirements/identity-access/signup-interface"),
-  "requirements/functional-requirements/identity-access/social-login-options": () => import("@/content/articles/requirements/functional-requirements/identity-access/social-login-options"),
-  "requirements/functional-requirements/identity-access/sso-integrations": () => import("@/content/articles/requirements/functional-requirements/identity-access/sso-integrations"),
-  "requirements/functional-requirements/identity-access/token-generation": () => import("@/content/articles/requirements/functional-requirements/identity-access/token-generation"),
-  "requirements/functional-requirements/identity-access/user-registration-service": () => import("@/content/articles/requirements/functional-requirements/identity-access/user-registration-service"),
-  "requirements/functional-requirements/interaction-engagement/activity-feeds": () => import("@/content/articles/requirements/functional-requirements/interaction-engagement/activity-feeds"),
-  "requirements/functional-requirements/interaction-engagement/bookmark-save-ui": () => import("@/content/articles/requirements/functional-requirements/interaction-engagement/bookmark-save-ui"),
-  "requirements/functional-requirements/interaction-engagement/comment-ui": () => import("@/content/articles/requirements/functional-requirements/interaction-engagement/comment-ui"),
-  "requirements/functional-requirements/interaction-engagement/engagement-aggregation": () => import("@/content/articles/requirements/functional-requirements/interaction-engagement/engagement-aggregation"),
-  "requirements/functional-requirements/interaction-engagement/engagement-fraud-detection": () => import("@/content/articles/requirements/functional-requirements/interaction-engagement/engagement-fraud-detection"),
-  "requirements/functional-requirements/interaction-engagement/engagement-metrics-display": () => import("@/content/articles/requirements/functional-requirements/interaction-engagement/engagement-metrics-display"),
-  "requirements/functional-requirements/interaction-engagement/engagement-storage": () => import("@/content/articles/requirements/functional-requirements/interaction-engagement/engagement-storage"),
-  "requirements/functional-requirements/interaction-engagement/engagement-tracking": () => import("@/content/articles/requirements/functional-requirements/interaction-engagement/engagement-tracking"),
-  "requirements/functional-requirements/interaction-engagement/follow-subscribe-ui": () => import("@/content/articles/requirements/functional-requirements/interaction-engagement/follow-subscribe-ui"),
-  "requirements/functional-requirements/interaction-engagement/interaction-apis": () => import("@/content/articles/requirements/functional-requirements/interaction-engagement/interaction-apis"),
-  "requirements/functional-requirements/interaction-engagement/like-button": () => import("@/content/articles/requirements/functional-requirements/interaction-engagement/like-button"),
-  "requirements/functional-requirements/interaction-engagement/rating-review-ui": () => import("@/content/articles/requirements/functional-requirements/interaction-engagement/rating-review-ui"),
-  "requirements/functional-requirements/interaction-engagement/reaction-picker": () => import("@/content/articles/requirements/functional-requirements/interaction-engagement/reaction-picker"),
-  "requirements/functional-requirements/interaction-engagement/share-ui": () => import("@/content/articles/requirements/functional-requirements/interaction-engagement/share-ui"),
-  "requirements/functional-requirements/interaction-engagement/upvote-downvote-ui": () => import("@/content/articles/requirements/functional-requirements/interaction-engagement/upvote-downvote-ui"),
-  "requirements/functional-requirements/other-cross-cutting/abuse-reporting": () => import("@/content/articles/requirements/functional-requirements/other-cross-cutting/abuse-reporting"),
-  "requirements/functional-requirements/other-cross-cutting/access-history-logs": () => import("@/content/articles/requirements/functional-requirements/other-cross-cutting/access-history-logs"),
-  "requirements/functional-requirements/other-cross-cutting/conflict-resolution": () => import("@/content/articles/requirements/functional-requirements/other-cross-cutting/conflict-resolution"),
-  "requirements/functional-requirements/other-cross-cutting/consent-management": () => import("@/content/articles/requirements/functional-requirements/other-cross-cutting/consent-management"),
-  "requirements/functional-requirements/other-cross-cutting/content-archiving": () => import("@/content/articles/requirements/functional-requirements/other-cross-cutting/content-archiving"),
-  "requirements/functional-requirements/other-cross-cutting/content-flagging": () => import("@/content/articles/requirements/functional-requirements/other-cross-cutting/content-flagging"),
-  "requirements/functional-requirements/other-cross-cutting/content-recovery": () => import("@/content/articles/requirements/functional-requirements/other-cross-cutting/content-recovery"),
-  "requirements/functional-requirements/other-cross-cutting/content-reporting": () => import("@/content/articles/requirements/functional-requirements/other-cross-cutting/content-reporting"),
-  "requirements/functional-requirements/other-cross-cutting/content-scheduling": () => import("@/content/articles/requirements/functional-requirements/other-cross-cutting/content-scheduling"),
-  "requirements/functional-requirements/other-cross-cutting/content-version-history": () => import("@/content/articles/requirements/functional-requirements/other-cross-cutting/content-version-history"),
-  "requirements/functional-requirements/other-cross-cutting/data-deletion-requests": () => import("@/content/articles/requirements/functional-requirements/other-cross-cutting/data-deletion-requests"),
-  "requirements/functional-requirements/other-cross-cutting/data-download-requests": () => import("@/content/articles/requirements/functional-requirements/other-cross-cutting/data-download-requests"),
-  "requirements/functional-requirements/other-cross-cutting/data-sharing-preferences": () => import("@/content/articles/requirements/functional-requirements/other-cross-cutting/data-sharing-preferences"),
-  "requirements/functional-requirements/other-cross-cutting/draft-saving": () => import("@/content/articles/requirements/functional-requirements/other-cross-cutting/draft-saving"),
-  "requirements/functional-requirements/other-cross-cutting/duplicate-request-handling": () => import("@/content/articles/requirements/functional-requirements/other-cross-cutting/duplicate-request-handling"),
-  "requirements/functional-requirements/other-cross-cutting/email-digest-preferences": () => import("@/content/articles/requirements/functional-requirements/other-cross-cutting/email-digest-preferences"),
-  "requirements/functional-requirements/other-cross-cutting/export-user-data": () => import("@/content/articles/requirements/functional-requirements/other-cross-cutting/export-user-data"),
-  "requirements/functional-requirements/other-cross-cutting/gdpr-data-requests": () => import("@/content/articles/requirements/functional-requirements/other-cross-cutting/gdpr-data-requests"),
-  "requirements/functional-requirements/other-cross-cutting/idempotent-requests": () => import("@/content/articles/requirements/functional-requirements/other-cross-cutting/idempotent-requests"),
-  "requirements/functional-requirements/other-cross-cutting/import-user-data": () => import("@/content/articles/requirements/functional-requirements/other-cross-cutting/import-user-data"),
-  "requirements/functional-requirements/other-cross-cutting/language-settings": () => import("@/content/articles/requirements/functional-requirements/other-cross-cutting/language-settings"),
-  "requirements/functional-requirements/other-cross-cutting/notification-frequency-controls": () => import("@/content/articles/requirements/functional-requirements/other-cross-cutting/notification-frequency-controls"),
-  "requirements/functional-requirements/other-cross-cutting/notification-muting": () => import("@/content/articles/requirements/functional-requirements/other-cross-cutting/notification-muting"),
-  "requirements/functional-requirements/other-cross-cutting/notification-preferences": () => import("@/content/articles/requirements/functional-requirements/other-cross-cutting/notification-preferences"),
-  "requirements/functional-requirements/other-cross-cutting/permission-management": () => import("@/content/articles/requirements/functional-requirements/other-cross-cutting/permission-management"),
-  "requirements/functional-requirements/other-cross-cutting/personalized-recommendations": () => import("@/content/articles/requirements/functional-requirements/other-cross-cutting/personalized-recommendations"),
-  "requirements/functional-requirements/other-cross-cutting/privacy-settings": () => import("@/content/articles/requirements/functional-requirements/other-cross-cutting/privacy-settings"),
-  "requirements/functional-requirements/other-cross-cutting/profile-visibility": () => import("@/content/articles/requirements/functional-requirements/other-cross-cutting/profile-visibility"),
-  "requirements/functional-requirements/other-cross-cutting/recently-viewed-content": () => import("@/content/articles/requirements/functional-requirements/other-cross-cutting/recently-viewed-content"),
-  "requirements/functional-requirements/other-cross-cutting/retry-mechanisms": () => import("@/content/articles/requirements/functional-requirements/other-cross-cutting/retry-mechanisms"),
-  "requirements/functional-requirements/other-cross-cutting/saved-preferences": () => import("@/content/articles/requirements/functional-requirements/other-cross-cutting/saved-preferences"),
-  "requirements/functional-requirements/other-cross-cutting/spam-detection": () => import("@/content/articles/requirements/functional-requirements/other-cross-cutting/spam-detection"),
-  "requirements/functional-requirements/other-cross-cutting/terms-acceptance-tracking": () => import("@/content/articles/requirements/functional-requirements/other-cross-cutting/terms-acceptance-tracking"),
-  "requirements/functional-requirements/other-cross-cutting/theme-settings": () => import("@/content/articles/requirements/functional-requirements/other-cross-cutting/theme-settings"),
-  "requirements/functional-requirements/other-cross-cutting/user-blocking": () => import("@/content/articles/requirements/functional-requirements/other-cross-cutting/user-blocking"),
-  "requirements/functional-requirements/other-cross-cutting/user-muting": () => import("@/content/articles/requirements/functional-requirements/other-cross-cutting/user-muting"),
-  "requirements/functional-requirements/transactions-state/billing-platforms": () => import("@/content/articles/requirements/functional-requirements/transactions-state/billing-platforms"),
-  "requirements/functional-requirements/transactions-state/billing-services": () => import("@/content/articles/requirements/functional-requirements/transactions-state/billing-services"),
-  "requirements/functional-requirements/transactions-state/booking-workflows": () => import("@/content/articles/requirements/functional-requirements/transactions-state/booking-workflows"),
-  "requirements/functional-requirements/transactions-state/checkout-flow": () => import("@/content/articles/requirements/functional-requirements/transactions-state/checkout-flow"),
-  "requirements/functional-requirements/transactions-state/confirmation-screens": () => import("@/content/articles/requirements/functional-requirements/transactions-state/confirmation-screens"),
-  "requirements/functional-requirements/transactions-state/event-sourcing-systems": () => import("@/content/articles/requirements/functional-requirements/transactions-state/event-sourcing-systems"),
-  "requirements/functional-requirements/transactions-state/financial-logs": () => import("@/content/articles/requirements/functional-requirements/transactions-state/financial-logs"),
-  "requirements/functional-requirements/transactions-state/idempotency": () => import("@/content/articles/requirements/functional-requirements/transactions-state/idempotency"),
-  "requirements/functional-requirements/transactions-state/inventory-management": () => import("@/content/articles/requirements/functional-requirements/transactions-state/inventory-management"),
-  "requirements/functional-requirements/transactions-state/order-history-ui": () => import("@/content/articles/requirements/functional-requirements/transactions-state/order-history-ui"),
-  "requirements/functional-requirements/transactions-state/order-management": () => import("@/content/articles/requirements/functional-requirements/transactions-state/order-management"),
-  "requirements/functional-requirements/transactions-state/order-tracking-ui": () => import("@/content/articles/requirements/functional-requirements/transactions-state/order-tracking-ui"),
-  "requirements/functional-requirements/transactions-state/payment-gateways": () => import("@/content/articles/requirements/functional-requirements/transactions-state/payment-gateways"),
-  "requirements/functional-requirements/transactions-state/payment-processing": () => import("@/content/articles/requirements/functional-requirements/transactions-state/payment-processing"),
-  "requirements/functional-requirements/transactions-state/payment-ui": () => import("@/content/articles/requirements/functional-requirements/transactions-state/payment-ui"),
-  "requirements/functional-requirements/transactions-state/refund-request-ui": () => import("@/content/articles/requirements/functional-requirements/transactions-state/refund-request-ui"),
-  "requirements/functional-requirements/transactions-state/state-machine": () => import("@/content/articles/requirements/functional-requirements/transactions-state/state-machine"),
-  "requirements/functional-requirements/transactions-state/subscription-billing": () => import("@/content/articles/requirements/functional-requirements/transactions-state/subscription-billing"),
-  "requirements/functional-requirements/transactions-state/subscription-lifecycle-management": () => import("@/content/articles/requirements/functional-requirements/transactions-state/subscription-lifecycle-management"),
-  "requirements/functional-requirements/transactions-state/subscription-management-ui": () => import("@/content/articles/requirements/functional-requirements/transactions-state/subscription-management-ui"),
-  "requirements/functional-requirements/transactions-state/transaction-fraud-detection": () => import("@/content/articles/requirements/functional-requirements/transactions-state/transaction-fraud-detection"),
-  "requirements/functional-requirements/transactions-state/transaction-history-ui": () => import("@/content/articles/requirements/functional-requirements/transactions-state/transaction-history-ui"),
-  "requirements/non-functional-requirements/advanced-bonus/accessibility-automation": () => import("@/content/articles/requirements/non-functional-requirements/advanced-bonus/accessibility-automation"),
-  "requirements/non-functional-requirements/advanced-bonus/battery-cpu-efficiency": () => import("@/content/articles/requirements/non-functional-requirements/advanced-bonus/battery-cpu-efficiency"),
-  "requirements/non-functional-requirements/advanced-bonus/canary-experimentation-framework": () => import("@/content/articles/requirements/non-functional-requirements/advanced-bonus/canary-experimentation-framework"),
-  "requirements/non-functional-requirements/advanced-bonus/chaos-testing": () => import("@/content/articles/requirements/non-functional-requirements/advanced-bonus/chaos-testing"),
-  "requirements/non-functional-requirements/advanced-bonus/data-lineage-auditability": () => import("@/content/articles/requirements/non-functional-requirements/advanced-bonus/data-lineage-auditability"),
-  "requirements/non-functional-requirements/advanced-bonus/memory-management": () => import("@/content/articles/requirements/non-functional-requirements/advanced-bonus/memory-management"),
-  "requirements/non-functional-requirements/advanced-bonus/micro-frontend-compatibility": () => import("@/content/articles/requirements/non-functional-requirements/advanced-bonus/micro-frontend-compatibility"),
-  "requirements/non-functional-requirements/advanced-bonus/multi-tenant-isolation": () => import("@/content/articles/requirements/non-functional-requirements/advanced-bonus/multi-tenant-isolation"),
-  "requirements/non-functional-requirements/advanced-bonus/progressive-enhancement": () => import("@/content/articles/requirements/non-functional-requirements/advanced-bonus/progressive-enhancement"),
-  "requirements/non-functional-requirements/advanced-bonus/slo-error-budget-management": () => import("@/content/articles/requirements/non-functional-requirements/advanced-bonus/slo-error-budget-management"),
-  "requirements/non-functional-requirements/backend-nfr/api-versioning": () => import("@/content/articles/requirements/non-functional-requirements/backend-nfr/api-versioning"),
-  "requirements/non-functional-requirements/backend-nfr/authentication-infrastructure": () => import("@/content/articles/requirements/non-functional-requirements/backend-nfr/authentication-infrastructure"),
-  "requirements/non-functional-requirements/backend-nfr/authorization-model": () => import("@/content/articles/requirements/non-functional-requirements/backend-nfr/authorization-model"),
-  "requirements/non-functional-requirements/backend-nfr/backpressure-handling": () => import("@/content/articles/requirements/non-functional-requirements/backend-nfr/backpressure-handling"),
-  "requirements/non-functional-requirements/backend-nfr/capacity-planning": () => import("@/content/articles/requirements/non-functional-requirements/backend-nfr/capacity-planning"),
-  "requirements/non-functional-requirements/backend-nfr/centralized-logging": () => import("@/content/articles/requirements/non-functional-requirements/backend-nfr/centralized-logging"),
-  "requirements/non-functional-requirements/backend-nfr/cicd-pipelines": () => import("@/content/articles/requirements/non-functional-requirements/backend-nfr/cicd-pipelines"),
-  "requirements/non-functional-requirements/backend-nfr/compliance-auditing": () => import("@/content/articles/requirements/non-functional-requirements/backend-nfr/compliance-auditing"),
-  "requirements/non-functional-requirements/backend-nfr/consistency-model": () => import("@/content/articles/requirements/non-functional-requirements/backend-nfr/consistency-model"),
-  "requirements/non-functional-requirements/backend-nfr/cost-optimization": () => import("@/content/articles/requirements/non-functional-requirements/backend-nfr/cost-optimization"),
-  "requirements/non-functional-requirements/backend-nfr/data-migration-strategy": () => import("@/content/articles/requirements/non-functional-requirements/backend-nfr/data-migration-strategy"),
-  "requirements/non-functional-requirements/backend-nfr/data-retention-archival": () => import("@/content/articles/requirements/non-functional-requirements/backend-nfr/data-retention-archival"),
-  "requirements/non-functional-requirements/backend-nfr/database-selection-strategy": () => import("@/content/articles/requirements/non-functional-requirements/backend-nfr/database-selection-strategy"),
-  "requirements/non-functional-requirements/backend-nfr/disaster-recovery-strategy": () => import("@/content/articles/requirements/non-functional-requirements/backend-nfr/disaster-recovery-strategy"),
-  "requirements/non-functional-requirements/backend-nfr/durability-guarantees": () => import("@/content/articles/requirements/non-functional-requirements/backend-nfr/durability-guarantees"),
-  "requirements/non-functional-requirements/backend-nfr/event-replayability": () => import("@/content/articles/requirements/non-functional-requirements/backend-nfr/event-replayability"),
-  "requirements/non-functional-requirements/backend-nfr/fault-tolerance-resilience": () => import("@/content/articles/requirements/non-functional-requirements/backend-nfr/fault-tolerance-resilience"),
-  "requirements/non-functional-requirements/backend-nfr/high-availability": () => import("@/content/articles/requirements/non-functional-requirements/backend-nfr/high-availability"),
-  "requirements/non-functional-requirements/backend-nfr/idempotency-guarantees": () => import("@/content/articles/requirements/non-functional-requirements/backend-nfr/idempotency-guarantees"),
-  "requirements/non-functional-requirements/backend-nfr/latency-slas": () => import("@/content/articles/requirements/non-functional-requirements/backend-nfr/latency-slas"),
-  "requirements/non-functional-requirements/backend-nfr/message-ordering-guarantees": () => import("@/content/articles/requirements/non-functional-requirements/backend-nfr/message-ordering-guarantees"),
-  "requirements/non-functional-requirements/backend-nfr/metrics-distributed-tracing": () => import("@/content/articles/requirements/non-functional-requirements/backend-nfr/metrics-distributed-tracing"),
-  "requirements/non-functional-requirements/backend-nfr/multi-region-replication": () => import("@/content/articles/requirements/non-functional-requirements/backend-nfr/multi-region-replication"),
-  "requirements/non-functional-requirements/backend-nfr/rate-limiting-abuse-protection": () => import("@/content/articles/requirements/non-functional-requirements/backend-nfr/rate-limiting-abuse-protection"),
-  "requirements/non-functional-requirements/backend-nfr/scalability-strategy": () => import("@/content/articles/requirements/non-functional-requirements/backend-nfr/scalability-strategy"),
-  "requirements/non-functional-requirements/backend-nfr/schema-governance": () => import("@/content/articles/requirements/non-functional-requirements/backend-nfr/schema-governance"),
-  "requirements/non-functional-requirements/backend-nfr/secrets-management": () => import("@/content/articles/requirements/non-functional-requirements/backend-nfr/secrets-management"),
-  "requirements/non-functional-requirements/backend-nfr/server-side-caching-strategy": () => import("@/content/articles/requirements/non-functional-requirements/backend-nfr/server-side-caching-strategy"),
-  "requirements/non-functional-requirements/backend-nfr/throughput-capacity": () => import("@/content/articles/requirements/non-functional-requirements/backend-nfr/throughput-capacity"),
-  "requirements/non-functional-requirements/backend-nfr/traffic-management-load-shedding": () => import("@/content/articles/requirements/non-functional-requirements/backend-nfr/traffic-management-load-shedding"),
-  "requirements/non-functional-requirements/frontend-nfr/accessibility": () => import("@/content/articles/requirements/non-functional-requirements/frontend-nfr/accessibility"),
-  "requirements/non-functional-requirements/frontend-nfr/authentication-ux-flows": () => import("@/content/articles/requirements/non-functional-requirements/frontend-nfr/authentication-ux-flows"),
-  "requirements/non-functional-requirements/frontend-nfr/build-optimization": () => import("@/content/articles/requirements/non-functional-requirements/frontend-nfr/build-optimization"),
-  "requirements/non-functional-requirements/frontend-nfr/client-edge-caching": () => import("@/content/articles/requirements/non-functional-requirements/frontend-nfr/client-edge-caching"),
-  "requirements/non-functional-requirements/frontend-nfr/client-persistence-strategy": () => import("@/content/articles/requirements/non-functional-requirements/frontend-nfr/client-persistence-strategy"),
-  "requirements/non-functional-requirements/frontend-nfr/conflict-resolution-ux": () => import("@/content/articles/requirements/non-functional-requirements/frontend-nfr/conflict-resolution-ux"),
-  "requirements/non-functional-requirements/frontend-nfr/cross-browser-compatibility": () => import("@/content/articles/requirements/non-functional-requirements/frontend-nfr/cross-browser-compatibility"),
-  "requirements/non-functional-requirements/frontend-nfr/developer-experience": () => import("@/content/articles/requirements/non-functional-requirements/frontend-nfr/developer-experience"),
-  "requirements/non-functional-requirements/frontend-nfr/device-responsiveness": () => import("@/content/articles/requirements/non-functional-requirements/frontend-nfr/device-responsiveness"),
-  "requirements/non-functional-requirements/frontend-nfr/error-ux-recovery": () => import("@/content/articles/requirements/non-functional-requirements/frontend-nfr/error-ux-recovery"),
-  "requirements/non-functional-requirements/frontend-nfr/feature-flagging-rollouts": () => import("@/content/articles/requirements/non-functional-requirements/frontend-nfr/feature-flagging-rollouts"),
-  "requirements/non-functional-requirements/frontend-nfr/frontend-deployment-strategy": () => import("@/content/articles/requirements/non-functional-requirements/frontend-nfr/frontend-deployment-strategy"),
-  "requirements/non-functional-requirements/frontend-nfr/frontend-observability-rum": () => import("@/content/articles/requirements/non-functional-requirements/frontend-nfr/frontend-observability-rum"),
-  "requirements/non-functional-requirements/frontend-nfr/frontend-testing-strategy": () => import("@/content/articles/requirements/non-functional-requirements/frontend-nfr/frontend-testing-strategy"),
-  "requirements/non-functional-requirements/frontend-nfr/internationalization-localization": () => import("@/content/articles/requirements/non-functional-requirements/frontend-nfr/internationalization-localization"),
-  "requirements/non-functional-requirements/frontend-nfr/media-optimization": () => import("@/content/articles/requirements/non-functional-requirements/frontend-nfr/media-optimization"),
-  "requirements/non-functional-requirements/frontend-nfr/multi-tab-synchronization": () => import("@/content/articles/requirements/non-functional-requirements/frontend-nfr/multi-tab-synchronization"),
-  "requirements/non-functional-requirements/frontend-nfr/network-efficiency": () => import("@/content/articles/requirements/non-functional-requirements/frontend-nfr/network-efficiency"),
-  "requirements/non-functional-requirements/frontend-nfr/offline-support-pwa": () => import("@/content/articles/requirements/non-functional-requirements/frontend-nfr/offline-support-pwa"),
-  "requirements/non-functional-requirements/frontend-nfr/page-load-performance": () => import("@/content/articles/requirements/non-functional-requirements/frontend-nfr/page-load-performance"),
-  "requirements/non-functional-requirements/frontend-nfr/perceived-performance": () => import("@/content/articles/requirements/non-functional-requirements/frontend-nfr/perceived-performance"),
-  "requirements/non-functional-requirements/frontend-nfr/privacy-consent-ux": () => import("@/content/articles/requirements/non-functional-requirements/frontend-nfr/privacy-consent-ux"),
-  "requirements/non-functional-requirements/frontend-nfr/realtime-ui-handling": () => import("@/content/articles/requirements/non-functional-requirements/frontend-nfr/realtime-ui-handling"),
-  "requirements/non-functional-requirements/frontend-nfr/rendering-strategy": () => import("@/content/articles/requirements/non-functional-requirements/frontend-nfr/rendering-strategy"),
-  "requirements/non-functional-requirements/frontend-nfr/secure-client-storage": () => import("@/content/articles/requirements/non-functional-requirements/frontend-nfr/secure-client-storage"),
-  "requirements/non-functional-requirements/frontend-nfr/seo-discoverability": () => import("@/content/articles/requirements/non-functional-requirements/frontend-nfr/seo-discoverability"),
-  "requirements/non-functional-requirements/frontend-nfr/state-management-strategy": () => import("@/content/articles/requirements/non-functional-requirements/frontend-nfr/state-management-strategy"),
-  "requirements/non-functional-requirements/frontend-nfr/third-party-script-safety": () => import("@/content/articles/requirements/non-functional-requirements/frontend-nfr/third-party-script-safety"),
-  "requirements/non-functional-requirements/frontend-nfr/virtualization-windowing": () => import("@/content/articles/requirements/non-functional-requirements/frontend-nfr/virtualization-windowing"),
-  "requirements/non-functional-requirements/frontend-nfr/xss-injection-protection": () => import("@/content/articles/requirements/non-functional-requirements/frontend-nfr/xss-injection-protection"),
-  "requirements/non-functional-requirements/shared-cross-cutting-nfr/availability-slas": () => import("@/content/articles/requirements/non-functional-requirements/shared-cross-cutting-nfr/availability-slas"),
-  "requirements/non-functional-requirements/shared-cross-cutting-nfr/caching-consistency-strategy": () => import("@/content/articles/requirements/non-functional-requirements/shared-cross-cutting-nfr/caching-consistency-strategy"),
-  "requirements/non-functional-requirements/shared-cross-cutting-nfr/change-management": () => import("@/content/articles/requirements/non-functional-requirements/shared-cross-cutting-nfr/change-management"),
-  "requirements/non-functional-requirements/shared-cross-cutting-nfr/data-consistency-guarantees": () => import("@/content/articles/requirements/non-functional-requirements/shared-cross-cutting-nfr/data-consistency-guarantees"),
-  "requirements/non-functional-requirements/shared-cross-cutting-nfr/dependency-management": () => import("@/content/articles/requirements/non-functional-requirements/shared-cross-cutting-nfr/dependency-management"),
-  "requirements/non-functional-requirements/shared-cross-cutting-nfr/documentation-quality": () => import("@/content/articles/requirements/non-functional-requirements/shared-cross-cutting-nfr/documentation-quality"),
-  "requirements/non-functional-requirements/shared-cross-cutting-nfr/end-to-end-observability": () => import("@/content/articles/requirements/non-functional-requirements/shared-cross-cutting-nfr/end-to-end-observability"),
-  "requirements/non-functional-requirements/shared-cross-cutting-nfr/end-to-end-performance-budgets": () => import("@/content/articles/requirements/non-functional-requirements/shared-cross-cutting-nfr/end-to-end-performance-budgets"),
-  "requirements/non-functional-requirements/shared-cross-cutting-nfr/end-to-end-security-posture": () => import("@/content/articles/requirements/non-functional-requirements/shared-cross-cutting-nfr/end-to-end-security-posture"),
-  "requirements/non-functional-requirements/shared-cross-cutting-nfr/error-handling-recovery-strategy": () => import("@/content/articles/requirements/non-functional-requirements/shared-cross-cutting-nfr/error-handling-recovery-strategy"),
-  "requirements/non-functional-requirements/shared-cross-cutting-nfr/feature-rollout-strategy": () => import("@/content/articles/requirements/non-functional-requirements/shared-cross-cutting-nfr/feature-rollout-strategy"),
-  "requirements/non-functional-requirements/shared-cross-cutting-nfr/incident-response-oncall-readiness": () => import("@/content/articles/requirements/non-functional-requirements/shared-cross-cutting-nfr/incident-response-oncall-readiness"),
-  "requirements/non-functional-requirements/shared-cross-cutting-nfr/privacy-data-governance": () => import("@/content/articles/requirements/non-functional-requirements/shared-cross-cutting-nfr/privacy-data-governance"),
-  "requirements/non-functional-requirements/shared-cross-cutting-nfr/vendor-lock-in-strategy": () => import("@/content/articles/requirements/non-functional-requirements/shared-cross-cutting-nfr/vendor-lock-in-strategy"),
-  "requirements/non-functional-requirements/shared-cross-cutting-nfr/versioning-backward-compatibility": () => import("@/content/articles/requirements/non-functional-requirements/shared-cross-cutting-nfr/versioning-backward-compatibility"),
-  "system-design-problems/low-level-design/component-level-ui-patterns/accordion-collapsible": () => import("@/content/articles/system-design-problems/low-level-design/component-level-ui-patterns/accordion-collapsible"),
-  "system-design-problems/low-level-design/component-level-ui-patterns/audio-video-player": () => import("@/content/articles/system-design-problems/low-level-design/component-level-ui-patterns/audio-video-player"),
-  "system-design-problems/low-level-design/component-level-ui-patterns/avatar-component": () => import("@/content/articles/system-design-problems/low-level-design/component-level-ui-patterns/avatar-component"),
-  "system-design-problems/low-level-design/component-level-ui-patterns/breadcrumb-component": () => import("@/content/articles/system-design-problems/low-level-design/component-level-ui-patterns/breadcrumb-component"),
-  "system-design-problems/low-level-design/component-level-ui-patterns/calendar-scheduler": () => import("@/content/articles/system-design-problems/low-level-design/component-level-ui-patterns/calendar-scheduler"),
-  "system-design-problems/low-level-design/component-level-ui-patterns/carousel-slider": () => import("@/content/articles/system-design-problems/low-level-design/component-level-ui-patterns/carousel-slider"),
-  "system-design-problems/low-level-design/component-level-ui-patterns/chat-messaging-ui": () => import("@/content/articles/system-design-problems/low-level-design/component-level-ui-patterns/chat-messaging-ui"),
-  "system-design-problems/low-level-design/component-level-ui-patterns/code-editor-component": () => import("@/content/articles/system-design-problems/low-level-design/component-level-ui-patterns/code-editor-component"),
-  "system-design-problems/low-level-design/component-level-ui-patterns/color-picker": () => import("@/content/articles/system-design-problems/low-level-design/component-level-ui-patterns/color-picker"),
-  "system-design-problems/low-level-design/component-level-ui-patterns/command-palette": () => import("@/content/articles/system-design-problems/low-level-design/component-level-ui-patterns/command-palette"),
-  "system-design-problems/low-level-design/component-level-ui-patterns/comment-thread": () => import("@/content/articles/system-design-problems/low-level-design/component-level-ui-patterns/comment-thread"),
-  "system-design-problems/low-level-design/component-level-ui-patterns/component-library": () => import("@/content/articles/system-design-problems/low-level-design/component-level-ui-patterns/component-library"),
-  "system-design-problems/low-level-design/component-level-ui-patterns/context-menu": () => import("@/content/articles/system-design-problems/low-level-design/component-level-ui-patterns/context-menu"),
-  "system-design-problems/low-level-design/component-level-ui-patterns/dashboard-builder": () => import("@/content/articles/system-design-problems/low-level-design/component-level-ui-patterns/dashboard-builder"),
-  "system-design-problems/low-level-design/component-level-ui-patterns/data-table": () => import("@/content/articles/system-design-problems/low-level-design/component-level-ui-patterns/data-table"),
-  "system-design-problems/low-level-design/component-level-ui-patterns/date-time-picker": () => import("@/content/articles/system-design-problems/low-level-design/component-level-ui-patterns/date-time-picker"),
-  "system-design-problems/low-level-design/component-level-ui-patterns/drag-drop-list": () => import("@/content/articles/system-design-problems/low-level-design/component-level-ui-patterns/drag-drop-list"),
-  "system-design-problems/low-level-design/component-level-ui-patterns/file-explorer-ui": () => import("@/content/articles/system-design-problems/low-level-design/component-level-ui-patterns/file-explorer-ui"),
-  "system-design-problems/low-level-design/component-level-ui-patterns/file-upload-widget": () => import("@/content/articles/system-design-problems/low-level-design/component-level-ui-patterns/file-upload-widget"),
-  "system-design-problems/low-level-design/component-level-ui-patterns/form-builder": () => import("@/content/articles/system-design-problems/low-level-design/component-level-ui-patterns/form-builder"),
-  "system-design-problems/low-level-design/component-level-ui-patterns/form-validation-engine": () => import("@/content/articles/system-design-problems/low-level-design/component-level-ui-patterns/form-validation-engine"),
-  "system-design-problems/low-level-design/component-level-ui-patterns/image-gallery-lightbox": () => import("@/content/articles/system-design-problems/low-level-design/component-level-ui-patterns/image-gallery-lightbox"),
-  "system-design-problems/low-level-design/component-level-ui-patterns/infinite-scroll-virtualized-list": () => import("@/content/articles/system-design-problems/low-level-design/component-level-ui-patterns/infinite-scroll-virtualized-list"),
-  "system-design-problems/low-level-design/component-level-ui-patterns/kanban-board": () => import("@/content/articles/system-design-problems/low-level-design/component-level-ui-patterns/kanban-board"),
-  "system-design-problems/low-level-design/component-level-ui-patterns/loading-skeleton": () => import("@/content/articles/system-design-problems/low-level-design/component-level-ui-patterns/loading-skeleton"),
-  "system-design-problems/low-level-design/component-level-ui-patterns/map-based-ui": () => import("@/content/articles/system-design-problems/low-level-design/component-level-ui-patterns/map-based-ui"),
-  "system-design-problems/low-level-design/component-level-ui-patterns/modal-component": () => import("@/content/articles/system-design-problems/low-level-design/component-level-ui-patterns/modal-component"),
-  "system-design-problems/low-level-design/component-level-ui-patterns/multi-select-tag-input": () => import("@/content/articles/system-design-problems/low-level-design/component-level-ui-patterns/multi-select-tag-input"),
-  "system-design-problems/low-level-design/component-level-ui-patterns/notification-center-inbox": () => import("@/content/articles/system-design-problems/low-level-design/component-level-ui-patterns/notification-center-inbox"),
-  "system-design-problems/low-level-design/component-level-ui-patterns/pagination-component": () => import("@/content/articles/system-design-problems/low-level-design/component-level-ui-patterns/pagination-component"),
-  "system-design-problems/low-level-design/component-level-ui-patterns/payment-checkout-ui": () => import("@/content/articles/system-design-problems/low-level-design/component-level-ui-patterns/payment-checkout-ui"),
-  "system-design-problems/low-level-design/component-level-ui-patterns/pdf-viewer": () => import("@/content/articles/system-design-problems/low-level-design/component-level-ui-patterns/pdf-viewer"),
-  "system-design-problems/low-level-design/component-level-ui-patterns/rating-stars-component": () => import("@/content/articles/system-design-problems/low-level-design/component-level-ui-patterns/rating-stars-component"),
-  "system-design-problems/low-level-design/component-level-ui-patterns/resizable-split-pane": () => import("@/content/articles/system-design-problems/low-level-design/component-level-ui-patterns/resizable-split-pane"),
-  "system-design-problems/low-level-design/component-level-ui-patterns/reusable-button-system": () => import("@/content/articles/system-design-problems/low-level-design/component-level-ui-patterns/reusable-button-system"),
-  "system-design-problems/low-level-design/component-level-ui-patterns/rich-text-editor": () => import("@/content/articles/system-design-problems/low-level-design/component-level-ui-patterns/rich-text-editor"),
-  "system-design-problems/low-level-design/component-level-ui-patterns/search-autocomplete": () => import("@/content/articles/system-design-problems/low-level-design/component-level-ui-patterns/search-autocomplete"),
-  "system-design-problems/low-level-design/component-level-ui-patterns/spreadsheet-like-grid": () => import("@/content/articles/system-design-problems/low-level-design/component-level-ui-patterns/spreadsheet-like-grid"),
-  "system-design-problems/low-level-design/component-level-ui-patterns/stepper-progress-tracker": () => import("@/content/articles/system-design-problems/low-level-design/component-level-ui-patterns/stepper-progress-tracker"),
-  "system-design-problems/low-level-design/component-level-ui-patterns/theme-theming-system": () => import("@/content/articles/system-design-problems/low-level-design/component-level-ui-patterns/theme-theming-system"),
-  "system-design-problems/low-level-design/component-level-ui-patterns/toast-notification-system": () => import("@/content/articles/system-design-problems/low-level-design/component-level-ui-patterns/toast-notification-system"),
-  "system-design-problems/low-level-design/component-level-ui-patterns/tooltip-system": () => import("@/content/articles/system-design-problems/low-level-design/component-level-ui-patterns/tooltip-system"),
-  "system-design-problems/low-level-design/component-level-ui-patterns/tree-view-folder-explorer": () => import("@/content/articles/system-design-problems/low-level-design/component-level-ui-patterns/tree-view-folder-explorer"),
-  "system-design-problems/low-level-design/component-level-ui-patterns/wizard-multi-step-form": () => import("@/content/articles/system-design-problems/low-level-design/component-level-ui-patterns/wizard-multi-step-form"),
-  "system-design-problems/low-level-design/component-level-ui-patterns/wysiwyg-email-builder": () => import("@/content/articles/system-design-problems/low-level-design/component-level-ui-patterns/wysiwyg-email-builder"),
-  "system-design-problems/low-level-design/state-management-data-architecture/api-versioning-frontend": () => import("@/content/articles/system-design-problems/low-level-design/state-management-data-architecture/api-versioning-frontend"),
-  "system-design-problems/low-level-design/state-management-data-architecture/client-cache-invalidation": () => import("@/content/articles/system-design-problems/low-level-design/state-management-data-architecture/client-cache-invalidation"),
-  "system-design-problems/low-level-design/state-management-data-architecture/client-side-data-normalization": () => import("@/content/articles/system-design-problems/low-level-design/state-management-data-architecture/client-side-data-normalization"),
-  "system-design-problems/low-level-design/state-management-data-architecture/component-subscription-management": () => import("@/content/articles/system-design-problems/low-level-design/state-management-data-architecture/component-subscription-management"),
-  "system-design-problems/low-level-design/state-management-data-architecture/cross-tab-state-synchronization": () => import("@/content/articles/system-design-problems/low-level-design/state-management-data-architecture/cross-tab-state-synchronization"),
-  "system-design-problems/low-level-design/state-management-data-architecture/custom-state-manager-design": () => import("@/content/articles/system-design-problems/low-level-design/state-management-data-architecture/custom-state-manager-design"),
-  "system-design-problems/low-level-design/state-management-data-architecture/derived-computed-state-performance": () => import("@/content/articles/system-design-problems/low-level-design/state-management-data-architecture/derived-computed-state-performance"),
-  "system-design-problems/low-level-design/state-management-data-architecture/feature-flags-toggles": () => import("@/content/articles/system-design-problems/low-level-design/state-management-data-architecture/feature-flags-toggles"),
-  "system-design-problems/low-level-design/state-management-data-architecture/global-event-bus-react": () => import("@/content/articles/system-design-problems/low-level-design/state-management-data-architecture/global-event-bus-react"),
-  "system-design-problems/low-level-design/state-management-data-architecture/local-vs-global-state-strategy": () => import("@/content/articles/system-design-problems/low-level-design/state-management-data-architecture/local-vs-global-state-strategy"),
-  "system-design-problems/low-level-design/state-management-data-architecture/monorepo-store-boundaries": () => import("@/content/articles/system-design-problems/low-level-design/state-management-data-architecture/monorepo-store-boundaries"),
-  "system-design-problems/low-level-design/state-management-data-architecture/normalized-state-design": () => import("@/content/articles/system-design-problems/low-level-design/state-management-data-architecture/normalized-state-design"),
-  "system-design-problems/low-level-design/state-management-data-architecture/optimistic-updates-rollback": () => import("@/content/articles/system-design-problems/low-level-design/state-management-data-architecture/optimistic-updates-rollback"),
-  "system-design-problems/low-level-design/state-management-data-architecture/pagination-cursors-state-merging": () => import("@/content/articles/system-design-problems/low-level-design/state-management-data-architecture/pagination-cursors-state-merging"),
-  "system-design-problems/low-level-design/state-management-data-architecture/scalable-global-state-architecture": () => import("@/content/articles/system-design-problems/low-level-design/state-management-data-architecture/scalable-global-state-architecture"),
-  "system-design-problems/low-level-design/state-management-data-architecture/state-persistence-rehydration": () => import("@/content/articles/system-design-problems/low-level-design/state-management-data-architecture/state-persistence-rehydration"),
-  "system-design-problems/low-level-design/state-management-data-architecture/transient-vs-persistent-ui-state": () => import("@/content/articles/system-design-problems/low-level-design/state-management-data-architecture/transient-vs-persistent-ui-state"),
-  "system-design-problems/low-level-design/state-management-data-architecture/usereducer-vs-usestate": () => import("@/content/articles/system-design-problems/low-level-design/state-management-data-architecture/usereducer-vs-usestate"),
-  "other/artificial-intelligence/additional-topics/agent-orchestration": () => import("@/content/articles/other/artificial-intelligence/additional-topics/agent-orchestration"),
-  "other/artificial-intelligence/additional-topics/hugging-face": () => import("@/content/articles/other/artificial-intelligence/additional-topics/hugging-face"),
-  "other/artificial-intelligence/additional-topics/langchain": () => import("@/content/articles/other/artificial-intelligence/additional-topics/langchain"),
-  "other/artificial-intelligence/additional-topics/plugins": () => import("@/content/articles/other/artificial-intelligence/additional-topics/plugins"),
-  "other/artificial-intelligence/additional-topics/workflow": () => import("@/content/articles/other/artificial-intelligence/additional-topics/workflow"),
-  "other/artificial-intelligence/core-concepts/agents": () => import("@/content/articles/other/artificial-intelligence/core-concepts/agents"),
-  "other/artificial-intelligence/core-concepts/ai-application-architecture": () => import("@/content/articles/other/artificial-intelligence/core-concepts/ai-application-architecture"),
-  "other/artificial-intelligence/core-concepts/ai-cost-management": () => import("@/content/articles/other/artificial-intelligence/core-concepts/ai-cost-management"),
-  "other/artificial-intelligence/core-concepts/ai-model-deployment": () => import("@/content/articles/other/artificial-intelligence/core-concepts/ai-model-deployment"),
-  "other/artificial-intelligence/core-concepts/ai-observability-monitoring": () => import("@/content/articles/other/artificial-intelligence/core-concepts/ai-observability-monitoring"),
-  "other/artificial-intelligence/core-concepts/ai-safety-security": () => import("@/content/articles/other/artificial-intelligence/core-concepts/ai-safety-security"),
-  "other/artificial-intelligence/core-concepts/ai-testing-evaluation": () => import("@/content/articles/other/artificial-intelligence/core-concepts/ai-testing-evaluation"),
-  "other/artificial-intelligence/core-concepts/context-window": () => import("@/content/articles/other/artificial-intelligence/core-concepts/context-window"),
-  "other/artificial-intelligence/core-concepts/data-engineering-for-ai": () => import("@/content/articles/other/artificial-intelligence/core-concepts/data-engineering-for-ai"),
-  "other/artificial-intelligence/core-concepts/embeddings": () => import("@/content/articles/other/artificial-intelligence/core-concepts/embeddings"),
-  "other/artificial-intelligence/core-concepts/fine-tuning-vs-rag": () => import("@/content/articles/other/artificial-intelligence/core-concepts/fine-tuning-vs-rag"),
-  "other/artificial-intelligence/core-concepts/large-language-models": () => import("@/content/articles/other/artificial-intelligence/core-concepts/large-language-models"),
-  "other/artificial-intelligence/core-concepts/mcp": () => import("@/content/articles/other/artificial-intelligence/core-concepts/mcp"),
-  "other/artificial-intelligence/core-concepts/multi-agents": () => import("@/content/articles/other/artificial-intelligence/core-concepts/multi-agents"),
-  "other/artificial-intelligence/core-concepts/prompting": () => import("@/content/articles/other/artificial-intelligence/core-concepts/prompting"),
-  "other/artificial-intelligence/core-concepts/rag": () => import("@/content/articles/other/artificial-intelligence/core-concepts/rag"),
-  "other/artificial-intelligence/core-concepts/skills": () => import("@/content/articles/other/artificial-intelligence/core-concepts/skills"),
-  "other/artificial-intelligence/core-concepts/tokens": () => import("@/content/articles/other/artificial-intelligence/core-concepts/tokens"),
-  "other/artificial-intelligence/core-concepts/vector-db": () => import("@/content/articles/other/artificial-intelligence/core-concepts/vector-db"),
-  "other/data-structures-algorithms/algorithms/activity-selection": () => import("@/content/articles/other/data-structures-algorithms/algorithms/activity-selection"),
-  "other/data-structures-algorithms/algorithms/backtracking-fundamentals": () => import("@/content/articles/other/data-structures-algorithms/algorithms/backtracking-fundamentals"),
-  "other/data-structures-algorithms/algorithms/bellman-ford": () => import("@/content/articles/other/data-structures-algorithms/algorithms/bellman-ford"),
-  "other/data-structures-algorithms/algorithms/bfs": () => import("@/content/articles/other/data-structures-algorithms/algorithms/bfs"),
-  "other/data-structures-algorithms/algorithms/binary-search": () => import("@/content/articles/other/data-structures-algorithms/algorithms/binary-search"),
-  "other/data-structures-algorithms/algorithms/bitmask-dp": () => import("@/content/articles/other/data-structures-algorithms/algorithms/bitmask-dp"),
-  "other/data-structures-algorithms/algorithms/boyer-moore": () => import("@/content/articles/other/data-structures-algorithms/algorithms/boyer-moore"),
-  "other/data-structures-algorithms/algorithms/bubble-sort": () => import("@/content/articles/other/data-structures-algorithms/algorithms/bubble-sort"),
-  "other/data-structures-algorithms/algorithms/bucket-sort": () => import("@/content/articles/other/data-structures-algorithms/algorithms/bucket-sort"),
-  "other/data-structures-algorithms/algorithms/coin-change": () => import("@/content/articles/other/data-structures-algorithms/algorithms/coin-change"),
-  "other/data-structures-algorithms/algorithms/counting-sort": () => import("@/content/articles/other/data-structures-algorithms/algorithms/counting-sort"),
-  "other/data-structures-algorithms/algorithms/dfs": () => import("@/content/articles/other/data-structures-algorithms/algorithms/dfs"),
-  "other/data-structures-algorithms/algorithms/dijkstra": () => import("@/content/articles/other/data-structures-algorithms/algorithms/dijkstra"),
-  "other/data-structures-algorithms/algorithms/divide-and-conquer": () => import("@/content/articles/other/data-structures-algorithms/algorithms/divide-and-conquer"),
-  "other/data-structures-algorithms/algorithms/dp-fundamentals": () => import("@/content/articles/other/data-structures-algorithms/algorithms/dp-fundamentals"),
-  "other/data-structures-algorithms/algorithms/dp-on-trees": () => import("@/content/articles/other/data-structures-algorithms/algorithms/dp-on-trees"),
-  "other/data-structures-algorithms/algorithms/edit-distance": () => import("@/content/articles/other/data-structures-algorithms/algorithms/edit-distance"),
-  "other/data-structures-algorithms/algorithms/exponential-search": () => import("@/content/articles/other/data-structures-algorithms/algorithms/exponential-search"),
-  "other/data-structures-algorithms/algorithms/floyd-warshall": () => import("@/content/articles/other/data-structures-algorithms/algorithms/floyd-warshall"),
-  "other/data-structures-algorithms/algorithms/greedy-fundamentals": () => import("@/content/articles/other/data-structures-algorithms/algorithms/greedy-fundamentals"),
-  "other/data-structures-algorithms/algorithms/heap-sort": () => import("@/content/articles/other/data-structures-algorithms/algorithms/heap-sort"),
-  "other/data-structures-algorithms/algorithms/huffman-coding": () => import("@/content/articles/other/data-structures-algorithms/algorithms/huffman-coding"),
-  "other/data-structures-algorithms/algorithms/insertion-sort": () => import("@/content/articles/other/data-structures-algorithms/algorithms/insertion-sort"),
-  "other/data-structures-algorithms/algorithms/interpolation-search": () => import("@/content/articles/other/data-structures-algorithms/algorithms/interpolation-search"),
-  "other/data-structures-algorithms/algorithms/job-sequencing": () => import("@/content/articles/other/data-structures-algorithms/algorithms/job-sequencing"),
-  "other/data-structures-algorithms/algorithms/jump-search": () => import("@/content/articles/other/data-structures-algorithms/algorithms/jump-search"),
-  "other/data-structures-algorithms/algorithms/karatsuba-multiplication": () => import("@/content/articles/other/data-structures-algorithms/algorithms/karatsuba-multiplication"),
-  "other/data-structures-algorithms/algorithms/kmp": () => import("@/content/articles/other/data-structures-algorithms/algorithms/kmp"),
-  "other/data-structures-algorithms/algorithms/knapsack-01": () => import("@/content/articles/other/data-structures-algorithms/algorithms/knapsack-01"),
-  "other/data-structures-algorithms/algorithms/kruskals-mst": () => import("@/content/articles/other/data-structures-algorithms/algorithms/kruskals-mst"),
-  "other/data-structures-algorithms/algorithms/linear-search": () => import("@/content/articles/other/data-structures-algorithms/algorithms/linear-search"),
-  "other/data-structures-algorithms/algorithms/longest-common-subsequence": () => import("@/content/articles/other/data-structures-algorithms/algorithms/longest-common-subsequence"),
-  "other/data-structures-algorithms/algorithms/longest-increasing-subsequence": () => import("@/content/articles/other/data-structures-algorithms/algorithms/longest-increasing-subsequence"),
-  "other/data-structures-algorithms/algorithms/merge-sort": () => import("@/content/articles/other/data-structures-algorithms/algorithms/merge-sort"),
-  "other/data-structures-algorithms/algorithms/n-queens": () => import("@/content/articles/other/data-structures-algorithms/algorithms/n-queens"),
-  "other/data-structures-algorithms/algorithms/permutations-and-combinations": () => import("@/content/articles/other/data-structures-algorithms/algorithms/permutations-and-combinations"),
-  "other/data-structures-algorithms/algorithms/prims-mst": () => import("@/content/articles/other/data-structures-algorithms/algorithms/prims-mst"),
-  "other/data-structures-algorithms/algorithms/quick-sort": () => import("@/content/articles/other/data-structures-algorithms/algorithms/quick-sort"),
-  "other/data-structures-algorithms/algorithms/quickselect": () => import("@/content/articles/other/data-structures-algorithms/algorithms/quickselect"),
-  "other/data-structures-algorithms/algorithms/rabin-karp": () => import("@/content/articles/other/data-structures-algorithms/algorithms/rabin-karp"),
-  "other/data-structures-algorithms/algorithms/radix-sort": () => import("@/content/articles/other/data-structures-algorithms/algorithms/radix-sort"),
-  "other/data-structures-algorithms/algorithms/selection-sort": () => import("@/content/articles/other/data-structures-algorithms/algorithms/selection-sort"),
-  "other/data-structures-algorithms/algorithms/shell-sort": () => import("@/content/articles/other/data-structures-algorithms/algorithms/shell-sort"),
-  "other/data-structures-algorithms/algorithms/sudoku-solver": () => import("@/content/articles/other/data-structures-algorithms/algorithms/sudoku-solver"),
-  "other/data-structures-algorithms/algorithms/tarjans-scc": () => import("@/content/articles/other/data-structures-algorithms/algorithms/tarjans-scc"),
-  "other/data-structures-algorithms/algorithms/ternary-search": () => import("@/content/articles/other/data-structures-algorithms/algorithms/ternary-search"),
-  "other/data-structures-algorithms/algorithms/topological-sort": () => import("@/content/articles/other/data-structures-algorithms/algorithms/topological-sort"),
-  "other/data-structures-algorithms/algorithms/word-search": () => import("@/content/articles/other/data-structures-algorithms/algorithms/word-search"),
-  "other/data-structures-algorithms/data-structures/arrays": () => import("@/content/articles/other/data-structures-algorithms/data-structures/arrays"),
-  "other/data-structures-algorithms/data-structures/b-trees": () => import("@/content/articles/other/data-structures-algorithms/data-structures/b-trees"),
-  "other/data-structures-algorithms/data-structures/bit-manipulation": () => import("@/content/articles/other/data-structures-algorithms/data-structures/bit-manipulation"),
-  "other/data-structures-algorithms/data-structures/bloom-filters": () => import("@/content/articles/other/data-structures-algorithms/data-structures/bloom-filters"),
-  "other/data-structures-algorithms/data-structures/count-min-sketch": () => import("@/content/articles/other/data-structures-algorithms/data-structures/count-min-sketch"),
-  "other/data-structures-algorithms/data-structures/disjoint-set-union-find": () => import("@/content/articles/other/data-structures-algorithms/data-structures/disjoint-set-union-find"),
-  "other/data-structures-algorithms/data-structures/doubly-linked-lists": () => import("@/content/articles/other/data-structures-algorithms/data-structures/doubly-linked-lists"),
-  "other/data-structures-algorithms/data-structures/graphs": () => import("@/content/articles/other/data-structures-algorithms/data-structures/graphs"),
-  "other/data-structures-algorithms/data-structures/hash-tables": () => import("@/content/articles/other/data-structures-algorithms/data-structures/hash-tables"),
-  "other/data-structures-algorithms/data-structures/heaps-priority-queues": () => import("@/content/articles/other/data-structures-algorithms/data-structures/heaps-priority-queues"),
-  "other/data-structures-algorithms/data-structures/hyperloglog": () => import("@/content/articles/other/data-structures-algorithms/data-structures/hyperloglog"),
-  "other/data-structures-algorithms/data-structures/lsm-trees": () => import("@/content/articles/other/data-structures-algorithms/data-structures/lsm-trees"),
-  "other/data-structures-algorithms/data-structures/merkle-trees": () => import("@/content/articles/other/data-structures-algorithms/data-structures/merkle-trees"),
-  "other/data-structures-algorithms/data-structures/queues": () => import("@/content/articles/other/data-structures-algorithms/data-structures/queues"),
-  "other/data-structures-algorithms/data-structures/singly-linked-lists": () => import("@/content/articles/other/data-structures-algorithms/data-structures/singly-linked-lists"),
-  "other/data-structures-algorithms/data-structures/skip-lists": () => import("@/content/articles/other/data-structures-algorithms/data-structures/skip-lists"),
-  "other/data-structures-algorithms/data-structures/stacks": () => import("@/content/articles/other/data-structures-algorithms/data-structures/stacks"),
-  "other/data-structures-algorithms/data-structures/strings": () => import("@/content/articles/other/data-structures-algorithms/data-structures/strings"),
-  "other/data-structures-algorithms/data-structures/trees": () => import("@/content/articles/other/data-structures-algorithms/data-structures/trees"),
-  "other/data-structures-algorithms/data-structures/tries": () => import("@/content/articles/other/data-structures-algorithms/data-structures/tries"),
+  "system-design-concepts/frontend-concepts/accessibility-a11y/accessible-forms":
+    () =>
+      import("@/content/articles/system-design/frontend/accessibility-a11y/accessible-forms"),
+  "system-design-concepts/frontend-concepts/accessibility-a11y/accessible-modals-and-dialogs":
+    () =>
+      import("@/content/articles/system-design/frontend/accessibility-a11y/accessible-modals-and-dialogs"),
+  "system-design-concepts/frontend-concepts/accessibility-a11y/aria-attributes":
+    () =>
+      import("@/content/articles/system-design/frontend/accessibility-a11y/aria-attributes"),
+  "system-design-concepts/frontend-concepts/accessibility-a11y/color-contrast":
+    () =>
+      import("@/content/articles/system-design/frontend/accessibility-a11y/color-contrast"),
+  "system-design-concepts/frontend-concepts/accessibility-a11y/focus-management":
+    () =>
+      import("@/content/articles/system-design/frontend/accessibility-a11y/focus-management"),
+  "system-design-concepts/frontend-concepts/accessibility-a11y/keyboard-navigation":
+    () =>
+      import("@/content/articles/system-design/frontend/accessibility-a11y/keyboard-navigation"),
+  "system-design-concepts/frontend-concepts/accessibility-a11y/screen-reader-support":
+    () =>
+      import("@/content/articles/system-design/frontend/accessibility-a11y/screen-reader-support"),
+  "system-design-concepts/frontend-concepts/accessibility-a11y/semantic-html":
+    () =>
+      import("@/content/articles/system-design/frontend/accessibility-a11y/semantic-html"),
+  "system-design-concepts/frontend-concepts/accessibility-a11y/skip-links":
+    () =>
+      import("@/content/articles/system-design/frontend/accessibility-a11y/skip-links"),
+  "system-design-concepts/frontend-concepts/accessibility-a11y/wcag-guidelines":
+    () =>
+      import("@/content/articles/system-design/frontend/accessibility-a11y/wcag-guidelines"),
+  "system-design-concepts/frontend-concepts/analytics-tracking/conversion-funnels":
+    () =>
+      import("@/content/articles/system-design/frontend/analytics-tracking/conversion-funnels"),
+  "system-design-concepts/frontend-concepts/analytics-tracking/cookie-consent-management":
+    () =>
+      import("@/content/articles/system-design/frontend/analytics-tracking/cookie-consent-management"),
+  "system-design-concepts/frontend-concepts/analytics-tracking/custom-dimensions-metrics":
+    () =>
+      import("@/content/articles/system-design/frontend/analytics-tracking/custom-dimensions-metrics"),
+  "system-design-concepts/frontend-concepts/analytics-tracking/event-tracking":
+    () =>
+      import("@/content/articles/system-design/frontend/analytics-tracking/event-tracking"),
+  "system-design-concepts/frontend-concepts/analytics-tracking/page-view-tracking":
+    () =>
+      import("@/content/articles/system-design/frontend/analytics-tracking/page-view-tracking"),
+  "system-design-concepts/frontend-concepts/analytics-tracking/privacy-compliant-tracking":
+    () =>
+      import("@/content/articles/system-design/frontend/analytics-tracking/privacy-compliant-tracking"),
+  "system-design-concepts/frontend-concepts/analytics-tracking/user-journey-tracking":
+    () =>
+      import("@/content/articles/system-design/frontend/analytics-tracking/user-journey-tracking"),
+  "system-design-concepts/frontend-concepts/animation-transitions/animation-queuing":
+    () =>
+      import("@/content/articles/system-design/frontend/animation-transitions/animation-queuing"),
+  "system-design-concepts/frontend-concepts/animation-transitions/css-transitions-and-animations":
+    () =>
+      import("@/content/articles/system-design/frontend/animation-transitions/css-transitions-and-animations"),
+  "system-design-concepts/frontend-concepts/animation-transitions/javascript-animation-libraries":
+    () =>
+      import("@/content/articles/system-design/frontend/animation-transitions/javascript-animation-libraries"),
+  "system-design-concepts/frontend-concepts/animation-transitions/performance-considerations-60fps":
+    () =>
+      import("@/content/articles/system-design/frontend/animation-transitions/performance-considerations-60fps"),
+  "system-design-concepts/frontend-concepts/animation-transitions/request-animation-frame":
+    () =>
+      import("@/content/articles/system-design/frontend/animation-transitions/request-animation-frame"),
+  "system-design-concepts/frontend-concepts/animation-transitions/web-animations-api":
+    () =>
+      import("@/content/articles/system-design/frontend/animation-transitions/web-animations-api"),
+  "system-design-concepts/frontend-concepts/asset-management/asset-preloading":
+    () =>
+      import("@/content/articles/system-design/frontend/asset-management/asset-preloading"),
+  "system-design-concepts/frontend-concepts/asset-management/asset-versioning-and-cache-busting":
+    () =>
+      import("@/content/articles/system-design/frontend/asset-management/asset-versioning-and-cache-busting"),
+  "system-design-concepts/frontend-concepts/asset-management/cdn-strategy":
+    () =>
+      import("@/content/articles/system-design/frontend/asset-management/cdn-strategy"),
+  "system-design-concepts/frontend-concepts/asset-management/font-loading-strategies":
+    () =>
+      import("@/content/articles/system-design/frontend/asset-management/font-loading-strategies"),
+  "system-design-concepts/frontend-concepts/asset-management/image-optimization-and-formats":
+    () =>
+      import("@/content/articles/system-design/frontend/asset-management/image-optimization-and-formats"),
+  "system-design-concepts/frontend-concepts/asset-management/static-asset-hosting":
+    () =>
+      import("@/content/articles/system-design/frontend/asset-management/static-asset-hosting"),
+  "system-design-concepts/frontend-concepts/asset-management/svg-vs-icon-fonts":
+    () =>
+      import("@/content/articles/system-design/frontend/asset-management/svg-vs-icon-fonts"),
+  "system-design-concepts/frontend-concepts/browser-apis/battery-status-api":
+    () =>
+      import("@/content/articles/system-design/frontend/browser-apis/battery-status-api"),
+  "system-design-concepts/frontend-concepts/browser-apis/broadcast-channel-api":
+    () =>
+      import("@/content/articles/system-design/frontend/browser-apis/broadcast-channel-api"),
+  "system-design-concepts/frontend-concepts/browser-apis/clipboard-api": () =>
+    import("@/content/articles/system-design/frontend/browser-apis/clipboard-api"),
+  "system-design-concepts/frontend-concepts/browser-apis/geolocation-api": () =>
+    import("@/content/articles/system-design/frontend/browser-apis/geolocation-api"),
+  "system-design-concepts/frontend-concepts/browser-apis/intersection-observer-api":
+    () =>
+      import("@/content/articles/system-design/frontend/browser-apis/intersection-observer-api"),
+  "system-design-concepts/frontend-concepts/browser-apis/mutation-observer-api":
+    () =>
+      import("@/content/articles/system-design/frontend/browser-apis/mutation-observer-api"),
+  "system-design-concepts/frontend-concepts/browser-apis/notification-api":
+    () =>
+      import("@/content/articles/system-design/frontend/browser-apis/notification-api"),
+  "system-design-concepts/frontend-concepts/browser-apis/payment-request-api":
+    () =>
+      import("@/content/articles/system-design/frontend/browser-apis/payment-request-api"),
+  "system-design-concepts/frontend-concepts/browser-apis/resize-observer-api":
+    () =>
+      import("@/content/articles/system-design/frontend/browser-apis/resize-observer-api"),
+  "system-design-concepts/frontend-concepts/browser-apis/service-workers": () =>
+    import("@/content/articles/system-design/frontend/browser-apis/service-workers"),
+  "system-design-concepts/frontend-concepts/browser-apis/shared-workers": () =>
+    import("@/content/articles/system-design/frontend/browser-apis/shared-workers"),
+  "system-design-concepts/frontend-concepts/browser-apis/vibration-api": () =>
+    import("@/content/articles/system-design/frontend/browser-apis/vibration-api"),
+  "system-design-concepts/frontend-concepts/browser-apis/web-animations-api":
+    () =>
+      import("@/content/articles/system-design/frontend/browser-apis/web-animations-api"),
+  "system-design-concepts/frontend-concepts/browser-apis/web-workers": () =>
+    import("@/content/articles/system-design/frontend/browser-apis/web-workers"),
+  "system-design-concepts/frontend-concepts/build-deployment/blue-green-deployment":
+    () =>
+      import("@/content/articles/system-design/frontend/build-deployment/blue-green-deployment"),
+  "system-design-concepts/frontend-concepts/build-deployment/canary-releases":
+    () =>
+      import("@/content/articles/system-design/frontend/build-deployment/canary-releases"),
+  "system-design-concepts/frontend-concepts/build-deployment/ci-cd-pipelines":
+    () =>
+      import("@/content/articles/system-design/frontend/build-deployment/ci-cd-pipelines"),
+  "system-design-concepts/frontend-concepts/build-deployment/environment-variables":
+    () =>
+      import("@/content/articles/system-design/frontend/build-deployment/environment-variables"),
+  "system-design-concepts/frontend-concepts/build-deployment/feature-flags-for-gradual-rollout":
+    () =>
+      import("@/content/articles/system-design/frontend/build-deployment/feature-flags-for-gradual-rollout"),
+  "system-design-concepts/frontend-concepts/build-deployment/rollback-strategies":
+    () =>
+      import("@/content/articles/system-design/frontend/build-deployment/rollback-strategies"),
+  "system-design-concepts/frontend-concepts/build-deployment/webpack-vite-rollup-configuration":
+    () =>
+      import("@/content/articles/system-design/frontend/build-deployment/webpack-vite-rollup-configuration"),
+  "system-design-concepts/frontend-concepts/build-deployment/zero-downtime-deployment":
+    () =>
+      import("@/content/articles/system-design/frontend/build-deployment/zero-downtime-deployment"),
+  "system-design-concepts/frontend-concepts/caching-strategies/application-cache":
+    () =>
+      import("@/content/articles/system-design/frontend/caching-strategies/application-cache"),
+  "system-design-concepts/frontend-concepts/caching-strategies/browser-caching":
+    () =>
+      import("@/content/articles/system-design/frontend/caching-strategies/browser-caching"),
+  "system-design-concepts/frontend-concepts/caching-strategies/cache-invalidation-strategies":
+    () =>
+      import("@/content/articles/system-design/frontend/caching-strategies/cache-invalidation-strategies"),
+  "system-design-concepts/frontend-concepts/caching-strategies/caching-patterns":
+    () =>
+      import("@/content/articles/system-design/frontend/caching-strategies/caching-patterns"),
+  "system-design-concepts/frontend-concepts/caching-strategies/cdn-caching":
+    () =>
+      import("@/content/articles/system-design/frontend/caching-strategies/cdn-caching"),
+  "system-design-concepts/frontend-concepts/caching-strategies/indexeddb-caching":
+    () =>
+      import("@/content/articles/system-design/frontend/caching-strategies/indexeddb-caching"),
+  "system-design-concepts/frontend-concepts/caching-strategies/memory-caching":
+    () =>
+      import("@/content/articles/system-design/frontend/caching-strategies/memory-caching"),
+  "system-design-concepts/frontend-concepts/caching-strategies/service-worker-caching":
+    () =>
+      import("@/content/articles/system-design/frontend/caching-strategies/service-worker-caching"),
+  "system-design-concepts/frontend-concepts/caching-strategies/stale-while-revalidate":
+    () =>
+      import("@/content/articles/system-design/frontend/caching-strategies/stale-while-revalidate"),
+  "system-design-concepts/frontend-concepts/component-design/atomic-design-principles":
+    () =>
+      import("@/content/articles/system-design/frontend/component-design/atomic-design-principles"),
+  "system-design-concepts/frontend-concepts/component-design/component-composition":
+    () =>
+      import("@/content/articles/system-design/frontend/component-design/component-composition"),
+  "system-design-concepts/frontend-concepts/component-design/component-lifecycle-optimization":
+    () =>
+      import("@/content/articles/system-design/frontend/component-design/component-lifecycle-optimization"),
+  "system-design-concepts/frontend-concepts/component-design/compound-components":
+    () =>
+      import("@/content/articles/system-design/frontend/component-design/compound-components"),
+  "system-design-concepts/frontend-concepts/component-design/controlled-vs-uncontrolled-components":
+    () =>
+      import("@/content/articles/system-design/frontend/component-design/controlled-vs-uncontrolled-components"),
+  "system-design-concepts/frontend-concepts/component-design/higher-order-components":
+    () =>
+      import("@/content/articles/system-design/frontend/component-design/higher-order-components"),
+  "system-design-concepts/frontend-concepts/component-design/render-props":
+    () =>
+      import("@/content/articles/system-design/frontend/component-design/render-props"),
+  "system-design-concepts/frontend-concepts/component-design/smart-vs-dumb-components":
+    () =>
+      import("@/content/articles/system-design/frontend/component-design/smart-vs-dumb-components"),
+  "system-design-concepts/frontend-concepts/data-storage/cache-api": () =>
+    import("@/content/articles/system-design/frontend/data-storage/cache-api"),
+  "system-design-concepts/frontend-concepts/data-storage/cookies": () =>
+    import("@/content/articles/system-design/frontend/data-storage/cookies"),
+  "system-design-concepts/frontend-concepts/data-storage/file-system-access-api":
+    () =>
+      import("@/content/articles/system-design/frontend/data-storage/file-system-access-api"),
+  "system-design-concepts/frontend-concepts/data-storage/indexeddb": () =>
+    import("@/content/articles/system-design/frontend/data-storage/indexeddb"),
+  "system-design-concepts/frontend-concepts/data-storage/localstorage": () =>
+    import("@/content/articles/system-design/frontend/data-storage/localstorage"),
+  "system-design-concepts/frontend-concepts/data-storage/sessionstorage": () =>
+    import("@/content/articles/system-design/frontend/data-storage/sessionstorage"),
+  "system-design-concepts/frontend-concepts/data-storage/storage-quotas-and-eviction":
+    () =>
+      import("@/content/articles/system-design/frontend/data-storage/storage-quotas-and-eviction"),
+  "system-design-concepts/frontend-concepts/data-storage/web-sql": () =>
+    import("@/content/articles/system-design/frontend/data-storage/web-sql"),
+  "system-design-concepts/frontend-concepts/data-visualization/canvas-vs-svg-for-rendering":
+    () =>
+      import("@/content/articles/system-design/frontend/data-visualization/canvas-vs-svg-for-rendering"),
+  "system-design-concepts/frontend-concepts/data-visualization/chart-libraries-integration":
+    () =>
+      import("@/content/articles/system-design/frontend/data-visualization/chart-libraries-integration"),
+  "system-design-concepts/frontend-concepts/data-visualization/dashboard-design":
+    () =>
+      import("@/content/articles/system-design/frontend/data-visualization/dashboard-design"),
+  "system-design-concepts/frontend-concepts/data-visualization/interactive-visualizations":
+    () =>
+      import("@/content/articles/system-design/frontend/data-visualization/interactive-visualizations"),
+  "system-design-concepts/frontend-concepts/data-visualization/large-dataset-rendering":
+    () =>
+      import("@/content/articles/system-design/frontend/data-visualization/large-dataset-rendering"),
+  "system-design-concepts/frontend-concepts/data-visualization/real-time-data-updates":
+    () =>
+      import("@/content/articles/system-design/frontend/data-visualization/real-time-data-updates"),
+  "system-design-concepts/frontend-concepts/edge-cases-and-user-experience/dark-mode-implementation":
+    () =>
+      import("@/content/articles/system-design/frontend/edge-cases-and-user-experience/dark-mode-implementation"),
+  "system-design-concepts/frontend-concepts/edge-cases-and-user-experience/empty-states":
+    () =>
+      import("@/content/articles/system-design/frontend/edge-cases-and-user-experience/empty-states"),
+  "system-design-concepts/frontend-concepts/edge-cases-and-user-experience/error-states":
+    () =>
+      import("@/content/articles/system-design/frontend/edge-cases-and-user-experience/error-states"),
+  "system-design-concepts/frontend-concepts/edge-cases-and-user-experience/infinite-scroll-vs-pagination":
+    () =>
+      import("@/content/articles/system-design/frontend/edge-cases-and-user-experience/infinite-scroll-vs-pagination"),
+  "system-design-concepts/frontend-concepts/edge-cases-and-user-experience/keyboard-shortcuts":
+    () =>
+      import("@/content/articles/system-design/frontend/edge-cases-and-user-experience/keyboard-shortcuts"),
+  "system-design-concepts/frontend-concepts/edge-cases-and-user-experience/loading-states":
+    () =>
+      import("@/content/articles/system-design/frontend/edge-cases-and-user-experience/loading-states"),
+  "system-design-concepts/frontend-concepts/edge-cases-and-user-experience/optimistic-ui-updates":
+    () =>
+      import("@/content/articles/system-design/frontend/edge-cases-and-user-experience/optimistic-ui-updates"),
+  "system-design-concepts/frontend-concepts/edge-cases-and-user-experience/print-stylesheets":
+    () =>
+      import("@/content/articles/system-design/frontend/edge-cases-and-user-experience/print-stylesheets"),
+  "system-design-concepts/frontend-concepts/edge-cases-and-user-experience/skeleton-screens":
+    () =>
+      import("@/content/articles/system-design/frontend/edge-cases-and-user-experience/skeleton-screens"),
+  "system-design-concepts/frontend-concepts/edge-cases-and-user-experience/undo-redo-functionality":
+    () =>
+      import("@/content/articles/system-design/frontend/edge-cases-and-user-experience/undo-redo-functionality"),
+  "system-design-concepts/frontend-concepts/error-handling-monitoring/error-boundaries":
+    () =>
+      import("@/content/articles/system-design/frontend/error-handling-monitoring/error-boundaries"),
+  "system-design-concepts/frontend-concepts/error-handling-monitoring/error-reporting":
+    () =>
+      import("@/content/articles/system-design/frontend/error-handling-monitoring/error-reporting"),
+  "system-design-concepts/frontend-concepts/error-handling-monitoring/feature-detection":
+    () =>
+      import("@/content/articles/system-design/frontend/error-handling-monitoring/feature-detection"),
+  "system-design-concepts/frontend-concepts/error-handling-monitoring/global-error-handlers":
+    () =>
+      import("@/content/articles/system-design/frontend/error-handling-monitoring/global-error-handlers"),
+  "system-design-concepts/frontend-concepts/error-handling-monitoring/graceful-degradation":
+    () =>
+      import("@/content/articles/system-design/frontend/error-handling-monitoring/graceful-degradation"),
+  "system-design-concepts/frontend-concepts/error-handling-monitoring/logging-strategies":
+    () =>
+      import("@/content/articles/system-design/frontend/error-handling-monitoring/logging-strategies"),
+  "system-design-concepts/frontend-concepts/error-handling-monitoring/performance-monitoring":
+    () =>
+      import("@/content/articles/system-design/frontend/error-handling-monitoring/performance-monitoring"),
+  "system-design-concepts/frontend-concepts/error-handling-monitoring/source-maps":
+    () =>
+      import("@/content/articles/system-design/frontend/error-handling-monitoring/source-maps"),
+  "system-design-concepts/frontend-concepts/error-handling-monitoring/user-error-messages":
+    () =>
+      import("@/content/articles/system-design/frontend/error-handling-monitoring/user-error-messages"),
+  "system-design-concepts/frontend-concepts/forms-validation/auto-save-functionality":
+    () =>
+      import("@/content/articles/system-design/frontend/forms-validation/auto-save-functionality"),
+  "system-design-concepts/frontend-concepts/forms-validation/client-side-validation":
+    () =>
+      import("@/content/articles/system-design/frontend/forms-validation/client-side-validation"),
+  "system-design-concepts/frontend-concepts/forms-validation/file-upload-handling":
+    () =>
+      import("@/content/articles/system-design/frontend/forms-validation/file-upload-handling"),
+  "system-design-concepts/frontend-concepts/forms-validation/form-accessibility":
+    () =>
+      import("@/content/articles/system-design/frontend/forms-validation/form-accessibility"),
+  "system-design-concepts/frontend-concepts/forms-validation/form-serialization":
+    () =>
+      import("@/content/articles/system-design/frontend/forms-validation/form-serialization"),
+  "system-design-concepts/frontend-concepts/forms-validation/form-state-management":
+    () =>
+      import("@/content/articles/system-design/frontend/forms-validation/form-state-management"),
+  "system-design-concepts/frontend-concepts/forms-validation/multi-step-forms":
+    () =>
+      import("@/content/articles/system-design/frontend/forms-validation/multi-step-forms"),
+  "system-design-concepts/frontend-concepts/forms-validation/real-time-validation":
+    () =>
+      import("@/content/articles/system-design/frontend/forms-validation/real-time-validation"),
+  "system-design-concepts/frontend-concepts/internationalization-i18n-localization-l10n/currency-formatting":
+    () =>
+      import("@/content/articles/system-design/frontend/internationalization-i18n-localization-l10n/currency-formatting"),
+  "system-design-concepts/frontend-concepts/internationalization-i18n-localization-l10n/date-time-number-formatting":
+    () =>
+      import("@/content/articles/system-design/frontend/internationalization-i18n-localization-l10n/date-time-number-formatting"),
+  "system-design-concepts/frontend-concepts/internationalization-i18n-localization-l10n/lazy-loading-translations":
+    () =>
+      import("@/content/articles/system-design/frontend/internationalization-i18n-localization-l10n/lazy-loading-translations"),
+  "system-design-concepts/frontend-concepts/internationalization-i18n-localization-l10n/locale-detection":
+    () =>
+      import("@/content/articles/system-design/frontend/internationalization-i18n-localization-l10n/locale-detection"),
+  "system-design-concepts/frontend-concepts/internationalization-i18n-localization-l10n/multi-language-support":
+    () =>
+      import("@/content/articles/system-design/frontend/internationalization-i18n-localization-l10n/multi-language-support"),
+  "system-design-concepts/frontend-concepts/internationalization-i18n-localization-l10n/rtl-support":
+    () =>
+      import("@/content/articles/system-design/frontend/internationalization-i18n-localization-l10n/rtl-support"),
+  "system-design-concepts/frontend-concepts/internationalization-i18n-localization-l10n/translation-management":
+    () =>
+      import("@/content/articles/system-design/frontend/internationalization-i18n-localization-l10n/translation-management"),
+  "system-design-concepts/frontend-concepts/memory-management/dom-reference-management":
+    () =>
+      import("@/content/articles/system-design/frontend/memory-management/dom-reference-management"),
+  "system-design-concepts/frontend-concepts/memory-management/event-listener-cleanup":
+    () =>
+      import("@/content/articles/system-design/frontend/memory-management/event-listener-cleanup"),
+  "system-design-concepts/frontend-concepts/memory-management/garbage-collection-understanding":
+    () =>
+      import("@/content/articles/system-design/frontend/memory-management/garbage-collection-understanding"),
+  "system-design-concepts/frontend-concepts/memory-management/memory-leaks-prevention":
+    () =>
+      import("@/content/articles/system-design/frontend/memory-management/memory-leaks-prevention"),
+  "system-design-concepts/frontend-concepts/memory-management/memory-profiling":
+    () =>
+      import("@/content/articles/system-design/frontend/memory-management/memory-profiling"),
+  "system-design-concepts/frontend-concepts/memory-management/timer-cleanup":
+    () =>
+      import("@/content/articles/system-design/frontend/memory-management/timer-cleanup"),
+  "system-design-concepts/frontend-concepts/mobile-considerations/app-like-experience-pwa":
+    () =>
+      import("@/content/articles/system-design/frontend/mobile-considerations/app-like-experience-pwa"),
+  "system-design-concepts/frontend-concepts/mobile-considerations/device-orientation-api":
+    () =>
+      import("@/content/articles/system-design/frontend/mobile-considerations/device-orientation-api"),
+  "system-design-concepts/frontend-concepts/mobile-considerations/mobile-first-design":
+    () =>
+      import("@/content/articles/system-design/frontend/mobile-considerations/mobile-first-design"),
+  "system-design-concepts/frontend-concepts/mobile-considerations/mobile-network-considerations":
+    () =>
+      import("@/content/articles/system-design/frontend/mobile-considerations/mobile-network-considerations"),
+  "system-design-concepts/frontend-concepts/mobile-considerations/mobile-performance-optimization":
+    () =>
+      import("@/content/articles/system-design/frontend/mobile-considerations/mobile-performance-optimization"),
+  "system-design-concepts/frontend-concepts/mobile-considerations/responsive-design":
+    () =>
+      import("@/content/articles/system-design/frontend/mobile-considerations/responsive-design"),
+  "system-design-concepts/frontend-concepts/mobile-considerations/touch-events-vs-pointer-events":
+    () =>
+      import("@/content/articles/system-design/frontend/mobile-considerations/touch-events-vs-pointer-events"),
+  "system-design-concepts/frontend-concepts/mobile-considerations/viewport-configuration":
+    () =>
+      import("@/content/articles/system-design/frontend/mobile-considerations/viewport-configuration"),
+  "system-design-concepts/frontend-concepts/networking-api-communication/api-rate-limiting":
+    () =>
+      import("@/content/articles/system-design/frontend/networking-api-communication/api-rate-limiting"),
+  "system-design-concepts/frontend-concepts/networking-api-communication/chunked-transfer-encoding":
+    () =>
+      import("@/content/articles/system-design/frontend/networking-api-communication/chunked-transfer-encoding"),
+  "system-design-concepts/frontend-concepts/networking-api-communication/circuit-breaker-pattern":
+    () =>
+      import("@/content/articles/system-design/frontend/networking-api-communication/circuit-breaker-pattern"),
+  "system-design-concepts/frontend-concepts/networking-api-communication/cors-handling":
+    () =>
+      import("@/content/articles/system-design/frontend/networking-api-communication/cors-handling"),
+  "system-design-concepts/frontend-concepts/networking-api-communication/graphql":
+    () =>
+      import("@/content/articles/system-design/frontend/networking-api-communication/graphql"),
+  "system-design-concepts/frontend-concepts/networking-api-communication/http2-and-http3":
+    () =>
+      import("@/content/articles/system-design/frontend/networking-api-communication/http2-and-http3"),
+  "system-design-concepts/frontend-concepts/networking-api-communication/long-polling":
+    () =>
+      import("@/content/articles/system-design/frontend/networking-api-communication/long-polling"),
+  "system-design-concepts/frontend-concepts/networking-api-communication/multipart-upload":
+    () =>
+      import("@/content/articles/system-design/frontend/networking-api-communication/multipart-upload"),
+  "system-design-concepts/frontend-concepts/networking-api-communication/request-batching":
+    () =>
+      import("@/content/articles/system-design/frontend/networking-api-communication/request-batching"),
+  "system-design-concepts/frontend-concepts/networking-api-communication/request-cancellation":
+    () =>
+      import("@/content/articles/system-design/frontend/networking-api-communication/request-cancellation"),
+  "system-design-concepts/frontend-concepts/networking-api-communication/request-queuing":
+    () =>
+      import("@/content/articles/system-design/frontend/networking-api-communication/request-queuing"),
+  "system-design-concepts/frontend-concepts/networking-api-communication/rest-api-design":
+    () =>
+      import("@/content/articles/system-design/frontend/networking-api-communication/rest-api-design"),
+  "system-design-concepts/frontend-concepts/networking-api-communication/retry-logic-and-exponential-backoff":
+    () =>
+      import("@/content/articles/system-design/frontend/networking-api-communication/retry-logic-and-exponential-backoff"),
+  "system-design-concepts/frontend-concepts/networking-api-communication/server-sent-events":
+    () =>
+      import("@/content/articles/system-design/frontend/networking-api-communication/server-sent-events"),
+  "system-design-concepts/frontend-concepts/networking-api-communication/short-polling":
+    () =>
+      import("@/content/articles/system-design/frontend/networking-api-communication/short-polling"),
+  "system-design-concepts/frontend-concepts/networking-api-communication/webrtc-peer-to-peer":
+    () =>
+      import("@/content/articles/system-design/frontend/networking-api-communication/webrtc-peer-to-peer"),
+  "system-design-concepts/frontend-concepts/networking-api-communication/websockets":
+    () =>
+      import("@/content/articles/system-design/frontend/networking-api-communication/websockets"),
+  "system-design-concepts/frontend-concepts/offline-support/background-sync":
+    () =>
+      import("@/content/articles/system-design/frontend/offline-support/background-sync"),
+  "system-design-concepts/frontend-concepts/offline-support/conflict-resolution":
+    () =>
+      import("@/content/articles/system-design/frontend/offline-support/conflict-resolution"),
+  "system-design-concepts/frontend-concepts/offline-support/network-status-detection":
+    () =>
+      import("@/content/articles/system-design/frontend/offline-support/network-status-detection"),
+  "system-design-concepts/frontend-concepts/offline-support/offline-first-architecture":
+    () =>
+      import("@/content/articles/system-design/frontend/offline-support/offline-first-architecture"),
+  "system-design-concepts/frontend-concepts/offline-support/periodic-background-sync":
+    () =>
+      import("@/content/articles/system-design/frontend/offline-support/periodic-background-sync"),
+  "system-design-concepts/frontend-concepts/offline-support/progressive-web-apps":
+    () =>
+      import("@/content/articles/system-design/frontend/offline-support/progressive-web-apps"),
+  "system-design-concepts/frontend-concepts/offline-support/service-workers":
+    () =>
+      import("@/content/articles/system-design/frontend/offline-support/service-workers"),
+  "system-design-concepts/frontend-concepts/performance-optimization/above-the-fold-optimization":
+    () =>
+      import("@/content/articles/system-design/frontend/performance-optimization/above-the-fold-optimization"),
+  "system-design-concepts/frontend-concepts/performance-optimization/bundle-size-optimization":
+    () =>
+      import("@/content/articles/system-design/frontend/performance-optimization/bundle-size-optimization"),
+  "system-design-concepts/frontend-concepts/performance-optimization/code-splitting":
+    () =>
+      import("@/content/articles/system-design/frontend/performance-optimization/code-splitting"),
+  "system-design-concepts/frontend-concepts/performance-optimization/compression":
+    () =>
+      import("@/content/articles/system-design/frontend/performance-optimization/compression"),
+  "system-design-concepts/frontend-concepts/performance-optimization/critical-css":
+    () =>
+      import("@/content/articles/system-design/frontend/performance-optimization/critical-css"),
+  "system-design-concepts/frontend-concepts/performance-optimization/debouncing-and-throttling":
+    () =>
+      import("@/content/articles/system-design/frontend/performance-optimization/debouncing-and-throttling"),
+  "system-design-concepts/frontend-concepts/performance-optimization/image-optimization":
+    () =>
+      import("@/content/articles/system-design/frontend/performance-optimization/image-optimization"),
+  "system-design-concepts/frontend-concepts/performance-optimization/lazy-loading":
+    () =>
+      import("@/content/articles/system-design/frontend/performance-optimization/lazy-loading"),
+  "system-design-concepts/frontend-concepts/performance-optimization/memoization-and-react-memo":
+    () =>
+      import("@/content/articles/system-design/frontend/performance-optimization/memoization-and-react-memo"),
+  "system-design-concepts/frontend-concepts/performance-optimization/minification-and-uglification":
+    () =>
+      import("@/content/articles/system-design/frontend/performance-optimization/minification-and-uglification"),
+  "system-design-concepts/frontend-concepts/performance-optimization/performance-budgets":
+    () =>
+      import("@/content/articles/system-design/frontend/performance-optimization/performance-budgets"),
+  "system-design-concepts/frontend-concepts/performance-optimization/request-deduplication":
+    () =>
+      import("@/content/articles/system-design/frontend/performance-optimization/request-deduplication"),
+  "system-design-concepts/frontend-concepts/performance-optimization/resource-hints":
+    () =>
+      import("@/content/articles/system-design/frontend/performance-optimization/resource-hints"),
+  "system-design-concepts/frontend-concepts/performance-optimization/tree-shaking":
+    () =>
+      import("@/content/articles/system-design/frontend/performance-optimization/tree-shaking"),
+  "system-design-concepts/frontend-concepts/performance-optimization/virtualization-windowing":
+    () =>
+      import("@/content/articles/system-design/frontend/performance-optimization/virtualization-windowing"),
+  "system-design-concepts/frontend-concepts/performance-optimization/web-vitals":
+    () =>
+      import("@/content/articles/system-design/frontend/performance-optimization/web-vitals"),
+  "system-design-concepts/frontend-concepts/real-time-features/collaborative-editing":
+    () =>
+      import("@/content/articles/system-design/frontend/real-time-features/collaborative-editing"),
+  "system-design-concepts/frontend-concepts/real-time-features/live-updates-feed":
+    () =>
+      import("@/content/articles/system-design/frontend/real-time-features/live-updates-feed"),
+  "system-design-concepts/frontend-concepts/real-time-features/presence-systems":
+    () =>
+      import("@/content/articles/system-design/frontend/real-time-features/presence-systems"),
+  "system-design-concepts/frontend-concepts/real-time-features/real-time-notifications":
+    () =>
+      import("@/content/articles/system-design/frontend/real-time-features/real-time-notifications"),
+  "system-design-concepts/frontend-concepts/real-time-features/server-sent-events":
+    () =>
+      import("@/content/articles/system-design/frontend/real-time-features/server-sent-events"),
+  "system-design-concepts/frontend-concepts/real-time-features/webrtc": () =>
+    import("@/content/articles/system-design/frontend/real-time-features/webrtc"),
+  "system-design-concepts/frontend-concepts/real-time-features/websockets":
+    () =>
+      import("@/content/articles/system-design/frontend/real-time-features/websockets"),
+  "system-design-concepts/frontend-concepts/rendering-strategies/client-side-rendering":
+    () =>
+      import("@/content/articles/system-design/frontend/rendering-strategies/client-side-rendering"),
+  "system-design-concepts/frontend-concepts/rendering-strategies/edge-rendering":
+    () =>
+      import("@/content/articles/system-design/frontend/rendering-strategies/edge-rendering"),
+  "system-design-concepts/frontend-concepts/rendering-strategies/incremental-static-regeneration":
+    () =>
+      import("@/content/articles/system-design/frontend/rendering-strategies/incremental-static-regeneration"),
+  "system-design-concepts/frontend-concepts/rendering-strategies/islands-architecture":
+    () =>
+      import("@/content/articles/system-design/frontend/rendering-strategies/islands-architecture"),
+  "system-design-concepts/frontend-concepts/rendering-strategies/partial-hydration":
+    () =>
+      import("@/content/articles/system-design/frontend/rendering-strategies/partial-hydration"),
+  "system-design-concepts/frontend-concepts/rendering-strategies/progressive-hydration":
+    () =>
+      import("@/content/articles/system-design/frontend/rendering-strategies/progressive-hydration"),
+  "system-design-concepts/frontend-concepts/rendering-strategies/selective-hydration":
+    () =>
+      import("@/content/articles/system-design/frontend/rendering-strategies/selective-hydration"),
+  "system-design-concepts/frontend-concepts/rendering-strategies/server-side-rendering":
+    () =>
+      import("@/content/articles/system-design/frontend/rendering-strategies/server-side-rendering"),
+  "system-design-concepts/frontend-concepts/rendering-strategies/static-site-generation":
+    () =>
+      import("@/content/articles/system-design/frontend/rendering-strategies/static-site-generation"),
+  "system-design-concepts/frontend-concepts/rendering-strategies/streaming-ssr":
+    () =>
+      import("@/content/articles/system-design/frontend/rendering-strategies/streaming-ssr"),
+  "system-design-concepts/frontend-concepts/routing/client-side-routing": () =>
+    import("@/content/articles/system-design/frontend/routing/client-side-routing"),
+  "system-design-concepts/frontend-concepts/routing/deep-linking": () =>
+    import("@/content/articles/system-design/frontend/routing/deep-linking"),
+  "system-design-concepts/frontend-concepts/routing/dynamic-routes": () =>
+    import("@/content/articles/system-design/frontend/routing/dynamic-routes"),
+  "system-design-concepts/frontend-concepts/routing/hash-based-routing": () =>
+    import("@/content/articles/system-design/frontend/routing/hash-based-routing"),
+  "system-design-concepts/frontend-concepts/routing/history-api": () =>
+    import("@/content/articles/system-design/frontend/routing/history-api"),
+  "system-design-concepts/frontend-concepts/routing/nested-routes": () =>
+    import("@/content/articles/system-design/frontend/routing/nested-routes"),
+  "system-design-concepts/frontend-concepts/routing/route-based-code-splitting":
+    () =>
+      import("@/content/articles/system-design/frontend/routing/route-based-code-splitting"),
+  "system-design-concepts/frontend-concepts/routing/route-guards": () =>
+    import("@/content/articles/system-design/frontend/routing/route-guards"),
+  "system-design-concepts/frontend-concepts/routing/url-parameter-handling":
+    () =>
+      import("@/content/articles/system-design/frontend/routing/url-parameter-handling"),
+  "system-design-concepts/frontend-concepts/scalability-architecture-patterns/component-libraries-and-design-systems":
+    () =>
+      import("@/content/articles/system-design/frontend/scalability-architecture-patterns/component-libraries-and-design-systems"),
+  "system-design-concepts/frontend-concepts/scalability-architecture-patterns/event-driven-architecture":
+    () =>
+      import("@/content/articles/system-design/frontend/scalability-architecture-patterns/event-driven-architecture"),
+  "system-design-concepts/frontend-concepts/scalability-architecture-patterns/facade-pattern":
+    () =>
+      import("@/content/articles/system-design/frontend/scalability-architecture-patterns/facade-pattern"),
+  "system-design-concepts/frontend-concepts/scalability-architecture-patterns/factory-pattern":
+    () =>
+      import("@/content/articles/system-design/frontend/scalability-architecture-patterns/factory-pattern"),
+  "system-design-concepts/frontend-concepts/scalability-architecture-patterns/feature-flags-toggle":
+    () =>
+      import("@/content/articles/system-design/frontend/scalability-architecture-patterns/feature-flags-toggle"),
+  "system-design-concepts/frontend-concepts/scalability-architecture-patterns/micro-frontends":
+    () =>
+      import("@/content/articles/system-design/frontend/scalability-architecture-patterns/micro-frontends"),
+  "system-design-concepts/frontend-concepts/scalability-architecture-patterns/module-federation":
+    () =>
+      import("@/content/articles/system-design/frontend/scalability-architecture-patterns/module-federation"),
+  "system-design-concepts/frontend-concepts/scalability-architecture-patterns/module-pattern":
+    () =>
+      import("@/content/articles/system-design/frontend/scalability-architecture-patterns/module-pattern"),
+  "system-design-concepts/frontend-concepts/scalability-architecture-patterns/monorepo-vs-polyrepo":
+    () =>
+      import("@/content/articles/system-design/frontend/scalability-architecture-patterns/monorepo-vs-polyrepo"),
+  "system-design-concepts/frontend-concepts/scalability-architecture-patterns/observer-pattern":
+    () =>
+      import("@/content/articles/system-design/frontend/scalability-architecture-patterns/observer-pattern"),
+  "system-design-concepts/frontend-concepts/scalability-architecture-patterns/plugin-architecture":
+    () =>
+      import("@/content/articles/system-design/frontend/scalability-architecture-patterns/plugin-architecture"),
+  "system-design-concepts/frontend-concepts/scalability-architecture-patterns/publish-subscribe-pattern":
+    () =>
+      import("@/content/articles/system-design/frontend/scalability-architecture-patterns/publish-subscribe-pattern"),
+  "system-design-concepts/frontend-concepts/scalability-architecture-patterns/singleton-pattern":
+    () =>
+      import("@/content/articles/system-design/frontend/scalability-architecture-patterns/singleton-pattern"),
+  "system-design-concepts/frontend-concepts/search-filtering/client-side-search-implementation":
+    () =>
+      import("@/content/articles/system-design/frontend/search-filtering/client-side-search-implementation"),
+  "system-design-concepts/frontend-concepts/search-filtering/elasticsearch-integration":
+    () =>
+      import("@/content/articles/system-design/frontend/search-filtering/elasticsearch-integration"),
+  "system-design-concepts/frontend-concepts/search-filtering/faceted-search":
+    () =>
+      import("@/content/articles/system-design/frontend/search-filtering/faceted-search"),
+  "system-design-concepts/frontend-concepts/search-filtering/full-text-search-libraries":
+    () =>
+      import("@/content/articles/system-design/frontend/search-filtering/full-text-search-libraries"),
+  "system-design-concepts/frontend-concepts/search-filtering/search-debouncing":
+    () =>
+      import("@/content/articles/system-design/frontend/search-filtering/search-debouncing"),
+  "system-design-concepts/frontend-concepts/search-filtering/search-history":
+    () =>
+      import("@/content/articles/system-design/frontend/search-filtering/search-history"),
+  "system-design-concepts/frontend-concepts/search-filtering/search-suggestions-autocomplete":
+    () =>
+      import("@/content/articles/system-design/frontend/search-filtering/search-suggestions-autocomplete"),
+  "system-design-concepts/frontend-concepts/security/authentication-patterns":
+    () =>
+      import("@/content/articles/system-design/frontend/security/authentication-patterns"),
+  "system-design-concepts/frontend-concepts/security/authorization-rbac": () =>
+    import("@/content/articles/system-design/frontend/security/authorization-rbac"),
+  "system-design-concepts/frontend-concepts/security/clickjacking-prevention":
+    () =>
+      import("@/content/articles/system-design/frontend/security/clickjacking-prevention"),
+  "system-design-concepts/frontend-concepts/security/client-side-rate-limiting":
+    () =>
+      import("@/content/articles/system-design/frontend/security/client-side-rate-limiting"),
+  "system-design-concepts/frontend-concepts/security/content-security-policy":
+    () =>
+      import("@/content/articles/system-design/frontend/security/content-security-policy"),
+  "system-design-concepts/frontend-concepts/security/csrf-protection": () =>
+    import("@/content/articles/system-design/frontend/security/csrf-protection"),
+  "system-design-concepts/frontend-concepts/security/https-tls": () =>
+    import("@/content/articles/system-design/frontend/security/https-tls"),
+  "system-design-concepts/frontend-concepts/security/input-validation-sanitization":
+    () =>
+      import("@/content/articles/system-design/frontend/security/input-validation-sanitization"),
+  "system-design-concepts/frontend-concepts/security/secure-cookie-attributes":
+    () =>
+      import("@/content/articles/system-design/frontend/security/secure-cookie-attributes"),
+  "system-design-concepts/frontend-concepts/security/secure-storage-sensitive-data":
+    () =>
+      import("@/content/articles/system-design/frontend/security/secure-storage-sensitive-data"),
+  "system-design-concepts/frontend-concepts/security/subresource-integrity":
+    () =>
+      import("@/content/articles/system-design/frontend/security/subresource-integrity"),
+  "system-design-concepts/frontend-concepts/security/token-refresh-strategies":
+    () =>
+      import("@/content/articles/system-design/frontend/security/token-refresh-strategies"),
+  "system-design-concepts/frontend-concepts/security/xss-prevention": () =>
+    import("@/content/articles/system-design/frontend/security/xss-prevention"),
+  "system-design-concepts/frontend-concepts/seo-optimization/canonical-urls":
+    () =>
+      import("@/content/articles/system-design/frontend/seo-optimization/canonical-urls"),
+  "system-design-concepts/frontend-concepts/seo-optimization/meta-tags": () =>
+    import("@/content/articles/system-design/frontend/seo-optimization/meta-tags"),
+  "system-design-concepts/frontend-concepts/seo-optimization/pagination-and-infinite-scroll-seo":
+    () =>
+      import("@/content/articles/system-design/frontend/seo-optimization/pagination-and-infinite-scroll-seo"),
+  "system-design-concepts/frontend-concepts/seo-optimization/robots-txt": () =>
+    import("@/content/articles/system-design/frontend/seo-optimization/robots-txt"),
+  "system-design-concepts/frontend-concepts/seo-optimization/semantic-html-for-seo":
+    () =>
+      import("@/content/articles/system-design/frontend/seo-optimization/semantic-html-for-seo"),
+  "system-design-concepts/frontend-concepts/seo-optimization/server-side-rendering-for-seo":
+    () =>
+      import("@/content/articles/system-design/frontend/seo-optimization/server-side-rendering-for-seo"),
+  "system-design-concepts/frontend-concepts/seo-optimization/social-media-optimization":
+    () =>
+      import("@/content/articles/system-design/frontend/seo-optimization/social-media-optimization"),
+  "system-design-concepts/frontend-concepts/seo-optimization/structured-data-schema-markup":
+    () =>
+      import("@/content/articles/system-design/frontend/seo-optimization/structured-data-schema-markup"),
+  "system-design-concepts/frontend-concepts/seo-optimization/url-structure":
+    () =>
+      import("@/content/articles/system-design/frontend/seo-optimization/url-structure"),
+  "system-design-concepts/frontend-concepts/seo-optimization/xml-sitemaps":
+    () =>
+      import("@/content/articles/system-design/frontend/seo-optimization/xml-sitemaps"),
+  "system-design-concepts/frontend-concepts/state-management/derived-state":
+    () =>
+      import("@/content/articles/system-design/frontend/state-management/derived-state"),
+  "system-design-concepts/frontend-concepts/state-management/form-state-management":
+    () =>
+      import("@/content/articles/system-design/frontend/state-management/form-state-management"),
+  "system-design-concepts/frontend-concepts/state-management/global-state-management":
+    () =>
+      import("@/content/articles/system-design/frontend/state-management/global-state-management"),
+  "system-design-concepts/frontend-concepts/state-management/immutable-state-updates":
+    () =>
+      import("@/content/articles/system-design/frontend/state-management/immutable-state-updates"),
+  "system-design-concepts/frontend-concepts/state-management/local-component-state":
+    () =>
+      import("@/content/articles/system-design/frontend/state-management/local-component-state"),
+  "system-design-concepts/frontend-concepts/state-management/optimistic-updates":
+    () =>
+      import("@/content/articles/system-design/frontend/state-management/optimistic-updates"),
+  "system-design-concepts/frontend-concepts/state-management/server-state-management":
+    () =>
+      import("@/content/articles/system-design/frontend/state-management/server-state-management"),
+  "system-design-concepts/frontend-concepts/state-management/state-normalization":
+    () =>
+      import("@/content/articles/system-design/frontend/state-management/state-normalization"),
+  "system-design-concepts/frontend-concepts/state-management/state-persistence":
+    () =>
+      import("@/content/articles/system-design/frontend/state-management/state-persistence"),
+  "system-design-concepts/frontend-concepts/state-management/state-synchronization":
+    () =>
+      import("@/content/articles/system-design/frontend/state-management/state-synchronization"),
+  "system-design-concepts/frontend-concepts/state-management/url-state": () =>
+    import("@/content/articles/system-design/frontend/state-management/url-state"),
+  "system-design-concepts/frontend-concepts/testing-strategies/e2e-testing":
+    () =>
+      import("@/content/articles/system-design/frontend/testing-strategies/e2e-testing"),
+  "system-design-concepts/frontend-concepts/testing-strategies/integration-testing":
+    () =>
+      import("@/content/articles/system-design/frontend/testing-strategies/integration-testing"),
+  "system-design-concepts/frontend-concepts/testing-strategies/unit-testing":
+    () =>
+      import("@/content/articles/system-design/frontend/testing-strategies/unit-testing"),
+  "system-design-concepts/frontend-concepts/testing-strategies/visual-regression-testing":
+    () =>
+      import("@/content/articles/system-design/frontend/testing-strategies/visual-regression-testing"),
+  "system-design-concepts/frontend-concepts/third-party-integration/analytics-tools-integration":
+    () =>
+      import("@/content/articles/system-design/frontend/third-party-integration/analytics-tools-integration"),
+  "system-design-concepts/frontend-concepts/third-party-integration/chat-widget-integration":
+    () =>
+      import("@/content/articles/system-design/frontend/third-party-integration/chat-widget-integration"),
+  "system-design-concepts/frontend-concepts/third-party-integration/oauth-integration":
+    () =>
+      import("@/content/articles/system-design/frontend/third-party-integration/oauth-integration"),
+  "system-design-concepts/frontend-concepts/third-party-integration/payment-gateway-integration":
+    () =>
+      import("@/content/articles/system-design/frontend/third-party-integration/payment-gateway-integration"),
+  "system-design-concepts/frontend-concepts/third-party-integration/script-loading-strategies":
+    () =>
+      import("@/content/articles/system-design/frontend/third-party-integration/script-loading-strategies"),
+  "system-design-concepts/frontend-concepts/third-party-integration/social-media-integration":
+    () =>
+      import("@/content/articles/system-design/frontend/third-party-integration/social-media-integration"),
+  "system-design-concepts/frontend-concepts/third-party-integration/widget-embedding":
+    () =>
+      import("@/content/articles/system-design/frontend/third-party-integration/widget-embedding"),
+  "system-design-concepts/frontend-concepts/web-standards-and-compatibility/browser-feature-detection":
+    () =>
+      import("@/content/articles/system-design/frontend/web-standards-and-compatibility/browser-feature-detection"),
+  "system-design-concepts/frontend-concepts/web-standards-and-compatibility/cross-browser-testing":
+    () =>
+      import("@/content/articles/system-design/frontend/web-standards-and-compatibility/cross-browser-testing"),
+  "system-design-concepts/frontend-concepts/web-standards-and-compatibility/css-vendor-prefixes":
+    () =>
+      import("@/content/articles/system-design/frontend/web-standards-and-compatibility/css-vendor-prefixes"),
+  "system-design-concepts/frontend-concepts/web-standards-and-compatibility/graceful-degradation":
+    () =>
+      import("@/content/articles/system-design/frontend/web-standards-and-compatibility/graceful-degradation"),
+  "system-design-concepts/frontend-concepts/web-standards-and-compatibility/legacy-browser-support":
+    () =>
+      import("@/content/articles/system-design/frontend/web-standards-and-compatibility/legacy-browser-support"),
+  "system-design-concepts/frontend-concepts/web-standards-and-compatibility/polyfills-and-transpilation":
+    () =>
+      import("@/content/articles/system-design/frontend/web-standards-and-compatibility/polyfills-and-transpilation"),
+  "system-design-concepts/frontend-concepts/web-standards-and-compatibility/progressive-enhancement":
+    () =>
+      import("@/content/articles/system-design/frontend/web-standards-and-compatibility/progressive-enhancement"),
+  "system-design-concepts/backend-concepts/advanced-topics/b-trees-b-trees":
+    () =>
+      import("@/content/articles/system-design/backend/advanced-topics/b-trees-b-trees"),
+  "system-design-concepts/backend-concepts/advanced-topics/bloom-filters": () =>
+    import("@/content/articles/system-design/backend/advanced-topics/bloom-filters"),
+  "system-design-concepts/backend-concepts/advanced-topics/conflict-free-replicated-data-types":
+    () =>
+      import("@/content/articles/system-design/backend/advanced-topics/conflict-free-replicated-data-types"),
+  "system-design-concepts/backend-concepts/advanced-topics/count-min-sketch":
+    () =>
+      import("@/content/articles/system-design/backend/advanced-topics/count-min-sketch"),
+  "system-design-concepts/backend-concepts/advanced-topics/geo-sharding": () =>
+    import("@/content/articles/system-design/backend/advanced-topics/geo-sharding"),
+  "system-design-concepts/backend-concepts/advanced-topics/global-distribution":
+    () =>
+      import("@/content/articles/system-design/backend/advanced-topics/global-distribution"),
+  "system-design-concepts/backend-concepts/advanced-topics/hot-partitions":
+    () =>
+      import("@/content/articles/system-design/backend/advanced-topics/hot-partitions"),
+  "system-design-concepts/backend-concepts/advanced-topics/hyperloglog": () =>
+    import("@/content/articles/system-design/backend/advanced-topics/hyperloglog"),
+  "system-design-concepts/backend-concepts/advanced-topics/leader-election":
+    () =>
+      import("@/content/articles/system-design/backend/advanced-topics/leader-election"),
+  "system-design-concepts/backend-concepts/advanced-topics/lsm-trees": () =>
+    import("@/content/articles/system-design/backend/advanced-topics/lsm-trees"),
+  "system-design-concepts/backend-concepts/advanced-topics/merkle-trees": () =>
+    import("@/content/articles/system-design/backend/advanced-topics/merkle-trees"),
+  "system-design-concepts/backend-concepts/advanced-topics/operational-transformation":
+    () =>
+      import("@/content/articles/system-design/backend/advanced-topics/operational-transformation"),
+  "system-design-concepts/backend-concepts/advanced-topics/skip-lists": () =>
+    import("@/content/articles/system-design/backend/advanced-topics/skip-lists"),
+  "system-design-concepts/backend-concepts/advanced-topics/snapshot-isolation":
+    () =>
+      import("@/content/articles/system-design/backend/advanced-topics/snapshot-isolation"),
+  "system-design-concepts/backend-concepts/advanced-topics/tail-latency": () =>
+    import("@/content/articles/system-design/backend/advanced-topics/tail-latency"),
+  "system-design-concepts/backend-concepts/advanced-topics/time-series-optimization":
+    () =>
+      import("@/content/articles/system-design/backend/advanced-topics/time-series-optimization"),
+  "system-design-concepts/backend-concepts/advanced-topics/write-ahead-logging":
+    () =>
+      import("@/content/articles/system-design/backend/advanced-topics/write-ahead-logging"),
+  "system-design-concepts/backend-concepts/advanced-topics/zero-copy-techniques":
+    () =>
+      import("@/content/articles/system-design/backend/advanced-topics/zero-copy-techniques"),
+  "system-design-concepts/backend-concepts/caching-performance/application-level-caching":
+    () =>
+      import("@/content/articles/system-design/backend/caching-performance/application-level-caching"),
+  "system-design-concepts/backend-concepts/caching-performance/cache-breakdown":
+    () =>
+      import("@/content/articles/system-design/backend/caching-performance/cache-breakdown"),
+  "system-design-concepts/backend-concepts/caching-performance/cache-coherence":
+    () =>
+      import("@/content/articles/system-design/backend/caching-performance/cache-coherence"),
+  "system-design-concepts/backend-concepts/caching-performance/cache-eviction-policies":
+    () =>
+      import("@/content/articles/system-design/backend/caching-performance/cache-eviction-policies"),
+  "system-design-concepts/backend-concepts/caching-performance/cache-invalidation":
+    () =>
+      import("@/content/articles/system-design/backend/caching-performance/cache-invalidation"),
+  "system-design-concepts/backend-concepts/caching-performance/cache-penetration":
+    () =>
+      import("@/content/articles/system-design/backend/caching-performance/cache-penetration"),
+  "system-design-concepts/backend-concepts/caching-performance/cache-stampede":
+    () =>
+      import("@/content/articles/system-design/backend/caching-performance/cache-stampede"),
+  "system-design-concepts/backend-concepts/caching-performance/cache-warming":
+    () =>
+      import("@/content/articles/system-design/backend/caching-performance/cache-warming"),
+  "system-design-concepts/backend-concepts/caching-performance/caching-strategies":
+    () =>
+      import("@/content/articles/system-design/backend/caching-performance/caching-strategies"),
+  "system-design-concepts/backend-concepts/caching-performance/cdn-caching":
+    () =>
+      import("@/content/articles/system-design/backend/caching-performance/cdn-caching"),
+  "system-design-concepts/backend-concepts/caching-performance/database-connection-pooling":
+    () =>
+      import("@/content/articles/system-design/backend/caching-performance/database-connection-pooling"),
+  "system-design-concepts/backend-concepts/caching-performance/database-query-caching":
+    () =>
+      import("@/content/articles/system-design/backend/caching-performance/database-query-caching"),
+  "system-design-concepts/backend-concepts/caching-performance/distributed-caching":
+    () =>
+      import("@/content/articles/system-design/backend/caching-performance/distributed-caching"),
+  "system-design-concepts/backend-concepts/caching-performance/http-caching":
+    () =>
+      import("@/content/articles/system-design/backend/caching-performance/http-caching"),
+  "system-design-concepts/backend-concepts/caching-performance/lazy-loading":
+    () =>
+      import("@/content/articles/system-design/backend/caching-performance/lazy-loading"),
+  "system-design-concepts/backend-concepts/caching-performance/memoization":
+    () =>
+      import("@/content/articles/system-design/backend/caching-performance/memoization"),
+  "system-design-concepts/backend-concepts/caching-performance/multi-level-caching":
+    () =>
+      import("@/content/articles/system-design/backend/caching-performance/multi-level-caching"),
+  "system-design-concepts/backend-concepts/caching-performance/object-pooling":
+    () =>
+      import("@/content/articles/system-design/backend/caching-performance/object-pooling"),
+  "system-design-concepts/backend-concepts/caching-performance/page-caching":
+    () =>
+      import("@/content/articles/system-design/backend/caching-performance/page-caching"),
+  "system-design-concepts/backend-concepts/caching-performance/prefetching":
+    () =>
+      import("@/content/articles/system-design/backend/caching-performance/prefetching"),
+  "system-design-concepts/backend-concepts/data-processing-analytics/aggregations":
+    () =>
+      import("@/content/articles/system-design/backend/data-processing-analytics/aggregations"),
+  "system-design-concepts/backend-concepts/data-processing-analytics/apache-kafka":
+    () =>
+      import("@/content/articles/system-design/backend/data-processing-analytics/apache-kafka"),
+  "system-design-concepts/backend-concepts/data-processing-analytics/apache-spark":
+    () =>
+      import("@/content/articles/system-design/backend/data-processing-analytics/apache-spark"),
+  "system-design-concepts/backend-concepts/data-processing-analytics/batch-processing":
+    () =>
+      import("@/content/articles/system-design/backend/data-processing-analytics/batch-processing"),
+  "system-design-concepts/backend-concepts/data-processing-analytics/change-data-capture":
+    () =>
+      import("@/content/articles/system-design/backend/data-processing-analytics/change-data-capture"),
+  "system-design-concepts/backend-concepts/data-processing-analytics/data-compression":
+    () =>
+      import("@/content/articles/system-design/backend/data-processing-analytics/data-compression"),
+  "system-design-concepts/backend-concepts/data-processing-analytics/data-deduplication":
+    () =>
+      import("@/content/articles/system-design/backend/data-processing-analytics/data-deduplication"),
+  "system-design-concepts/backend-concepts/data-processing-analytics/data-partitioning":
+    () =>
+      import("@/content/articles/system-design/backend/data-processing-analytics/data-partitioning"),
+  "system-design-concepts/backend-concepts/data-processing-analytics/data-pipelines":
+    () =>
+      import("@/content/articles/system-design/backend/data-processing-analytics/data-pipelines"),
+  "system-design-concepts/backend-concepts/data-processing-analytics/data-serialization":
+    () =>
+      import("@/content/articles/system-design/backend/data-processing-analytics/data-serialization"),
+  "system-design-concepts/backend-concepts/data-processing-analytics/etl-elt-pipelines":
+    () =>
+      import("@/content/articles/system-design/backend/data-processing-analytics/etl-elt-pipelines"),
+  "system-design-concepts/backend-concepts/data-processing-analytics/exactly-once-semantics":
+    () =>
+      import("@/content/articles/system-design/backend/data-processing-analytics/exactly-once-semantics"),
+  "system-design-concepts/backend-concepts/data-processing-analytics/kappa-architecture":
+    () =>
+      import("@/content/articles/system-design/backend/data-processing-analytics/kappa-architecture"),
+  "system-design-concepts/backend-concepts/data-processing-analytics/lambda-architecture":
+    () =>
+      import("@/content/articles/system-design/backend/data-processing-analytics/lambda-architecture"),
+  "system-design-concepts/backend-concepts/data-processing-analytics/mapreduce":
+    () =>
+      import("@/content/articles/system-design/backend/data-processing-analytics/mapreduce"),
+  "system-design-concepts/backend-concepts/data-processing-analytics/message-ordering":
+    () =>
+      import("@/content/articles/system-design/backend/data-processing-analytics/message-ordering"),
+  "system-design-concepts/backend-concepts/data-processing-analytics/stream-processing":
+    () =>
+      import("@/content/articles/system-design/backend/data-processing-analytics/stream-processing"),
+  "system-design-concepts/backend-concepts/data-processing-analytics/windowing":
+    () =>
+      import("@/content/articles/system-design/backend/data-processing-analytics/windowing"),
+  "system-design-concepts/backend-concepts/data-storage-databases/acid-properties":
+    () =>
+      import("@/content/articles/system-design/backend/data-storage-databases/acid-properties"),
+  "system-design-concepts/backend-concepts/data-storage-databases/base-properties":
+    () =>
+      import("@/content/articles/system-design/backend/data-storage-databases/base-properties"),
+  "system-design-concepts/backend-concepts/data-storage-databases/blob-storage":
+    () =>
+      import("@/content/articles/system-design/backend/data-storage-databases/blob-storage"),
+  "system-design-concepts/backend-concepts/data-storage-databases/block-storage":
+    () =>
+      import("@/content/articles/system-design/backend/data-storage-databases/block-storage"),
+  "system-design-concepts/backend-concepts/data-storage-databases/cap-theorem":
+    () =>
+      import("@/content/articles/system-design/backend/data-storage-databases/cap-theorem"),
+  "system-design-concepts/backend-concepts/data-storage-databases/cdn-edge-storage":
+    () =>
+      import("@/content/articles/system-design/backend/data-storage-databases/cdn-edge-storage"),
+  "system-design-concepts/backend-concepts/data-storage-databases/column-family-stores":
+    () =>
+      import("@/content/articles/system-design/backend/data-storage-databases/column-family-stores"),
+  "system-design-concepts/backend-concepts/data-storage-databases/concurrency-control":
+    () =>
+      import("@/content/articles/system-design/backend/data-storage-databases/concurrency-control"),
+  "system-design-concepts/backend-concepts/data-storage-databases/conflict-resolution":
+    () =>
+      import("@/content/articles/system-design/backend/data-storage-databases/conflict-resolution"),
+  "system-design-concepts/backend-concepts/data-storage-databases/connection-pooling":
+    () =>
+      import("@/content/articles/system-design/backend/data-storage-databases/connection-pooling"),
+  "system-design-concepts/backend-concepts/data-storage-databases/consistency-models":
+    () =>
+      import("@/content/articles/system-design/backend/data-storage-databases/consistency-models"),
+  "system-design-concepts/backend-concepts/data-storage-databases/data-lakes":
+    () =>
+      import("@/content/articles/system-design/backend/data-storage-databases/data-lakes"),
+  "system-design-concepts/backend-concepts/data-storage-databases/data-modeling-in-nosql":
+    () =>
+      import("@/content/articles/system-design/backend/data-storage-databases/data-modeling-in-nosql"),
+  "system-design-concepts/backend-concepts/data-storage-databases/data-warehouses":
+    () =>
+      import("@/content/articles/system-design/backend/data-storage-databases/data-warehouses"),
+  "system-design-concepts/backend-concepts/data-storage-databases/database-constraints":
+    () =>
+      import("@/content/articles/system-design/backend/data-storage-databases/database-constraints"),
+  "system-design-concepts/backend-concepts/data-storage-databases/database-indexes":
+    () =>
+      import("@/content/articles/system-design/backend/data-storage-databases/database-indexes"),
+  "system-design-concepts/backend-concepts/data-storage-databases/database-partitioning":
+    () =>
+      import("@/content/articles/system-design/backend/data-storage-databases/database-partitioning"),
+  "system-design-concepts/backend-concepts/data-storage-databases/deadlocks":
+    () =>
+      import("@/content/articles/system-design/backend/data-storage-databases/deadlocks"),
+  "system-design-concepts/backend-concepts/data-storage-databases/document-databases":
+    () =>
+      import("@/content/articles/system-design/backend/data-storage-databases/document-databases"),
+  "system-design-concepts/backend-concepts/data-storage-databases/file-systems":
+    () =>
+      import("@/content/articles/system-design/backend/data-storage-databases/file-systems"),
+  "system-design-concepts/backend-concepts/data-storage-databases/graph-databases":
+    () =>
+      import("@/content/articles/system-design/backend/data-storage-databases/graph-databases"),
+  "system-design-concepts/backend-concepts/data-storage-databases/in-memory-databases":
+    () =>
+      import("@/content/articles/system-design/backend/data-storage-databases/in-memory-databases"),
+  "system-design-concepts/backend-concepts/data-storage-databases/index-types":
+    () =>
+      import("@/content/articles/system-design/backend/data-storage-databases/index-types"),
+  "system-design-concepts/backend-concepts/data-storage-databases/key-value-stores":
+    () =>
+      import("@/content/articles/system-design/backend/data-storage-databases/key-value-stores"),
+  "system-design-concepts/backend-concepts/data-storage-databases/object-storage":
+    () =>
+      import("@/content/articles/system-design/backend/data-storage-databases/object-storage"),
+  "system-design-concepts/backend-concepts/data-storage-databases/orms": () =>
+    import("@/content/articles/system-design/backend/data-storage-databases/orms"),
+  "system-design-concepts/backend-concepts/data-storage-databases/query-optimization-techniques":
+    () =>
+      import("@/content/articles/system-design/backend/data-storage-databases/query-optimization-techniques"),
+  "system-design-concepts/backend-concepts/data-storage-databases/query-patterns":
+    () =>
+      import("@/content/articles/system-design/backend/data-storage-databases/query-patterns"),
+  "system-design-concepts/backend-concepts/data-storage-databases/read-replicas":
+    () =>
+      import("@/content/articles/system-design/backend/data-storage-databases/read-replicas"),
+  "system-design-concepts/backend-concepts/data-storage-databases/relational-database-design":
+    () =>
+      import("@/content/articles/system-design/backend/data-storage-databases/relational-database-design"),
+  "system-design-concepts/backend-concepts/data-storage-databases/replication-in-nosql":
+    () =>
+      import("@/content/articles/system-design/backend/data-storage-databases/replication-in-nosql"),
+  "system-design-concepts/backend-concepts/data-storage-databases/search-engines":
+    () =>
+      import("@/content/articles/system-design/backend/data-storage-databases/search-engines"),
+  "system-design-concepts/backend-concepts/data-storage-databases/sharding-strategies":
+    () =>
+      import("@/content/articles/system-design/backend/data-storage-databases/sharding-strategies"),
+  "system-design-concepts/backend-concepts/data-storage-databases/sql-queries-optimization":
+    () =>
+      import("@/content/articles/system-design/backend/data-storage-databases/sql-queries-optimization"),
+  "system-design-concepts/backend-concepts/data-storage-databases/stored-procedures-functions":
+    () =>
+      import("@/content/articles/system-design/backend/data-storage-databases/stored-procedures-functions"),
+  "system-design-concepts/backend-concepts/data-storage-databases/time-series-databases":
+    () =>
+      import("@/content/articles/system-design/backend/data-storage-databases/time-series-databases"),
+  "system-design-concepts/backend-concepts/data-storage-databases/transaction-isolation-levels":
+    () =>
+      import("@/content/articles/system-design/backend/data-storage-databases/transaction-isolation-levels"),
+  "system-design-concepts/backend-concepts/data-storage-databases/triggers":
+    () =>
+      import("@/content/articles/system-design/backend/data-storage-databases/triggers"),
+  "system-design-concepts/backend-concepts/data-storage-databases/views-materialized-views":
+    () =>
+      import("@/content/articles/system-design/backend/data-storage-databases/views-materialized-views"),
+  "system-design-concepts/backend-concepts/design-patterns-architectures/adapter-pattern":
+    () =>
+      import("@/content/articles/system-design/backend/design-patterns-architectures/adapter-pattern"),
+  "system-design-concepts/backend-concepts/design-patterns-architectures/ambassador-pattern":
+    () =>
+      import("@/content/articles/system-design/backend/design-patterns-architectures/ambassador-pattern"),
+  "system-design-concepts/backend-concepts/design-patterns-architectures/anti-corruption-layer":
+    () =>
+      import("@/content/articles/system-design/backend/design-patterns-architectures/anti-corruption-layer"),
+  "system-design-concepts/backend-concepts/design-patterns-architectures/api-gateway-pattern":
+    () =>
+      import("@/content/articles/system-design/backend/design-patterns-architectures/api-gateway-pattern"),
+  "system-design-concepts/backend-concepts/design-patterns-architectures/backend-for-frontend":
+    () =>
+      import("@/content/articles/system-design/backend/design-patterns-architectures/backend-for-frontend"),
+  "system-design-concepts/backend-concepts/design-patterns-architectures/bulkhead-pattern":
+    () =>
+      import("@/content/articles/system-design/backend/design-patterns-architectures/bulkhead-pattern"),
+  "system-design-concepts/backend-concepts/design-patterns-architectures/cache-aside-pattern":
+    () =>
+      import("@/content/articles/system-design/backend/design-patterns-architectures/cache-aside-pattern"),
+  "system-design-concepts/backend-concepts/design-patterns-architectures/circuit-breaker-pattern":
+    () =>
+      import("@/content/articles/system-design/backend/design-patterns-architectures/circuit-breaker-pattern"),
+  "system-design-concepts/backend-concepts/design-patterns-architectures/clean-architecture":
+    () =>
+      import("@/content/articles/system-design/backend/design-patterns-architectures/clean-architecture"),
+  "system-design-concepts/backend-concepts/design-patterns-architectures/cqrs-pattern":
+    () =>
+      import("@/content/articles/system-design/backend/design-patterns-architectures/cqrs-pattern"),
+  "system-design-concepts/backend-concepts/design-patterns-architectures/database-per-service":
+    () =>
+      import("@/content/articles/system-design/backend/design-patterns-architectures/database-per-service"),
+  "system-design-concepts/backend-concepts/design-patterns-architectures/domain-driven-design":
+    () =>
+      import("@/content/articles/system-design/backend/design-patterns-architectures/domain-driven-design"),
+  "system-design-concepts/backend-concepts/design-patterns-architectures/event-driven-architecture":
+    () =>
+      import("@/content/articles/system-design/backend/design-patterns-architectures/event-driven-architecture"),
+  "system-design-concepts/backend-concepts/design-patterns-architectures/event-sourcing-pattern":
+    () =>
+      import("@/content/articles/system-design/backend/design-patterns-architectures/event-sourcing-pattern"),
+  "system-design-concepts/backend-concepts/design-patterns-architectures/hexagonal-architecture":
+    () =>
+      import("@/content/articles/system-design/backend/design-patterns-architectures/hexagonal-architecture"),
+  "system-design-concepts/backend-concepts/design-patterns-architectures/layered-architecture":
+    () =>
+      import("@/content/articles/system-design/backend/design-patterns-architectures/layered-architecture"),
+  "system-design-concepts/backend-concepts/design-patterns-architectures/materialized-view-pattern":
+    () =>
+      import("@/content/articles/system-design/backend/design-patterns-architectures/materialized-view-pattern"),
+  "system-design-concepts/backend-concepts/design-patterns-architectures/microservices-architecture":
+    () =>
+      import("@/content/articles/system-design/backend/design-patterns-architectures/microservices-architecture"),
+  "system-design-concepts/backend-concepts/design-patterns-architectures/monolithic-architecture":
+    () =>
+      import("@/content/articles/system-design/backend/design-patterns-architectures/monolithic-architecture"),
+  "system-design-concepts/backend-concepts/design-patterns-architectures/repository-pattern":
+    () =>
+      import("@/content/articles/system-design/backend/design-patterns-architectures/repository-pattern"),
+  "system-design-concepts/backend-concepts/design-patterns-architectures/retry-pattern":
+    () =>
+      import("@/content/articles/system-design/backend/design-patterns-architectures/retry-pattern"),
+  "system-design-concepts/backend-concepts/design-patterns-architectures/saga-pattern":
+    () =>
+      import("@/content/articles/system-design/backend/design-patterns-architectures/saga-pattern"),
+  "system-design-concepts/backend-concepts/design-patterns-architectures/serverless-architecture":
+    () =>
+      import("@/content/articles/system-design/backend/design-patterns-architectures/serverless-architecture"),
+  "system-design-concepts/backend-concepts/design-patterns-architectures/service-mesh-pattern":
+    () =>
+      import("@/content/articles/system-design/backend/design-patterns-architectures/service-mesh-pattern"),
+  "system-design-concepts/backend-concepts/design-patterns-architectures/shared-database-anti-pattern":
+    () =>
+      import("@/content/articles/system-design/backend/design-patterns-architectures/shared-database-anti-pattern"),
+  "system-design-concepts/backend-concepts/design-patterns-architectures/sidecar-pattern":
+    () =>
+      import("@/content/articles/system-design/backend/design-patterns-architectures/sidecar-pattern"),
+  "system-design-concepts/backend-concepts/design-patterns-architectures/strangler-fig-pattern":
+    () =>
+      import("@/content/articles/system-design/backend/design-patterns-architectures/strangler-fig-pattern"),
+  "system-design-concepts/backend-concepts/design-patterns-architectures/throttling-pattern":
+    () =>
+      import("@/content/articles/system-design/backend/design-patterns-architectures/throttling-pattern"),
+  "system-design-concepts/backend-concepts/design-patterns-architectures/timeout-pattern":
+    () =>
+      import("@/content/articles/system-design/backend/design-patterns-architectures/timeout-pattern"),
+  "system-design-concepts/backend-concepts/design-patterns-architectures/unit-of-work-pattern":
+    () =>
+      import("@/content/articles/system-design/backend/design-patterns-architectures/unit-of-work-pattern"),
+  "system-design-concepts/backend-concepts/fundamentals-building-blocks/api-design-best-practices":
+    () =>
+      import("@/content/articles/system-design/backend/fundamentals-building-blocks/api-design-best-practices"),
+  "system-design-concepts/backend-concepts/fundamentals-building-blocks/character-encoding":
+    () =>
+      import("@/content/articles/system-design/backend/fundamentals-building-blocks/character-encoding"),
+  "system-design-concepts/backend-concepts/fundamentals-building-blocks/client-server-architecture":
+    () =>
+      import("@/content/articles/system-design/backend/fundamentals-building-blocks/client-server-architecture"),
+  "system-design-concepts/backend-concepts/fundamentals-building-blocks/compression":
+    () =>
+      import("@/content/articles/system-design/backend/fundamentals-building-blocks/compression"),
+  "system-design-concepts/backend-concepts/fundamentals-building-blocks/domain-name-system":
+    () =>
+      import("@/content/articles/system-design/backend/fundamentals-building-blocks/domain-name-system"),
+  "system-design-concepts/backend-concepts/fundamentals-building-blocks/horizontal-vs-vertical-scaling":
+    () =>
+      import("@/content/articles/system-design/backend/fundamentals-building-blocks/horizontal-vs-vertical-scaling"),
+  "system-design-concepts/backend-concepts/fundamentals-building-blocks/http-https-protocol":
+    () =>
+      import("@/content/articles/system-design/backend/fundamentals-building-blocks/http-https-protocol"),
+  "system-design-concepts/backend-concepts/fundamentals-building-blocks/ip-addressing":
+    () =>
+      import("@/content/articles/system-design/backend/fundamentals-building-blocks/ip-addressing"),
+  "system-design-concepts/backend-concepts/fundamentals-building-blocks/networking-fundamentals":
+    () =>
+      import("@/content/articles/system-design/backend/fundamentals-building-blocks/networking-fundamentals"),
+  "system-design-concepts/backend-concepts/fundamentals-building-blocks/osi-model-tcp-ip-stack":
+    () =>
+      import("@/content/articles/system-design/backend/fundamentals-building-blocks/osi-model-tcp-ip-stack"),
+  "system-design-concepts/backend-concepts/fundamentals-building-blocks/request-response-lifecycle":
+    () =>
+      import("@/content/articles/system-design/backend/fundamentals-building-blocks/request-response-lifecycle"),
+  "system-design-concepts/backend-concepts/fundamentals-building-blocks/rest-api-design":
+    () =>
+      import("@/content/articles/system-design/backend/fundamentals-building-blocks/rest-api-design"),
+  "system-design-concepts/backend-concepts/fundamentals-building-blocks/serialization-formats":
+    () =>
+      import("@/content/articles/system-design/backend/fundamentals-building-blocks/serialization-formats"),
+  "system-design-concepts/backend-concepts/fundamentals-building-blocks/stateless-vs-stateful-services":
+    () =>
+      import("@/content/articles/system-design/backend/fundamentals-building-blocks/stateless-vs-stateful-services"),
+  "system-design-concepts/backend-concepts/fundamentals-building-blocks/tcp-vs-udp":
+    () =>
+      import("@/content/articles/system-design/backend/fundamentals-building-blocks/tcp-vs-udp"),
+  "system-design-concepts/backend-concepts/infrastructure-deployment/auto-scaling":
+    () =>
+      import("@/content/articles/system-design/backend/infrastructure-deployment/auto-scaling"),
+  "system-design-concepts/backend-concepts/infrastructure-deployment/blue-green-deployment":
+    () =>
+      import("@/content/articles/system-design/backend/infrastructure-deployment/blue-green-deployment"),
+  "system-design-concepts/backend-concepts/infrastructure-deployment/canary-deployment":
+    () =>
+      import("@/content/articles/system-design/backend/infrastructure-deployment/canary-deployment"),
+  "system-design-concepts/backend-concepts/infrastructure-deployment/ci-cd-pipelines":
+    () =>
+      import("@/content/articles/system-design/backend/infrastructure-deployment/ci-cd-pipelines"),
+  "system-design-concepts/backend-concepts/infrastructure-deployment/cloud-services":
+    () =>
+      import("@/content/articles/system-design/backend/infrastructure-deployment/cloud-services"),
+  "system-design-concepts/backend-concepts/infrastructure-deployment/configuration-management":
+    () =>
+      import("@/content/articles/system-design/backend/infrastructure-deployment/configuration-management"),
+  "system-design-concepts/backend-concepts/infrastructure-deployment/container-orchestration":
+    () =>
+      import("@/content/articles/system-design/backend/infrastructure-deployment/container-orchestration"),
+  "system-design-concepts/backend-concepts/infrastructure-deployment/containerization":
+    () =>
+      import("@/content/articles/system-design/backend/infrastructure-deployment/containerization"),
+  "system-design-concepts/backend-concepts/infrastructure-deployment/feature-flags":
+    () =>
+      import("@/content/articles/system-design/backend/infrastructure-deployment/feature-flags"),
+  "system-design-concepts/backend-concepts/infrastructure-deployment/gitops":
+    () =>
+      import("@/content/articles/system-design/backend/infrastructure-deployment/gitops"),
+  "system-design-concepts/backend-concepts/infrastructure-deployment/immutable-infrastructure":
+    () =>
+      import("@/content/articles/system-design/backend/infrastructure-deployment/immutable-infrastructure"),
+  "system-design-concepts/backend-concepts/infrastructure-deployment/infrastructure-as-code":
+    () =>
+      import("@/content/articles/system-design/backend/infrastructure-deployment/infrastructure-as-code"),
+  "system-design-concepts/backend-concepts/infrastructure-deployment/load-balancer-configuration":
+    () =>
+      import("@/content/articles/system-design/backend/infrastructure-deployment/load-balancer-configuration"),
+  "system-design-concepts/backend-concepts/infrastructure-deployment/networking":
+    () =>
+      import("@/content/articles/system-design/backend/infrastructure-deployment/networking"),
+  "system-design-concepts/backend-concepts/infrastructure-deployment/rolling-deployment":
+    () =>
+      import("@/content/articles/system-design/backend/infrastructure-deployment/rolling-deployment"),
+  "system-design-concepts/backend-concepts/infrastructure-deployment/service-discovery":
+    () =>
+      import("@/content/articles/system-design/backend/infrastructure-deployment/service-discovery"),
+  "system-design-concepts/backend-concepts/infrastructure-deployment/service-registry":
+    () =>
+      import("@/content/articles/system-design/backend/infrastructure-deployment/service-registry"),
+  "system-design-concepts/backend-concepts/infrastructure-deployment/virtual-machines":
+    () =>
+      import("@/content/articles/system-design/backend/infrastructure-deployment/virtual-machines"),
+  "system-design-concepts/backend-concepts/monitoring-operations/alerting":
+    () =>
+      import("@/content/articles/system-design/backend/monitoring-operations/alerting"),
+  "system-design-concepts/backend-concepts/monitoring-operations/anomaly-detection":
+    () =>
+      import("@/content/articles/system-design/backend/monitoring-operations/anomaly-detection"),
+  "system-design-concepts/backend-concepts/monitoring-operations/apm-application-performance-monitoring":
+    () =>
+      import("@/content/articles/system-design/backend/monitoring-operations/apm-application-performance-monitoring"),
+  "system-design-concepts/backend-concepts/monitoring-operations/capacity-planning":
+    () =>
+      import("@/content/articles/system-design/backend/monitoring-operations/capacity-planning"),
+  "system-design-concepts/backend-concepts/monitoring-operations/dashboards":
+    () =>
+      import("@/content/articles/system-design/backend/monitoring-operations/dashboards"),
+  "system-design-concepts/backend-concepts/monitoring-operations/database-monitoring":
+    () =>
+      import("@/content/articles/system-design/backend/monitoring-operations/database-monitoring"),
+  "system-design-concepts/backend-concepts/monitoring-operations/distributed-tracing":
+    () =>
+      import("@/content/articles/system-design/backend/monitoring-operations/distributed-tracing"),
+  "system-design-concepts/backend-concepts/monitoring-operations/error-budgets":
+    () =>
+      import("@/content/articles/system-design/backend/monitoring-operations/error-budgets"),
+  "system-design-concepts/backend-concepts/monitoring-operations/health-monitoring":
+    () =>
+      import("@/content/articles/system-design/backend/monitoring-operations/health-monitoring"),
+  "system-design-concepts/backend-concepts/monitoring-operations/infrastructure-monitoring":
+    () =>
+      import("@/content/articles/system-design/backend/monitoring-operations/infrastructure-monitoring"),
+  "system-design-concepts/backend-concepts/monitoring-operations/log-aggregation":
+    () =>
+      import("@/content/articles/system-design/backend/monitoring-operations/log-aggregation"),
+  "system-design-concepts/backend-concepts/monitoring-operations/logging": () =>
+    import("@/content/articles/system-design/backend/monitoring-operations/logging"),
+  "system-design-concepts/backend-concepts/monitoring-operations/metrics": () =>
+    import("@/content/articles/system-design/backend/monitoring-operations/metrics"),
+  "system-design-concepts/backend-concepts/monitoring-operations/monitoring-tools":
+    () =>
+      import("@/content/articles/system-design/backend/monitoring-operations/monitoring-tools"),
+  "system-design-concepts/backend-concepts/monitoring-operations/observability":
+    () =>
+      import("@/content/articles/system-design/backend/monitoring-operations/observability"),
+  "system-design-concepts/backend-concepts/monitoring-operations/performance-profiling":
+    () =>
+      import("@/content/articles/system-design/backend/monitoring-operations/performance-profiling"),
+  "system-design-concepts/backend-concepts/monitoring-operations/sli-slo-sla":
+    () =>
+      import("@/content/articles/system-design/backend/monitoring-operations/sli-slo-sla"),
+  "system-design-concepts/backend-concepts/monitoring-operations/tracing": () =>
+    import("@/content/articles/system-design/backend/monitoring-operations/tracing"),
+  "system-design-concepts/backend-concepts/network-communication/api-gateway-pattern":
+    () =>
+      import("@/content/articles/system-design/backend/network-communication/api-gateway-pattern"),
+  "system-design-concepts/backend-concepts/network-communication/api-versioning":
+    () =>
+      import("@/content/articles/system-design/backend/network-communication/api-versioning"),
+  "system-design-concepts/backend-concepts/network-communication/bulkhead-pattern":
+    () =>
+      import("@/content/articles/system-design/backend/network-communication/bulkhead-pattern"),
+  "system-design-concepts/backend-concepts/network-communication/circuit-breaker-pattern":
+    () =>
+      import("@/content/articles/system-design/backend/network-communication/circuit-breaker-pattern"),
+  "system-design-concepts/backend-concepts/network-communication/content-delivery-networks":
+    () =>
+      import("@/content/articles/system-design/backend/network-communication/content-delivery-networks"),
+  "system-design-concepts/backend-concepts/network-communication/event-streaming":
+    () =>
+      import("@/content/articles/system-design/backend/network-communication/event-streaming"),
+  "system-design-concepts/backend-concepts/network-communication/forward-proxy":
+    () =>
+      import("@/content/articles/system-design/backend/network-communication/forward-proxy"),
+  "system-design-concepts/backend-concepts/network-communication/graphql": () =>
+    import("@/content/articles/system-design/backend/network-communication/graphql"),
+  "system-design-concepts/backend-concepts/network-communication/grpc": () =>
+    import("@/content/articles/system-design/backend/network-communication/grpc"),
+  "system-design-concepts/backend-concepts/network-communication/load-balancers":
+    () =>
+      import("@/content/articles/system-design/backend/network-communication/load-balancers"),
+  "system-design-concepts/backend-concepts/network-communication/long-polling":
+    () =>
+      import("@/content/articles/system-design/backend/network-communication/long-polling"),
+  "system-design-concepts/backend-concepts/network-communication/message-queues":
+    () =>
+      import("@/content/articles/system-design/backend/network-communication/message-queues"),
+  "system-design-concepts/backend-concepts/network-communication/pub-sub-systems":
+    () =>
+      import("@/content/articles/system-design/backend/network-communication/pub-sub-systems"),
+  "system-design-concepts/backend-concepts/network-communication/request-hedging":
+    () =>
+      import("@/content/articles/system-design/backend/network-communication/request-hedging"),
+  "system-design-concepts/backend-concepts/network-communication/retry-mechanisms":
+    () =>
+      import("@/content/articles/system-design/backend/network-communication/retry-mechanisms"),
+  "system-design-concepts/backend-concepts/network-communication/reverse-proxy":
+    () =>
+      import("@/content/articles/system-design/backend/network-communication/reverse-proxy"),
+  "system-design-concepts/backend-concepts/network-communication/rpc": () =>
+    import("@/content/articles/system-design/backend/network-communication/rpc"),
+  "system-design-concepts/backend-concepts/network-communication/server-sent-events":
+    () =>
+      import("@/content/articles/system-design/backend/network-communication/server-sent-events"),
+  "system-design-concepts/backend-concepts/network-communication/service-discovery":
+    () =>
+      import("@/content/articles/system-design/backend/network-communication/service-discovery"),
+  "system-design-concepts/backend-concepts/network-communication/service-mesh":
+    () =>
+      import("@/content/articles/system-design/backend/network-communication/service-mesh"),
+  "system-design-concepts/backend-concepts/network-communication/throttling-rate-limiting":
+    () =>
+      import("@/content/articles/system-design/backend/network-communication/throttling-rate-limiting"),
+  "system-design-concepts/backend-concepts/network-communication/timeout-strategies":
+    () =>
+      import("@/content/articles/system-design/backend/network-communication/timeout-strategies"),
+  "system-design-concepts/backend-concepts/network-communication/websockets":
+    () =>
+      import("@/content/articles/system-design/backend/network-communication/websockets"),
+  "system-design-concepts/backend-concepts/reliability-fault-tolerance/at-most-once-vs-at-least-once-vs-exactly-once":
+    () =>
+      import("@/content/articles/system-design/backend/reliability-fault-tolerance/at-most-once-vs-at-least-once-vs-exactly-once"),
+  "system-design-concepts/backend-concepts/reliability-fault-tolerance/automatic-recovery":
+    () =>
+      import("@/content/articles/system-design/backend/reliability-fault-tolerance/automatic-recovery"),
+  "system-design-concepts/backend-concepts/reliability-fault-tolerance/backup-restore":
+    () =>
+      import("@/content/articles/system-design/backend/reliability-fault-tolerance/backup-restore"),
+  "system-design-concepts/backend-concepts/reliability-fault-tolerance/chaos-engineering":
+    () =>
+      import("@/content/articles/system-design/backend/reliability-fault-tolerance/chaos-engineering"),
+  "system-design-concepts/backend-concepts/reliability-fault-tolerance/data-integrity":
+    () =>
+      import("@/content/articles/system-design/backend/reliability-fault-tolerance/data-integrity"),
+  "system-design-concepts/backend-concepts/reliability-fault-tolerance/dead-letter-queues":
+    () =>
+      import("@/content/articles/system-design/backend/reliability-fault-tolerance/dead-letter-queues"),
+  "system-design-concepts/backend-concepts/reliability-fault-tolerance/disaster-recovery":
+    () =>
+      import("@/content/articles/system-design/backend/reliability-fault-tolerance/disaster-recovery"),
+  "system-design-concepts/backend-concepts/reliability-fault-tolerance/error-handling-patterns":
+    () =>
+      import("@/content/articles/system-design/backend/reliability-fault-tolerance/error-handling-patterns"),
+  "system-design-concepts/backend-concepts/reliability-fault-tolerance/failover-mechanisms":
+    () =>
+      import("@/content/articles/system-design/backend/reliability-fault-tolerance/failover-mechanisms"),
+  "system-design-concepts/backend-concepts/reliability-fault-tolerance/fault-detection":
+    () =>
+      import("@/content/articles/system-design/backend/reliability-fault-tolerance/fault-detection"),
+  "system-design-concepts/backend-concepts/reliability-fault-tolerance/graceful-degradation":
+    () =>
+      import("@/content/articles/system-design/backend/reliability-fault-tolerance/graceful-degradation"),
+  "system-design-concepts/backend-concepts/reliability-fault-tolerance/health-checks":
+    () =>
+      import("@/content/articles/system-design/backend/reliability-fault-tolerance/health-checks"),
+  "system-design-concepts/backend-concepts/reliability-fault-tolerance/high-availability":
+    () =>
+      import("@/content/articles/system-design/backend/reliability-fault-tolerance/high-availability"),
+  "system-design-concepts/backend-concepts/reliability-fault-tolerance/idempotency":
+    () =>
+      import("@/content/articles/system-design/backend/reliability-fault-tolerance/idempotency"),
+  "system-design-concepts/backend-concepts/reliability-fault-tolerance/multi-region-deployment":
+    () =>
+      import("@/content/articles/system-design/backend/reliability-fault-tolerance/multi-region-deployment"),
+  "system-design-concepts/backend-concepts/reliability-fault-tolerance/redundancy":
+    () =>
+      import("@/content/articles/system-design/backend/reliability-fault-tolerance/redundancy"),
+  "system-design-concepts/backend-concepts/reliability-fault-tolerance/rollback-strategies":
+    () =>
+      import("@/content/articles/system-design/backend/reliability-fault-tolerance/rollback-strategies"),
+  "system-design-concepts/backend-concepts/scalability-distributed-systems/asynchronous-processing":
+    () =>
+      import("@/content/articles/system-design/backend/scalability-distributed-systems/asynchronous-processing"),
+  "system-design-concepts/backend-concepts/scalability-distributed-systems/consensus-algorithms":
+    () =>
+      import("@/content/articles/system-design/backend/scalability-distributed-systems/consensus-algorithms"),
+  "system-design-concepts/backend-concepts/scalability-distributed-systems/consistent-hashing":
+    () =>
+      import("@/content/articles/system-design/backend/scalability-distributed-systems/consistent-hashing"),
+  "system-design-concepts/backend-concepts/scalability-distributed-systems/cqrs":
+    () =>
+      import("@/content/articles/system-design/backend/scalability-distributed-systems/cqrs"),
+  "system-design-concepts/backend-concepts/scalability-distributed-systems/data-denormalization":
+    () =>
+      import("@/content/articles/system-design/backend/scalability-distributed-systems/data-denormalization"),
+  "system-design-concepts/backend-concepts/scalability-distributed-systems/data-replication":
+    () =>
+      import("@/content/articles/system-design/backend/scalability-distributed-systems/data-replication"),
+  "system-design-concepts/backend-concepts/scalability-distributed-systems/database-read-replicas":
+    () =>
+      import("@/content/articles/system-design/backend/scalability-distributed-systems/database-read-replicas"),
+  "system-design-concepts/backend-concepts/scalability-distributed-systems/database-sharding":
+    () =>
+      import("@/content/articles/system-design/backend/scalability-distributed-systems/database-sharding"),
+  "system-design-concepts/backend-concepts/scalability-distributed-systems/distributed-coordination":
+    () =>
+      import("@/content/articles/system-design/backend/scalability-distributed-systems/distributed-coordination"),
+  "system-design-concepts/backend-concepts/scalability-distributed-systems/distributed-locks":
+    () =>
+      import("@/content/articles/system-design/backend/scalability-distributed-systems/distributed-locks"),
+  "system-design-concepts/backend-concepts/scalability-distributed-systems/distributed-transactions":
+    () =>
+      import("@/content/articles/system-design/backend/scalability-distributed-systems/distributed-transactions"),
+  "system-design-concepts/backend-concepts/scalability-distributed-systems/event-sourcing":
+    () =>
+      import("@/content/articles/system-design/backend/scalability-distributed-systems/event-sourcing"),
+  "system-design-concepts/backend-concepts/scalability-distributed-systems/gossip-protocol":
+    () =>
+      import("@/content/articles/system-design/backend/scalability-distributed-systems/gossip-protocol"),
+  "system-design-concepts/backend-concepts/scalability-distributed-systems/horizontal-scaling":
+    () =>
+      import("@/content/articles/system-design/backend/scalability-distributed-systems/horizontal-scaling"),
+  "system-design-concepts/backend-concepts/scalability-distributed-systems/microservices-architecture":
+    () =>
+      import("@/content/articles/system-design/backend/scalability-distributed-systems/microservices-architecture"),
+  "system-design-concepts/backend-concepts/scalability-distributed-systems/partitioning-strategies":
+    () =>
+      import("@/content/articles/system-design/backend/scalability-distributed-systems/partitioning-strategies"),
+  "system-design-concepts/backend-concepts/scalability-distributed-systems/quorum":
+    () =>
+      import("@/content/articles/system-design/backend/scalability-distributed-systems/quorum"),
+  "system-design-concepts/backend-concepts/scalability-distributed-systems/replication-strategies":
+    () =>
+      import("@/content/articles/system-design/backend/scalability-distributed-systems/replication-strategies"),
+  "system-design-concepts/backend-concepts/scalability-distributed-systems/service-decomposition":
+    () =>
+      import("@/content/articles/system-design/backend/scalability-distributed-systems/service-decomposition"),
+  "system-design-concepts/backend-concepts/scalability-distributed-systems/split-brain-problem":
+    () =>
+      import("@/content/articles/system-design/backend/scalability-distributed-systems/split-brain-problem"),
+  "system-design-concepts/backend-concepts/scalability-distributed-systems/vector-clocks":
+    () =>
+      import("@/content/articles/system-design/backend/scalability-distributed-systems/vector-clocks"),
+  "system-design-concepts/backend-concepts/scalability-distributed-systems/write-scaling":
+    () =>
+      import("@/content/articles/system-design/backend/scalability-distributed-systems/write-scaling"),
+  "system-design-concepts/backend-concepts/security-authentication/abac-attribute-based-access-control":
+    () =>
+      import("@/content/articles/system-design/backend/security-authentication/abac-attribute-based-access-control"),
+  "system-design-concepts/backend-concepts/security-authentication/api-keys-secrets-management":
+    () =>
+      import("@/content/articles/system-design/backend/security-authentication/api-keys-secrets-management"),
+  "system-design-concepts/backend-concepts/security-authentication/api-security":
+    () =>
+      import("@/content/articles/system-design/backend/security-authentication/api-security"),
+  "system-design-concepts/backend-concepts/security-authentication/authentication-vs-authorization":
+    () =>
+      import("@/content/articles/system-design/backend/security-authentication/authentication-vs-authorization"),
+  "system-design-concepts/backend-concepts/security-authentication/cors-cross-origin-resource-sharing":
+    () =>
+      import("@/content/articles/system-design/backend/security-authentication/cors-cross-origin-resource-sharing"),
+  "system-design-concepts/backend-concepts/security-authentication/csrf-protection":
+    () =>
+      import("@/content/articles/system-design/backend/security-authentication/csrf-protection"),
+  "system-design-concepts/backend-concepts/security-authentication/encryption":
+    () =>
+      import("@/content/articles/system-design/backend/security-authentication/encryption"),
+  "system-design-concepts/backend-concepts/security-authentication/hashing-salting":
+    () =>
+      import("@/content/articles/system-design/backend/security-authentication/hashing-salting"),
+  "system-design-concepts/backend-concepts/security-authentication/https": () =>
+    import("@/content/articles/system-design/backend/security-authentication/https"),
+  "system-design-concepts/backend-concepts/security-authentication/input-validation-sanitization":
+    () =>
+      import("@/content/articles/system-design/backend/security-authentication/input-validation-sanitization"),
+  "system-design-concepts/backend-concepts/security-authentication/jwt-json-web-tokens":
+    () =>
+      import("@/content/articles/system-design/backend/security-authentication/jwt-json-web-tokens"),
+  "system-design-concepts/backend-concepts/security-authentication/multi-factor-authentication":
+    () =>
+      import("@/content/articles/system-design/backend/security-authentication/multi-factor-authentication"),
+  "system-design-concepts/backend-concepts/security-authentication/oauth-2-0":
+    () =>
+      import("@/content/articles/system-design/backend/security-authentication/oauth-2-0"),
+  "system-design-concepts/backend-concepts/security-authentication/rate-limiting":
+    () =>
+      import("@/content/articles/system-design/backend/security-authentication/rate-limiting"),
+  "system-design-concepts/backend-concepts/security-authentication/rbac-role-based-access-control":
+    () =>
+      import("@/content/articles/system-design/backend/security-authentication/rbac-role-based-access-control"),
+  "system-design-concepts/backend-concepts/security-authentication/secrets-rotation":
+    () =>
+      import("@/content/articles/system-design/backend/security-authentication/secrets-rotation"),
+  "system-design-concepts/backend-concepts/security-authentication/security-headers":
+    () =>
+      import("@/content/articles/system-design/backend/security-authentication/security-headers"),
+  "system-design-concepts/backend-concepts/security-authentication/session-management":
+    () =>
+      import("@/content/articles/system-design/backend/security-authentication/session-management"),
+  "system-design-concepts/backend-concepts/security-authentication/single-sign-on-sso":
+    () =>
+      import("@/content/articles/system-design/backend/security-authentication/single-sign-on-sso"),
+  "system-design-concepts/backend-concepts/security-authentication/sql-injection-prevention":
+    () =>
+      import("@/content/articles/system-design/backend/security-authentication/sql-injection-prevention"),
+  "system-design-concepts/backend-concepts/security-authentication/tls-ssl":
+    () =>
+      import("@/content/articles/system-design/backend/security-authentication/tls-ssl"),
+  "system-design-concepts/backend-concepts/security-authentication/vulnerability-scanning":
+    () =>
+      import("@/content/articles/system-design/backend/security-authentication/vulnerability-scanning"),
+  "system-design-concepts/backend-concepts/security-authentication/web-application-firewall":
+    () =>
+      import("@/content/articles/system-design/backend/security-authentication/web-application-firewall"),
+  "system-design-concepts/backend-concepts/security-authentication/xss-prevention":
+    () =>
+      import("@/content/articles/system-design/backend/security-authentication/xss-prevention"),
+  "system-design-concepts/backend-concepts/system-components-services/a-b-testing-service":
+    () =>
+      import("@/content/articles/system-design/backend/system-components-services/a-b-testing-service"),
+  "system-design-concepts/backend-concepts/system-components-services/analytics-service":
+    () =>
+      import("@/content/articles/system-design/backend/system-components-services/analytics-service"),
+  "system-design-concepts/backend-concepts/system-components-services/audit-logging-service":
+    () =>
+      import("@/content/articles/system-design/backend/system-components-services/audit-logging-service"),
+  "system-design-concepts/backend-concepts/system-components-services/authentication-service":
+    () =>
+      import("@/content/articles/system-design/backend/system-components-services/authentication-service"),
+  "system-design-concepts/backend-concepts/system-components-services/authorization-service":
+    () =>
+      import("@/content/articles/system-design/backend/system-components-services/authorization-service"),
+  "system-design-concepts/backend-concepts/system-components-services/content-moderation-service":
+    () =>
+      import("@/content/articles/system-design/backend/system-components-services/content-moderation-service"),
+  "system-design-concepts/backend-concepts/system-components-services/email-service":
+    () =>
+      import("@/content/articles/system-design/backend/system-components-services/email-service"),
+  "system-design-concepts/backend-concepts/system-components-services/feature-flag-service":
+    () =>
+      import("@/content/articles/system-design/backend/system-components-services/feature-flag-service"),
+  "system-design-concepts/backend-concepts/system-components-services/file-storage-service":
+    () =>
+      import("@/content/articles/system-design/backend/system-components-services/file-storage-service"),
+  "system-design-concepts/backend-concepts/system-components-services/geolocation-service":
+    () =>
+      import("@/content/articles/system-design/backend/system-components-services/geolocation-service"),
+  "system-design-concepts/backend-concepts/system-components-services/job-scheduler":
+    () =>
+      import("@/content/articles/system-design/backend/system-components-services/job-scheduler"),
+  "system-design-concepts/backend-concepts/system-components-services/media-processing-service":
+    () =>
+      import("@/content/articles/system-design/backend/system-components-services/media-processing-service"),
+  "system-design-concepts/backend-concepts/system-components-services/notification-service":
+    () =>
+      import("@/content/articles/system-design/backend/system-components-services/notification-service"),
+  "system-design-concepts/backend-concepts/system-components-services/payment-processing":
+    () =>
+      import("@/content/articles/system-design/backend/system-components-services/payment-processing"),
+  "system-design-concepts/backend-concepts/system-components-services/rate-limiting-service":
+    () =>
+      import("@/content/articles/system-design/backend/system-components-services/rate-limiting-service"),
+  "system-design-concepts/backend-concepts/system-components-services/recommendation-engine":
+    () =>
+      import("@/content/articles/system-design/backend/system-components-services/recommendation-engine"),
+  "system-design-concepts/backend-concepts/system-components-services/search-service":
+    () =>
+      import("@/content/articles/system-design/backend/system-components-services/search-service"),
+  "system-design-concepts/backend-concepts/system-components-services/session-management-service":
+    () =>
+      import("@/content/articles/system-design/backend/system-components-services/session-management-service"),
+  "system-design-concepts/backend-concepts/system-components-services/sms-service":
+    () =>
+      import("@/content/articles/system-design/backend/system-components-services/sms-service"),
+  "system-design-concepts/backend-concepts/system-components-services/user-service":
+    () =>
+      import("@/content/articles/system-design/backend/system-components-services/user-service"),
+  "requirements/functional-requirements/admin-moderation/abuse-detection": () =>
+    import("@/content/articles/requirements/functional-requirements/admin-moderation/abuse-detection"),
+  "requirements/functional-requirements/admin-moderation/admin-apis": () =>
+    import("@/content/articles/requirements/functional-requirements/admin-moderation/admin-apis"),
+  "requirements/functional-requirements/admin-moderation/admin-dashboard": () =>
+    import("@/content/articles/requirements/functional-requirements/admin-moderation/admin-dashboard"),
+  "requirements/functional-requirements/admin-moderation/alerting-systems":
+    () =>
+      import("@/content/articles/requirements/functional-requirements/admin-moderation/alerting-systems"),
+  "requirements/functional-requirements/admin-moderation/analytics-dashboard":
+    () =>
+      import("@/content/articles/requirements/functional-requirements/admin-moderation/analytics-dashboard"),
+  "requirements/functional-requirements/admin-moderation/audit-logging": () =>
+    import("@/content/articles/requirements/functional-requirements/admin-moderation/audit-logging"),
+  "requirements/functional-requirements/admin-moderation/compliance-tools":
+    () =>
+      import("@/content/articles/requirements/functional-requirements/admin-moderation/compliance-tools"),
+  "requirements/functional-requirements/admin-moderation/configuration-services":
+    () =>
+      import("@/content/articles/requirements/functional-requirements/admin-moderation/configuration-services"),
+  "requirements/functional-requirements/admin-moderation/content-moderation-service":
+    () =>
+      import("@/content/articles/requirements/functional-requirements/admin-moderation/content-moderation-service"),
+  "requirements/functional-requirements/admin-moderation/feature-flag-ui": () =>
+    import("@/content/articles/requirements/functional-requirements/admin-moderation/feature-flag-ui"),
+  "requirements/functional-requirements/admin-moderation/legal-requests": () =>
+    import("@/content/articles/requirements/functional-requirements/admin-moderation/legal-requests"),
+  "requirements/functional-requirements/admin-moderation/moderation-queue-ui":
+    () =>
+      import("@/content/articles/requirements/functional-requirements/admin-moderation/moderation-queue-ui"),
+  "requirements/functional-requirements/admin-moderation/moderation-services":
+    () =>
+      import("@/content/articles/requirements/functional-requirements/admin-moderation/moderation-services"),
+  "requirements/functional-requirements/admin-moderation/monitoring-tools":
+    () =>
+      import("@/content/articles/requirements/functional-requirements/admin-moderation/monitoring-tools"),
+  "requirements/functional-requirements/admin-moderation/reporting-tools-ui":
+    () =>
+      import("@/content/articles/requirements/functional-requirements/admin-moderation/reporting-tools-ui"),
+  "requirements/functional-requirements/admin-moderation/user-management-services":
+    () =>
+      import("@/content/articles/requirements/functional-requirements/admin-moderation/user-management-services"),
+  "requirements/functional-requirements/admin-moderation/user-management-ui":
+    () =>
+      import("@/content/articles/requirements/functional-requirements/admin-moderation/user-management-ui"),
+  "requirements/functional-requirements/communication/chat-ui": () =>
+    import("@/content/articles/requirements/functional-requirements/communication/chat-ui"),
+  "requirements/functional-requirements/communication/email-delivery-services":
+    () =>
+      import("@/content/articles/requirements/functional-requirements/communication/email-delivery-services"),
+  "requirements/functional-requirements/communication/end-to-end-encryption":
+    () =>
+      import("@/content/articles/requirements/functional-requirements/communication/end-to-end-encryption"),
+  "requirements/functional-requirements/communication/group-chat-ui": () =>
+    import("@/content/articles/requirements/functional-requirements/communication/group-chat-ui"),
+  "requirements/functional-requirements/communication/media-sharing-chat": () =>
+    import("@/content/articles/requirements/functional-requirements/communication/media-sharing-chat"),
+  "requirements/functional-requirements/communication/messaging-service": () =>
+    import("@/content/articles/requirements/functional-requirements/communication/messaging-service"),
+  "requirements/functional-requirements/communication/notification-center":
+    () =>
+      import("@/content/articles/requirements/functional-requirements/communication/notification-center"),
+  "requirements/functional-requirements/communication/notification-delivery":
+    () =>
+      import("@/content/articles/requirements/functional-requirements/communication/notification-delivery"),
+  "requirements/functional-requirements/communication/offline-message-queue":
+    () =>
+      import("@/content/articles/requirements/functional-requirements/communication/offline-message-queue"),
+  "requirements/functional-requirements/communication/presence-indicators":
+    () =>
+      import("@/content/articles/requirements/functional-requirements/communication/presence-indicators"),
+  "requirements/functional-requirements/communication/pub-sub-messaging": () =>
+    import("@/content/articles/requirements/functional-requirements/communication/pub-sub-messaging"),
+  "requirements/functional-requirements/communication/push-notification-service":
+    () =>
+      import("@/content/articles/requirements/functional-requirements/communication/push-notification-service"),
+  "requirements/functional-requirements/communication/read-receipts": () =>
+    import("@/content/articles/requirements/functional-requirements/communication/read-receipts"),
+  "requirements/functional-requirements/communication/real-time-broadcasting":
+    () =>
+      import("@/content/articles/requirements/functional-requirements/communication/real-time-broadcasting"),
+  "requirements/functional-requirements/communication/sms-gateways": () =>
+    import("@/content/articles/requirements/functional-requirements/communication/sms-gateways"),
+  "requirements/functional-requirements/communication/voice-video-calling-ui":
+    () =>
+      import("@/content/articles/requirements/functional-requirements/communication/voice-video-calling-ui"),
+  "requirements/functional-requirements/communication/webrtc": () =>
+    import("@/content/articles/requirements/functional-requirements/communication/webrtc"),
+  "requirements/functional-requirements/communication/websocket-server": () =>
+    import("@/content/articles/requirements/functional-requirements/communication/websocket-server"),
+  "requirements/functional-requirements/content-management/cdn-delivery": () =>
+    import("@/content/articles/requirements/functional-requirements/content-management/cdn-delivery"),
+  "requirements/functional-requirements/content-management/content-categorization-ui":
+    () =>
+      import("@/content/articles/requirements/functional-requirements/content-management/content-categorization-ui"),
+  "requirements/functional-requirements/content-management/content-lifecycle-management":
+    () =>
+      import("@/content/articles/requirements/functional-requirements/content-management/content-lifecycle-management"),
+  "requirements/functional-requirements/content-management/content-moderation":
+    () =>
+      import("@/content/articles/requirements/functional-requirements/content-management/content-moderation"),
+  "requirements/functional-requirements/content-management/content-preview":
+    () =>
+      import("@/content/articles/requirements/functional-requirements/content-management/content-preview"),
+  "requirements/functional-requirements/content-management/content-scheduling-ui":
+    () =>
+      import("@/content/articles/requirements/functional-requirements/content-management/content-scheduling-ui"),
+  "requirements/functional-requirements/content-management/content-sharing-interface":
+    () =>
+      import("@/content/articles/requirements/functional-requirements/content-management/content-sharing-interface"),
+  "requirements/functional-requirements/content-management/content-storage":
+    () =>
+      import("@/content/articles/requirements/functional-requirements/content-management/content-storage"),
+  "requirements/functional-requirements/content-management/content-tagging-ui":
+    () =>
+      import("@/content/articles/requirements/functional-requirements/content-management/content-tagging-ui"),
+  "requirements/functional-requirements/content-management/content-validation":
+    () =>
+      import("@/content/articles/requirements/functional-requirements/content-management/content-validation"),
+  "requirements/functional-requirements/content-management/content-versioning":
+    () =>
+      import("@/content/articles/requirements/functional-requirements/content-management/content-versioning"),
+  "requirements/functional-requirements/content-management/create-content-ui":
+    () =>
+      import("@/content/articles/requirements/functional-requirements/content-management/create-content-ui"),
+  "requirements/functional-requirements/content-management/crud-apis": () =>
+    import("@/content/articles/requirements/functional-requirements/content-management/crud-apis"),
+  "requirements/functional-requirements/content-management/delete-content-ui":
+    () =>
+      import("@/content/articles/requirements/functional-requirements/content-management/delete-content-ui"),
+  "requirements/functional-requirements/content-management/draft-saving": () =>
+    import("@/content/articles/requirements/functional-requirements/content-management/draft-saving"),
+  "requirements/functional-requirements/content-management/edit-content-ui":
+    () =>
+      import("@/content/articles/requirements/functional-requirements/content-management/edit-content-ui"),
+  "requirements/functional-requirements/content-management/file-attachments":
+    () =>
+      import("@/content/articles/requirements/functional-requirements/content-management/file-attachments"),
+  "requirements/functional-requirements/content-management/media-processing":
+    () =>
+      import("@/content/articles/requirements/functional-requirements/content-management/media-processing"),
+  "requirements/functional-requirements/content-management/media-upload": () =>
+    import("@/content/articles/requirements/functional-requirements/content-management/media-upload"),
+  "requirements/functional-requirements/content-management/object-storage":
+    () =>
+      import("@/content/articles/requirements/functional-requirements/content-management/object-storage"),
+  "requirements/functional-requirements/content-management/publishing-workflow":
+    () =>
+      import("@/content/articles/requirements/functional-requirements/content-management/publishing-workflow"),
+  "requirements/functional-requirements/content-management/rich-text-editor":
+    () =>
+      import("@/content/articles/requirements/functional-requirements/content-management/rich-text-editor"),
+  "requirements/functional-requirements/content-management/search-indexing":
+    () =>
+      import("@/content/articles/requirements/functional-requirements/content-management/search-indexing"),
+  "requirements/functional-requirements/content-management/soft-delete": () =>
+    import("@/content/articles/requirements/functional-requirements/content-management/soft-delete"),
+  "requirements/functional-requirements/content-management/tagging-categorization-management":
+    () =>
+      import("@/content/articles/requirements/functional-requirements/content-management/tagging-categorization-management"),
+  "requirements/functional-requirements/content-management/view-content-pages":
+    () =>
+      import("@/content/articles/requirements/functional-requirements/content-management/view-content-pages"),
+  "requirements/functional-requirements/discovery-search-feed-browsing/category-navigation":
+    () =>
+      import("@/content/articles/requirements/functional-requirements/discovery-search-feed-browsing/category-navigation"),
+  "requirements/functional-requirements/discovery-search-feed-browsing/elasticsearch":
+    () =>
+      import("@/content/articles/requirements/functional-requirements/discovery-search-feed-browsing/elasticsearch"),
+  "requirements/functional-requirements/discovery-search-feed-browsing/explore-page":
+    () =>
+      import("@/content/articles/requirements/functional-requirements/discovery-search-feed-browsing/explore-page"),
+  "requirements/functional-requirements/discovery-search-feed-browsing/faceted-search":
+    () =>
+      import("@/content/articles/requirements/functional-requirements/discovery-search-feed-browsing/faceted-search"),
+  "requirements/functional-requirements/discovery-search-feed-browsing/feed-display":
+    () =>
+      import("@/content/articles/requirements/functional-requirements/discovery-search-feed-browsing/feed-display"),
+  "requirements/functional-requirements/discovery-search-feed-browsing/feed-generation":
+    () =>
+      import("@/content/articles/requirements/functional-requirements/discovery-search-feed-browsing/feed-generation"),
+  "requirements/functional-requirements/discovery-search-feed-browsing/filters-and-sorting":
+    () =>
+      import("@/content/articles/requirements/functional-requirements/discovery-search-feed-browsing/filters-and-sorting"),
+  "requirements/functional-requirements/discovery-search-feed-browsing/infinite-scrolling":
+    () =>
+      import("@/content/articles/requirements/functional-requirements/discovery-search-feed-browsing/infinite-scrolling"),
+  "requirements/functional-requirements/discovery-search-feed-browsing/query-processing":
+    () =>
+      import("@/content/articles/requirements/functional-requirements/discovery-search-feed-browsing/query-processing"),
+  "requirements/functional-requirements/discovery-search-feed-browsing/ranking-optimization":
+    () =>
+      import("@/content/articles/requirements/functional-requirements/discovery-search-feed-browsing/ranking-optimization"),
+  "requirements/functional-requirements/discovery-search-feed-browsing/recommendation-algorithms":
+    () =>
+      import("@/content/articles/requirements/functional-requirements/discovery-search-feed-browsing/recommendation-algorithms"),
+  "requirements/functional-requirements/discovery-search-feed-browsing/recommendation-carousel":
+    () =>
+      import("@/content/articles/requirements/functional-requirements/discovery-search-feed-browsing/recommendation-carousel"),
+  "requirements/functional-requirements/discovery-search-feed-browsing/related-content":
+    () =>
+      import("@/content/articles/requirements/functional-requirements/discovery-search-feed-browsing/related-content"),
+  "requirements/functional-requirements/discovery-search-feed-browsing/search-analytics":
+    () =>
+      import("@/content/articles/requirements/functional-requirements/discovery-search-feed-browsing/search-analytics"),
+  "requirements/functional-requirements/discovery-search-feed-browsing/search-bar":
+    () =>
+      import("@/content/articles/requirements/functional-requirements/discovery-search-feed-browsing/search-bar"),
+  "requirements/functional-requirements/discovery-search-feed-browsing/search-indexing":
+    () =>
+      import("@/content/articles/requirements/functional-requirements/discovery-search-feed-browsing/search-indexing"),
+  "requirements/functional-requirements/discovery-search-feed-browsing/search-ranking":
+    () =>
+      import("@/content/articles/requirements/functional-requirements/discovery-search-feed-browsing/search-ranking"),
+  "requirements/functional-requirements/discovery-search-feed-browsing/search-results-ui":
+    () =>
+      import("@/content/articles/requirements/functional-requirements/discovery-search-feed-browsing/search-results-ui"),
+  "requirements/functional-requirements/discovery-search-feed-browsing/trending-computation":
+    () =>
+      import("@/content/articles/requirements/functional-requirements/discovery-search-feed-browsing/trending-computation"),
+  "requirements/functional-requirements/discovery-search-feed-browsing/trending-section":
+    () =>
+      import("@/content/articles/requirements/functional-requirements/discovery-search-feed-browsing/trending-section"),
+  "requirements/functional-requirements/identity-access/access-control-policies":
+    () =>
+      import("@/content/articles/requirements/functional-requirements/identity-access/access-control-policies"),
+  "requirements/functional-requirements/identity-access/account-lockout": () =>
+    import("@/content/articles/requirements/functional-requirements/identity-access/account-lockout"),
+  "requirements/functional-requirements/identity-access/account-recovery-ui":
+    () =>
+      import("@/content/articles/requirements/functional-requirements/identity-access/account-recovery-ui"),
+  "requirements/functional-requirements/identity-access/account-settings-ui":
+    () =>
+      import("@/content/articles/requirements/functional-requirements/identity-access/account-settings-ui"),
+  "requirements/functional-requirements/identity-access/account-verification":
+    () =>
+      import("@/content/articles/requirements/functional-requirements/identity-access/account-verification"),
+  "requirements/functional-requirements/identity-access/authentication-audit-logs":
+    () =>
+      import("@/content/articles/requirements/functional-requirements/identity-access/authentication-audit-logs"),
+  "requirements/functional-requirements/identity-access/authentication-service":
+    () =>
+      import("@/content/articles/requirements/functional-requirements/identity-access/authentication-service"),
+  "requirements/functional-requirements/identity-access/credential-rotation":
+    () =>
+      import("@/content/articles/requirements/functional-requirements/identity-access/credential-rotation"),
+  "requirements/functional-requirements/identity-access/device-session-management-ui":
+    () =>
+      import("@/content/articles/requirements/functional-requirements/identity-access/device-session-management-ui"),
+  "requirements/functional-requirements/identity-access/device-session-tracking":
+    () =>
+      import("@/content/articles/requirements/functional-requirements/identity-access/device-session-tracking"),
+  "requirements/functional-requirements/identity-access/email-verification":
+    () =>
+      import("@/content/articles/requirements/functional-requirements/identity-access/email-verification"),
+  "requirements/functional-requirements/identity-access/identity-providers":
+    () =>
+      import("@/content/articles/requirements/functional-requirements/identity-access/identity-providers"),
+  "requirements/functional-requirements/identity-access/login-attempt-tracking":
+    () =>
+      import("@/content/articles/requirements/functional-requirements/identity-access/login-attempt-tracking"),
+  "requirements/functional-requirements/identity-access/login-interface": () =>
+    import("@/content/articles/requirements/functional-requirements/identity-access/login-interface"),
+  "requirements/functional-requirements/identity-access/logout": () =>
+    import("@/content/articles/requirements/functional-requirements/identity-access/logout"),
+  "requirements/functional-requirements/identity-access/mfa-setup": () =>
+    import("@/content/articles/requirements/functional-requirements/identity-access/mfa-setup"),
+  "requirements/functional-requirements/identity-access/oauth-providers": () =>
+    import("@/content/articles/requirements/functional-requirements/identity-access/oauth-providers"),
+  "requirements/functional-requirements/identity-access/password-hashing-and-validation":
+    () =>
+      import("@/content/articles/requirements/functional-requirements/identity-access/password-hashing-and-validation"),
+  "requirements/functional-requirements/identity-access/password-reset": () =>
+    import("@/content/articles/requirements/functional-requirements/identity-access/password-reset"),
+  "requirements/functional-requirements/identity-access/permission-validation":
+    () =>
+      import("@/content/articles/requirements/functional-requirements/identity-access/permission-validation"),
+  "requirements/functional-requirements/identity-access/phone-verification":
+    () =>
+      import("@/content/articles/requirements/functional-requirements/identity-access/phone-verification"),
+  "requirements/functional-requirements/identity-access/profile-settings-ui":
+    () =>
+      import("@/content/articles/requirements/functional-requirements/identity-access/profile-settings-ui"),
+  "requirements/functional-requirements/identity-access/rbac": () =>
+    import("@/content/articles/requirements/functional-requirements/identity-access/rbac"),
+  "requirements/functional-requirements/identity-access/security-audit-logging":
+    () =>
+      import("@/content/articles/requirements/functional-requirements/identity-access/security-audit-logging"),
+  "requirements/functional-requirements/identity-access/security-settings-ui":
+    () =>
+      import("@/content/articles/requirements/functional-requirements/identity-access/security-settings-ui"),
+  "requirements/functional-requirements/identity-access/session-management":
+    () =>
+      import("@/content/articles/requirements/functional-requirements/identity-access/session-management"),
+  "requirements/functional-requirements/identity-access/session-persistence":
+    () =>
+      import("@/content/articles/requirements/functional-requirements/identity-access/session-persistence"),
+  "requirements/functional-requirements/identity-access/session-revocation":
+    () =>
+      import("@/content/articles/requirements/functional-requirements/identity-access/session-revocation"),
+  "requirements/functional-requirements/identity-access/signup-interface": () =>
+    import("@/content/articles/requirements/functional-requirements/identity-access/signup-interface"),
+  "requirements/functional-requirements/identity-access/social-login-options":
+    () =>
+      import("@/content/articles/requirements/functional-requirements/identity-access/social-login-options"),
+  "requirements/functional-requirements/identity-access/sso-integrations": () =>
+    import("@/content/articles/requirements/functional-requirements/identity-access/sso-integrations"),
+  "requirements/functional-requirements/identity-access/token-generation": () =>
+    import("@/content/articles/requirements/functional-requirements/identity-access/token-generation"),
+  "requirements/functional-requirements/identity-access/user-registration-service":
+    () =>
+      import("@/content/articles/requirements/functional-requirements/identity-access/user-registration-service"),
+  "requirements/functional-requirements/interaction-engagement/activity-feeds":
+    () =>
+      import("@/content/articles/requirements/functional-requirements/interaction-engagement/activity-feeds"),
+  "requirements/functional-requirements/interaction-engagement/bookmark-save-ui":
+    () =>
+      import("@/content/articles/requirements/functional-requirements/interaction-engagement/bookmark-save-ui"),
+  "requirements/functional-requirements/interaction-engagement/comment-ui":
+    () =>
+      import("@/content/articles/requirements/functional-requirements/interaction-engagement/comment-ui"),
+  "requirements/functional-requirements/interaction-engagement/engagement-aggregation":
+    () =>
+      import("@/content/articles/requirements/functional-requirements/interaction-engagement/engagement-aggregation"),
+  "requirements/functional-requirements/interaction-engagement/engagement-fraud-detection":
+    () =>
+      import("@/content/articles/requirements/functional-requirements/interaction-engagement/engagement-fraud-detection"),
+  "requirements/functional-requirements/interaction-engagement/engagement-metrics-display":
+    () =>
+      import("@/content/articles/requirements/functional-requirements/interaction-engagement/engagement-metrics-display"),
+  "requirements/functional-requirements/interaction-engagement/engagement-storage":
+    () =>
+      import("@/content/articles/requirements/functional-requirements/interaction-engagement/engagement-storage"),
+  "requirements/functional-requirements/interaction-engagement/engagement-tracking":
+    () =>
+      import("@/content/articles/requirements/functional-requirements/interaction-engagement/engagement-tracking"),
+  "requirements/functional-requirements/interaction-engagement/follow-subscribe-ui":
+    () =>
+      import("@/content/articles/requirements/functional-requirements/interaction-engagement/follow-subscribe-ui"),
+  "requirements/functional-requirements/interaction-engagement/interaction-apis":
+    () =>
+      import("@/content/articles/requirements/functional-requirements/interaction-engagement/interaction-apis"),
+  "requirements/functional-requirements/interaction-engagement/like-button":
+    () =>
+      import("@/content/articles/requirements/functional-requirements/interaction-engagement/like-button"),
+  "requirements/functional-requirements/interaction-engagement/rating-review-ui":
+    () =>
+      import("@/content/articles/requirements/functional-requirements/interaction-engagement/rating-review-ui"),
+  "requirements/functional-requirements/interaction-engagement/reaction-picker":
+    () =>
+      import("@/content/articles/requirements/functional-requirements/interaction-engagement/reaction-picker"),
+  "requirements/functional-requirements/interaction-engagement/share-ui": () =>
+    import("@/content/articles/requirements/functional-requirements/interaction-engagement/share-ui"),
+  "requirements/functional-requirements/interaction-engagement/upvote-downvote-ui":
+    () =>
+      import("@/content/articles/requirements/functional-requirements/interaction-engagement/upvote-downvote-ui"),
+  "requirements/functional-requirements/other-cross-cutting/abuse-reporting":
+    () =>
+      import("@/content/articles/requirements/functional-requirements/other-cross-cutting/abuse-reporting"),
+  "requirements/functional-requirements/other-cross-cutting/access-history-logs":
+    () =>
+      import("@/content/articles/requirements/functional-requirements/other-cross-cutting/access-history-logs"),
+  "requirements/functional-requirements/other-cross-cutting/conflict-resolution":
+    () =>
+      import("@/content/articles/requirements/functional-requirements/other-cross-cutting/conflict-resolution"),
+  "requirements/functional-requirements/other-cross-cutting/consent-management":
+    () =>
+      import("@/content/articles/requirements/functional-requirements/other-cross-cutting/consent-management"),
+  "requirements/functional-requirements/other-cross-cutting/content-archiving":
+    () =>
+      import("@/content/articles/requirements/functional-requirements/other-cross-cutting/content-archiving"),
+  "requirements/functional-requirements/other-cross-cutting/content-flagging":
+    () =>
+      import("@/content/articles/requirements/functional-requirements/other-cross-cutting/content-flagging"),
+  "requirements/functional-requirements/other-cross-cutting/content-recovery":
+    () =>
+      import("@/content/articles/requirements/functional-requirements/other-cross-cutting/content-recovery"),
+  "requirements/functional-requirements/other-cross-cutting/content-reporting":
+    () =>
+      import("@/content/articles/requirements/functional-requirements/other-cross-cutting/content-reporting"),
+  "requirements/functional-requirements/other-cross-cutting/content-scheduling":
+    () =>
+      import("@/content/articles/requirements/functional-requirements/other-cross-cutting/content-scheduling"),
+  "requirements/functional-requirements/other-cross-cutting/content-version-history":
+    () =>
+      import("@/content/articles/requirements/functional-requirements/other-cross-cutting/content-version-history"),
+  "requirements/functional-requirements/other-cross-cutting/data-deletion-requests":
+    () =>
+      import("@/content/articles/requirements/functional-requirements/other-cross-cutting/data-deletion-requests"),
+  "requirements/functional-requirements/other-cross-cutting/data-download-requests":
+    () =>
+      import("@/content/articles/requirements/functional-requirements/other-cross-cutting/data-download-requests"),
+  "requirements/functional-requirements/other-cross-cutting/data-sharing-preferences":
+    () =>
+      import("@/content/articles/requirements/functional-requirements/other-cross-cutting/data-sharing-preferences"),
+  "requirements/functional-requirements/other-cross-cutting/draft-saving": () =>
+    import("@/content/articles/requirements/functional-requirements/other-cross-cutting/draft-saving"),
+  "requirements/functional-requirements/other-cross-cutting/duplicate-request-handling":
+    () =>
+      import("@/content/articles/requirements/functional-requirements/other-cross-cutting/duplicate-request-handling"),
+  "requirements/functional-requirements/other-cross-cutting/email-digest-preferences":
+    () =>
+      import("@/content/articles/requirements/functional-requirements/other-cross-cutting/email-digest-preferences"),
+  "requirements/functional-requirements/other-cross-cutting/export-user-data":
+    () =>
+      import("@/content/articles/requirements/functional-requirements/other-cross-cutting/export-user-data"),
+  "requirements/functional-requirements/other-cross-cutting/gdpr-data-requests":
+    () =>
+      import("@/content/articles/requirements/functional-requirements/other-cross-cutting/gdpr-data-requests"),
+  "requirements/functional-requirements/other-cross-cutting/idempotent-requests":
+    () =>
+      import("@/content/articles/requirements/functional-requirements/other-cross-cutting/idempotent-requests"),
+  "requirements/functional-requirements/other-cross-cutting/import-user-data":
+    () =>
+      import("@/content/articles/requirements/functional-requirements/other-cross-cutting/import-user-data"),
+  "requirements/functional-requirements/other-cross-cutting/language-settings":
+    () =>
+      import("@/content/articles/requirements/functional-requirements/other-cross-cutting/language-settings"),
+  "requirements/functional-requirements/other-cross-cutting/notification-frequency-controls":
+    () =>
+      import("@/content/articles/requirements/functional-requirements/other-cross-cutting/notification-frequency-controls"),
+  "requirements/functional-requirements/other-cross-cutting/notification-muting":
+    () =>
+      import("@/content/articles/requirements/functional-requirements/other-cross-cutting/notification-muting"),
+  "requirements/functional-requirements/other-cross-cutting/notification-preferences":
+    () =>
+      import("@/content/articles/requirements/functional-requirements/other-cross-cutting/notification-preferences"),
+  "requirements/functional-requirements/other-cross-cutting/permission-management":
+    () =>
+      import("@/content/articles/requirements/functional-requirements/other-cross-cutting/permission-management"),
+  "requirements/functional-requirements/other-cross-cutting/personalized-recommendations":
+    () =>
+      import("@/content/articles/requirements/functional-requirements/other-cross-cutting/personalized-recommendations"),
+  "requirements/functional-requirements/other-cross-cutting/privacy-settings":
+    () =>
+      import("@/content/articles/requirements/functional-requirements/other-cross-cutting/privacy-settings"),
+  "requirements/functional-requirements/other-cross-cutting/profile-visibility":
+    () =>
+      import("@/content/articles/requirements/functional-requirements/other-cross-cutting/profile-visibility"),
+  "requirements/functional-requirements/other-cross-cutting/recently-viewed-content":
+    () =>
+      import("@/content/articles/requirements/functional-requirements/other-cross-cutting/recently-viewed-content"),
+  "requirements/functional-requirements/other-cross-cutting/retry-mechanisms":
+    () =>
+      import("@/content/articles/requirements/functional-requirements/other-cross-cutting/retry-mechanisms"),
+  "requirements/functional-requirements/other-cross-cutting/saved-preferences":
+    () =>
+      import("@/content/articles/requirements/functional-requirements/other-cross-cutting/saved-preferences"),
+  "requirements/functional-requirements/other-cross-cutting/spam-detection":
+    () =>
+      import("@/content/articles/requirements/functional-requirements/other-cross-cutting/spam-detection"),
+  "requirements/functional-requirements/other-cross-cutting/terms-acceptance-tracking":
+    () =>
+      import("@/content/articles/requirements/functional-requirements/other-cross-cutting/terms-acceptance-tracking"),
+  "requirements/functional-requirements/other-cross-cutting/theme-settings":
+    () =>
+      import("@/content/articles/requirements/functional-requirements/other-cross-cutting/theme-settings"),
+  "requirements/functional-requirements/other-cross-cutting/user-blocking":
+    () =>
+      import("@/content/articles/requirements/functional-requirements/other-cross-cutting/user-blocking"),
+  "requirements/functional-requirements/other-cross-cutting/user-muting": () =>
+    import("@/content/articles/requirements/functional-requirements/other-cross-cutting/user-muting"),
+  "requirements/functional-requirements/transactions-state/billing-platforms":
+    () =>
+      import("@/content/articles/requirements/functional-requirements/transactions-state/billing-platforms"),
+  "requirements/functional-requirements/transactions-state/billing-services":
+    () =>
+      import("@/content/articles/requirements/functional-requirements/transactions-state/billing-services"),
+  "requirements/functional-requirements/transactions-state/booking-workflows":
+    () =>
+      import("@/content/articles/requirements/functional-requirements/transactions-state/booking-workflows"),
+  "requirements/functional-requirements/transactions-state/checkout-flow": () =>
+    import("@/content/articles/requirements/functional-requirements/transactions-state/checkout-flow"),
+  "requirements/functional-requirements/transactions-state/confirmation-screens":
+    () =>
+      import("@/content/articles/requirements/functional-requirements/transactions-state/confirmation-screens"),
+  "requirements/functional-requirements/transactions-state/event-sourcing-systems":
+    () =>
+      import("@/content/articles/requirements/functional-requirements/transactions-state/event-sourcing-systems"),
+  "requirements/functional-requirements/transactions-state/financial-logs":
+    () =>
+      import("@/content/articles/requirements/functional-requirements/transactions-state/financial-logs"),
+  "requirements/functional-requirements/transactions-state/idempotency": () =>
+    import("@/content/articles/requirements/functional-requirements/transactions-state/idempotency"),
+  "requirements/functional-requirements/transactions-state/inventory-management":
+    () =>
+      import("@/content/articles/requirements/functional-requirements/transactions-state/inventory-management"),
+  "requirements/functional-requirements/transactions-state/order-history-ui":
+    () =>
+      import("@/content/articles/requirements/functional-requirements/transactions-state/order-history-ui"),
+  "requirements/functional-requirements/transactions-state/order-management":
+    () =>
+      import("@/content/articles/requirements/functional-requirements/transactions-state/order-management"),
+  "requirements/functional-requirements/transactions-state/order-tracking-ui":
+    () =>
+      import("@/content/articles/requirements/functional-requirements/transactions-state/order-tracking-ui"),
+  "requirements/functional-requirements/transactions-state/payment-gateways":
+    () =>
+      import("@/content/articles/requirements/functional-requirements/transactions-state/payment-gateways"),
+  "requirements/functional-requirements/transactions-state/payment-processing":
+    () =>
+      import("@/content/articles/requirements/functional-requirements/transactions-state/payment-processing"),
+  "requirements/functional-requirements/transactions-state/payment-ui": () =>
+    import("@/content/articles/requirements/functional-requirements/transactions-state/payment-ui"),
+  "requirements/functional-requirements/transactions-state/refund-request-ui":
+    () =>
+      import("@/content/articles/requirements/functional-requirements/transactions-state/refund-request-ui"),
+  "requirements/functional-requirements/transactions-state/state-machine": () =>
+    import("@/content/articles/requirements/functional-requirements/transactions-state/state-machine"),
+  "requirements/functional-requirements/transactions-state/subscription-billing":
+    () =>
+      import("@/content/articles/requirements/functional-requirements/transactions-state/subscription-billing"),
+  "requirements/functional-requirements/transactions-state/subscription-lifecycle-management":
+    () =>
+      import("@/content/articles/requirements/functional-requirements/transactions-state/subscription-lifecycle-management"),
+  "requirements/functional-requirements/transactions-state/subscription-management-ui":
+    () =>
+      import("@/content/articles/requirements/functional-requirements/transactions-state/subscription-management-ui"),
+  "requirements/functional-requirements/transactions-state/transaction-fraud-detection":
+    () =>
+      import("@/content/articles/requirements/functional-requirements/transactions-state/transaction-fraud-detection"),
+  "requirements/functional-requirements/transactions-state/transaction-history-ui":
+    () =>
+      import("@/content/articles/requirements/functional-requirements/transactions-state/transaction-history-ui"),
+  "requirements/non-functional-requirements/advanced-bonus/accessibility-automation":
+    () =>
+      import("@/content/articles/requirements/non-functional-requirements/advanced-bonus/accessibility-automation"),
+  "requirements/non-functional-requirements/advanced-bonus/battery-cpu-efficiency":
+    () =>
+      import("@/content/articles/requirements/non-functional-requirements/advanced-bonus/battery-cpu-efficiency"),
+  "requirements/non-functional-requirements/advanced-bonus/canary-experimentation-framework":
+    () =>
+      import("@/content/articles/requirements/non-functional-requirements/advanced-bonus/canary-experimentation-framework"),
+  "requirements/non-functional-requirements/advanced-bonus/chaos-testing": () =>
+    import("@/content/articles/requirements/non-functional-requirements/advanced-bonus/chaos-testing"),
+  "requirements/non-functional-requirements/advanced-bonus/data-lineage-auditability":
+    () =>
+      import("@/content/articles/requirements/non-functional-requirements/advanced-bonus/data-lineage-auditability"),
+  "requirements/non-functional-requirements/advanced-bonus/memory-management":
+    () =>
+      import("@/content/articles/requirements/non-functional-requirements/advanced-bonus/memory-management"),
+  "requirements/non-functional-requirements/advanced-bonus/micro-frontend-compatibility":
+    () =>
+      import("@/content/articles/requirements/non-functional-requirements/advanced-bonus/micro-frontend-compatibility"),
+  "requirements/non-functional-requirements/advanced-bonus/multi-tenant-isolation":
+    () =>
+      import("@/content/articles/requirements/non-functional-requirements/advanced-bonus/multi-tenant-isolation"),
+  "requirements/non-functional-requirements/advanced-bonus/progressive-enhancement":
+    () =>
+      import("@/content/articles/requirements/non-functional-requirements/advanced-bonus/progressive-enhancement"),
+  "requirements/non-functional-requirements/advanced-bonus/slo-error-budget-management":
+    () =>
+      import("@/content/articles/requirements/non-functional-requirements/advanced-bonus/slo-error-budget-management"),
+  "requirements/non-functional-requirements/backend-nfr/api-versioning": () =>
+    import("@/content/articles/requirements/non-functional-requirements/backend-nfr/api-versioning"),
+  "requirements/non-functional-requirements/backend-nfr/authentication-infrastructure":
+    () =>
+      import("@/content/articles/requirements/non-functional-requirements/backend-nfr/authentication-infrastructure"),
+  "requirements/non-functional-requirements/backend-nfr/authorization-model":
+    () =>
+      import("@/content/articles/requirements/non-functional-requirements/backend-nfr/authorization-model"),
+  "requirements/non-functional-requirements/backend-nfr/backpressure-handling":
+    () =>
+      import("@/content/articles/requirements/non-functional-requirements/backend-nfr/backpressure-handling"),
+  "requirements/non-functional-requirements/backend-nfr/capacity-planning":
+    () =>
+      import("@/content/articles/requirements/non-functional-requirements/backend-nfr/capacity-planning"),
+  "requirements/non-functional-requirements/backend-nfr/centralized-logging":
+    () =>
+      import("@/content/articles/requirements/non-functional-requirements/backend-nfr/centralized-logging"),
+  "requirements/non-functional-requirements/backend-nfr/cicd-pipelines": () =>
+    import("@/content/articles/requirements/non-functional-requirements/backend-nfr/cicd-pipelines"),
+  "requirements/non-functional-requirements/backend-nfr/compliance-auditing":
+    () =>
+      import("@/content/articles/requirements/non-functional-requirements/backend-nfr/compliance-auditing"),
+  "requirements/non-functional-requirements/backend-nfr/consistency-model":
+    () =>
+      import("@/content/articles/requirements/non-functional-requirements/backend-nfr/consistency-model"),
+  "requirements/non-functional-requirements/backend-nfr/cost-optimization":
+    () =>
+      import("@/content/articles/requirements/non-functional-requirements/backend-nfr/cost-optimization"),
+  "requirements/non-functional-requirements/backend-nfr/data-migration-strategy":
+    () =>
+      import("@/content/articles/requirements/non-functional-requirements/backend-nfr/data-migration-strategy"),
+  "requirements/non-functional-requirements/backend-nfr/data-retention-archival":
+    () =>
+      import("@/content/articles/requirements/non-functional-requirements/backend-nfr/data-retention-archival"),
+  "requirements/non-functional-requirements/backend-nfr/database-selection-strategy":
+    () =>
+      import("@/content/articles/requirements/non-functional-requirements/backend-nfr/database-selection-strategy"),
+  "requirements/non-functional-requirements/backend-nfr/disaster-recovery-strategy":
+    () =>
+      import("@/content/articles/requirements/non-functional-requirements/backend-nfr/disaster-recovery-strategy"),
+  "requirements/non-functional-requirements/backend-nfr/durability-guarantees":
+    () =>
+      import("@/content/articles/requirements/non-functional-requirements/backend-nfr/durability-guarantees"),
+  "requirements/non-functional-requirements/backend-nfr/event-replayability":
+    () =>
+      import("@/content/articles/requirements/non-functional-requirements/backend-nfr/event-replayability"),
+  "requirements/non-functional-requirements/backend-nfr/fault-tolerance-resilience":
+    () =>
+      import("@/content/articles/requirements/non-functional-requirements/backend-nfr/fault-tolerance-resilience"),
+  "requirements/non-functional-requirements/backend-nfr/high-availability":
+    () =>
+      import("@/content/articles/requirements/non-functional-requirements/backend-nfr/high-availability"),
+  "requirements/non-functional-requirements/backend-nfr/idempotency-guarantees":
+    () =>
+      import("@/content/articles/requirements/non-functional-requirements/backend-nfr/idempotency-guarantees"),
+  "requirements/non-functional-requirements/backend-nfr/latency-slas": () =>
+    import("@/content/articles/requirements/non-functional-requirements/backend-nfr/latency-slas"),
+  "requirements/non-functional-requirements/backend-nfr/message-ordering-guarantees":
+    () =>
+      import("@/content/articles/requirements/non-functional-requirements/backend-nfr/message-ordering-guarantees"),
+  "requirements/non-functional-requirements/backend-nfr/metrics-distributed-tracing":
+    () =>
+      import("@/content/articles/requirements/non-functional-requirements/backend-nfr/metrics-distributed-tracing"),
+  "requirements/non-functional-requirements/backend-nfr/multi-region-replication":
+    () =>
+      import("@/content/articles/requirements/non-functional-requirements/backend-nfr/multi-region-replication"),
+  "requirements/non-functional-requirements/backend-nfr/rate-limiting-abuse-protection":
+    () =>
+      import("@/content/articles/requirements/non-functional-requirements/backend-nfr/rate-limiting-abuse-protection"),
+  "requirements/non-functional-requirements/backend-nfr/scalability-strategy":
+    () =>
+      import("@/content/articles/requirements/non-functional-requirements/backend-nfr/scalability-strategy"),
+  "requirements/non-functional-requirements/backend-nfr/schema-governance":
+    () =>
+      import("@/content/articles/requirements/non-functional-requirements/backend-nfr/schema-governance"),
+  "requirements/non-functional-requirements/backend-nfr/secrets-management":
+    () =>
+      import("@/content/articles/requirements/non-functional-requirements/backend-nfr/secrets-management"),
+  "requirements/non-functional-requirements/backend-nfr/server-side-caching-strategy":
+    () =>
+      import("@/content/articles/requirements/non-functional-requirements/backend-nfr/server-side-caching-strategy"),
+  "requirements/non-functional-requirements/backend-nfr/throughput-capacity":
+    () =>
+      import("@/content/articles/requirements/non-functional-requirements/backend-nfr/throughput-capacity"),
+  "requirements/non-functional-requirements/backend-nfr/traffic-management-load-shedding":
+    () =>
+      import("@/content/articles/requirements/non-functional-requirements/backend-nfr/traffic-management-load-shedding"),
+  "requirements/non-functional-requirements/frontend-nfr/accessibility": () =>
+    import("@/content/articles/requirements/non-functional-requirements/frontend-nfr/accessibility"),
+  "requirements/non-functional-requirements/frontend-nfr/authentication-ux-flows":
+    () =>
+      import("@/content/articles/requirements/non-functional-requirements/frontend-nfr/authentication-ux-flows"),
+  "requirements/non-functional-requirements/frontend-nfr/build-optimization":
+    () =>
+      import("@/content/articles/requirements/non-functional-requirements/frontend-nfr/build-optimization"),
+  "requirements/non-functional-requirements/frontend-nfr/client-edge-caching":
+    () =>
+      import("@/content/articles/requirements/non-functional-requirements/frontend-nfr/client-edge-caching"),
+  "requirements/non-functional-requirements/frontend-nfr/client-persistence-strategy":
+    () =>
+      import("@/content/articles/requirements/non-functional-requirements/frontend-nfr/client-persistence-strategy"),
+  "requirements/non-functional-requirements/frontend-nfr/conflict-resolution-ux":
+    () =>
+      import("@/content/articles/requirements/non-functional-requirements/frontend-nfr/conflict-resolution-ux"),
+  "requirements/non-functional-requirements/frontend-nfr/cross-browser-compatibility":
+    () =>
+      import("@/content/articles/requirements/non-functional-requirements/frontend-nfr/cross-browser-compatibility"),
+  "requirements/non-functional-requirements/frontend-nfr/developer-experience":
+    () =>
+      import("@/content/articles/requirements/non-functional-requirements/frontend-nfr/developer-experience"),
+  "requirements/non-functional-requirements/frontend-nfr/device-responsiveness":
+    () =>
+      import("@/content/articles/requirements/non-functional-requirements/frontend-nfr/device-responsiveness"),
+  "requirements/non-functional-requirements/frontend-nfr/error-ux-recovery":
+    () =>
+      import("@/content/articles/requirements/non-functional-requirements/frontend-nfr/error-ux-recovery"),
+  "requirements/non-functional-requirements/frontend-nfr/feature-flagging-rollouts":
+    () =>
+      import("@/content/articles/requirements/non-functional-requirements/frontend-nfr/feature-flagging-rollouts"),
+  "requirements/non-functional-requirements/frontend-nfr/frontend-deployment-strategy":
+    () =>
+      import("@/content/articles/requirements/non-functional-requirements/frontend-nfr/frontend-deployment-strategy"),
+  "requirements/non-functional-requirements/frontend-nfr/frontend-observability-rum":
+    () =>
+      import("@/content/articles/requirements/non-functional-requirements/frontend-nfr/frontend-observability-rum"),
+  "requirements/non-functional-requirements/frontend-nfr/frontend-testing-strategy":
+    () =>
+      import("@/content/articles/requirements/non-functional-requirements/frontend-nfr/frontend-testing-strategy"),
+  "requirements/non-functional-requirements/frontend-nfr/internationalization-localization":
+    () =>
+      import("@/content/articles/requirements/non-functional-requirements/frontend-nfr/internationalization-localization"),
+  "requirements/non-functional-requirements/frontend-nfr/media-optimization":
+    () =>
+      import("@/content/articles/requirements/non-functional-requirements/frontend-nfr/media-optimization"),
+  "requirements/non-functional-requirements/frontend-nfr/multi-tab-synchronization":
+    () =>
+      import("@/content/articles/requirements/non-functional-requirements/frontend-nfr/multi-tab-synchronization"),
+  "requirements/non-functional-requirements/frontend-nfr/network-efficiency":
+    () =>
+      import("@/content/articles/requirements/non-functional-requirements/frontend-nfr/network-efficiency"),
+  "requirements/non-functional-requirements/frontend-nfr/offline-support-pwa":
+    () =>
+      import("@/content/articles/requirements/non-functional-requirements/frontend-nfr/offline-support-pwa"),
+  "requirements/non-functional-requirements/frontend-nfr/page-load-performance":
+    () =>
+      import("@/content/articles/requirements/non-functional-requirements/frontend-nfr/page-load-performance"),
+  "requirements/non-functional-requirements/frontend-nfr/perceived-performance":
+    () =>
+      import("@/content/articles/requirements/non-functional-requirements/frontend-nfr/perceived-performance"),
+  "requirements/non-functional-requirements/frontend-nfr/privacy-consent-ux":
+    () =>
+      import("@/content/articles/requirements/non-functional-requirements/frontend-nfr/privacy-consent-ux"),
+  "requirements/non-functional-requirements/frontend-nfr/realtime-ui-handling":
+    () =>
+      import("@/content/articles/requirements/non-functional-requirements/frontend-nfr/realtime-ui-handling"),
+  "requirements/non-functional-requirements/frontend-nfr/rendering-strategy":
+    () =>
+      import("@/content/articles/requirements/non-functional-requirements/frontend-nfr/rendering-strategy"),
+  "requirements/non-functional-requirements/frontend-nfr/secure-client-storage":
+    () =>
+      import("@/content/articles/requirements/non-functional-requirements/frontend-nfr/secure-client-storage"),
+  "requirements/non-functional-requirements/frontend-nfr/seo-discoverability":
+    () =>
+      import("@/content/articles/requirements/non-functional-requirements/frontend-nfr/seo-discoverability"),
+  "requirements/non-functional-requirements/frontend-nfr/state-management-strategy":
+    () =>
+      import("@/content/articles/requirements/non-functional-requirements/frontend-nfr/state-management-strategy"),
+  "requirements/non-functional-requirements/frontend-nfr/third-party-script-safety":
+    () =>
+      import("@/content/articles/requirements/non-functional-requirements/frontend-nfr/third-party-script-safety"),
+  "requirements/non-functional-requirements/frontend-nfr/virtualization-windowing":
+    () =>
+      import("@/content/articles/requirements/non-functional-requirements/frontend-nfr/virtualization-windowing"),
+  "requirements/non-functional-requirements/frontend-nfr/xss-injection-protection":
+    () =>
+      import("@/content/articles/requirements/non-functional-requirements/frontend-nfr/xss-injection-protection"),
+  "requirements/non-functional-requirements/shared-cross-cutting-nfr/availability-slas":
+    () =>
+      import("@/content/articles/requirements/non-functional-requirements/shared-cross-cutting-nfr/availability-slas"),
+  "requirements/non-functional-requirements/shared-cross-cutting-nfr/caching-consistency-strategy":
+    () =>
+      import("@/content/articles/requirements/non-functional-requirements/shared-cross-cutting-nfr/caching-consistency-strategy"),
+  "requirements/non-functional-requirements/shared-cross-cutting-nfr/change-management":
+    () =>
+      import("@/content/articles/requirements/non-functional-requirements/shared-cross-cutting-nfr/change-management"),
+  "requirements/non-functional-requirements/shared-cross-cutting-nfr/data-consistency-guarantees":
+    () =>
+      import("@/content/articles/requirements/non-functional-requirements/shared-cross-cutting-nfr/data-consistency-guarantees"),
+  "requirements/non-functional-requirements/shared-cross-cutting-nfr/dependency-management":
+    () =>
+      import("@/content/articles/requirements/non-functional-requirements/shared-cross-cutting-nfr/dependency-management"),
+  "requirements/non-functional-requirements/shared-cross-cutting-nfr/documentation-quality":
+    () =>
+      import("@/content/articles/requirements/non-functional-requirements/shared-cross-cutting-nfr/documentation-quality"),
+  "requirements/non-functional-requirements/shared-cross-cutting-nfr/end-to-end-observability":
+    () =>
+      import("@/content/articles/requirements/non-functional-requirements/shared-cross-cutting-nfr/end-to-end-observability"),
+  "requirements/non-functional-requirements/shared-cross-cutting-nfr/end-to-end-performance-budgets":
+    () =>
+      import("@/content/articles/requirements/non-functional-requirements/shared-cross-cutting-nfr/end-to-end-performance-budgets"),
+  "requirements/non-functional-requirements/shared-cross-cutting-nfr/end-to-end-security-posture":
+    () =>
+      import("@/content/articles/requirements/non-functional-requirements/shared-cross-cutting-nfr/end-to-end-security-posture"),
+  "requirements/non-functional-requirements/shared-cross-cutting-nfr/error-handling-recovery-strategy":
+    () =>
+      import("@/content/articles/requirements/non-functional-requirements/shared-cross-cutting-nfr/error-handling-recovery-strategy"),
+  "requirements/non-functional-requirements/shared-cross-cutting-nfr/feature-rollout-strategy":
+    () =>
+      import("@/content/articles/requirements/non-functional-requirements/shared-cross-cutting-nfr/feature-rollout-strategy"),
+  "requirements/non-functional-requirements/shared-cross-cutting-nfr/incident-response-oncall-readiness":
+    () =>
+      import("@/content/articles/requirements/non-functional-requirements/shared-cross-cutting-nfr/incident-response-oncall-readiness"),
+  "requirements/non-functional-requirements/shared-cross-cutting-nfr/privacy-data-governance":
+    () =>
+      import("@/content/articles/requirements/non-functional-requirements/shared-cross-cutting-nfr/privacy-data-governance"),
+  "requirements/non-functional-requirements/shared-cross-cutting-nfr/vendor-lock-in-strategy":
+    () =>
+      import("@/content/articles/requirements/non-functional-requirements/shared-cross-cutting-nfr/vendor-lock-in-strategy"),
+  "requirements/non-functional-requirements/shared-cross-cutting-nfr/versioning-backward-compatibility":
+    () =>
+      import("@/content/articles/requirements/non-functional-requirements/shared-cross-cutting-nfr/versioning-backward-compatibility"),
+  "system-design-problems/low-level-design/component-level-ui-patterns/accordion-collapsible":
+    () =>
+      import("@/content/articles/system-design-problems/low-level-design/component-level-ui-patterns/accordion-collapsible"),
+  "system-design-problems/low-level-design/component-level-ui-patterns/audio-video-player":
+    () =>
+      import("@/content/articles/system-design-problems/low-level-design/component-level-ui-patterns/audio-video-player"),
+  "system-design-problems/low-level-design/component-level-ui-patterns/avatar-component":
+    () =>
+      import("@/content/articles/system-design-problems/low-level-design/component-level-ui-patterns/avatar-component"),
+  "system-design-problems/low-level-design/component-level-ui-patterns/breadcrumb-component":
+    () =>
+      import("@/content/articles/system-design-problems/low-level-design/component-level-ui-patterns/breadcrumb-component"),
+  "system-design-problems/low-level-design/component-level-ui-patterns/calendar-scheduler":
+    () =>
+      import("@/content/articles/system-design-problems/low-level-design/component-level-ui-patterns/calendar-scheduler"),
+  "system-design-problems/low-level-design/component-level-ui-patterns/carousel-slider":
+    () =>
+      import("@/content/articles/system-design-problems/low-level-design/component-level-ui-patterns/carousel-slider"),
+  "system-design-problems/low-level-design/component-level-ui-patterns/chat-messaging-ui":
+    () =>
+      import("@/content/articles/system-design-problems/low-level-design/component-level-ui-patterns/chat-messaging-ui"),
+  "system-design-problems/low-level-design/component-level-ui-patterns/code-editor-component":
+    () =>
+      import("@/content/articles/system-design-problems/low-level-design/component-level-ui-patterns/code-editor-component"),
+  "system-design-problems/low-level-design/component-level-ui-patterns/color-picker":
+    () =>
+      import("@/content/articles/system-design-problems/low-level-design/component-level-ui-patterns/color-picker"),
+  "system-design-problems/low-level-design/component-level-ui-patterns/command-palette":
+    () =>
+      import("@/content/articles/system-design-problems/low-level-design/component-level-ui-patterns/command-palette"),
+  "system-design-problems/low-level-design/component-level-ui-patterns/comment-thread":
+    () =>
+      import("@/content/articles/system-design-problems/low-level-design/component-level-ui-patterns/comment-thread"),
+  "system-design-problems/low-level-design/component-level-ui-patterns/component-library":
+    () =>
+      import("@/content/articles/system-design-problems/low-level-design/component-level-ui-patterns/component-library"),
+  "system-design-problems/low-level-design/component-level-ui-patterns/context-menu":
+    () =>
+      import("@/content/articles/system-design-problems/low-level-design/component-level-ui-patterns/context-menu"),
+  "system-design-problems/low-level-design/component-level-ui-patterns/dashboard-builder":
+    () =>
+      import("@/content/articles/system-design-problems/low-level-design/component-level-ui-patterns/dashboard-builder"),
+  "system-design-problems/low-level-design/component-level-ui-patterns/data-table":
+    () =>
+      import("@/content/articles/system-design-problems/low-level-design/component-level-ui-patterns/data-table"),
+  "system-design-problems/low-level-design/component-level-ui-patterns/date-time-picker":
+    () =>
+      import("@/content/articles/system-design-problems/low-level-design/component-level-ui-patterns/date-time-picker"),
+  "system-design-problems/low-level-design/component-level-ui-patterns/drag-drop-list":
+    () =>
+      import("@/content/articles/system-design-problems/low-level-design/component-level-ui-patterns/drag-drop-list"),
+  "system-design-problems/low-level-design/component-level-ui-patterns/file-explorer-ui":
+    () =>
+      import("@/content/articles/system-design-problems/low-level-design/component-level-ui-patterns/file-explorer-ui"),
+  "system-design-problems/low-level-design/component-level-ui-patterns/file-upload-widget":
+    () =>
+      import("@/content/articles/system-design-problems/low-level-design/component-level-ui-patterns/file-upload-widget"),
+  "system-design-problems/low-level-design/component-level-ui-patterns/form-builder":
+    () =>
+      import("@/content/articles/system-design-problems/low-level-design/component-level-ui-patterns/form-builder"),
+  "system-design-problems/low-level-design/component-level-ui-patterns/form-validation-engine":
+    () =>
+      import("@/content/articles/system-design-problems/low-level-design/component-level-ui-patterns/form-validation-engine"),
+  "system-design-problems/low-level-design/component-level-ui-patterns/image-gallery-lightbox":
+    () =>
+      import("@/content/articles/system-design-problems/low-level-design/component-level-ui-patterns/image-gallery-lightbox"),
+  "system-design-problems/low-level-design/component-level-ui-patterns/infinite-scroll-virtualized-list":
+    () =>
+      import("@/content/articles/system-design-problems/low-level-design/component-level-ui-patterns/infinite-scroll-virtualized-list"),
+  "system-design-problems/low-level-design/component-level-ui-patterns/kanban-board":
+    () =>
+      import("@/content/articles/system-design-problems/low-level-design/component-level-ui-patterns/kanban-board"),
+  "system-design-problems/low-level-design/component-level-ui-patterns/loading-skeleton":
+    () =>
+      import("@/content/articles/system-design-problems/low-level-design/component-level-ui-patterns/loading-skeleton"),
+  "system-design-problems/low-level-design/component-level-ui-patterns/map-based-ui":
+    () =>
+      import("@/content/articles/system-design-problems/low-level-design/component-level-ui-patterns/map-based-ui"),
+  "system-design-problems/low-level-design/component-level-ui-patterns/modal-component":
+    () =>
+      import("@/content/articles/system-design-problems/low-level-design/component-level-ui-patterns/modal-component"),
+  "system-design-problems/low-level-design/component-level-ui-patterns/multi-select-tag-input":
+    () =>
+      import("@/content/articles/system-design-problems/low-level-design/component-level-ui-patterns/multi-select-tag-input"),
+  "system-design-problems/low-level-design/component-level-ui-patterns/notification-center-inbox":
+    () =>
+      import("@/content/articles/system-design-problems/low-level-design/component-level-ui-patterns/notification-center-inbox"),
+  "system-design-problems/low-level-design/component-level-ui-patterns/pagination-component":
+    () =>
+      import("@/content/articles/system-design-problems/low-level-design/component-level-ui-patterns/pagination-component"),
+  "system-design-problems/low-level-design/component-level-ui-patterns/payment-checkout-ui":
+    () =>
+      import("@/content/articles/system-design-problems/low-level-design/component-level-ui-patterns/payment-checkout-ui"),
+  "system-design-problems/low-level-design/component-level-ui-patterns/pdf-viewer":
+    () =>
+      import("@/content/articles/system-design-problems/low-level-design/component-level-ui-patterns/pdf-viewer"),
+  "system-design-problems/low-level-design/component-level-ui-patterns/rating-stars-component":
+    () =>
+      import("@/content/articles/system-design-problems/low-level-design/component-level-ui-patterns/rating-stars-component"),
+  "system-design-problems/low-level-design/component-level-ui-patterns/resizable-split-pane":
+    () =>
+      import("@/content/articles/system-design-problems/low-level-design/component-level-ui-patterns/resizable-split-pane"),
+  "system-design-problems/low-level-design/component-level-ui-patterns/reusable-button-system":
+    () =>
+      import("@/content/articles/system-design-problems/low-level-design/component-level-ui-patterns/reusable-button-system"),
+  "system-design-problems/low-level-design/component-level-ui-patterns/rich-text-editor":
+    () =>
+      import("@/content/articles/system-design-problems/low-level-design/component-level-ui-patterns/rich-text-editor"),
+  "system-design-problems/low-level-design/component-level-ui-patterns/search-autocomplete":
+    () =>
+      import("@/content/articles/system-design-problems/low-level-design/component-level-ui-patterns/search-autocomplete"),
+  "system-design-problems/low-level-design/component-level-ui-patterns/spreadsheet-like-grid":
+    () =>
+      import("@/content/articles/system-design-problems/low-level-design/component-level-ui-patterns/spreadsheet-like-grid"),
+  "system-design-problems/low-level-design/component-level-ui-patterns/stepper-progress-tracker":
+    () =>
+      import("@/content/articles/system-design-problems/low-level-design/component-level-ui-patterns/stepper-progress-tracker"),
+  "system-design-problems/low-level-design/component-level-ui-patterns/theme-theming-system":
+    () =>
+      import("@/content/articles/system-design-problems/low-level-design/component-level-ui-patterns/theme-theming-system"),
+  "system-design-problems/low-level-design/component-level-ui-patterns/toast-notification-system":
+    () =>
+      import("@/content/articles/system-design-problems/low-level-design/component-level-ui-patterns/toast-notification-system"),
+  "system-design-problems/low-level-design/component-level-ui-patterns/tooltip-system":
+    () =>
+      import("@/content/articles/system-design-problems/low-level-design/component-level-ui-patterns/tooltip-system"),
+  "system-design-problems/low-level-design/component-level-ui-patterns/tree-view-folder-explorer":
+    () =>
+      import("@/content/articles/system-design-problems/low-level-design/component-level-ui-patterns/tree-view-folder-explorer"),
+  "system-design-problems/low-level-design/component-level-ui-patterns/wizard-multi-step-form":
+    () =>
+      import("@/content/articles/system-design-problems/low-level-design/component-level-ui-patterns/wizard-multi-step-form"),
+  "system-design-problems/low-level-design/component-level-ui-patterns/wysiwyg-email-builder":
+    () =>
+      import("@/content/articles/system-design-problems/low-level-design/component-level-ui-patterns/wysiwyg-email-builder"),
+  "system-design-problems/low-level-design/forms-input-systems/ai-assisted-form-fill":
+    () =>
+      import("@/content/articles/system-design-problems/low-level-design/forms-input-systems/ai-assisted-form-fill"),
+  "system-design-problems/low-level-design/forms-input-systems/color-picker":
+    () =>
+      import("@/content/articles/system-design-problems/low-level-design/forms-input-systems/color-picker"),
+  "system-design-problems/low-level-design/forms-input-systems/date-time-picker":
+    () =>
+      import("@/content/articles/system-design-problems/low-level-design/forms-input-systems/date-time-picker"),
+  "system-design-problems/low-level-design/forms-input-systems/draft-persistence-system":
+    () =>
+      import("@/content/articles/system-design-problems/low-level-design/forms-input-systems/draft-persistence-system"),
+  "system-design-problems/low-level-design/forms-input-systems/dynamic-conditional-form-engine":
+    () =>
+      import("@/content/articles/system-design-problems/low-level-design/forms-input-systems/dynamic-conditional-form-engine"),
+  "system-design-problems/low-level-design/forms-input-systems/file-input-system":
+    () =>
+      import("@/content/articles/system-design-problems/low-level-design/forms-input-systems/file-input-system"),
+  "system-design-problems/low-level-design/forms-input-systems/form-builder":
+    () =>
+      import("@/content/articles/system-design-problems/low-level-design/forms-input-systems/form-builder"),
+  "system-design-problems/low-level-design/forms-input-systems/form-validation-engine":
+    () =>
+      import("@/content/articles/system-design-problems/low-level-design/forms-input-systems/form-validation-engine"),
+  "system-design-problems/low-level-design/forms-input-systems/large-form-performance":
+    () =>
+      import("@/content/articles/system-design-problems/low-level-design/forms-input-systems/large-form-performance"),
+  "system-design-problems/low-level-design/forms-input-systems/wizard-multi-step-form":
+    () =>
+      import("@/content/articles/system-design-problems/low-level-design/forms-input-systems/wizard-multi-step-form"),
+  "system-design-problems/low-level-design/state-management-data-architecture/api-versioning-frontend":
+    () =>
+      import("@/content/articles/system-design-problems/low-level-design/state-management-data-architecture/api-versioning-frontend"),
+  "system-design-problems/low-level-design/state-management-data-architecture/client-cache-invalidation":
+    () =>
+      import("@/content/articles/system-design-problems/low-level-design/state-management-data-architecture/client-cache-invalidation"),
+  "system-design-problems/low-level-design/state-management-data-architecture/client-side-data-normalization":
+    () =>
+      import("@/content/articles/system-design-problems/low-level-design/state-management-data-architecture/client-side-data-normalization"),
+  "system-design-problems/low-level-design/state-management-data-architecture/component-subscription-management":
+    () =>
+      import("@/content/articles/system-design-problems/low-level-design/state-management-data-architecture/component-subscription-management"),
+  "system-design-problems/low-level-design/state-management-data-architecture/cross-tab-state-synchronization":
+    () =>
+      import("@/content/articles/system-design-problems/low-level-design/state-management-data-architecture/cross-tab-state-synchronization"),
+  "system-design-problems/low-level-design/state-management-data-architecture/custom-state-manager-design":
+    () =>
+      import("@/content/articles/system-design-problems/low-level-design/state-management-data-architecture/custom-state-manager-design"),
+  "system-design-problems/low-level-design/state-management-data-architecture/derived-computed-state-performance":
+    () =>
+      import("@/content/articles/system-design-problems/low-level-design/state-management-data-architecture/derived-computed-state-performance"),
+  "system-design-problems/low-level-design/state-management-data-architecture/feature-flags-toggles":
+    () =>
+      import("@/content/articles/system-design-problems/low-level-design/state-management-data-architecture/feature-flags-toggles"),
+  "system-design-problems/low-level-design/state-management-data-architecture/global-event-bus-react":
+    () =>
+      import("@/content/articles/system-design-problems/low-level-design/state-management-data-architecture/global-event-bus-react"),
+  "system-design-problems/low-level-design/state-management-data-architecture/local-vs-global-state-strategy":
+    () =>
+      import("@/content/articles/system-design-problems/low-level-design/state-management-data-architecture/local-vs-global-state-strategy"),
+  "system-design-problems/low-level-design/state-management-data-architecture/monorepo-store-boundaries":
+    () =>
+      import("@/content/articles/system-design-problems/low-level-design/state-management-data-architecture/monorepo-store-boundaries"),
+  "system-design-problems/low-level-design/state-management-data-architecture/normalized-state-design":
+    () =>
+      import("@/content/articles/system-design-problems/low-level-design/state-management-data-architecture/normalized-state-design"),
+  "system-design-problems/low-level-design/state-management-data-architecture/optimistic-updates-rollback":
+    () =>
+      import("@/content/articles/system-design-problems/low-level-design/state-management-data-architecture/optimistic-updates-rollback"),
+  "system-design-problems/low-level-design/state-management-data-architecture/pagination-cursors-state-merging":
+    () =>
+      import("@/content/articles/system-design-problems/low-level-design/state-management-data-architecture/pagination-cursors-state-merging"),
+  "system-design-problems/low-level-design/state-management-data-architecture/scalable-global-state-architecture":
+    () =>
+      import("@/content/articles/system-design-problems/low-level-design/state-management-data-architecture/scalable-global-state-architecture"),
+  "system-design-problems/low-level-design/state-management-data-architecture/state-persistence-rehydration":
+    () =>
+      import("@/content/articles/system-design-problems/low-level-design/state-management-data-architecture/state-persistence-rehydration"),
+  "system-design-problems/low-level-design/state-management-data-architecture/transient-vs-persistent-ui-state":
+    () =>
+      import("@/content/articles/system-design-problems/low-level-design/state-management-data-architecture/transient-vs-persistent-ui-state"),
+  "system-design-problems/low-level-design/state-management-data-architecture/usereducer-vs-usestate":
+    () =>
+      import("@/content/articles/system-design-problems/low-level-design/state-management-data-architecture/usereducer-vs-usestate"),
+  "other/artificial-intelligence/additional-topics/agent-orchestration": () =>
+    import("@/content/articles/other/artificial-intelligence/additional-topics/agent-orchestration"),
+  "other/artificial-intelligence/additional-topics/hugging-face": () =>
+    import("@/content/articles/other/artificial-intelligence/additional-topics/hugging-face"),
+  "other/artificial-intelligence/additional-topics/langchain": () =>
+    import("@/content/articles/other/artificial-intelligence/additional-topics/langchain"),
+  "other/artificial-intelligence/additional-topics/plugins": () =>
+    import("@/content/articles/other/artificial-intelligence/additional-topics/plugins"),
+  "other/artificial-intelligence/additional-topics/workflow": () =>
+    import("@/content/articles/other/artificial-intelligence/additional-topics/workflow"),
+  "other/artificial-intelligence/core-concepts/agents": () =>
+    import("@/content/articles/other/artificial-intelligence/core-concepts/agents"),
+  "other/artificial-intelligence/core-concepts/ai-application-architecture":
+    () =>
+      import("@/content/articles/other/artificial-intelligence/core-concepts/ai-application-architecture"),
+  "other/artificial-intelligence/core-concepts/ai-cost-management": () =>
+    import("@/content/articles/other/artificial-intelligence/core-concepts/ai-cost-management"),
+  "other/artificial-intelligence/core-concepts/ai-model-deployment": () =>
+    import("@/content/articles/other/artificial-intelligence/core-concepts/ai-model-deployment"),
+  "other/artificial-intelligence/core-concepts/ai-observability-monitoring":
+    () =>
+      import("@/content/articles/other/artificial-intelligence/core-concepts/ai-observability-monitoring"),
+  "other/artificial-intelligence/core-concepts/ai-safety-security": () =>
+    import("@/content/articles/other/artificial-intelligence/core-concepts/ai-safety-security"),
+  "other/artificial-intelligence/core-concepts/ai-testing-evaluation": () =>
+    import("@/content/articles/other/artificial-intelligence/core-concepts/ai-testing-evaluation"),
+  "other/artificial-intelligence/core-concepts/context-window": () =>
+    import("@/content/articles/other/artificial-intelligence/core-concepts/context-window"),
+  "other/artificial-intelligence/core-concepts/data-engineering-for-ai": () =>
+    import("@/content/articles/other/artificial-intelligence/core-concepts/data-engineering-for-ai"),
+  "other/artificial-intelligence/core-concepts/embeddings": () =>
+    import("@/content/articles/other/artificial-intelligence/core-concepts/embeddings"),
+  "other/artificial-intelligence/core-concepts/fine-tuning-vs-rag": () =>
+    import("@/content/articles/other/artificial-intelligence/core-concepts/fine-tuning-vs-rag"),
+  "other/artificial-intelligence/core-concepts/large-language-models": () =>
+    import("@/content/articles/other/artificial-intelligence/core-concepts/large-language-models"),
+  "other/artificial-intelligence/core-concepts/mcp": () =>
+    import("@/content/articles/other/artificial-intelligence/core-concepts/mcp"),
+  "other/artificial-intelligence/core-concepts/multi-agents": () =>
+    import("@/content/articles/other/artificial-intelligence/core-concepts/multi-agents"),
+  "other/artificial-intelligence/core-concepts/prompting": () =>
+    import("@/content/articles/other/artificial-intelligence/core-concepts/prompting"),
+  "other/artificial-intelligence/core-concepts/rag": () =>
+    import("@/content/articles/other/artificial-intelligence/core-concepts/rag"),
+  "other/artificial-intelligence/core-concepts/skills": () =>
+    import("@/content/articles/other/artificial-intelligence/core-concepts/skills"),
+  "other/artificial-intelligence/core-concepts/tokens": () =>
+    import("@/content/articles/other/artificial-intelligence/core-concepts/tokens"),
+  "other/artificial-intelligence/core-concepts/vector-db": () =>
+    import("@/content/articles/other/artificial-intelligence/core-concepts/vector-db"),
+  "other/data-structures-algorithms/algorithms/activity-selection": () =>
+    import("@/content/articles/other/data-structures-algorithms/algorithms/activity-selection"),
+  "other/data-structures-algorithms/algorithms/backtracking-fundamentals": () =>
+    import("@/content/articles/other/data-structures-algorithms/algorithms/backtracking-fundamentals"),
+  "other/data-structures-algorithms/algorithms/bellman-ford": () =>
+    import("@/content/articles/other/data-structures-algorithms/algorithms/bellman-ford"),
+  "other/data-structures-algorithms/algorithms/bfs": () =>
+    import("@/content/articles/other/data-structures-algorithms/algorithms/bfs"),
+  "other/data-structures-algorithms/algorithms/binary-search": () =>
+    import("@/content/articles/other/data-structures-algorithms/algorithms/binary-search"),
+  "other/data-structures-algorithms/algorithms/bitmask-dp": () =>
+    import("@/content/articles/other/data-structures-algorithms/algorithms/bitmask-dp"),
+  "other/data-structures-algorithms/algorithms/boyer-moore": () =>
+    import("@/content/articles/other/data-structures-algorithms/algorithms/boyer-moore"),
+  "other/data-structures-algorithms/algorithms/bubble-sort": () =>
+    import("@/content/articles/other/data-structures-algorithms/algorithms/bubble-sort"),
+  "other/data-structures-algorithms/algorithms/bucket-sort": () =>
+    import("@/content/articles/other/data-structures-algorithms/algorithms/bucket-sort"),
+  "other/data-structures-algorithms/algorithms/coin-change": () =>
+    import("@/content/articles/other/data-structures-algorithms/algorithms/coin-change"),
+  "other/data-structures-algorithms/algorithms/counting-sort": () =>
+    import("@/content/articles/other/data-structures-algorithms/algorithms/counting-sort"),
+  "other/data-structures-algorithms/algorithms/dfs": () =>
+    import("@/content/articles/other/data-structures-algorithms/algorithms/dfs"),
+  "other/data-structures-algorithms/algorithms/dijkstra": () =>
+    import("@/content/articles/other/data-structures-algorithms/algorithms/dijkstra"),
+  "other/data-structures-algorithms/algorithms/divide-and-conquer": () =>
+    import("@/content/articles/other/data-structures-algorithms/algorithms/divide-and-conquer"),
+  "other/data-structures-algorithms/algorithms/dp-fundamentals": () =>
+    import("@/content/articles/other/data-structures-algorithms/algorithms/dp-fundamentals"),
+  "other/data-structures-algorithms/algorithms/dp-on-trees": () =>
+    import("@/content/articles/other/data-structures-algorithms/algorithms/dp-on-trees"),
+  "other/data-structures-algorithms/algorithms/edit-distance": () =>
+    import("@/content/articles/other/data-structures-algorithms/algorithms/edit-distance"),
+  "other/data-structures-algorithms/algorithms/exponential-search": () =>
+    import("@/content/articles/other/data-structures-algorithms/algorithms/exponential-search"),
+  "other/data-structures-algorithms/algorithms/floyd-warshall": () =>
+    import("@/content/articles/other/data-structures-algorithms/algorithms/floyd-warshall"),
+  "other/data-structures-algorithms/algorithms/greedy-fundamentals": () =>
+    import("@/content/articles/other/data-structures-algorithms/algorithms/greedy-fundamentals"),
+  "other/data-structures-algorithms/algorithms/heap-sort": () =>
+    import("@/content/articles/other/data-structures-algorithms/algorithms/heap-sort"),
+  "other/data-structures-algorithms/algorithms/huffman-coding": () =>
+    import("@/content/articles/other/data-structures-algorithms/algorithms/huffman-coding"),
+  "other/data-structures-algorithms/algorithms/insertion-sort": () =>
+    import("@/content/articles/other/data-structures-algorithms/algorithms/insertion-sort"),
+  "other/data-structures-algorithms/algorithms/interpolation-search": () =>
+    import("@/content/articles/other/data-structures-algorithms/algorithms/interpolation-search"),
+  "other/data-structures-algorithms/algorithms/job-sequencing": () =>
+    import("@/content/articles/other/data-structures-algorithms/algorithms/job-sequencing"),
+  "other/data-structures-algorithms/algorithms/jump-search": () =>
+    import("@/content/articles/other/data-structures-algorithms/algorithms/jump-search"),
+  "other/data-structures-algorithms/algorithms/karatsuba-multiplication": () =>
+    import("@/content/articles/other/data-structures-algorithms/algorithms/karatsuba-multiplication"),
+  "other/data-structures-algorithms/algorithms/kmp": () =>
+    import("@/content/articles/other/data-structures-algorithms/algorithms/kmp"),
+  "other/data-structures-algorithms/algorithms/knapsack-01": () =>
+    import("@/content/articles/other/data-structures-algorithms/algorithms/knapsack-01"),
+  "other/data-structures-algorithms/algorithms/kruskals-mst": () =>
+    import("@/content/articles/other/data-structures-algorithms/algorithms/kruskals-mst"),
+  "other/data-structures-algorithms/algorithms/linear-search": () =>
+    import("@/content/articles/other/data-structures-algorithms/algorithms/linear-search"),
+  "other/data-structures-algorithms/algorithms/longest-common-subsequence":
+    () =>
+      import("@/content/articles/other/data-structures-algorithms/algorithms/longest-common-subsequence"),
+  "other/data-structures-algorithms/algorithms/longest-increasing-subsequence":
+    () =>
+      import("@/content/articles/other/data-structures-algorithms/algorithms/longest-increasing-subsequence"),
+  "other/data-structures-algorithms/algorithms/merge-sort": () =>
+    import("@/content/articles/other/data-structures-algorithms/algorithms/merge-sort"),
+  "other/data-structures-algorithms/algorithms/n-queens": () =>
+    import("@/content/articles/other/data-structures-algorithms/algorithms/n-queens"),
+  "other/data-structures-algorithms/algorithms/permutations-and-combinations":
+    () =>
+      import("@/content/articles/other/data-structures-algorithms/algorithms/permutations-and-combinations"),
+  "other/data-structures-algorithms/algorithms/prims-mst": () =>
+    import("@/content/articles/other/data-structures-algorithms/algorithms/prims-mst"),
+  "other/data-structures-algorithms/algorithms/quick-sort": () =>
+    import("@/content/articles/other/data-structures-algorithms/algorithms/quick-sort"),
+  "other/data-structures-algorithms/algorithms/quickselect": () =>
+    import("@/content/articles/other/data-structures-algorithms/algorithms/quickselect"),
+  "other/data-structures-algorithms/algorithms/rabin-karp": () =>
+    import("@/content/articles/other/data-structures-algorithms/algorithms/rabin-karp"),
+  "other/data-structures-algorithms/algorithms/radix-sort": () =>
+    import("@/content/articles/other/data-structures-algorithms/algorithms/radix-sort"),
+  "other/data-structures-algorithms/algorithms/selection-sort": () =>
+    import("@/content/articles/other/data-structures-algorithms/algorithms/selection-sort"),
+  "other/data-structures-algorithms/algorithms/shell-sort": () =>
+    import("@/content/articles/other/data-structures-algorithms/algorithms/shell-sort"),
+  "other/data-structures-algorithms/algorithms/sudoku-solver": () =>
+    import("@/content/articles/other/data-structures-algorithms/algorithms/sudoku-solver"),
+  "other/data-structures-algorithms/algorithms/tarjans-scc": () =>
+    import("@/content/articles/other/data-structures-algorithms/algorithms/tarjans-scc"),
+  "other/data-structures-algorithms/algorithms/ternary-search": () =>
+    import("@/content/articles/other/data-structures-algorithms/algorithms/ternary-search"),
+  "other/data-structures-algorithms/algorithms/topological-sort": () =>
+    import("@/content/articles/other/data-structures-algorithms/algorithms/topological-sort"),
+  "other/data-structures-algorithms/algorithms/word-search": () =>
+    import("@/content/articles/other/data-structures-algorithms/algorithms/word-search"),
+  "other/data-structures-algorithms/data-structures/arrays": () =>
+    import("@/content/articles/other/data-structures-algorithms/data-structures/arrays"),
+  "other/data-structures-algorithms/data-structures/b-trees": () =>
+    import("@/content/articles/other/data-structures-algorithms/data-structures/b-trees"),
+  "other/data-structures-algorithms/data-structures/bit-manipulation": () =>
+    import("@/content/articles/other/data-structures-algorithms/data-structures/bit-manipulation"),
+  "other/data-structures-algorithms/data-structures/bloom-filters": () =>
+    import("@/content/articles/other/data-structures-algorithms/data-structures/bloom-filters"),
+  "other/data-structures-algorithms/data-structures/count-min-sketch": () =>
+    import("@/content/articles/other/data-structures-algorithms/data-structures/count-min-sketch"),
+  "other/data-structures-algorithms/data-structures/disjoint-set-union-find":
+    () =>
+      import("@/content/articles/other/data-structures-algorithms/data-structures/disjoint-set-union-find"),
+  "other/data-structures-algorithms/data-structures/doubly-linked-lists": () =>
+    import("@/content/articles/other/data-structures-algorithms/data-structures/doubly-linked-lists"),
+  "other/data-structures-algorithms/data-structures/graphs": () =>
+    import("@/content/articles/other/data-structures-algorithms/data-structures/graphs"),
+  "other/data-structures-algorithms/data-structures/hash-tables": () =>
+    import("@/content/articles/other/data-structures-algorithms/data-structures/hash-tables"),
+  "other/data-structures-algorithms/data-structures/heaps-priority-queues":
+    () =>
+      import("@/content/articles/other/data-structures-algorithms/data-structures/heaps-priority-queues"),
+  "other/data-structures-algorithms/data-structures/hyperloglog": () =>
+    import("@/content/articles/other/data-structures-algorithms/data-structures/hyperloglog"),
+  "other/data-structures-algorithms/data-structures/lsm-trees": () =>
+    import("@/content/articles/other/data-structures-algorithms/data-structures/lsm-trees"),
+  "other/data-structures-algorithms/data-structures/merkle-trees": () =>
+    import("@/content/articles/other/data-structures-algorithms/data-structures/merkle-trees"),
+  "other/data-structures-algorithms/data-structures/queues": () =>
+    import("@/content/articles/other/data-structures-algorithms/data-structures/queues"),
+  "other/data-structures-algorithms/data-structures/singly-linked-lists": () =>
+    import("@/content/articles/other/data-structures-algorithms/data-structures/singly-linked-lists"),
+  "other/data-structures-algorithms/data-structures/skip-lists": () =>
+    import("@/content/articles/other/data-structures-algorithms/data-structures/skip-lists"),
+  "other/data-structures-algorithms/data-structures/stacks": () =>
+    import("@/content/articles/other/data-structures-algorithms/data-structures/stacks"),
+  "other/data-structures-algorithms/data-structures/strings": () =>
+    import("@/content/articles/other/data-structures-algorithms/data-structures/strings"),
+  "other/data-structures-algorithms/data-structures/trees": () =>
+    import("@/content/articles/other/data-structures-algorithms/data-structures/trees"),
+  "other/data-structures-algorithms/data-structures/tries": () =>
+    import("@/content/articles/other/data-structures-algorithms/data-structures/tries"),
+  "other/leetcode/patterns/backtracking": () =>
+    import("@/content/articles/other/leetcode/patterns/backtracking"),
+  "other/leetcode/patterns/binary-search": () =>
+    import("@/content/articles/other/leetcode/patterns/binary-search"),
+  "other/leetcode/patterns/bit-manipulation": () =>
+    import("@/content/articles/other/leetcode/patterns/bit-manipulation"),
+  "other/leetcode/patterns/cyclic-sort": () =>
+    import("@/content/articles/other/leetcode/patterns/cyclic-sort"),
+  "other/leetcode/patterns/divide-and-conquer": () =>
+    import("@/content/articles/other/leetcode/patterns/divide-and-conquer"),
+  "other/leetcode/patterns/dynamic-programming": () =>
+    import("@/content/articles/other/leetcode/patterns/dynamic-programming"),
+  "other/leetcode/patterns/fast-slow-pointers": () =>
+    import("@/content/articles/other/leetcode/patterns/fast-slow-pointers"),
+  "other/leetcode/patterns/graph": () =>
+    import("@/content/articles/other/leetcode/patterns/graph"),
+  "other/leetcode/patterns/greedy": () =>
+    import("@/content/articles/other/leetcode/patterns/greedy"),
+  "other/leetcode/patterns/hash-table": () =>
+    import("@/content/articles/other/leetcode/patterns/hash-table"),
+  "other/leetcode/patterns/heap": () =>
+    import("@/content/articles/other/leetcode/patterns/heap"),
+  "other/leetcode/patterns/in-place-linked-list-reversal": () =>
+    import("@/content/articles/other/leetcode/patterns/in-place-linked-list-reversal"),
+  "other/leetcode/patterns/k-way-merge": () =>
+    import("@/content/articles/other/leetcode/patterns/k-way-merge"),
+  "other/leetcode/patterns/linked-list": () =>
+    import("@/content/articles/other/leetcode/patterns/linked-list"),
+  "other/leetcode/patterns/math": () =>
+    import("@/content/articles/other/leetcode/patterns/math"),
+  "other/leetcode/patterns/merge-intervals": () =>
+    import("@/content/articles/other/leetcode/patterns/merge-intervals"),
+  "other/leetcode/patterns/monotonic-queue": () =>
+    import("@/content/articles/other/leetcode/patterns/monotonic-queue"),
+  "other/leetcode/patterns/monotonic-stack": () =>
+    import("@/content/articles/other/leetcode/patterns/monotonic-stack"),
+  "other/leetcode/patterns/prefix-sum": () =>
+    import("@/content/articles/other/leetcode/patterns/prefix-sum"),
+  "other/leetcode/patterns/queues": () =>
+    import("@/content/articles/other/leetcode/patterns/queues"),
+  "other/leetcode/patterns/recursion": () =>
+    import("@/content/articles/other/leetcode/patterns/recursion"),
+  "other/leetcode/patterns/sliding-window": () =>
+    import("@/content/articles/other/leetcode/patterns/sliding-window"),
+  "other/leetcode/patterns/stack": () =>
+    import("@/content/articles/other/leetcode/patterns/stack"),
+  "other/leetcode/patterns/string": () =>
+    import("@/content/articles/other/leetcode/patterns/string"),
+  "other/leetcode/patterns/top-k-elements": () =>
+    import("@/content/articles/other/leetcode/patterns/top-k-elements"),
+  "other/leetcode/patterns/tree": () =>
+    import("@/content/articles/other/leetcode/patterns/tree"),
+  "other/leetcode/patterns/trie": () =>
+    import("@/content/articles/other/leetcode/patterns/trie"),
+  "other/leetcode/patterns/two-pointer": () =>
+    import("@/content/articles/other/leetcode/patterns/two-pointer"),
+  "other/leetcode/patterns/union-find": () =>
+    import("@/content/articles/other/leetcode/patterns/union-find"),
 };
 
 /**
@@ -1006,7 +2881,12 @@ export function getAllArticlePaths() {
 /**
  * Load an article by its path
  */
-export async function loadArticle(domain: string, category: string, subcategory: string, topic: string) {
+export async function loadArticle(
+  domain: string,
+  category: string,
+  subcategory: string,
+  topic: string,
+) {
   const key = `${domain}/${category}/${subcategory}/${topic}`;
   const loadModule = articleRoutes[key];
 

@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="system-ui, sans-serif">
+  <rect width="900" height="500" fill="#f3f1f8"/>
+  <text x="450" y="32" text-anchor="middle" font-size="19" font-weight="700" fill="#1a1822">Variants — Insert, Sweep-Line, Heap-of-Ends</text>
+
+  <rect x="40" y="60" width="820" height="200" fill="#fff" stroke="#6d5bd0" stroke-width="2" rx="6"/>
+  <text x="60" y="88" font-size="13" font-weight="700" fill="#6d5bd0">Insert into a sorted list of intervals</text>
+  <text x="60" y="115" font-size="11">Input is already sorted and disjoint; insert one new interval, return merged result.</text>
+  <text x="60" y="135" font-size="11">1. Append all intervals ending strictly before new.start (they cannot overlap)</text>
+  <text x="60" y="155" font-size="11">2. While next interval overlaps new, absorb its bounds (extend new.start/end)</text>
+  <text x="60" y="175" font-size="11">3. Append the absorbed new, then append remaining non-overlapping intervals</text>
+  <text x="60" y="205" font-size="11">Time: O(n) — no sort needed because input is pre-sorted.</text>
+  <text x="60" y="235" font-size="11">Used by Leetcode 57 (Insert Interval).</text>
+
+  <rect x="40" y="280" width="820" height="195" fill="#fff" stroke="#4caf50" stroke-width="2" rx="6"/>
+  <text x="60" y="308" font-size="13" font-weight="700" fill="#4caf50">Sweep-line and heap-of-ends</text>
+  <text x="60" y="335" font-size="11">Sweep-line: convert each interval into two events (+1 at start, −1 at end).</text>
+  <text x="60" y="355" font-size="11">Sort events; sweep, tracking running active count. Max active = max overlap.</text>
+  <text x="60" y="385" font-size="11">Heap-of-ends: for &quot;meeting rooms II&quot; — sort intervals by start, push end</text>
+  <text x="60" y="405" font-size="11">into min-heap, pop when next start ≥ heap top (room freed). Heap size = rooms.</text>
+  <text x="60" y="435" font-size="11">Both run in O(n log n). Sweep-line is more flexible (handles many event types);</text>
+  <text x="60" y="455" font-size="11">heap-of-ends is more direct for room/resource allocation.</text>
+  <text x="60" y="475" font-size="11" fill="#4caf50" font-weight="700">Choose the variant that matches the question — merge, count overlap, or schedule.</text>
+</svg>

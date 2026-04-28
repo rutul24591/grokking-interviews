@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="system-ui, sans-serif">
+  <rect width="900" height="500" fill="#f3f1f8"/>
+  <text x="450" y="32" text-anchor="middle" font-size="19" font-weight="700" fill="#1a1822">Math Pattern — Number Theory and Arithmetic</text>
+
+  <rect x="40" y="60" width="820" height="200" fill="#fff" stroke="#6d5bd0" stroke-width="2" rx="6"/>
+  <text x="60" y="88" font-size="13" font-weight="700" fill="#6d5bd0">Core toolkit</text>
+  <text x="60" y="115" font-size="11">• GCD via Euclidean algorithm — gcd(a, b) = gcd(b, a mod b)</text>
+  <text x="60" y="135" font-size="11">• Modular arithmetic — (a + b) mod m = ((a mod m) + (b mod m)) mod m</text>
+  <text x="60" y="155" font-size="11">• Fast exponentiation — O(log n) via repeated squaring</text>
+  <text x="60" y="175" font-size="11">• Sieve of Eratosthenes — primes up to n in O(n log log n)</text>
+  <text x="60" y="195" font-size="11">• Modular inverse — Fermat&apos;s little theorem when modulus is prime</text>
+  <text x="60" y="225" font-size="11">• Combinatorics — nCr, factorial precompute, Pascal triangle</text>
+
+  <rect x="40" y="280" width="820" height="195" fill="#fff" stroke="#4caf50" stroke-width="2" rx="6"/>
+  <text x="60" y="308" font-size="13" font-weight="700" fill="#4caf50">Recognition signals</text>
+  <text x="60" y="335" font-size="11">• Divisibility / digit manipulation / base conversion</text>
+  <text x="60" y="355" font-size="11">• Overflow on int — switch to long, or use modular arithmetic</text>
+  <text x="60" y="375" font-size="11">• Fraction / ratio — track numerator / denominator separately</text>
+  <text x="60" y="395" font-size="11">• Counting modulo 1e9+7 — precompute factorials and inverses</text>
+  <text x="60" y="415" font-size="11">• Geometric — point-line, area, vector cross product</text>
+  <text x="60" y="435" font-size="11">• Random / probability — rejection sampling, reservoir sampling</text>
+  <text x="60" y="465" font-size="11" fill="#4caf50" font-weight="700">Identify the operation; the closed form usually exists.</text>
+</svg>

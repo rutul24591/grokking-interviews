@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="system-ui, sans-serif">
+  <rect width="900" height="500" fill="#f3f1f8"/>
+  <text x="450" y="32" text-anchor="middle" font-size="19" font-weight="700" fill="#1a1822">K-way Merge Templates</text>
+
+  <rect x="40" y="60" width="820" height="200" fill="#fff" stroke="#6d5bd0" stroke-width="2" rx="6"/>
+  <text x="60" y="88" font-size="13" font-weight="700" fill="#6d5bd0">Plain merge of k sorted lists (Leetcode 23)</text>
+  <text x="60" y="115" font-size="11">push (lists[i].head.val, i, lists[i].head) for i in 0..k-1 if non-empty</text>
+  <text x="60" y="135" font-size="11">while heap not empty:</text>
+  <text x="60" y="155" font-size="11">  (val, i, node) = pop; append node to output</text>
+  <text x="60" y="175" font-size="11">  if node.next: push (node.next.val, i, node.next)</text>
+  <text x="60" y="205" font-size="11">Total: O(N log k). Space: O(k) heap + the output list.</text>
+  <text x="60" y="225" font-size="11">Tie-breaker on val — include i to make tuple comparison total.</text>
+
+  <rect x="40" y="280" width="820" height="195" fill="#fff" stroke="#4caf50" stroke-width="2" rx="6"/>
+  <text x="60" y="308" font-size="13" font-weight="700" fill="#4caf50">Smallest range covering all k lists (Leetcode 632)</text>
+  <text x="60" y="335" font-size="11">heap holds (val, list-id, idx) — one frontier per list</text>
+  <text x="60" y="355" font-size="11">track current_max across the heap</text>
+  <text x="60" y="375" font-size="11">while heap full of one-from-each:</text>
+  <text x="60" y="395" font-size="11">  range = [heap.top, current_max]; update best</text>
+  <text x="60" y="415" font-size="11">  pop smallest; push next from same list (terminate if empty)</text>
+  <text x="60" y="435" font-size="11">  current_max = max(current_max, new value)</text>
+  <text x="60" y="465" font-size="11" fill="#4caf50" font-weight="700">Same template, query is on the heap state, not the popped value.</text>
+</svg>

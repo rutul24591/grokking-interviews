@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="system-ui, sans-serif">
+  <rect width="900" height="500" fill="#f3f1f8"/>
+  <text x="450" y="32" text-anchor="middle" font-size="19" font-weight="700" fill="#1a1822">Backtracking — Choose, Explore, Un-choose</text>
+
+  <rect x="40" y="60" width="820" height="200" fill="#fff" stroke="#6d5bd0" stroke-width="2" rx="6"/>
+  <text x="60" y="88" font-size="13" font-weight="700" fill="#6d5bd0">Three-step skeleton</text>
+  <text x="60" y="115" font-size="11">function backtrack(state):</text>
+  <text x="60" y="135" font-size="11">  if is_solution(state): record(state); return</text>
+  <text x="60" y="155" font-size="11">  for choice in valid_choices(state):</text>
+  <text x="60" y="175" font-size="11">    apply(choice)         # choose</text>
+  <text x="60" y="195" font-size="11">    backtrack(state)      # explore</text>
+  <text x="60" y="215" font-size="11">    undo(choice)          # un-choose</text>
+  <text x="60" y="245" font-size="11">The undo step is what makes backtracking different from blind DFS.</text>
+
+  <rect x="40" y="280" width="820" height="195" fill="#fff" stroke="#4caf50" stroke-width="2" rx="6"/>
+  <text x="60" y="308" font-size="13" font-weight="700" fill="#4caf50">When to reach for backtracking</text>
+  <text x="60" y="335" font-size="11">• Enumerate — subsets, permutations, combinations</text>
+  <text x="60" y="355" font-size="11">• Constraint satisfaction — N-queens, sudoku, word search</text>
+  <text x="60" y="375" font-size="11">• Partition / placement — palindrome partitions, expression splits</text>
+  <text x="60" y="395" font-size="11">• Decision problems with branching choices and pruning opportunities</text>
+  <text x="60" y="415" font-size="11">• Configuration generation — cell colourings, paint mixes, equation forms</text>
+  <text x="60" y="465" font-size="11" fill="#4caf50" font-weight="700">If &quot;try every option, prune impossibilities, undo on dead end&quot; — backtrack.</text>
+</svg>

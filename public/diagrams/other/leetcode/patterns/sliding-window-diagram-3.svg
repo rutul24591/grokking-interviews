@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="system-ui, sans-serif">
+  <rect width="900" height="500" fill="#f3f1f8"/>
+  <text x="450" y="32" text-anchor="middle" font-size="19" font-weight="700" fill="#1a1822">Canonical Sliding-Window Leetcode Problems</text>
+
+  <rect x="40" y="60" width="820" height="200" fill="#fff" stroke="#6d5bd0" stroke-width="2" rx="6"/>
+  <text x="60" y="85" font-size="13" font-weight="700" fill="#6d5bd0">Fixed-size window</text>
+  <text x="60" y="112" font-size="11">• 643. Maximum Average Subarray I — base sum-of-k template</text>
+  <text x="60" y="132" font-size="11">• 1456. Maximum Vowels in Substring of Given Length</text>
+  <text x="60" y="152" font-size="11">• 567. Permutation in String — char-count match between window and pattern</text>
+  <text x="60" y="172" font-size="11">• 438. Find All Anagrams in a String — same as 567, return all start indices</text>
+  <text x="60" y="192" font-size="11">• 239. Sliding Window Maximum — monotonic deque (separate pattern)</text>
+  <text x="60" y="212" font-size="11">• 480. Sliding Window Median — sorted multiset / two heaps</text>
+  <text x="60" y="232" font-size="11">• 30. Substring with Concatenation of All Words</text>
+
+  <rect x="40" y="280" width="820" height="195" fill="#fff" stroke="#4caf50" stroke-width="2" rx="6"/>
+  <text x="60" y="305" font-size="13" font-weight="700" fill="#4caf50">Variable-size window</text>
+  <text x="60" y="330" font-size="11">• 3. Longest Substring Without Repeating Characters — set / map of last-seen</text>
+  <text x="60" y="350" font-size="11">• 76. Minimum Window Substring — covers-pattern shortest window</text>
+  <text x="60" y="370" font-size="11">• 209. Minimum Size Subarray Sum — shortest subarray with sum ≥ target</text>
+  <text x="60" y="390" font-size="11">• 159 / 340. Longest Substring with At Most K Distinct — count-of-distinct constraint</text>
+  <text x="60" y="410" font-size="11">• 904. Fruit Into Baskets — at-most-2-distinct rephrased</text>
+  <text x="60" y="430" font-size="11">• 424. Longest Repeating Character Replacement — &quot;windowLen − maxFreq ≤ k&quot;</text>
+  <text x="60" y="455" font-size="11" fill="#4caf50" font-weight="700">Recognition: contiguous range + window-aggregate predicate ⟹ sliding-window.</text>
+</svg>

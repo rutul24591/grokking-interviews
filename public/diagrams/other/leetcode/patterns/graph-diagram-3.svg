@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="system-ui, sans-serif">
+  <rect width="900" height="500" fill="#f3f1f8"/>
+  <text x="450" y="32" text-anchor="middle" font-size="19" font-weight="700" fill="#1a1822">Canonical Graph Leetcode Problems</text>
+
+  <rect x="40" y="60" width="820" height="200" fill="#fff" stroke="#6d5bd0" stroke-width="2" rx="6"/>
+  <text x="60" y="88" font-size="13" font-weight="700" fill="#6d5bd0">Traversal / connectivity</text>
+  <text x="60" y="115" font-size="11">• 200. Number of Islands — DFS / BFS / Union-Find on grid</text>
+  <text x="60" y="135" font-size="11">• 695. Max Area of Island — DFS counting</text>
+  <text x="60" y="155" font-size="11">• 133. Clone Graph — BFS / DFS with hashmap of clones</text>
+  <text x="60" y="175" font-size="11">• 994. Rotting Oranges — multi-source BFS</text>
+  <text x="60" y="195" font-size="11">• 1091. Shortest Path in Binary Matrix — BFS with 8 neighbours</text>
+  <text x="60" y="225" font-size="11">• 127. Word Ladder — BFS over implicit graph (or bidirectional)</text>
+
+  <rect x="40" y="280" width="820" height="195" fill="#fff" stroke="#4caf50" stroke-width="2" rx="6"/>
+  <text x="60" y="308" font-size="13" font-weight="700" fill="#4caf50">Shortest path / topological / cycle</text>
+  <text x="60" y="335" font-size="11">• 743. Network Delay Time — Dijkstra single-source</text>
+  <text x="60" y="355" font-size="11">• 787. Cheapest Flights Within K Stops — modified Dijkstra / Bellman-Ford</text>
+  <text x="60" y="375" font-size="11">• 1631. Path with Minimum Effort — Dijkstra on grid</text>
+  <text x="60" y="395" font-size="11">• 207 / 210. Course Schedule — topological sort, cycle detection</text>
+  <text x="60" y="415" font-size="11">• 269. Alien Dictionary — build graph from order, topological sort</text>
+  <text x="60" y="435" font-size="11">• 684. Redundant Connection — Union-Find first cycle</text>
+  <text x="60" y="465" font-size="11" fill="#4caf50" font-weight="700">Identify shape (weighted, directed, cycles), pick algorithm.</text>
+</svg>

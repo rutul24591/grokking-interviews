@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="system-ui, sans-serif">
+  <rect width="900" height="500" fill="#f3f1f8"/>
+  <text x="450" y="32" text-anchor="middle" font-size="19" font-weight="700" fill="#1a1822">BST Properties and LCA</text>
+
+  <rect x="40" y="60" width="820" height="200" fill="#fff" stroke="#6d5bd0" stroke-width="2" rx="6"/>
+  <text x="60" y="88" font-size="13" font-weight="700" fill="#6d5bd0">Binary search tree</text>
+  <text x="60" y="115" font-size="11">In-order traversal of a BST yields a sorted sequence.</text>
+  <text x="60" y="135" font-size="11">For each node: left subtree values &lt; node &lt; right subtree values.</text>
+  <text x="60" y="160" font-size="11" font-weight="700">Operations (height h):</text>
+  <text x="60" y="180" font-size="11">search, insert, delete in O(h). Balanced ⟹ O(log n); skewed ⟹ O(n).</text>
+  <text x="60" y="210" font-size="11">Common variants: AVL, Red-Black, Treap, Splay (self-balancing).</text>
+  <text x="60" y="230" font-size="11">Java TreeMap, C++ std::map, Python sortedcontainers — all balanced BST or skip list.</text>
+
+  <rect x="40" y="280" width="820" height="195" fill="#fff" stroke="#4caf50" stroke-width="2" rx="6"/>
+  <text x="60" y="308" font-size="13" font-weight="700" fill="#4caf50">Lowest Common Ancestor</text>
+  <text x="60" y="335" font-size="11">General binary tree (236):</text>
+  <text x="60" y="355" font-size="11">  recurse left and right; if both non-null return current; else return non-null child</text>
+  <text x="60" y="385" font-size="11">BST (235):</text>
+  <text x="60" y="405" font-size="11">  if both targets &lt; node ⟹ recurse left; both &gt; ⟹ right; else current is LCA</text>
+  <text x="60" y="440" font-size="11" fill="#4caf50" font-weight="700">BST exploits ordering for O(h) without subtree search.</text>
+</svg>

@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="system-ui, sans-serif">
+  <rect width="900" height="500" fill="#f3f1f8"/>
+  <text x="450" y="32" text-anchor="middle" font-size="19" font-weight="700" fill="#1a1822">Top-K Pattern — Recognition and Choices</text>
+
+  <rect x="40" y="60" width="820" height="200" fill="#fff" stroke="#6d5bd0" stroke-width="2" rx="6"/>
+  <text x="60" y="88" font-size="13" font-weight="700" fill="#6d5bd0">Recognition signals</text>
+  <text x="60" y="115" font-size="11">• &quot;K largest / smallest / closest / most frequent&quot;</text>
+  <text x="60" y="135" font-size="11">• Streaming input — you cannot re-sort the whole window</text>
+  <text x="60" y="155" font-size="11">• K is much smaller than N — bounded heap beats full sort</text>
+  <text x="60" y="175" font-size="11">• You only need the answer items, not their global ordering</text>
+  <text x="60" y="205" font-size="11">If k ≈ n: just sort. If k « n: heap (or quickselect for offline).</text>
+  <text x="60" y="230" font-size="11">If priority range is small and integral: bucket sort beats both.</text>
+
+  <rect x="40" y="280" width="820" height="195" fill="#fff" stroke="#4caf50" stroke-width="2" rx="6"/>
+  <text x="60" y="308" font-size="13" font-weight="700" fill="#4caf50">Three solution families</text>
+  <text x="60" y="335" font-size="11">1. Min-heap of size k (largest) / max-heap of size k (smallest) — O(n log k)</text>
+  <text x="60" y="355" font-size="11">2. Quickselect partition — O(n) average, O(n²) worst, in-place, offline</text>
+  <text x="60" y="375" font-size="11">3. Bucket / counting sort by frequency — O(n) when frequencies are bounded</text>
+  <text x="60" y="405" font-size="11">Streaming forces option 1. Offline favours option 2 unless worst-case</text>
+  <text x="60" y="425" font-size="11">guarantees matter, in which case option 1 with deterministic O(n log k).</text>
+  <text x="60" y="465" font-size="11" fill="#4caf50" font-weight="700">Polarity rule: heap top is what you are willing to discard.</text>
+</svg>

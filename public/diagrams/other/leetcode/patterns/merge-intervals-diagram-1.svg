@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="system-ui, sans-serif">
+  <rect width="900" height="500" fill="#f3f1f8"/>
+  <text x="450" y="32" text-anchor="middle" font-size="19" font-weight="700" fill="#1a1822">Merge Intervals — Sort, Sweep, Merge</text>
+
+  <rect x="40" y="60" width="820" height="200" fill="#fff" stroke="#6d5bd0" stroke-width="2" rx="6"/>
+  <text x="60" y="88" font-size="13" font-weight="700" fill="#6d5bd0">The template</text>
+  <text x="60" y="115" font-size="11">1. Sort intervals by start time</text>
+  <text x="60" y="135" font-size="11">2. Initialise result with the first interval</text>
+  <text x="60" y="155" font-size="11">3. For each subsequent interval:</text>
+  <text x="60" y="175" font-size="11">   • If it overlaps the last in result (current.start ≤ last.end), extend last.end</text>
+  <text x="60" y="195" font-size="11">   • Otherwise, append it to result</text>
+  <text x="60" y="225" font-size="11">Output: list of disjoint intervals covering the same union as the input.</text>
+  <text x="60" y="245" font-size="11">Time: O(n log n) for the sort. Space: O(n) for the output.</text>
+
+  <rect x="40" y="280" width="820" height="195" fill="#fff" stroke="#4caf50" stroke-width="2" rx="6"/>
+  <text x="60" y="308" font-size="13" font-weight="700" fill="#4caf50">Recognition signals</text>
+  <text x="60" y="335" font-size="11">• Input is a list of [start, end] pairs</text>
+  <text x="60" y="355" font-size="11">• Question asks for: merged ranges, total covered length, count of distinct groups</text>
+  <text x="60" y="375" font-size="11">• Or: insert an interval, find conflicts, find free time, count overlap at a point</text>
+  <text x="60" y="395" font-size="11">• Or: schedule meetings, allocate rooms, deduplicate booking ranges</text>
+  <text x="60" y="425" font-size="11">If two intervals can overlap and the question is about their relationship,</text>
+  <text x="60" y="445" font-size="11">the merge-intervals pattern (or a sweep-line variant) is the answer.</text>
+  <text x="60" y="465" font-size="11" fill="#4caf50" font-weight="700">Sort by start, walk once, merge or append. Three lines of logic, dozens of problems.</text>
+</svg>

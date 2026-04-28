@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="system-ui, sans-serif">
+  <rect width="900" height="500" fill="#f3f1f8"/>
+  <text x="450" y="32" text-anchor="middle" font-size="19" font-weight="700" fill="#1a1822">Hash Table — The O(1) Lookup Workhorse</text>
+
+  <rect x="40" y="60" width="820" height="200" fill="#fff" stroke="#6d5bd0" stroke-width="2" rx="6"/>
+  <text x="60" y="88" font-size="13" font-weight="700" fill="#6d5bd0">Three roles in interview problems</text>
+  <text x="60" y="115" font-size="11">• Set — membership tests in O(1). &quot;Have I seen this value before?&quot;</text>
+  <text x="60" y="135" font-size="11">• Map — key → metadata. Index, count, last position, frequency.</text>
+  <text x="60" y="155" font-size="11">• Counter — multiset semantics. Anagram tests, frequency comparisons.</text>
+  <text x="60" y="185" font-size="11" font-weight="700">Trade:</text>
+  <text x="60" y="205" font-size="11">O(n) extra space buys O(1) average lookup. Worst-case O(n) per op on collisions —</text>
+  <text x="60" y="225" font-size="11">in adversarial / contest settings, randomise the hash or use a balanced tree.</text>
+
+  <rect x="40" y="280" width="820" height="195" fill="#fff" stroke="#4caf50" stroke-width="2" rx="6"/>
+  <text x="60" y="308" font-size="13" font-weight="700" fill="#4caf50">Recognition signals</text>
+  <text x="60" y="335" font-size="11">• &quot;Has this been seen before?&quot; → set</text>
+  <text x="60" y="355" font-size="11">• &quot;What was the index of the last X?&quot; → map (key → index)</text>
+  <text x="60" y="375" font-size="11">• &quot;Count occurrences&quot; / &quot;is anagram&quot; → counter</text>
+  <text x="60" y="395" font-size="11">• &quot;Pair (a, b) with a + b = k&quot; → map of complements</text>
+  <text x="60" y="415" font-size="11">• Group by transform (sorted-string, signature) → map of bucket → list</text>
+  <text x="60" y="450" font-size="11" fill="#4caf50" font-weight="700">If you find yourself searching a list repeatedly, swap it for a hash structure.</text>
+</svg>

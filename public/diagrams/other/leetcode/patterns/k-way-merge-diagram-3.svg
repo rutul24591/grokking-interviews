@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="system-ui, sans-serif">
+  <rect width="900" height="500" fill="#f3f1f8"/>
+  <text x="450" y="32" text-anchor="middle" font-size="19" font-weight="700" fill="#1a1822">Canonical K-way Merge Leetcode Problems</text>
+
+  <rect x="40" y="60" width="820" height="200" fill="#fff" stroke="#6d5bd0" stroke-width="2" rx="6"/>
+  <text x="60" y="88" font-size="13" font-weight="700" fill="#6d5bd0">Direct merges</text>
+  <text x="60" y="115" font-size="11">• 23. Merge k Sorted Lists — heap of head pointers</text>
+  <text x="60" y="135" font-size="11">• 88. Merge Sorted Array — k=2 special case (in-place from the back)</text>
+  <text x="60" y="155" font-size="11">• 21. Merge Two Sorted Lists — k=2 base case</text>
+  <text x="60" y="175" font-size="11">• 264. Ugly Number II — three lists 2x, 3x, 5x merged with dedup</text>
+  <text x="60" y="195" font-size="11">• 313. Super Ugly Number — generalised k primes merge</text>
+  <text x="60" y="225" font-size="11">• 1675. Minimize Deviation in Array — heap with even/odd transformation</text>
+
+  <rect x="40" y="280" width="820" height="195" fill="#fff" stroke="#4caf50" stroke-width="2" rx="6"/>
+  <text x="60" y="308" font-size="13" font-weight="700" fill="#4caf50">Merge as substrate for queries</text>
+  <text x="60" y="335" font-size="11">• 378. Kth Smallest in a Sorted Matrix — rows as sorted lists</text>
+  <text x="60" y="355" font-size="11">• 373. K Smallest Pairs — virtual list pair-grid with neighbour expansion</text>
+  <text x="60" y="375" font-size="11">• 632. Smallest Range Covering Elements from K Lists — frontier heap</text>
+  <text x="60" y="395" font-size="11">• 786. Kth Smallest Prime Fraction — merge of fraction streams</text>
+  <text x="60" y="415" font-size="11">• 668. Kth Smallest in Multiplication Table — virtual sorted rows</text>
+  <text x="60" y="435" font-size="11">• 719. Find K-th Smallest Pair Distance — distance generator + binary search</text>
+  <text x="60" y="465" font-size="11" fill="#4caf50" font-weight="700">If sorted streams are present, k-way merge with a heap is the default.</text>
+</svg>

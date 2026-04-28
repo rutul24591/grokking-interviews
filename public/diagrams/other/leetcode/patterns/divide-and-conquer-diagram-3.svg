@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="system-ui, sans-serif">
+  <rect width="900" height="500" fill="#f3f1f8"/>
+  <text x="450" y="32" text-anchor="middle" font-size="19" font-weight="700" fill="#1a1822">Canonical Divide-and-Conquer Leetcode Problems</text>
+
+  <rect x="40" y="60" width="820" height="200" fill="#fff" stroke="#6d5bd0" stroke-width="2" rx="6"/>
+  <text x="60" y="88" font-size="13" font-weight="700" fill="#6d5bd0">Sort &amp; search family</text>
+  <text x="60" y="115" font-size="11">• 912. Sort an Array — merge sort or quicksort, O(n log n)</text>
+  <text x="60" y="135" font-size="11">• 215. Kth Largest Element — quickselect, O(n) average</text>
+  <text x="60" y="155" font-size="11">• 23. Merge K Sorted Lists — pairwise merge tree, O(N log k)</text>
+  <text x="60" y="175" font-size="11">• 4. Median of Two Sorted Arrays — O(log min(m,n)) via partition</text>
+  <text x="60" y="195" font-size="11">• 327. Count of Range Sum — merge sort with cross-boundary count</text>
+  <text x="60" y="225" font-size="11">• 493. Reverse Pairs — same merge-sort cross-count technique</text>
+
+  <rect x="40" y="280" width="820" height="195" fill="#fff" stroke="#4caf50" stroke-width="2" rx="6"/>
+  <text x="60" y="308" font-size="13" font-weight="700" fill="#4caf50">Recursive structure family</text>
+  <text x="60" y="335" font-size="11">• 53. Maximum Subarray — D&amp;C variant runs in O(n log n) (Kadane is O(n))</text>
+  <text x="60" y="355" font-size="11">• 169. Majority Element — recursive halving, combine via vote-merge</text>
+  <text x="60" y="375" font-size="11">• 241. Different Ways to Add Parentheses — split at each operator, recurse</text>
+  <text x="60" y="395" font-size="11">• 95. Unique Binary Search Trees II — pick root, recurse on left/right ranges</text>
+  <text x="60" y="415" font-size="11">• 240. Search a 2D Matrix II — quad partition (or O(m+n) staircase)</text>
+  <text x="60" y="435" font-size="11">• 218. The Skyline Problem — D&amp;C merge of half-skylines</text>
+  <text x="60" y="465" font-size="11" fill="#4caf50" font-weight="700">D&amp;C shines when the combine step is non-trivial but cheap.</text>
+</svg>

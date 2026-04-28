@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="system-ui, sans-serif">
+  <rect width="900" height="500" fill="#f3f1f8"/>
+  <text x="450" y="32" text-anchor="middle" font-size="19" font-weight="700" fill="#1a1822">In-Place Linked-List Reversal — Triple-Step</text>
+
+  <rect x="40" y="60" width="820" height="200" fill="#fff" stroke="#6d5bd0" stroke-width="2" rx="6"/>
+  <text x="60" y="88" font-size="13" font-weight="700" fill="#6d5bd0">The three pointers</text>
+  <text x="60" y="115" font-size="11">prev — already-reversed prefix head (initialised to null)</text>
+  <text x="60" y="135" font-size="11">curr — node currently being reversed</text>
+  <text x="60" y="155" font-size="11">next — saved successor before mutating curr.next</text>
+  <text x="60" y="185" font-size="11" font-weight="700">Loop body (the four lines that matter):</text>
+  <text x="60" y="205" font-size="11" font-family="monospace">  next = curr.next        # save</text>
+  <text x="60" y="225" font-size="11" font-family="monospace">  curr.next = prev        # reverse</text>
+  <text x="60" y="245" font-size="11" font-family="monospace">  prev = curr             # advance prev</text>
+
+  <rect x="40" y="280" width="820" height="195" fill="#fff" stroke="#4caf50" stroke-width="2" rx="6"/>
+  <text x="60" y="308" font-size="13" font-weight="700" fill="#4caf50">Full template</text>
+  <text x="60" y="335" font-size="11" font-family="monospace">prev = null; curr = head</text>
+  <text x="60" y="355" font-size="11" font-family="monospace">while curr:</text>
+  <text x="60" y="375" font-size="11" font-family="monospace">  next = curr.next</text>
+  <text x="60" y="395" font-size="11" font-family="monospace">  curr.next = prev</text>
+  <text x="60" y="415" font-size="11" font-family="monospace">  prev = curr</text>
+  <text x="60" y="435" font-size="11" font-family="monospace">  curr = next</text>
+  <text x="60" y="455" font-size="11" font-family="monospace">return prev   # new head</text>
+</svg>

@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="system-ui, sans-serif">
+  <rect width="900" height="500" fill="#f3f1f8"/>
+  <text x="450" y="32" text-anchor="middle" font-size="19" font-weight="700" fill="#1a1822">Trie Templates</text>
+
+  <rect x="40" y="60" width="820" height="200" fill="#fff" stroke="#6d5bd0" stroke-width="2" rx="6"/>
+  <text x="60" y="88" font-size="13" font-weight="700" fill="#6d5bd0">Insert / Search</text>
+  <text x="60" y="115" font-size="11" font-family="monospace">def insert(word):</text>
+  <text x="60" y="135" font-size="11" font-family="monospace">  node = root</text>
+  <text x="60" y="155" font-size="11" font-family="monospace">  for c in word:</text>
+  <text x="60" y="175" font-size="11" font-family="monospace">    if c not in node.children: node.children[c] = TrieNode()</text>
+  <text x="60" y="195" font-size="11" font-family="monospace">    node = node.children[c]</text>
+  <text x="60" y="215" font-size="11" font-family="monospace">  node.is_end = True</text>
+  <text x="60" y="245" font-size="11" font-family="monospace">def search(word, prefix=False):</text>
+  <text x="60" y="265" font-size="11" font-family="monospace">  walk; if any char missing, return False</text>
+
+  <rect x="40" y="280" width="820" height="195" fill="#fff" stroke="#4caf50" stroke-width="2" rx="6"/>
+  <text x="60" y="308" font-size="13" font-weight="700" fill="#4caf50">Wildcard search (211)</text>
+  <text x="60" y="335" font-size="11" font-family="monospace">def search(word, node):</text>
+  <text x="60" y="355" font-size="11" font-family="monospace">  for i, c in enumerate(word):</text>
+  <text x="60" y="375" font-size="11" font-family="monospace">    if c == &apos;.&apos;:</text>
+  <text x="60" y="395" font-size="11" font-family="monospace">      try every child as a recursive subtree</text>
+  <text x="60" y="415" font-size="11" font-family="monospace">    else descend on c</text>
+  <text x="60" y="445" font-size="11">For Word Search II (212), DFS the grid while walking the trie in lockstep.</text>
+  <text x="60" y="465" font-size="11" fill="#4caf50" font-weight="700">Trie + DFS handles dictionary-grid problems with no per-word re-search.</text>
+</svg>

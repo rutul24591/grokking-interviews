@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="system-ui, sans-serif">
+  <rect width="900" height="500" fill="#f3f1f8"/>
+  <text x="450" y="32" text-anchor="middle" font-size="19" font-weight="700" fill="#1a1822">Parametric Search — Binary-Searching the Answer</text>
+
+  <rect x="40" y="60" width="820" height="220" fill="#fff" stroke="#6d5bd0" stroke-width="2" rx="6"/>
+  <text x="60" y="85" font-size="13" font-weight="700" fill="#6d5bd0">Setup</text>
+  <text x="60" y="112" font-size="11">Problem: find min (or max) x such that some property p(x) holds.</text>
+  <text x="60" y="132" font-size="11">Property must be monotone: if p(x) is true, then p(x + 1), p(x + 2), ... are also true.</text>
+  <text x="60" y="152" font-size="11">  (Or: p(x) false implies p(x - 1), p(x - 2), ... false.)</text>
+  <text x="60" y="180" font-size="11" font-weight="700">Reduction:</text>
+  <text x="60" y="200" font-size="11">Binary-search x over [lo, hi]; at each mid, run a feasibility check (often O(n)).</text>
+  <text x="60" y="220" font-size="11">Total time: O(n · log(hi - lo)).</text>
+  <text x="60" y="248" font-size="11" font-weight="700">Examples:</text>
+  <text x="60" y="268" font-size="11">  • Koko Eating Bananas — min eat-rate so all bananas finish in h hours</text>
+
+  <rect x="40" y="300" width="820" height="175" fill="#fff" stroke="#4caf50" stroke-width="2" rx="6"/>
+  <text x="60" y="325" font-size="13" font-weight="700" fill="#4caf50">More parametric examples</text>
+  <text x="60" y="350" font-size="11">• 410. Split Array Largest Sum — partition into k subarrays minimising the max sum</text>
+  <text x="60" y="370" font-size="11">• 875. Capacity to Ship Packages in D Days — min ship capacity</text>
+  <text x="60" y="390" font-size="11">• 668. Kth Smallest Number in Multiplication Table</text>
+  <text x="60" y="410" font-size="11">• 778. Swim in Rising Water — min t such that path exists at heights ≤ t</text>
+  <text x="60" y="430" font-size="11">• 1011. Capacity to Ship in D Days, 1283. Find Smallest Divisor</text>
+  <text x="60" y="450" font-size="11" fill="#4caf50" font-weight="700">Recognition: &quot;min/max value such that...&quot; with a feasibility check ⟹ binary-search the answer.</text>
+</svg>

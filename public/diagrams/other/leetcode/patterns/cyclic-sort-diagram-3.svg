@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="system-ui, sans-serif">
+  <rect width="900" height="500" fill="#f3f1f8"/>
+  <text x="450" y="32" text-anchor="middle" font-size="19" font-weight="700" fill="#1a1822">Canonical Cyclic-Sort Leetcode Problems</text>
+
+  <rect x="40" y="60" width="820" height="200" fill="#fff" stroke="#6d5bd0" stroke-width="2" rx="6"/>
+  <text x="60" y="88" font-size="13" font-weight="700" fill="#6d5bd0">Direct applications</text>
+  <text x="60" y="115" font-size="11">• 268. Missing Number — values 0..n, find the single missing one</text>
+  <text x="60" y="135" font-size="11">• 448. Find All Numbers Disappeared in an Array — values 1..n, return absent</text>
+  <text x="60" y="155" font-size="11">• 287. Find the Duplicate Number — values 1..n, exactly one duplicate</text>
+  <text x="60" y="175" font-size="11">• 442. Find All Duplicates in an Array — every value appears once or twice</text>
+  <text x="60" y="195" font-size="11">• 41. First Missing Positive — hardest; ignore values outside 1..n during placement</text>
+  <text x="60" y="225" font-size="11">• 645. Set Mismatch — find the duplicated and the missing pair simultaneously</text>
+
+  <rect x="40" y="280" width="820" height="195" fill="#fff" stroke="#4caf50" stroke-width="2" rx="6"/>
+  <text x="60" y="308" font-size="13" font-weight="700" fill="#4caf50">Why cyclic sort beats alternatives here</text>
+  <text x="60" y="335" font-size="11">• Hashset: O(n) time, O(n) space — fails the O(1) extra-space constraint</text>
+  <text x="60" y="355" font-size="11">• Sort then scan: O(n log n) time — slower than necessary</text>
+  <text x="60" y="375" font-size="11">• XOR trick: works for single missing, not duplicates or multi-missing</text>
+  <text x="60" y="395" font-size="11">• Negation marking: also O(n)/O(1), but mutates sign — fragile if values can be 0</text>
+  <text x="60" y="425" font-size="11">Cyclic sort: O(n) time, O(1) extra space, generalises to all six problems above.</text>
+  <text x="60" y="465" font-size="11" fill="#4caf50" font-weight="700">When values are bounded by 1..n, cyclic sort is the default tool.</text>
+</svg>

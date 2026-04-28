@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="system-ui, sans-serif">
+  <rect width="900" height="500" fill="#f3f1f8"/>
+  <text x="450" y="32" text-anchor="middle" font-size="19" font-weight="700" fill="#1a1822">Canonical Two-Pointer Leetcode Problems</text>
+
+  <rect x="40" y="60" width="820" height="200" fill="#fff" stroke="#6d5bd0" stroke-width="2" rx="6"/>
+  <text x="60" y="85" font-size="13" font-weight="700" fill="#6d5bd0">Convergent flavour</text>
+  <text x="60" y="112" font-size="11">• 1. Two Sum (sorted variant 167) — base pattern</text>
+  <text x="60" y="132" font-size="11">• 15. 3Sum / 16. 3Sum Closest / 18. 4Sum — fix one (or two), two-pointer the rest</text>
+  <text x="60" y="152" font-size="11">• 11. Container With Most Water — area maximization, move shorter wall inward</text>
+  <text x="60" y="172" font-size="11">• 42. Trapping Rain Water — bound by min(maxLeft, maxRight); advance smaller side</text>
+  <text x="60" y="192" font-size="11">• 125. Valid Palindrome / 680. Valid Palindrome II — mirror check with skip option</text>
+  <text x="60" y="212" font-size="11">• 75. Sort Colors — Dutch national flag, three pointers (low / mid / high)</text>
+  <text x="60" y="232" font-size="11">• 344. Reverse String / 345. Reverse Vowels — pure swap pattern</text>
+
+  <rect x="40" y="280" width="820" height="195" fill="#fff" stroke="#4caf50" stroke-width="2" rx="6"/>
+  <text x="60" y="305" font-size="13" font-weight="700" fill="#4caf50">Parallel (slow / fast) flavour</text>
+  <text x="60" y="330" font-size="11">• 26. Remove Duplicates from Sorted Array — slow = next write index</text>
+  <text x="60" y="350" font-size="11">• 27. Remove Element — same skeleton, predicate-based filter</text>
+  <text x="60" y="370" font-size="11">• 283. Move Zeroes — write non-zeroes forward, zero-fill the tail</text>
+  <text x="60" y="390" font-size="11">• 88. Merge Sorted Array — write from the back to avoid in-place clobber</text>
+  <text x="60" y="410" font-size="11">• 905. Sort Array by Parity / 922. By Parity II — partition by predicate</text>
+  <text x="60" y="445" font-size="11" fill="#4caf50" font-weight="700">Pattern recognition: sorted input + pair predicate, or in-place rewrite — reach for two-pointer.</text>
+</svg>

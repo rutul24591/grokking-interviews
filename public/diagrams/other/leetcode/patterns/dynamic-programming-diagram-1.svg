@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="system-ui, sans-serif">
+  <rect width="900" height="500" fill="#f3f1f8"/>
+  <text x="450" y="32" text-anchor="middle" font-size="19" font-weight="700" fill="#1a1822">Dynamic Programming — Memoise the Overlap</text>
+
+  <rect x="40" y="60" width="820" height="200" fill="#fff" stroke="#6d5bd0" stroke-width="2" rx="6"/>
+  <text x="60" y="88" font-size="13" font-weight="700" fill="#6d5bd0">Two preconditions</text>
+  <text x="60" y="115" font-size="11">• Optimal substructure — solution to the whole built from solutions to subproblems</text>
+  <text x="60" y="135" font-size="11">• Overlapping subproblems — same subproblem reached by multiple paths in recursion</text>
+  <text x="60" y="165" font-size="11">If only optimal substructure → divide and conquer (no memoisation needed).</text>
+  <text x="60" y="185" font-size="11">If only overlapping subproblems → memoise but no recurrence simplification.</text>
+  <text x="60" y="205" font-size="11">Both present → DP is the right tool, with exponential-to-polynomial speedup.</text>
+  <text x="60" y="235" font-size="11">Two coding styles: top-down (memoised recursion) or bottom-up (table fill).</text>
+
+  <rect x="40" y="280" width="820" height="195" fill="#fff" stroke="#4caf50" stroke-width="2" rx="6"/>
+  <text x="60" y="308" font-size="13" font-weight="700" fill="#4caf50">Five-step DP recipe</text>
+  <text x="60" y="335" font-size="11">1. Define dp[state] — what does dp[i] / dp[i][j] / dp[mask] mean?</text>
+  <text x="60" y="355" font-size="11">2. Recurrence — how does dp[state] decompose into dp[smaller-state]?</text>
+  <text x="60" y="375" font-size="11">3. Base cases — what are dp[0] / dp[empty] / dp[trivial]?</text>
+  <text x="60" y="395" font-size="11">4. Order of evaluation — top-down (recurse + memo) or bottom-up (loop)</text>
+  <text x="60" y="415" font-size="11">5. Final answer — extract from dp[n] / dp[full-state]; reconstruct path if needed</text>
+  <text x="60" y="445" font-size="11">Time = states × work-per-state. Space = states (often reducible to a row or two).</text>
+  <text x="60" y="465" font-size="11" fill="#4caf50" font-weight="700">Define the state precisely first; the recurrence usually follows.</text>
+</svg>

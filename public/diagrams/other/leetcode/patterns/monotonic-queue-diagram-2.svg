@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="system-ui, sans-serif">
+  <rect width="900" height="500" fill="#f3f1f8"/>
+  <text x="450" y="32" text-anchor="middle" font-size="19" font-weight="700" fill="#1a1822">Trace: Sliding Window Max, k = 3</text>
+
+  <rect x="40" y="60" width="820" height="200" fill="#fff" stroke="#6d5bd0" stroke-width="2" rx="6"/>
+  <text x="60" y="88" font-size="13" font-weight="700" fill="#6d5bd0">Input</text>
+  <text x="60" y="115" font-size="11" font-family="monospace">A = [1, 3, -1, -3, 5, 3, 6, 7]    k = 3</text>
+  <text x="60" y="145" font-size="11" font-family="monospace">i=0  push 0       deque=[0]</text>
+  <text x="60" y="165" font-size="11" font-family="monospace">i=1  pop 0 (1&lt;=3); push 1       deque=[1]</text>
+  <text x="60" y="185" font-size="11" font-family="monospace">i=2  push 2 (-1&lt;3 keep)         deque=[1,2]   record A[1]=3</text>
+  <text x="60" y="205" font-size="11" font-family="monospace">i=3  push 3                     deque=[1,2,3] record A[1]=3</text>
+  <text x="60" y="225" font-size="11" font-family="monospace">i=4  pop 3,2,1 (all &lt;=5); push 4 deque=[4]    front 4 still in window  record 5</text>
+
+  <rect x="40" y="280" width="820" height="195" fill="#fff" stroke="#4caf50" stroke-width="2" rx="6"/>
+  <text x="60" y="308" font-size="13" font-weight="700" fill="#4caf50">Continued</text>
+  <text x="60" y="335" font-size="11" font-family="monospace">i=5  push 5 (3&lt;5 keep)          deque=[4,5]   record 5</text>
+  <text x="60" y="355" font-size="11" font-family="monospace">i=6  pop 5,4 (both &lt;=6); push 6 deque=[6]    record 6</text>
+  <text x="60" y="375" font-size="11" font-family="monospace">i=7  pop 6 (6&lt;=7); push 7       deque=[7]    record 7</text>
+  <text x="60" y="405" font-size="11" font-family="monospace">Result: [3, 3, 5, 5, 6, 7]</text>
+  <text x="60" y="450" font-size="11" fill="#4caf50" font-weight="700">8 pushes, 8 pops total — strictly O(n) regardless of k.</text>
+</svg>

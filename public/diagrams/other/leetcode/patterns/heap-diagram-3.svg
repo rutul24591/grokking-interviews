@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="system-ui, sans-serif">
+  <rect width="900" height="500" fill="#f3f1f8"/>
+  <text x="450" y="32" text-anchor="middle" font-size="19" font-weight="700" fill="#1a1822">Canonical Heap Leetcode Problems</text>
+
+  <rect x="40" y="60" width="820" height="200" fill="#fff" stroke="#6d5bd0" stroke-width="2" rx="6"/>
+  <text x="60" y="88" font-size="13" font-weight="700" fill="#6d5bd0">Top-k / k-way merge</text>
+  <text x="60" y="115" font-size="11">• 215. Kth Largest Element — quickselect or min-heap of size k</text>
+  <text x="60" y="135" font-size="11">• 347. Top K Frequent Elements — counter + min-heap</text>
+  <text x="60" y="155" font-size="11">• 692. Top K Frequent Words — comparator with frequency + lex order</text>
+  <text x="60" y="175" font-size="11">• 23. Merge k Sorted Lists — heap of (value, list-pointer)</text>
+  <text x="60" y="195" font-size="11">• 378. Kth Smallest in Sorted Matrix — heap or binary-search on value</text>
+  <text x="60" y="225" font-size="11">• 373. K Smallest Pairs — heap with deduplication</text>
+
+  <rect x="40" y="280" width="820" height="195" fill="#fff" stroke="#4caf50" stroke-width="2" rx="6"/>
+  <text x="60" y="308" font-size="13" font-weight="700" fill="#4caf50">Two heaps / scheduler / Dijkstra</text>
+  <text x="60" y="335" font-size="11">• 295. Find Median from Data Stream — max-heap + min-heap</text>
+  <text x="60" y="355" font-size="11">• 480. Sliding Window Median — two heaps + lazy deletion</text>
+  <text x="60" y="375" font-size="11">• 502. IPO — two heaps (capital, profit)</text>
+  <text x="60" y="395" font-size="11">• 1631. Path with Minimum Effort — Dijkstra over grid</text>
+  <text x="60" y="415" font-size="11">• 743. Network Delay Time — single-source shortest path</text>
+  <text x="60" y="435" font-size="11">• 621. Task Scheduler — max-heap + cooldown queue</text>
+  <text x="60" y="465" font-size="11" fill="#4caf50" font-weight="700">Heap is the universal substrate for &quot;next best by priority&quot;.</text>
+</svg>

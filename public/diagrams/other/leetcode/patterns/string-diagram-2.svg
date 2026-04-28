@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="system-ui, sans-serif">
+  <rect width="900" height="500" fill="#f3f1f8"/>
+  <text x="450" y="32" text-anchor="middle" font-size="19" font-weight="700" fill="#1a1822">Substring Search — Naive vs. KMP / Z / Rabin-Karp</text>
+
+  <rect x="40" y="60" width="820" height="200" fill="#fff" stroke="#6d5bd0" stroke-width="2" rx="6"/>
+  <text x="60" y="88" font-size="13" font-weight="700" fill="#6d5bd0">Naive O(nm)</text>
+  <text x="60" y="115" font-size="11">For each i in 0..n-m, compare text[i..i+m] to pattern</text>
+  <text x="60" y="135" font-size="11">Always correct; pathological on text=&quot;aaaaab&quot; pattern=&quot;aaab&quot;</text>
+  <text x="60" y="160" font-size="11" font-weight="700">KMP — preprocess pattern&apos;s longest proper prefix-suffix array</text>
+  <text x="60" y="180" font-size="11">On mismatch, jump using LPS instead of restarting; O(n + m)</text>
+  <text x="60" y="200" font-size="11">Used as the lib (strstr) and in the Aho-Corasick generalisation</text>
+  <text x="60" y="225" font-size="11">Z-algorithm computes a similar array directly on text+&quot;#&quot;+pattern</text>
+
+  <rect x="40" y="280" width="820" height="195" fill="#fff" stroke="#4caf50" stroke-width="2" rx="6"/>
+  <text x="60" y="308" font-size="13" font-weight="700" fill="#4caf50">Rabin-Karp — rolling hash O(n + m) expected</text>
+  <text x="60" y="335" font-size="11">Compute hash of pattern; slide a window over text computing hash incrementally</text>
+  <text x="60" y="355" font-size="11">On hash match, verify literal substring equality (collision check)</text>
+  <text x="60" y="375" font-size="11">Polynomial hash mod a large prime: h = (h * base + c) mod p</text>
+  <text x="60" y="395" font-size="11">Roll: h = (h - text[i-m] * base^(m-1)) * base + text[i]</text>
+  <text x="60" y="415" font-size="11">Best for: multiple patterns simultaneously, plagiarism detection, fingerprinting</text>
+  <text x="60" y="465" font-size="11" fill="#4caf50" font-weight="700">For interviews: KMP is the classic; Rabin-Karp is the elegant.</text>
+</svg>

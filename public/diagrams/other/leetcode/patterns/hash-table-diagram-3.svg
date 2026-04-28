@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="system-ui, sans-serif">
+  <rect width="900" height="500" fill="#f3f1f8"/>
+  <text x="450" y="32" text-anchor="middle" font-size="19" font-weight="700" fill="#1a1822">Canonical Hash-Table Leetcode Problems</text>
+
+  <rect x="40" y="60" width="820" height="200" fill="#fff" stroke="#6d5bd0" stroke-width="2" rx="6"/>
+  <text x="60" y="88" font-size="13" font-weight="700" fill="#6d5bd0">Direct hash applications</text>
+  <text x="60" y="115" font-size="11">• 1. Two Sum — value → index, complement lookup</text>
+  <text x="60" y="135" font-size="11">• 217. Contains Duplicate — set membership</text>
+  <text x="60" y="155" font-size="11">• 219. Contains Duplicate II — value → last index, distance check</text>
+  <text x="60" y="175" font-size="11">• 49. Group Anagrams — signature (sorted string / count tuple) → bucket</text>
+  <text x="60" y="195" font-size="11">• 242. Valid Anagram — counter equality</text>
+  <text x="60" y="225" font-size="11">• 387. First Unique Character — frequency map, then index scan</text>
+
+  <rect x="40" y="280" width="820" height="195" fill="#fff" stroke="#4caf50" stroke-width="2" rx="6"/>
+  <text x="60" y="308" font-size="13" font-weight="700" fill="#4caf50">Hash + cleverness</text>
+  <text x="60" y="335" font-size="11">• 128. Longest Consecutive Sequence — set + only-start-from-x-without-x-1 trick</text>
+  <text x="60" y="355" font-size="11">• 36. Valid Sudoku — three sets of sets per row/col/box</text>
+  <text x="60" y="375" font-size="11">• 290. Word Pattern — bijective two-map check</text>
+  <text x="60" y="395" font-size="11">• 205. Isomorphic Strings — bijective two-map check</text>
+  <text x="60" y="415" font-size="11">• 380. Insert Delete GetRandom O(1) — map + dynamic array swap-trick</text>
+  <text x="60" y="435" font-size="11">• 146. LRU Cache — hash map + doubly linked list</text>
+  <text x="60" y="460" font-size="11" fill="#4caf50" font-weight="700">Hashing is the prerequisite. The trick is what you store as the value.</text>
+</svg>

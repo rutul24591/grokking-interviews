@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="system-ui, sans-serif">
+  <rect width="900" height="500" fill="#f3f1f8"/>
+  <text x="450" y="32" text-anchor="middle" font-size="19" font-weight="700" fill="#1a1822">Canonical Dynamic Programming Leetcode Problems</text>
+
+  <rect x="40" y="60" width="820" height="200" fill="#fff" stroke="#6d5bd0" stroke-width="2" rx="6"/>
+  <text x="60" y="88" font-size="13" font-weight="700" fill="#6d5bd0">1D and prefix DP</text>
+  <text x="60" y="115" font-size="11">• 70. Climbing Stairs — Fibonacci recurrence</text>
+  <text x="60" y="135" font-size="11">• 198. House Robber, 213. House Robber II — take or skip current</text>
+  <text x="60" y="155" font-size="11">• 300. Longest Increasing Subsequence — O(n²) DP or O(n log n) patience</text>
+  <text x="60" y="175" font-size="11">• 322. Coin Change — dp[amount] = min coins</text>
+  <text x="60" y="195" font-size="11">• 139. Word Break — dp[i] = is prefix of length i breakable</text>
+  <text x="60" y="225" font-size="11">• 91. Decode Ways — dp[i] depends on previous one or two characters</text>
+
+  <rect x="40" y="280" width="820" height="195" fill="#fff" stroke="#4caf50" stroke-width="2" rx="6"/>
+  <text x="60" y="308" font-size="13" font-weight="700" fill="#4caf50">2D, interval, and grid DP</text>
+  <text x="60" y="335" font-size="11">• 1143. Longest Common Subsequence — classic 2D DP on two strings</text>
+  <text x="60" y="355" font-size="11">• 72. Edit Distance — Levenshtein with insert / delete / replace</text>
+  <text x="60" y="375" font-size="11">• 5 / 647. Longest Palindromic Substring / count — interval DP</text>
+  <text x="60" y="395" font-size="11">• 312. Burst Balloons — interval DP with split point k</text>
+  <text x="60" y="415" font-size="11">• 64. Minimum Path Sum — grid DP, dp[i][j] = top + left choice</text>
+  <text x="60" y="435" font-size="11">• 188 / 309 / 714. Stock with k / cooldown / fee — state-machine DP</text>
+  <text x="60" y="465" font-size="11" fill="#4caf50" font-weight="700">DP is recognising the state, not inventing the recurrence from scratch.</text>
+</svg>

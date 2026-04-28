@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="system-ui, sans-serif">
+  <rect width="900" height="500" fill="#f3f1f8"/>
+  <text x="450" y="32" text-anchor="middle" font-size="19" font-weight="700" fill="#1a1822">Union-Find — Disjoint Set Union</text>
+
+  <rect x="40" y="60" width="820" height="200" fill="#fff" stroke="#6d5bd0" stroke-width="2" rx="6"/>
+  <text x="60" y="88" font-size="13" font-weight="700" fill="#6d5bd0">Operations</text>
+  <text x="60" y="115" font-size="11">• find(x) — return the root of x&apos;s set</text>
+  <text x="60" y="135" font-size="11">• union(x, y) — merge the sets containing x and y</text>
+  <text x="60" y="155" font-size="11">• connected(x, y) — true iff find(x) == find(y)</text>
+  <text x="60" y="180" font-size="11" font-weight="700">Two optimisations make it nearly O(1):</text>
+  <text x="60" y="200" font-size="11">• Path compression — flatten on every find</text>
+  <text x="60" y="220" font-size="11">• Union by rank / size — attach smaller tree under larger root</text>
+  <text x="60" y="245" font-size="11">Combined: O(α(n)) per operation. α = inverse Ackermann ≤ 4 in practice.</text>
+
+  <rect x="40" y="280" width="820" height="195" fill="#fff" stroke="#4caf50" stroke-width="2" rx="6"/>
+  <text x="60" y="308" font-size="13" font-weight="700" fill="#4caf50">When to reach for it</text>
+  <text x="60" y="335" font-size="11">• Online connectivity — edges arrive one by one, query is &quot;same component?&quot;</text>
+  <text x="60" y="355" font-size="11">• Kruskal&apos;s minimum spanning tree — sort edges, union those that join components</text>
+  <text x="60" y="375" font-size="11">• Detect cycle in undirected graph — union returns false if already same set</text>
+  <text x="60" y="395" font-size="11">• Equivalence relations / merging buckets — string equivalence, account merging</text>
+  <text x="60" y="415" font-size="11">• Number-of-components in dynamic graphs — track count, decrement on each union</text>
+  <text x="60" y="465" font-size="11" fill="#4caf50" font-weight="700">If the question is &quot;are these in the same set?&quot; — Union-Find.</text>
+</svg>

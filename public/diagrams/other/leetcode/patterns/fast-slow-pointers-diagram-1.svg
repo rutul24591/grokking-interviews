@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="system-ui, sans-serif">
+  <rect width="900" height="500" fill="#f3f1f8"/>
+  <text x="450" y="32" text-anchor="middle" font-size="19" font-weight="700" fill="#1a1822">Fast &amp; Slow Pointers — Floyd&apos;s Tortoise and Hare</text>
+
+  <rect x="40" y="60" width="820" height="200" fill="#fff" stroke="#6d5bd0" stroke-width="2" rx="6"/>
+  <text x="60" y="85" font-size="13" font-weight="700" fill="#6d5bd0">Cycle detection</text>
+  <text x="60" y="112" font-size="11">Slow advances 1 step, fast advances 2 steps. If a cycle exists, fast laps slow inside it.</text>
+  <text x="60" y="132" font-size="11">If fast reaches null (or end), no cycle. O(n) time, O(1) space.</text>
+  <text x="60" y="160" font-size="11" font-weight="700">Why they meet:</text>
+  <text x="60" y="180" font-size="11">Once both are inside the cycle of length C, the gap between them shrinks by 1 per step.</text>
+  <text x="60" y="200" font-size="11">After at most C steps the gap reaches 0 — they collide.</text>
+  <text x="60" y="228" font-size="11" font-weight="700">Cycle entry (Floyd&apos;s second phase):</text>
+  <text x="60" y="248" font-size="11">After meeting, reset slow to head. Walk both at speed 1 — they meet at the cycle start.</text>
+
+  <rect x="40" y="280" width="820" height="195" fill="#fff" stroke="#4caf50" stroke-width="2" rx="6"/>
+  <text x="60" y="305" font-size="13" font-weight="700" fill="#4caf50">Other uses</text>
+  <text x="60" y="330" font-size="11">• Middle of linked list (876): when fast hits end, slow is at the middle.</text>
+  <text x="60" y="350" font-size="11">• Palindrome linked list (234): find middle, reverse second half, compare.</text>
+  <text x="60" y="370" font-size="11">• Reorder list (143): same — find middle, reverse, interleave.</text>
+  <text x="60" y="390" font-size="11">• Happy number (202): treat digit-square sum as a function f; detect cycle in f^k(n).</text>
+  <text x="60" y="410" font-size="11">• Find duplicate number (287): treat array as f(i) = A[i]; the duplicate is the cycle entry.</text>
+  <text x="60" y="445" font-size="11" fill="#4caf50" font-weight="700">Anywhere a sequence x, f(x), f²(x), ... eventually cycles, Floyd applies.</text>
+</svg>

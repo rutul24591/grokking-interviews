@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="system-ui, sans-serif">
+  <rect width="900" height="500" fill="#f3f1f8"/>
+  <text x="450" y="32" text-anchor="middle" font-size="19" font-weight="700" fill="#1a1822">Quickselect vs. Bounded Heap</text>
+
+  <rect x="40" y="60" width="400" height="395" fill="#fff" stroke="#6d5bd0" stroke-width="2" rx="6"/>
+  <text x="60" y="88" font-size="13" font-weight="700" fill="#6d5bd0">Quickselect (offline)</text>
+  <text x="60" y="115" font-size="11">Pick a pivot, partition into less / equal / greater.</text>
+  <text x="60" y="135" font-size="11">Recurse only into the side containing the k-th index.</text>
+  <text x="60" y="160" font-size="11">Average O(n); worst O(n²) without good pivot choice.</text>
+  <text x="60" y="180" font-size="11">Median-of-medians for guaranteed O(n) — rarely needed.</text>
+  <text x="60" y="210" font-size="11">In-place: O(1) extra memory.</text>
+  <text x="60" y="230" font-size="11">Returns only the k-th value; surrounding</text>
+  <text x="60" y="250" font-size="11">partition gives the top-k as a side effect.</text>
+  <text x="60" y="280" font-size="11">Good when: full array fits in memory,</text>
+  <text x="60" y="300" font-size="11">average case is acceptable, no streaming.</text>
+  <text x="60" y="335" font-size="11" font-weight="700">Hoare partition or Lomuto — Hoare is</text>
+  <text x="60" y="355" font-size="11">faster but trickier to get right.</text>
+  <text x="60" y="395" font-size="11" fill="#cc4444" font-weight="700">Pitfall: bad pivot on sorted input</text>
+  <text x="60" y="415" font-size="11" fill="#cc4444">⇒ O(n²). Randomise pivot.</text>
+
+  <rect x="460" y="60" width="400" height="395" fill="#fff" stroke="#4caf50" stroke-width="2" rx="6"/>
+  <text x="480" y="88" font-size="13" font-weight="700" fill="#4caf50">Bounded heap (streaming)</text>
+  <text x="480" y="115" font-size="11">Min-heap of size k for &quot;k largest&quot;.</text>
+  <text x="480" y="135" font-size="11">For each x: push; if size &gt; k pop.</text>
+  <text x="480" y="160" font-size="11">Top is the smallest of the kept items —</text>
+  <text x="480" y="180" font-size="11">the next eviction candidate.</text>
+  <text x="480" y="210" font-size="11">Time: O(n log k) deterministic.</text>
+  <text x="480" y="230" font-size="11">Space: O(k).</text>
+  <text x="480" y="260" font-size="11">Returns all k items in arbitrary order.</text>
+  <text x="480" y="280" font-size="11">Drain to get them sorted.</text>
+  <text x="480" y="310" font-size="11">Good when: stream, k « n, worst-case</text>
+  <text x="480" y="330" font-size="11">guarantees matter, follow-up scaling.</text>
+  <text x="480" y="365" font-size="11" font-weight="700">Polarity check: writing &quot;max-heap&quot;</text>
+  <text x="480" y="385" font-size="11">for &quot;k largest&quot; is the most common bug.</text>
+  <text x="480" y="425" font-size="11" fill="#cc4444" font-weight="700">Pitfall: forgetting the size cap</text>
+  <text x="480" y="445" font-size="11" fill="#cc4444">⇒ O(n log n), no win over sort.</text>
+</svg>

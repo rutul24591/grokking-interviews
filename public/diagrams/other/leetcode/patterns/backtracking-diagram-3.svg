@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="system-ui, sans-serif">
+  <rect width="900" height="500" fill="#f3f1f8"/>
+  <text x="450" y="32" text-anchor="middle" font-size="19" font-weight="700" fill="#1a1822">Canonical Backtracking Leetcode Problems</text>
+
+  <rect x="40" y="60" width="820" height="200" fill="#fff" stroke="#6d5bd0" stroke-width="2" rx="6"/>
+  <text x="60" y="88" font-size="13" font-weight="700" fill="#6d5bd0">Enumeration</text>
+  <text x="60" y="115" font-size="11">• 78. Subsets — for each index, include or skip</text>
+  <text x="60" y="135" font-size="11">• 90. Subsets II — sort, skip duplicates at same depth</text>
+  <text x="60" y="155" font-size="11">• 46. Permutations — swap-or-used-set technique</text>
+  <text x="60" y="175" font-size="11">• 47. Permutations II — sort, skip same value at same depth</text>
+  <text x="60" y="195" font-size="11">• 39. Combination Sum — reuse allowed, idx parameter prevents duplicates</text>
+  <text x="60" y="225" font-size="11">• 40. Combination Sum II — no reuse, sort, skip duplicates</text>
+
+  <rect x="40" y="280" width="820" height="195" fill="#fff" stroke="#4caf50" stroke-width="2" rx="6"/>
+  <text x="60" y="308" font-size="13" font-weight="700" fill="#4caf50">Constraint satisfaction</text>
+  <text x="60" y="335" font-size="11">• 51 / 52. N-Queens — column / diagonal sets, backtrack on conflict</text>
+  <text x="60" y="355" font-size="11">• 37. Sudoku Solver — try 1..9, prune by row / col / box</text>
+  <text x="60" y="375" font-size="11">• 79. Word Search — DFS on grid with visited mark, undo on return</text>
+  <text x="60" y="395" font-size="11">• 17. Letter Combinations of a Phone Number — depth = length</text>
+  <text x="60" y="415" font-size="11">• 131. Palindrome Partitioning — split index, recurse on rest</text>
+  <text x="60" y="435" font-size="11">• 22. Generate Parentheses — open/close balance constraint</text>
+  <text x="60" y="465" font-size="11" fill="#4caf50" font-weight="700">Backtracking is the right answer when n ≤ ~20 and choices branch.</text>
+</svg>

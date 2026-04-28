@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="system-ui, sans-serif">
+  <rect width="900" height="500" fill="#f3f1f8"/>
+  <text x="450" y="32" text-anchor="middle" font-size="19" font-weight="700" fill="#1a1822">Two Sum — One-Pass Hash Map Walkthrough</text>
+
+  <rect x="40" y="60" width="820" height="200" fill="#fff" stroke="#6d5bd0" stroke-width="2" rx="6"/>
+  <text x="60" y="88" font-size="13" font-weight="700" fill="#6d5bd0">Algorithm</text>
+  <text x="60" y="115" font-size="11">Walk i from 0 to n − 1 maintaining map: value → index.</text>
+  <text x="60" y="135" font-size="11">For each A[i]: look up complement = target − A[i].</text>
+  <text x="60" y="155" font-size="11">If present, return (map[complement], i). Otherwise insert A[i] → i.</text>
+  <text x="60" y="180" font-size="11" font-weight="700">Why one pass works:</text>
+  <text x="60" y="200" font-size="11">When the right element of the pair is reached, the left was inserted earlier — found.</text>
+  <text x="60" y="220" font-size="11">Lookup before insert prevents using A[i] as both halves of the pair.</text>
+
+  <rect x="40" y="280" width="820" height="195" fill="#fff" stroke="#4caf50" stroke-width="2" rx="6"/>
+  <text x="60" y="308" font-size="13" font-weight="700" fill="#4caf50">Trace: A = [2, 7, 11, 15], target = 9</text>
+  <text x="60" y="335" font-size="11" font-family="monospace">i = 0  A[i] = 2   complement = 7    map = {}            insert 2 → 0</text>
+  <text x="60" y="355" font-size="11" font-family="monospace">i = 1  A[i] = 7   complement = 2    map = {2: 0}        hit ⟹ (0, 1)</text>
+  <text x="60" y="385" font-size="11">Time O(n), space O(n). Beats O(n²) brute force and O(n log n) sort + two-pointer</text>
+  <text x="60" y="405" font-size="11">when original indices must be returned (sorting destroys positions).</text>
+  <text x="60" y="440" font-size="11" fill="#4caf50" font-weight="700">Lookup-before-insert is the canonical hash-pattern step ordering.</text>
+</svg>

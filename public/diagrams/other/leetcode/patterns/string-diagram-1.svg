@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="system-ui, sans-serif">
+  <rect width="900" height="500" fill="#f3f1f8"/>
+  <text x="450" y="32" text-anchor="middle" font-size="19" font-weight="700" fill="#1a1822">String Pattern — Sub-patterns Inside Strings</text>
+
+  <rect x="40" y="60" width="820" height="200" fill="#fff" stroke="#6d5bd0" stroke-width="2" rx="6"/>
+  <text x="60" y="88" font-size="13" font-weight="700" fill="#6d5bd0">String problems are not one pattern</text>
+  <text x="60" y="115" font-size="11">• Two-pointer / sliding window — substring with property</text>
+  <text x="60" y="135" font-size="11">• Hash map — anagram, character frequency</text>
+  <text x="60" y="155" font-size="11">• Stack — parentheses, encode / decode</text>
+  <text x="60" y="175" font-size="11">• Trie — prefix dictionary, autocomplete</text>
+  <text x="60" y="195" font-size="11">• KMP / Z / Rabin-Karp — substring search</text>
+  <text x="60" y="225" font-size="11">• Manacher — longest palindromic substring</text>
+
+  <rect x="40" y="280" width="820" height="195" fill="#fff" stroke="#4caf50" stroke-width="2" rx="6"/>
+  <text x="60" y="308" font-size="13" font-weight="700" fill="#4caf50">String-specific reflexes</text>
+  <text x="60" y="335" font-size="11">• ASCII / Unicode — array of 26, 128, or hashmap by codepoint</text>
+  <text x="60" y="355" font-size="11">• Immutability — never &quot;edit&quot; in place; build a list of chars</text>
+  <text x="60" y="375" font-size="11">• Comparison — equals, not == (Java); is vs. == (Python interning)</text>
+  <text x="60" y="395" font-size="11">• Encoding — UTF-8 byte length vs. codepoint length differ</text>
+  <text x="60" y="415" font-size="11">• Reverse — language-specific; in Java, StringBuilder.reverse()</text>
+  <text x="60" y="465" font-size="11" fill="#4caf50" font-weight="700">Match the sub-pattern; the technique falls out.</text>
+</svg>

@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="system-ui, sans-serif">
+  <rect width="900" height="500" fill="#f3f1f8"/>
+  <text x="450" y="32" text-anchor="middle" font-size="19" font-weight="700" fill="#1a1822">Top-K and Two-Heaps Templates</text>
+
+  <rect x="40" y="60" width="820" height="200" fill="#fff" stroke="#6d5bd0" stroke-width="2" rx="6"/>
+  <text x="60" y="88" font-size="13" font-weight="700" fill="#6d5bd0">Top-k smallest (using a max-heap of size k)</text>
+  <text x="60" y="115" font-size="11" font-family="monospace">heap = []   # max-heap (negate values in Python)</text>
+  <text x="60" y="135" font-size="11" font-family="monospace">for x in stream:</text>
+  <text x="60" y="155" font-size="11" font-family="monospace">  push(x); if size &gt; k: pop largest</text>
+  <text x="60" y="175" font-size="11" font-family="monospace">at end: heap contains the k smallest seen so far</text>
+  <text x="60" y="205" font-size="11">Time O(n log k); space O(k). Beats sort for k « n streaming workloads.</text>
+  <text x="60" y="225" font-size="11">For top-k largest: same template with a min-heap of size k.</text>
+
+  <rect x="40" y="280" width="820" height="195" fill="#fff" stroke="#4caf50" stroke-width="2" rx="6"/>
+  <text x="60" y="308" font-size="13" font-weight="700" fill="#4caf50">Median of stream (295)</text>
+  <text x="60" y="335" font-size="11">Two heaps: max-heap of low half, min-heap of high half.</text>
+  <text x="60" y="355" font-size="11">Invariant: |low| ∈ {|high|, |high| + 1}; max(low) ≤ min(high).</text>
+  <text x="60" y="380" font-size="11">addNum(x):</text>
+  <text x="60" y="400" font-size="11">  if low empty or x ≤ max(low): push to low; else push to high</text>
+  <text x="60" y="420" font-size="11">  rebalance so |low| = |high| or |low| = |high| + 1</text>
+  <text x="60" y="450" font-size="11">findMedian: max(low) if odd; (max(low) + min(high)) / 2 if even.</text>
+  <text x="60" y="465" font-size="11" fill="#4caf50" font-weight="700">Two heaps split the stream at the median in O(log n) per add.</text>
+</svg>

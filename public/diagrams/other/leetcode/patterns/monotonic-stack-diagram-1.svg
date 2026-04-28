@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="system-ui, sans-serif">
+  <rect width="900" height="500" fill="#f3f1f8"/>
+  <text x="450" y="32" text-anchor="middle" font-size="19" font-weight="700" fill="#1a1822">Monotonic Stack — Nearest Greater / Smaller in O(n)</text>
+
+  <rect x="40" y="60" width="820" height="200" fill="#fff" stroke="#6d5bd0" stroke-width="2" rx="6"/>
+  <text x="60" y="88" font-size="13" font-weight="700" fill="#6d5bd0">Definition</text>
+  <text x="60" y="115" font-size="11">A stack maintained in monotone (non-increasing or non-decreasing) order.</text>
+  <text x="60" y="135" font-size="11">On push, evict every top element that violates the order; the new element wins.</text>
+  <text x="60" y="160" font-size="11" font-weight="700">Invariant:</text>
+  <text x="60" y="180" font-size="11">After each push, stack values are sorted top-to-bottom in the chosen direction.</text>
+  <text x="60" y="210" font-size="11">Each element is pushed once and popped at most once ⟹ O(n) total.</text>
+
+  <rect x="40" y="280" width="820" height="195" fill="#fff" stroke="#4caf50" stroke-width="2" rx="6"/>
+  <text x="60" y="308" font-size="13" font-weight="700" fill="#4caf50">Next greater element template</text>
+  <text x="60" y="335" font-size="11">stack of indices, decreasing from bottom to top:</text>
+  <text x="60" y="355" font-size="11">for i in 0..n − 1:</text>
+  <text x="60" y="375" font-size="11">  while stack non-empty and A[stack.top()] &lt; A[i]:</text>
+  <text x="60" y="395" font-size="11">    answer[stack.pop()] = A[i]</text>
+  <text x="60" y="415" font-size="11">  push i</text>
+  <text x="60" y="445" font-size="11" fill="#4caf50" font-weight="700">Recognition: &quot;next/previous greater/smaller&quot;, &quot;span&quot;, &quot;histogram rectangle&quot;.</text>
+</svg>

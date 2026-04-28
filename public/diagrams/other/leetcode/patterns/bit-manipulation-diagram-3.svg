@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="system-ui, sans-serif">
+  <rect width="900" height="500" fill="#f3f1f8"/>
+  <text x="450" y="32" text-anchor="middle" font-size="19" font-weight="700" fill="#1a1822">Canonical Bit Manipulation Leetcode Problems</text>
+
+  <rect x="40" y="60" width="820" height="200" fill="#fff" stroke="#6d5bd0" stroke-width="2" rx="6"/>
+  <text x="60" y="88" font-size="13" font-weight="700" fill="#6d5bd0">XOR and counting</text>
+  <text x="60" y="115" font-size="11">• 136. Single Number — XOR of all elements</text>
+  <text x="60" y="135" font-size="11">• 137. Single Number II — bit-by-bit count mod 3</text>
+  <text x="60" y="155" font-size="11">• 260. Single Number III — XOR then split by a differing bit</text>
+  <text x="60" y="175" font-size="11">• 191. Number of 1 Bits — Brian Kernighan or popcount</text>
+  <text x="60" y="195" font-size="11">• 338. Counting Bits — DP using f[i] = f[i &gt;&gt; 1] + (i &amp; 1)</text>
+  <text x="60" y="225" font-size="11">• 461. Hamming Distance — popcount(a ^ b)</text>
+
+  <rect x="40" y="280" width="820" height="195" fill="#fff" stroke="#4caf50" stroke-width="2" rx="6"/>
+  <text x="60" y="308" font-size="13" font-weight="700" fill="#4caf50">Bitmask DP and tries</text>
+  <text x="60" y="335" font-size="11">• 78. Subsets — iterate masks 0 to 2^n - 1</text>
+  <text x="60" y="355" font-size="11">• 187. Repeated DNA Sequences — encode 4-letter alphabet in 2 bits</text>
+  <text x="60" y="375" font-size="11">• 421. Maximum XOR of Two Numbers — bit-trie greedy descent</text>
+  <text x="60" y="395" font-size="11">• 1255. Maximum Score Words — bitmask over selected words</text>
+  <text x="60" y="415" font-size="11">• 1457. Pseudo-Palindromic Paths — XOR digit mask along DFS</text>
+  <text x="60" y="435" font-size="11">• 847. Shortest Path Visiting All Nodes — BFS over (node, visited mask)</text>
+  <text x="60" y="465" font-size="11" fill="#4caf50" font-weight="700">When n ≤ 20, bitmask DP is the canonical optimisation tool.</text>
+</svg>

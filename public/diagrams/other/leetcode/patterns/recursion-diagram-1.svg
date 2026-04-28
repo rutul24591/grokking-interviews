@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="system-ui, sans-serif">
+  <rect width="900" height="500" fill="#f3f1f8"/>
+  <text x="450" y="32" text-anchor="middle" font-size="19" font-weight="700" fill="#1a1822">Recursion — Anatomy of a Recursive Function</text>
+
+  <rect x="40" y="60" width="820" height="200" fill="#fff" stroke="#6d5bd0" stroke-width="2" rx="6"/>
+  <text x="60" y="88" font-size="13" font-weight="700" fill="#6d5bd0">Three obligations</text>
+  <text x="60" y="115" font-size="11">1. Base case — terminating condition that does not recurse</text>
+  <text x="60" y="135" font-size="11">2. Reduction — each recursive call must move toward the base</text>
+  <text x="60" y="155" font-size="11">3. Combination — how to assemble subproblem answers into the answer here</text>
+  <text x="60" y="185" font-size="11">Without 1 you loop forever; without 2 you do too; without 3 you</text>
+  <text x="60" y="205" font-size="11">discard the work the recursion already did.</text>
+  <text x="60" y="235" font-size="11">Recursion = induction made concrete in code.</text>
+
+  <rect x="40" y="280" width="820" height="195" fill="#fff" stroke="#4caf50" stroke-width="2" rx="6"/>
+  <text x="60" y="308" font-size="13" font-weight="700" fill="#4caf50">When to reach for recursion</text>
+  <text x="60" y="335" font-size="11">• Tree / graph traversal — natural left-then-right or DFS structure</text>
+  <text x="60" y="355" font-size="11">• Divide-and-conquer — sort, search, balanced operations</text>
+  <text x="60" y="375" font-size="11">• Backtracking — enumerate states, prune impossible branches</text>
+  <text x="60" y="395" font-size="11">• Inductive computation — factorial, Fibonacci, Tower of Hanoi</text>
+  <text x="60" y="415" font-size="11">• Linguistic / parsing — grammar productions are recursive</text>
+  <text x="60" y="435" font-size="11">• Dynamic programming — top-down memoised recursion</text>
+  <text x="60" y="465" font-size="11" fill="#4caf50" font-weight="700">If the problem reduces to a smaller version of itself, recurse.</text>
+</svg>

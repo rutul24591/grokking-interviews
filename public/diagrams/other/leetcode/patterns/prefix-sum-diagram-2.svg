@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="system-ui, sans-serif">
+  <rect width="900" height="500" fill="#f3f1f8"/>
+  <text x="450" y="32" text-anchor="middle" font-size="19" font-weight="700" fill="#1a1822">Prefix Sum + Hash Map — Subarray Sum Equals K</text>
+
+  <rect x="40" y="60" width="820" height="200" fill="#fff" stroke="#6d5bd0" stroke-width="2" rx="6"/>
+  <text x="60" y="88" font-size="13" font-weight="700" fill="#6d5bd0">Reformulation</text>
+  <text x="60" y="115" font-size="11">Count subarrays with sum k. sum(A[l..r]) = P[r + 1] − P[l] = k.</text>
+  <text x="60" y="135" font-size="11">Equivalent: count pairs (l, r + 1) with P[l] = P[r + 1] − k.</text>
+  <text x="60" y="160" font-size="11" font-weight="700">Algorithm:</text>
+  <text x="60" y="180" font-size="11">Walk r from 0 to n. Maintain map: prefix value → count of indices with that value.</text>
+  <text x="60" y="200" font-size="11">At each r, add map[P[r] − k] to answer, then increment map[P[r]].</text>
+  <text x="60" y="225" font-size="11">Initialise map with {0: 1} so prefixes equal to k are counted.</text>
+
+  <rect x="40" y="280" width="820" height="195" fill="#fff" stroke="#4caf50" stroke-width="2" rx="6"/>
+  <text x="60" y="308" font-size="13" font-weight="700" fill="#4caf50">Common variants</text>
+  <text x="60" y="335" font-size="11">• 560. Subarray Sum Equals K — count subarrays summing to k</text>
+  <text x="60" y="355" font-size="11">• 974. Subarray Sums Divisible by K — key on P[i] mod k</text>
+  <text x="60" y="375" font-size="11">• 525. Contiguous Array — map 0→−1, 1→+1, then longest subarray with sum 0</text>
+  <text x="60" y="395" font-size="11">• 1248. Count Number of Nice Subarrays — odd→1, even→0, count subarrays with sum k</text>
+  <text x="60" y="415" font-size="11">• 930. Binary Subarrays With Sum — same shape, binary array</text>
+  <text x="60" y="435" font-size="11">• 523. Continuous Subarray Sum — first repeated remainder under mod k</text>
+  <text x="60" y="460" font-size="11" fill="#4caf50" font-weight="700">Recognition: subarray-sum (or count) under a constraint, negatives allowed ⟹ prefix + hash.</text>
+</svg>

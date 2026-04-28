@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="system-ui, sans-serif">
+  <rect width="900" height="500" fill="#f3f1f8"/>
+  <text x="450" y="32" text-anchor="middle" font-size="19" font-weight="700" fill="#1a1822">Floyd&apos;s Cycle Math — Why Reset-and-Walk Finds the Entry</text>
+
+  <rect x="40" y="60" width="820" height="220" fill="#fff" stroke="#6d5bd0" stroke-width="2" rx="6"/>
+  <text x="60" y="85" font-size="13" font-weight="700" fill="#6d5bd0">Setup</text>
+  <text x="60" y="112" font-size="11">Let µ = distance from head to cycle entry, λ = cycle length.</text>
+  <text x="60" y="132" font-size="11">When slow has taken k steps and fast 2k steps, both inside the cycle:</text>
+  <text x="60" y="152" font-size="11">  slow position = (k - µ) mod λ  (offset from cycle entry)</text>
+  <text x="60" y="172" font-size="11">  fast position = (2k - µ) mod λ</text>
+  <text x="60" y="192" font-size="11">At meeting: (2k - µ) ≡ (k - µ) mod λ  ⟹  k ≡ 0 mod λ  ⟹  k is a multiple of λ.</text>
+  <text x="60" y="220" font-size="11" font-weight="700">So slow is k - µ steps into the cycle, where k is a multiple of λ.</text>
+  <text x="60" y="240" font-size="11">Equivalently: slow is at position −µ mod λ from the cycle entry.</text>
+  <text x="60" y="260" font-size="11">A walker starting at head needs µ steps to reach the entry. A walker at meeting also needs</text>
+  <text x="60" y="278" font-size="11">µ steps (mod λ) to reach the entry. So one-step walks from both meet at the entry.</text>
+
+  <rect x="40" y="300" width="820" height="175" fill="#fff" stroke="#4caf50" stroke-width="2" rx="6"/>
+  <text x="60" y="325" font-size="13" font-weight="700" fill="#4caf50">Algorithm summary</text>
+  <text x="60" y="350" font-size="11">Phase 1: slow = head, fast = head. Loop: slow = slow.next, fast = fast.next.next.</text>
+  <text x="60" y="370" font-size="11">          If fast or fast.next is null → no cycle. If slow == fast → cycle found.</text>
+  <text x="60" y="395" font-size="11">Phase 2: slow = head (keep fast at meeting). Loop: advance both by one. Return slow.</text>
+  <text x="60" y="420" font-size="11">Cycle length λ: from meeting, advance one pointer until it returns; count steps.</text>
+  <text x="60" y="448" font-size="11" fill="#4caf50" font-weight="700">Brent&apos;s algorithm is an alternative: typically faster constant factor, same O(n) bound.</text>
+</svg>
