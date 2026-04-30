@@ -4460,6 +4460,115 @@ export const subcategoryArticles: Record<string, Array<{slug: string; title: str
       "description": "Email template builder with drag blocks, variable insertion, responsive preview, and HTML output."
     }
   ],
+  "system-design-problems/low-level-design/data-heavy-ui-components": [
+    {
+      "slug": "client-side-data-normalization",
+      "title": "Design a Client-side Data Normalization System",
+      "description": "LLD for normalizing nested API data on the client: entity store, references, denormalization for views, optimistic updates, and consistent cross-screen state."
+    },
+    {
+      "slug": "column-configuration-system",
+      "title": "Design a Column Configuration System",
+      "description": "LLD for a column configuration system: per-user visibility, order, width, pinning; persistence across sessions; per-table presets; admin defaults."
+    },
+    {
+      "slug": "cursor-based-pagination-ui",
+      "title": "Design a Cursor-based Pagination UI",
+      "description": "LLD for cursor-based pagination: forward/back navigation, deep-link safety, real-time inserts, gap handling, and integration with virtualized lists."
+    },
+    {
+      "slug": "dashboard-builder",
+      "title": "Design a Dashboard Builder",
+      "description": "LLD for a dashboard builder: drag-and-drop widget grid layout, resize handles, persistence, lazy widget loading, theming, and keyboard accessibility."
+    },
+    {
+      "slug": "data-table",
+      "title": "Design a Data Table",
+      "description": "LLD for a production-grade Data Table: sorting, filtering, pagination, column resizing, virtualization, sticky headers, and accessible keyboard navigation in React/Next.js."
+    },
+    {
+      "slug": "infinite-scroll-virtualized-list",
+      "title": "Design an Infinite Scroll / Virtualized List",
+      "description": "LLD for an infinite-scrolling, virtualized list: fixed and dynamic row heights, IntersectionObserver triggers, accessibility, scroll restoration, and the trade-offs vs pagination in React/Next.js."
+    },
+    {
+      "slug": "inline-editing-system",
+      "title": "Design an Inline Editing System",
+      "description": "LLD for inline editing: cell-level edit mode, type-aware editors, validation, optimistic save with rollback, undo, conflict handling, and accessibility."
+    },
+    {
+      "slug": "real-time-data-dashboard",
+      "title": "Design a Real-time Data Dashboard",
+      "description": "LLD for a real-time dashboard: WebSocket streaming, smooth chart updates, throttled rendering, reconnection, backpressure, and stale-data detection."
+    },
+    {
+      "slug": "saved-views-filters-system",
+      "title": "Design a Saved Views / Filters System",
+      "description": "LLD for saved views: capture filter+sort+columns+density into named presets, share with team, default per role, URL-sync, and graceful schema migration."
+    },
+    {
+      "slug": "spreadsheet-like-grid",
+      "title": "Design a Spreadsheet-like Grid",
+      "description": "LLD for a spreadsheet grid: cell editing, formulas with dependency graph, copy-paste of regions, undo/redo, drag-fill, column/row resize, and accessibility."
+    },
+    {
+      "slug": "tree-view-folder-explorer",
+      "title": "Design a Tree View / Folder Explorer",
+      "description": "LLD for a hierarchical Tree View: lazy node loading, expand/collapse, virtualization of flattened children, drag-and-drop move/copy, multi-select, and accessibility."
+    },
+    {
+      "slug": "virtualized-grid-2d",
+      "title": "Design a Virtualized Grid (2D)",
+      "description": "LLD for a 2D virtualized grid: row and column virtualization, sticky headers and frozen panes, variable cell sizes, smooth bidirectional scroll, and accessibility."
+    }
+  ],
+  "system-design-problems/low-level-design/file-media-content-systems": [
+    {
+      "slug": "audio-video-player",
+      "title": "Design an Audio / Video Player",
+      "description": "LLD for a custom media player: HLS/DASH streaming, custom controls, captions, picture-in-picture, keyboard shortcuts, accessibility."
+    },
+    {
+      "slug": "code-editor-component",
+      "title": "Design a Code Editor Component",
+      "description": "LLD for an embedded code editor: syntax highlighting, autocomplete, line numbers, find-replace, embed Monaco vs build custom, accessibility."
+    },
+    {
+      "slug": "file-explorer-ui",
+      "title": "Design a File Explorer UI",
+      "description": "LLD for a file explorer: thumbnails, list/grid views, context menus, multi-select, drag-and-drop, bulk operations, search and filter, keyboard navigation."
+    },
+    {
+      "slug": "file-upload-system",
+      "title": "Design a File Upload System",
+      "description": "LLD for chunked, resumable file uploads: drag-and-drop ingest, parallel chunk transport, progress UI, retry with backoff, integrity, and accessibility."
+    },
+    {
+      "slug": "image-gallery-lightbox",
+      "title": "Design an Image Gallery / Lightbox",
+      "description": "LLD for an image gallery with lightbox: lazy loading, responsive srcset, zoom, swipe, keyboard navigation, focus trap, and accessibility."
+    },
+    {
+      "slug": "pdf-viewer",
+      "title": "Design a PDF Viewer",
+      "description": "LLD for an embedded PDF viewer: page rendering, zoom, search, annotations, lazy page loading, accessibility, and integration with PDF.js or native viewer."
+    },
+    {
+      "slug": "rich-text-editor",
+      "title": "Design a Rich Text Editor",
+      "description": "LLD for a rich text editor: document model, selection, commands, undo/redo, mentions, image upload, collaborative hooks, and accessibility."
+    },
+    {
+      "slug": "streaming-markdown-renderer",
+      "title": "Design a Streaming Markdown Renderer",
+      "description": "LLD for incrementally rendering markdown as tokens stream in (LLM responses): tokenizer reuse, partial parse, incremental DOM, code block flushing, and accessibility."
+    },
+    {
+      "slug": "wysiwyg-email-builder",
+      "title": "Design a WYSIWYG Email Builder",
+      "description": "LLD for an email builder: drag-drop blocks, variable insertion, responsive preview, MJML/HTML output, brand themes, and mail-client compatibility."
+    }
+  ],
   "system-design-problems/low-level-design/forms-input-systems": [
     {
       "slug": "ai-assisted-form-fill",
@@ -4510,6 +4619,28 @@ export const subcategoryArticles: Record<string, Array<{slug: string; title: str
       "slug": "wizard-multi-step-form",
       "title": "Design a Wizard / Multi-step Form",
       "description": "LLD for a multi-step Wizard preserving state across steps, validating per step, supporting branching, deep links, and resumable flows in React/Next.js."
+    }
+  ],
+  "system-design-problems/low-level-design/search-discovery": [
+    {
+      "slug": "full-text-search-ui",
+      "title": "Design a Full-text Search UI",
+      "description": "LLD for a full-text search UI: query parsing, snippet rendering with highlights, faceted filters, sorting, pagination, accessibility."
+    },
+    {
+      "slug": "rag-based-search-ui",
+      "title": "Design a RAG-based Search UI",
+      "description": "LLD for a RAG search UI: streaming LLM-generated answers with inline citations to retrieved sources, source panels, follow-up queries, and accessibility."
+    },
+    {
+      "slug": "search-autocomplete",
+      "title": "Design a Search Autocomplete",
+      "description": "LLD for a search autocomplete: debounced fetching, abortable requests, keyboard navigation, highlighted suggestions, result caching, and accessibility."
+    },
+    {
+      "slug": "search-page-filters-facets-url-sync",
+      "title": "Design a Search Page (Filters + Facets + URL Sync)",
+      "description": "LLD for a search page composing query + filters + facets + sort + pagination with URL state, shareable views, and accessible controls."
     }
   ],
   "system-design-problems/low-level-design/state-management-data-architecture": [

@@ -1,0 +1,927 @@
+"use client";
+
+import { ArticleLayout } from "@/components/articles/ArticleLayout";
+import { ArticleImage } from "@/components/articles/ArticleImage";
+import type { ArticleMetadata } from "@/types/article";
+
+export const metadata: ArticleMetadata = {
+  id: "article-lld-infinite-scroll-virtualized-list",
+  title: "Design an Infinite Scroll / Virtualized List",
+  description:
+    "LLD for an infinite-scrolling, virtualized list: fixed and dynamic row heights, IntersectionObserver triggers, accessibility, scroll restoration, and the trade-offs vs pagination in React/Next.js.",
+  category: "low-level-design",
+  subcategory: "data-heavy-ui-components",
+  slug: "infinite-scroll-virtualized-list",
+  wordCount: 7100,
+  readingTime: 38,
+  lastUpdated: "2026-04-29",
+  tags: [
+    "lld",
+    "infinite-scroll",
+    "virtualization",
+    "intersection-observer",
+    "react",
+    "scroll-restoration",
+  ],
+  relatedTopics: [
+    "data-table",
+    "virtualized-grid-2d",
+    "cursor-based-pagination-ui",
+    "real-time-data-dashboard",
+  ],
+};
+
+export default function InfiniteScrollVirtualizedListArticle() {
+  return (
+    <ArticleLayout metadata={metadata}>
+      <section>
+        <h2>🎯 Problem Context &amp; Scope Definition</h2>
+
+        <h3>Problem Statement</h3>
+        <p>
+          We are designing an infinite-scrolling, virtualized
+          list — the kind that powers feeds (social, news,
+          activity), search results, message threads,
+          notification inboxes, and any UI where the user
+          browses a long sequence of items without an
+          explicit pagination step. The list virtualizes its
+          DOM (mounts only the items in the viewport plus a
+          small buffer) and fetches more data as the user
+          approaches the end (and, for chat-style flows, the
+          beginning). Done well, this is the most important
+          performance pattern in any consumer-facing
+          information-dense product; done poorly, it&rsquo;s a
+          jank machine that drops frames, loses scroll
+          position on navigation, and breaks accessibility
+          for keyboard and screen-reader users.
+        </p>
+        <p>
+          The hard problems are deeply interrelated. Variable
+          row heights make scroll math non-trivial because
+          row offsets aren&rsquo;t derivable from index alone.
+          Detecting &ldquo;near the end&rdquo; requires
+          careful trigger placement so we fetch early enough
+          to avoid blank space without fetching wastefully.
+          Scroll restoration after navigation away and back
+          must restore not only scroll position but also the
+          loaded data window. Two-way infinite scroll (older
+          messages on top, newer on bottom in a chat) needs to
+          maintain perceived position when content prepends.
+          Real-time updates (new items arriving via
+          WebSocket) need smooth animation without disrupting
+          the user&rsquo;s scroll. Accessibility — making an
+          infinite list navigable by keyboard and announceable
+          by screen readers — is genuinely hard because the
+          ARIA patterns assume bounded content.
+        </p>
+
+        <h3>User Context</h3>
+        <p>
+          End users browse feeds, results, and threads on
+          mobile and desktop. They expect butter-smooth scroll
+          (60 fps minimum, ideally 120 fps on capable
+          devices), instant loading of new items as they
+          approach the end, and perfectly preserved context
+          when they navigate away and back. Internal teams
+          consume the list through a hook-based API:
+          declare a data source (with cursor-based pagination
+          most often) and a row renderer; the list runtime
+          handles virtualization, fetching, and scroll
+          mechanics. Power users (in apps like Twitter or a
+          customer support inbox) keep the list open for
+          hours; performance debt accumulates fast on
+          long-running scroll sessions.
+        </p>
+
+        <h3>Assumptions</h3>
+        <p>
+          Data sources are typically cursor-paginated:
+          <code> fetchPage(cursor)</code> returns
+          <code> { `{ items, nextCursor }` }</code>. Item
+          counts can be effectively unbounded (millions in a
+          feed, tens of thousands in an inbox). Row heights
+          are typically variable (cards with different
+          content lengths, messages with different attachment
+          types). Modern browsers; we use
+          <code> IntersectionObserver</code> for triggers,
+          <code> ResizeObserver</code> for height
+          measurement, and <code>requestAnimationFrame</code>
+          for scroll-driven updates. The host has a router
+          that supports back/forward navigation; we integrate
+          with its scroll restoration model.
+        </p>
+
+        <h3>Non-Goals</h3>
+        <p>
+          We do not implement traditional pagination (Next /
+          Previous buttons) — that&rsquo;s the Cursor-based
+          Pagination UI subsystem. We do not implement table
+          semantics (headers, columns, sortable structure) —
+          that&rsquo;s the Data Table. We do not implement
+          2D virtualization (grids with viewport-bounded
+          rows and columns) — that&rsquo;s the Virtualized
+          Grid. We do not implement search-result-specific
+          features (highlight, snippet ranking) — those layer
+          on top via custom row renderers.
+        </p>
+      </section>
+
+      <section>
+        <h2>⚙️ Functional Requirements</h2>
+
+        <h3>Core (Must-have)</h3>
+        <p>
+          Virtualize rows so DOM size stays O(visible) even
+          for million-item lists. Support fixed-height and
+          variable-height items via different
+          virtualization strategies. Trigger the next page
+          fetch when the user approaches the end of loaded
+          data, with a configurable threshold. Render
+          loading state for the next page (skeleton items,
+          spinner, or text indicator depending on context).
+          Render an end-of-list state when the cursor returns
+          null. Restore scroll position on navigation back.
+          Support keyboard navigation (Page Up/Down, Home/End,
+          arrow keys for grid-like lists). Announce state
+          changes (new items loaded, end reached) via polite
+          live region. Two-way infinite scroll (prepend on top,
+          append on bottom) for chat-style flows.
+        </p>
+
+        <h3>Secondary (Nice-to-have)</h3>
+        <p>
+          Real-time updates via WebSocket: new items appear
+          smoothly without disrupting scroll. Pinned items at
+          top or bottom (sticky banners, system messages).
+          Item-level lazy-loading of expensive content
+          (images, embedded media). Pull-to-refresh on mobile.
+          Skeleton items that match the layout of real items
+          for cumulative-layout-shift-free loading.
+          Configurable overscan for tuning perceived
+          smoothness vs memory usage. Item-level
+          prefetching of expensive resources just before
+          they enter the viewport.
+        </p>
+
+        <h3>Out of Scope</h3>
+        <p>
+          Filter/sort UIs, table-like column structure,
+          drag-to-reorder, and bulk selection don&rsquo;t fit
+          the infinite-scroll mental model and live
+          elsewhere. Custom transitions for item enter/exit
+          animations are an opt-in plugin, not core.
+        </p>
+      </section>
+
+      <section>
+        <h2>📊 Non-Functional Requirements</h2>
+
+        <h3>Performance</h3>
+        <p>
+          Scroll at 60 fps on mid-tier devices, no dropped
+          frames. Initial render of the visible viewport
+          under 100 ms. Page-fetch triggers complete in time
+          to avoid the user seeing blank space — concretely,
+          the fetch should start when the user is ~500 px
+          from the end on desktop, ~200 px on mobile (room
+          for one more screen of content). Memory usage
+          stays bounded even after hours of scrolling: we
+          unload deeply off-screen items, with an LRU eviction
+          policy that holds enough recent windows for fast
+          backtrack but releases far-away pages.
+        </p>
+
+        <h3>Reliability</h3>
+        <p>
+          Race-protect concurrent page fetches with tokens;
+          the latest token wins. Survive network failures
+          gracefully — surface an inline retry, never lose
+          the loaded items. Scroll restoration accuracy
+          across navigation: the user lands within a few
+          pixels of where they left off, even if items have
+          changed (we restore by item id, not by raw scroll
+          offset).
+        </p>
+
+        <h3>Security</h3>
+        <p>
+          Item rendering is text by default; HTML opt-in via
+          a sanitizer per item type. Real-time updates are
+          authenticated; we don&rsquo;t inject server-pushed
+          items into a stranger&rsquo;s list.
+        </p>
+
+        <h3>Accessibility</h3>
+        <p>
+          The list uses <code>role=&quot;feed&quot;</code> for
+          chronological feeds (twitter-style), or
+          <code> role=&quot;list&quot;</code> for unordered
+          collections. Each item is a focusable region with
+          its own accessible name. Loading and end-of-list
+          states announce via polite live region. Keyboard
+          navigation (Page Up/Down) works without trapping;
+          arrow keys move between items when configured.
+        </p>
+
+        <h3>Maintainability</h3>
+        <p>
+          The runtime is a small core (virtualizer + fetch
+          orchestrator + scroll restoration) with hooks for
+          consumers to plug their data source and row
+          renderer. Adding new behaviors (real-time, pinned,
+          pull-to-refresh) is a one-file plugin per
+          behavior.
+        </p>
+      </section>
+
+      <ArticleImage
+        src="/diagrams/system-design-problems/low-level-design/infinite-scroll-virtualized-list-architecture.svg"
+        alt="Infinite Scroll / Virtualized List Architecture"
+        caption="Data Source (cursor pagination) → Item Cache (LRU) → Virtualizer (visible window + overscan) → DOM. IntersectionObserver triggers near end-of-data fetch the next page; ResizeObserver maintains measured-height cache for variable rows; scroll restoration uses item-id anchors not raw offsets."
+      />
+
+      <section>
+        <h2>🧠 Solution Approach</h2>
+        <p>
+          The list is built around four cooperating
+          mechanisms: a <strong>data source with cursor
+          pagination</strong> behind an item cache, a
+          <strong> virtualizer</strong> that maps scroll
+          position to visible window, an
+          <strong> IntersectionObserver-driven trigger</strong>{" "}
+          that initiates page fetches, and an
+          <strong> item-id-anchored scroll restoration</strong>{" "}
+          system. Each is well-understood individually; their
+          interaction is what makes the list feel solid
+          rather than haphazard.
+        </p>
+        <p>
+          The <strong>data source</strong> exposes
+          <code> fetchPage(cursor)</code> →{" "}
+          <code>{` { items, nextCursor } `}</code>. The item
+          cache stores fetched items by id and maintains an
+          ordered list of (cursor → item id range) mappings.
+          When the virtualizer asks for items in a window,
+          the cache returns whatever it has and signals
+          gaps. When the trigger detects a near-end-of-data
+          situation, it issues a fetch with the latest
+          cursor; on response, the cache appends new items
+          and notifies subscribers. The cache supports LRU
+          eviction for very long scroll sessions: pages that
+          are far above the current viewport (e.g. more
+          than 50 viewports up) get evicted, keeping memory
+          bounded. Eviction is conservative because we want
+          fast backtracking; aggressive eviction would
+          cause re-fetches on minor scroll-up.
+        </p>
+        <p>
+          The <strong>virtualizer</strong> handles the
+          translation from scroll position to visible window.
+          For fixed-height items, the math is trivial:
+          visible start = floor(scrollTop / itemHeight);
+          visible count = ceil(viewportHeight / itemHeight);
+          end = start + count + overscan. For variable-height
+          items, we maintain a measured-height cache keyed
+          by item id, an estimated default height for
+          unmeasured items, and a cumulative-height index
+          that lets us binary-search for the item at a given
+          scroll offset. The cumulative index is updated
+          whenever a measured height changes; we use
+          <code> ResizeObserver</code> on each mounted item
+          to keep measurements current as content reflows
+          (images load, accordion expands, etc.). The
+          overscan (typically 5–10 items above and below the
+          viewport) prevents blank flashes during fast
+          scrolling.
+        </p>
+        <p>
+          The <strong>trigger</strong> uses an
+          IntersectionObserver on a sentinel element placed
+          near the end of the loaded data (typically 5
+          items before the actual end, or as a marker
+          rendered just below the last item with a top
+          margin equal to the trigger threshold). When the
+          sentinel intersects the viewport, the observer
+          fires, and the trigger requests the next page from
+          the data source. We use IntersectionObserver
+          rather than scroll-position math because it&rsquo;s
+          off the main thread, doesn&rsquo;t fire excessively
+          during fast scrolling, and respects the browser&rsquo;s
+          rendering pipeline. Triggers are debounced to
+          prevent multiple parallel fetches if the user
+          scrolls past the threshold quickly.
+        </p>
+        <p>
+          <strong>Scroll restoration</strong> is the trickiest
+          piece because raw scroll offsets are unreliable —
+          items may have changed since the user navigated
+          away (especially with real-time updates), and
+          measured heights may be different. We anchor
+          restoration to an item id: when the user navigates
+          away, we record the id of the topmost visible
+          item plus its offset within the viewport. When
+          they navigate back, we restore by scrolling to
+          that item id; if the item is still in the cache,
+          this is instant; if it has been evicted, we
+          re-fetch the page containing it before scrolling.
+          For items that no longer exist (e.g. deleted), we
+          fall back to the next-newest item we recorded.
+          This robustness against item changes is what makes
+          scroll restoration feel reliable rather than
+          flaky.
+        </p>
+        <p>
+          On <strong>mount</strong>, the runtime checks for a
+          stored scroll state from the host&rsquo;s
+          router-provided state. If present, it kicks off a
+          fetch sequence to populate the cache up to the
+          stored item id (or returns to a known prior cache
+          if still valid), then scrolls to the anchor. On
+          first-time mount, it fetches the first page and
+          scrolls to the top.
+        </p>
+        <p>
+          On <strong>scroll</strong>, the virtualizer recalculates
+          the visible window in
+          <code> requestAnimationFrame</code>. The render
+          tree mounts items in the visible window plus
+          overscan; items outside that range unmount. The
+          IntersectionObserver fires when the trigger
+          sentinel intersects, and the data source is asked
+          for the next page. For two-way infinite (chat-
+          style), a second sentinel near the top fires for
+          older-messages fetch.
+        </p>
+        <p>
+          On <strong>page response</strong>, the new items are
+          appended (or prepended for two-way) to the cache.
+          Subscribers are notified; the virtualizer
+          recalculates if needed. For prepended items in a
+          chat-style list, we adjust scroll position to
+          maintain perceived stability — without this
+          adjustment, prepending items would push the user&rsquo;s
+          current view down and break their reading flow.
+          The adjustment is a single
+          <code> scrollTop = scrollTop + prependedHeight</code>{" "}
+          inside the same frame as the DOM mutation, so
+          users see no jump.
+        </p>
+        <p>
+          On <strong>real-time update</strong>, new items
+          arriving via WebSocket are added to the cache
+          (typically prepended for chronological feeds).
+          The UI surfaces a banner &ldquo;5 new items&rdquo;
+          rather than auto-scrolling, because auto-scrolling
+          interrupts the user. Clicking the banner scrolls
+          smoothly to the new items. For chat-style flows
+          where the user is at the bottom (most recent), we
+          can auto-scroll because that matches user
+          expectation; if they&rsquo;ve scrolled up, we
+          surface the banner instead.
+        </p>
+        <p>
+          On <strong>navigation away</strong>, the runtime
+          stores the topmost visible item id and its
+          viewport offset to the router&rsquo;s state. On
+          return, it restores via the anchor mechanism
+          described above. This integration with the router
+          is what makes scroll restoration feel reliable
+          across the full app navigation graph.
+        </p>
+      </section>
+
+      <section>
+        <h2>🧱 Component Architecture</h2>
+        <p>
+          <strong>ListProvider</strong> instantiates the
+          virtualizer, the data source orchestrator, the
+          item cache, and the trigger observer. It exposes
+          them through stable refs in a React Context.
+        </p>
+        <p>
+          <strong>Virtualizer</strong> handles the
+          scroll-to-window translation. It supports both
+          fixed-height and variable-height modes; consumers
+          declare which via a prop. For variable-height, it
+          uses <code>ResizeObserver</code> on each mounted
+          item and maintains the cumulative-height index.
+        </p>
+        <p>
+          <strong>ItemCache</strong> stores items by id with
+          ordered cursor mappings. Supports append, prepend,
+          and LRU eviction. Subscribers receive notifications
+          on cache changes via a small event interface.
+        </p>
+        <p>
+          <strong>FetchOrchestrator</strong> manages
+          concurrent fetch tokens, debounces triggers, and
+          handles retry-on-error. It exposes status
+          (<code>idle</code>, <code>loading</code>,
+          <code> error</code>, <code>endReached</code>) to
+          the UI.
+        </p>
+        <p>
+          <strong>TriggerSentinel</strong> is a small DOM
+          element observed by IntersectionObserver to detect
+          near-end-of-data conditions. We render two
+          sentinels for two-way scroll, one at each end.
+        </p>
+        <p>
+          <strong>ScrollRestorer</strong> reads/writes scroll
+          anchor state to the host router&rsquo;s state. On
+          mount, it restores; on unmount, it persists.
+        </p>
+        <p>
+          <strong>ItemRenderer</strong> is consumer-supplied;
+          the runtime calls it with each visible item. The
+          ItemRenderer is wrapped in
+          <code> React.memo</code> so unchanged items
+          don&rsquo;t re-render when sibling items update.
+        </p>
+        <p>
+          <strong>StatusBanner</strong> renders end-of-list,
+          error, and new-items-arrived states in a small
+          banner above or below the list. It&rsquo;s
+          consumer-skinnable.
+        </p>
+        <p>
+          The architectural patterns are
+          <strong> virtualization</strong> (DOM scoped to
+          viewport), <strong>cursor-paginated cache</strong>{" "}
+          (ordered, LRU-evictable), <strong>observer-driven
+          triggers</strong> (off-main near-end detection),
+          and <strong>id-anchored restoration</strong>{" "}
+          (robust to data changes).
+        </p>
+      </section>
+
+      <section>
+        <h2>🔄 State Management Strategy</h2>
+        <p>
+          Three planes. <strong>Cache state</strong> (item
+          cache, cursors, fetch status) lives in an external
+          store created per list. <strong>Render state</strong>{" "}
+          (visible window indices, measured heights) lives
+          in the virtualizer&rsquo;s own ref-based state and
+          isn&rsquo;t exposed to React unless the consumer
+          asks. <strong>Scroll anchor</strong> lives in the
+          host router&rsquo;s state across navigation.
+        </p>
+        <p>
+          The cache store and the visible-window state are
+          deliberately separate because they update at very
+          different cadences. Cache updates are infrequent
+          (once per page fetch); window updates are every
+          scroll frame. Conflating them would either cause
+          unnecessary cache subscriber re-renders during
+          scroll, or add scroll-frame state to the cache
+          store, both of which are wrong.
+        </p>
+      </section>
+
+      <section>
+        <h2>🔁 Data Flow &amp; Contracts</h2>
+        <p>
+          Inputs:{" "}
+          <code>dataSource</code> (with
+          <code> fetchPage(cursor)</code>),
+          <code> renderItem(item)</code>,
+          <code> estimatedItemHeight</code> (for
+          variable-height mode),
+          <code> overscan</code>,
+          <code> threshold</code> (px from end to trigger
+          fetch), <code>twoWay</code> (boolean for
+          chat-style), and event handlers
+          (<code> onEndReached</code>,
+          <code> onItemView</code>). Outputs are
+          subscription events for telemetry plus an
+          imperative API on the list ref
+          (<code> scrollToItem</code>,
+          <code> scrollToTop</code>, <code>refetch</code>).
+        </p>
+        <p>
+          Item contract: each item must have a stable
+          <code> id</code> field. Without stable ids,
+          reconciliation, scroll restoration, and React
+          keys all break. Consumers using objects without
+          natural ids must synthesize them deterministically
+          (a hash of content, never an array index).
+        </p>
+      </section>
+
+      <section>
+        <h2>⚡ Rendering &amp; Performance Strategy</h2>
+        <p>
+          Virtualization scopes mounted DOM to ~30 items
+          regardless of total count. Item components are
+          memoized so unchanged items don&rsquo;t re-render
+          on cache updates. The visible-window calculation
+          runs in
+          <code> requestAnimationFrame</code> so it aligns
+          with the browser&rsquo;s rendering pipeline rather
+          than fighting it.
+        </p>
+        <p>
+          For variable-height items, the cumulative-height
+          index is updated incrementally — only the items
+          whose measured heights changed contribute to the
+          index update. Binary search over the index gives
+          O(log N) lookup for the item at a scroll offset.
+          Without the index, we&rsquo;d need O(N) to find
+          the right item, which doesn&rsquo;t scale.
+        </p>
+        <p>
+          IntersectionObserver fires off-main, so trigger
+          detection doesn&rsquo;t add to the scroll
+          critical path. The fetch happens after the trigger
+          fires; the user typically doesn&rsquo;t see the
+          fetch latency because the threshold is set far
+          enough from the end that the page arrives before
+          they reach it.
+        </p>
+        <p>
+          Item-level lazy-loading of images and media uses
+          <code> loading=&quot;lazy&quot;</code> for native
+          lazy-load, plus a hook for non-image expensive
+          content (an inline chart, an embedded video) that
+          delays mount until the item is in the viewport.
+          This keeps initial item mount cheap even for
+          rich content.
+        </p>
+      </section>
+
+      <section>
+        <h2>🎨 UI/UX Considerations</h2>
+        <p>
+          Skeleton items during loading match the layout of
+          real items (same height, same column structure)
+          to avoid cumulative layout shift. End-of-list
+          states are explicit text rather than just an
+          absence of more loading; users should never wonder
+          if more is coming. Error states surface inline
+          with a Retry button; the retry preserves the
+          loaded items above so the user&rsquo;s scroll
+          context is preserved. Empty states (zero items
+          total) explain why and offer remediation
+          (clear filter, change query).
+        </p>
+        <p>
+          For real-time updates, the &ldquo;new items
+          arrived&rdquo; banner respects the user&rsquo;s
+          intent. If they&rsquo;re scrolled to the top
+          (chronological feed) and new items arrive, we
+          can auto-scroll because that&rsquo;s where the
+          user wants to be. If they&rsquo;ve scrolled
+          down, we surface the banner instead — interrupting
+          a deep-scroll session with auto-scroll is
+          obnoxious. The banner is accessible (announced
+          via live region) and dismissible.
+        </p>
+      </section>
+
+      <section>
+        <h2>♿ Accessibility</h2>
+        <p>
+          Chronological feeds use
+          <code> role=&quot;feed&quot;</code> with
+          <code> aria-busy</code> while loading.
+          Non-chronological lists use
+          <code> role=&quot;list&quot;</code>. Each item is
+          a focusable region (focusable via Tab) with its
+          own accessible name (constructed from item
+          content). Keyboard navigation: Page Up/Down moves
+          by viewport; Home/End move to start/end (where
+          End may trigger a fetch if not yet at the
+          server-side end). Loading state announces via
+          polite live region — &ldquo;Loading more
+          items&rdquo;, &ldquo;5 new items&rdquo;, &ldquo;End
+          of list&rdquo; — without spamming the
+          accessibility tree on every scroll frame.
+        </p>
+        <p>
+          The trickiest accessibility concern is that
+          virtualization may unmount items the user has
+          interacted with. We mitigate by ensuring focused
+          items don&rsquo;t unmount until focus moves
+          elsewhere. If the user uses arrow keys to navigate
+          deep into the list, focus tracks correctly across
+          the unmount/mount boundary because the virtualizer
+          checks for the focused item when computing the
+          visible window.
+        </p>
+      </section>
+
+      <section>
+        <h2>🔐 Security Considerations</h2>
+        <p>
+          Item content renders as text by default; rich
+          content (e.g. user-generated HTML in a feed item)
+          opts in via a sanitizer. Real-time updates are
+          authenticated via the WebSocket connection&rsquo;s
+          session; we don&rsquo;t accept items from
+          unauthenticated sources. Cursor tokens are
+          opaque server-issued strings; we don&rsquo;t
+          inspect or modify them. The list&rsquo;s
+          imperative API
+          (<code> scrollToItem(id)</code>) accepts an item
+          id but doesn&rsquo;t fetch arbitrary cross-list
+          items — it only operates within the current
+          list&rsquo;s data source.
+        </p>
+      </section>
+
+      <section>
+        <h2>🧪 Testing Strategy</h2>
+        <p>
+          Unit tests cover the cache (append, prepend, LRU
+          eviction, gap detection), the virtualizer (visible
+          window calculation, cumulative-height index for
+          variable heights), and the fetch orchestrator
+          (token races, retry on error). Integration tests
+          mount realistic lists with mocked data sources and
+          exercise: scroll to trigger fetch, scroll
+          restoration after navigation, real-time updates,
+          two-way scroll. Visual regression tests catch
+          layout shifts. Performance tests assert 60 fps
+          scroll on a 100k-item list. Accessibility tests
+          verify the live region announcements and focus
+          preservation across virtualization boundaries.
+        </p>
+      </section>
+
+      <section>
+        <h2>🚨 Edge Cases &amp; Failure Handling</h2>
+        <p>
+          User scrolls very fast past the trigger: the
+          IntersectionObserver fires only once per
+          intersection, so we don&rsquo;t spam the data
+          source; debouncing adds belt-and-suspenders
+          protection. User loses network mid-scroll: we
+          surface an inline retry; the loaded items above
+          remain. Item heights change after measurement
+          (e.g. an image loads and grows the item): the
+          ResizeObserver updates the cache and the
+          virtualizer recalculates; we adjust scroll
+          position to maintain the user&rsquo;s view if the
+          changing item is above the viewport. User
+          navigates back to a list whose items have
+          changed (real-time deletes): the scroll restorer
+          falls back to the nearest available anchor;
+          users land near where they were rather than at the
+          top.
+        </p>
+        <p>
+          Cache eviction policy edge case: user scrolls
+          deep, eviction kicks in for top pages, then user
+          tries to scroll back to the top. The cache notices
+          the missing pages, signals gaps, and fetches them
+          before scroll completes; we render skeletons in
+          the meantime. Two-way scroll race: prepend and
+          append fetches happen simultaneously (e.g. user
+          scrolls to top while WebSocket delivers new
+          items); fetch tokens prevent stale responses
+          from corrupting the cache. Cursor returns null
+          but the user keeps scrolling: we render
+          end-of-list state explicitly. Server returns
+          duplicate items (real-time + initial fetch
+          overlap): the cache deduplicates by id.
+        </p>
+      </section>
+
+      <section>
+        <h2>🔁 Reusability &amp; Extensibility</h2>
+        <p>
+          The runtime is generic over item type and data
+          source. Plugins for real-time updates,
+          pull-to-refresh, and pinned items slot in via
+          composition. The item renderer is fully
+          consumer-controlled, so the runtime works for
+          feed cards, message bubbles, search results,
+          notifications, and anything else with the same
+          mental model.
+        </p>
+      </section>
+
+      <section>
+        <h2>🌍 Internationalization</h2>
+        <p>
+          Status strings (loading, end of list, retry)
+          resolve via the host i18n function. Right-to-left
+          layouts work via CSS logical properties; the
+          virtualizer is direction-agnostic (it operates on
+          scroll position, which the browser handles
+          correctly across directions). For
+          chat-style two-way scroll, RTL flips visual
+          orientation but the prepend/append semantics
+          remain.
+        </p>
+      </section>
+
+      <section>
+        <h2>⚖️ Trade-offs &amp; Design Decisions</h2>
+
+        <h3>Infinite scroll vs paginated</h3>
+        <p>
+          Infinite scroll fits browse-and-discover flows
+          (feeds, search results, image galleries) where
+          users don&rsquo;t need to land on a specific
+          page. Paginated fits look-up flows (admin tables,
+          archives) where users navigate to specific
+          positions. Each works for the right use case; the
+          mistake is using one when the other is right.
+          For the feed-style use cases this article targets,
+          infinite scroll is the right choice; for tabular
+          lookups, the Data Table is.
+        </p>
+
+        <h3>IntersectionObserver vs scroll-position math</h3>
+        <p>
+          IntersectionObserver runs off-main, doesn&rsquo;t
+          fire excessively during fast scrolling, and
+          aligns with the browser&rsquo;s render pipeline.
+          Scroll-position math (subscribing to
+          <code> onScroll</code> and computing) runs on the
+          main thread, fires per scroll event, and can
+          cause jank if the handler is non-trivial. We use
+          IntersectionObserver wherever possible.
+        </p>
+
+        <h3>ID-anchored vs offset-anchored scroll restoration</h3>
+        <p>
+          Offset-anchored restoration is simpler but breaks
+          when items change between visits. ID-anchored is
+          robust to changes (items added, removed, resized)
+          and feels reliable. The cost is an extra lookup
+          on restore; the gain is a much better UX in the
+          presence of any data churn.
+        </p>
+
+        <h3>LRU eviction vs holding everything</h3>
+        <p>
+          For very long-lived sessions (a Twitter timeline
+          open for hours), holding every loaded item
+          consumes unbounded memory. LRU eviction keeps
+          memory bounded at the cost of needing to refetch
+          on backtrack. We tune the LRU window so that
+          common backtrack distances stay in cache while
+          long-distance backtracks pay a refetch cost; the
+          window is configurable per consumer.
+        </p>
+
+        <h3>Real-time auto-scroll vs banner</h3>
+        <p>
+          Auto-scrolling on new items interrupts users who
+          are reading. A banner (&ldquo;5 new items&rdquo;)
+          is unobtrusive and respects user intent. We
+          auto-scroll only when the user is already at the
+          relevant end (top of feed); otherwise we banner.
+          This rule is opinionated but correct for
+          consumer-facing feeds; chat apps can override the
+          policy because their semantics are different.
+        </p>
+
+        <h3>Variable-height vs forced fixed-height</h3>
+        <p>
+          Forced fixed-height is dramatically simpler but
+          looks bad for content with intrinsically variable
+          length (cards, messages). Variable-height costs
+          more (measured-height cache, ResizeObserver,
+          cumulative-height index) but produces a UI that
+          matches user expectations. For most modern
+          products, variable-height is the right default;
+          fixed-height is an opt-in for cases that genuinely
+          have uniform items (e.g. an inbox of equal-size
+          rows).
+        </p>
+      </section>
+
+      <section>
+        <h2>🔮 Future Improvements</h2>
+        <p>
+          Predictive prefetching based on scroll velocity:
+          if the user is scrolling fast, fetch further ahead
+          to keep ahead of them. Offline-first caching with
+          IndexedDB so users can re-open a session and see
+          their loaded items without a network round-trip.
+          Smooth animations for item insertions and removals
+          (especially for real-time updates). Cross-session
+          scroll restoration: come back tomorrow and land
+          where you were last night. Better integration with
+          the View Transitions API for navigation between
+          list and detail views. Service-worker-driven
+          push updates so new items can arrive even when
+          the tab is backgrounded.
+        </p>
+      </section>
+
+      <section>
+        <h2>🎤 Interview Q&amp;A</h2>
+
+        <p>
+          <strong>1. How do you avoid blank space at the bottom of
+          the list during fast scrolling?</strong> Set the trigger
+          threshold far enough from the end of loaded data
+          that the next page arrives before the user reaches
+          it. Render skeleton items at the loading position
+          so the user sees expected layout, not blank space.
+          Combine with overscan (5–10 items beyond the
+          viewport) to handle very fast scroll bursts.
+        </p>
+
+        <p>
+          <strong>2. How does scroll restoration work when items
+          have changed?</strong> Anchor restoration to an item
+          id, not a raw scroll offset. On navigation away,
+          record the topmost visible item&rsquo;s id and its
+          offset within the viewport. On return, locate that
+          item in the cache (fetch if evicted) and scroll to
+          it. If the item no longer exists, fall back to the
+          nearest available anchor.
+        </p>
+
+        <p>
+          <strong>3. How do you handle variable-height items?</strong>{" "}
+          Maintain a measured-height cache keyed by item id.
+          Use <code>ResizeObserver</code> on each mounted
+          item to update measurements. Maintain a cumulative-
+          height index that maps scroll offset → item index
+          via binary search. Estimated default heights for
+          unmeasured items.
+        </p>
+
+        <p>
+          <strong>4. Why IntersectionObserver instead of scroll
+          handlers?</strong> IntersectionObserver fires
+          off-main and aligns with the render pipeline,
+          producing zero scroll-handler overhead. Scroll
+          handlers run on every scroll event and can introduce
+          jank if not carefully optimized. For trigger
+          detection, IntersectionObserver is unequivocally
+          better.
+        </p>
+
+        <p>
+          <strong>5. How do you keep memory bounded for long
+          sessions?</strong> LRU eviction of cache pages far
+          from the current scroll position. Items in the
+          eviction window are dropped from the cache; they&rsquo;re
+          re-fetched if the user backtracks beyond the
+          window. The window is configurable; defaults are
+          tuned for typical use.
+        </p>
+
+        <p>
+          <strong>6. How do you handle real-time updates without
+          disrupting the user?</strong> Surface a banner
+          (&ldquo;5 new items&rdquo;) for users who are deep
+          in the list; auto-scroll only when the user is at
+          the relevant end (top of chronological feed,
+          bottom of chat). The banner is accessible and
+          dismissible.
+        </p>
+
+        <p>
+          <strong>7. What happens when the user prepends items
+          (chat scrolls up to load older messages)?</strong> When
+          older messages prepend to the cache, the
+          virtualizer adjusts scroll position by the
+          prepended height in the same frame as the DOM
+          mutation. Without this adjustment, prepending would
+          push the user&rsquo;s current view down. With it,
+          the user sees no jump.
+        </p>
+
+        <p>
+          <strong>8. How is the list accessible to screen
+          readers?</strong> Use <code>role=&quot;feed&quot;</code>{" "}
+          for chronological lists with
+          <code> aria-busy</code> during loading. Each item is
+          a focusable region with its own accessible name.
+          State changes (loading, end of list) announce via
+          polite live region. Keyboard navigation (Page
+          Up/Down) works without trapping. Focused items
+          don&rsquo;t unmount even if they leave the
+          virtualizer&rsquo;s default window.
+        </p>
+      </section>
+
+      <section>
+        <h2>📌 Summary</h2>
+        <p>
+          An infinite-scrolling virtualized list is a
+          <strong> four-mechanism system</strong>: cursor-
+          paginated cache, virtualizer (with measured-height
+          support for variable rows), IntersectionObserver-
+          driven trigger, and id-anchored scroll restoration.
+          Each mechanism is tractable on its own; their
+          interaction is what makes the list feel reliable
+          across the messy real-world scenarios — fast
+          scrolling, real-time updates, navigation away and
+          back, variable content. Choose infinite scroll for
+          browse-and-discover flows; choose pagination for
+          look-up flows; don&rsquo;t mix them up.
+        </p>
+      </section>
+    </ArticleLayout>
+  );
+}

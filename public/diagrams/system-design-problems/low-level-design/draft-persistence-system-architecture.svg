@@ -1,0 +1,54 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 380" fill="none" font-family="system-ui, sans-serif">
+  <rect width="760" height="380" fill="transparent"/>
+
+  <rect x="20" y="30" width="150" height="80" rx="8" fill="#f0f9ff" stroke="#3b82f6" stroke-width="2"/>
+  <text x="95" y="58" text-anchor="middle" font-size="13" font-weight="bold" fill="#1e40af">Form Runtime</text>
+  <text x="35" y="80" font-size="11" fill="#3b82f6">change events</text>
+  <text x="35" y="96" font-size="11" fill="#3b82f6">value snapshots</text>
+
+  <line x1="170" y1="70" x2="240" y2="100" stroke="#6b7280" stroke-width="2" marker-end="url(#arrowhead)"/>
+
+  <rect x="240" y="30" width="220" height="200" rx="8" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/>
+  <text x="350" y="58" text-anchor="middle" font-size="14" font-weight="bold" fill="#92400e">DraftStore (per-form)</text>
+  <text x="255" y="82" font-size="11" fill="#92400e">• subscribe to changes</text>
+  <text x="255" y="100" font-size="11" fill="#92400e">• debounce (1.5s)</text>
+  <text x="255" y="118" font-size="11" fill="#92400e">• schemaVersion + draftId</text>
+  <text x="255" y="136" font-size="11" fill="#92400e">• Syncer (outbox queue)</text>
+  <text x="255" y="154" font-size="11" fill="#92400e">• ConflictResolver</text>
+  <text x="255" y="172" font-size="11" fill="#92400e">• SchemaMigrator</text>
+  <text x="255" y="190" font-size="11" fill="#92400e">• status: saving/saved/error</text>
+  <text x="255" y="212" font-size="10" fill="#b45309">flush on visibilitychange</text>
+
+  <line x1="350" y1="230" x2="350" y2="270" stroke="#6b7280" stroke-width="2" marker-end="url(#arrowhead)"/>
+  <text x="362" y="255" font-size="10" fill="#6b7280">local-first</text>
+
+  <rect x="240" y="270" width="220" height="80" rx="8" fill="#dbeafe" stroke="#2563eb" stroke-width="2"/>
+  <text x="350" y="298" text-anchor="middle" font-size="13" font-weight="bold" fill="#1e3a8a">LocalAdapter</text>
+  <text x="255" y="320" font-size="11" fill="#1e3a8a">IndexedDB (async, structured)</text>
+  <text x="255" y="336" font-size="11" fill="#1e3a8a">localStorage fallback</text>
+
+  <line x1="460" y1="130" x2="540" y2="130" stroke="#6b7280" stroke-width="2" marker-end="url(#arrowhead)"/>
+  <text x="475" y="120" font-size="10" fill="#6b7280">async</text>
+
+  <rect x="540" y="60" width="200" height="170" rx="8" fill="#dcfce7" stroke="#22c55e" stroke-width="2"/>
+  <text x="640" y="88" text-anchor="middle" font-size="14" font-weight="bold" fill="#166534">RemoteAdapter</text>
+  <text x="555" y="112" font-size="11" fill="#166534">• PUT /drafts/:draftId</text>
+  <text x="555" y="130" font-size="11" fill="#166534">• idempotency key</text>
+  <text x="555" y="148" font-size="11" fill="#166534">• retry + backoff</text>
+  <text x="555" y="166" font-size="11" fill="#166534">• AbortController</text>
+  <text x="555" y="184" font-size="11" fill="#166534">• server timestamp</text>
+  <text x="555" y="206" font-size="10" fill="#15803d">cross-device durable</text>
+
+  <rect x="540" y="270" width="200" height="80" rx="8" fill="#fce7f3" stroke="#ec4899" stroke-width="2"/>
+  <text x="640" y="298" text-anchor="middle" font-size="13" font-weight="bold" fill="#9d174d">BroadcastChannel</text>
+  <text x="555" y="320" font-size="11" fill="#9d174d">cross-tab convergence</text>
+  <text x="555" y="336" font-size="11" fill="#9d174d">submit lock</text>
+
+  <line x1="460" y1="310" x2="540" y2="310" stroke="#6b7280" stroke-width="2" marker-end="url(#arrowhead)"/>
+
+  <defs>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#6b7280"/>
+    </marker>
+  </defs>
+</svg>
